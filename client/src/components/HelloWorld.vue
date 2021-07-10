@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <a href="#">Forgot password?</a>
-                    <p >Don't have an account? <a href="#">Register here.</a></p>
+                    <p >Don't have an account? <a href="http://192.168.1.3:8081/#/register">Register here.</a></p>
                   </form>
               </div>
              </div>

@@ -16,11 +16,30 @@ app.use(cors())
 console.log('server is on on the  :  http://localhost:8083')
 console.log('routes available     :  http://localhost:8083/register')
 
-// a simple examlple of a get request (in point)
+// login in point
+
+app.post('/login', (req, res) => {
+  res.send({
+    message: `your user : ${req.body.email}  was login`
+  })
+})
+
+// register in point
 
 app.post('/register', (req, res) => {
   res.send({
-    message: `your user : ${req.body.email}  was register`
+    message: `
+    firstName: ${req.body.firstName},
+    lastName: ${req.body.lastName},
+    date: ${req.body.date},
+    sexe: ${req.body.sexe},
+    email : ${req.body.email},
+    password : ${req.body.password},
+    password2 : ${req.body.password2},
+    phoneNum : ${req.body.phoneNum},
+    stat: ${req.body.stat},
+    scolarYear: ${req.body.scolarYear} 
+     was register`
   })
 })
 
