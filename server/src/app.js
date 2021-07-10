@@ -13,16 +13,17 @@ app.use(cors())
 
 // to show that server is on
 
-console.log('server is on')
+console.log('server is on on the  :  http://localhost:8083')
+console.log('routes available     :  http://localhost:8083/register')
 
-// a simple examlple of a get request
+// a simple examlple of a get request (in point)
 
-app.get('/status', (req, res) => {
+app.post('/register', (req, res) => {
   res.send({
-    message: 'hello world!'
+    message: `your user : ${req.body.email}  was register`
   })
 })
 
 // express application running in port 8081
 
-app.listen(process.env.PORT || 8081)
+app.listen(process.env.PORT || 8083)

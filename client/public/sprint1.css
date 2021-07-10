@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.row{
+    background:white;
+    padding: 0;
+}
+
+.image img{
+    width: 100%;
+}
+.btn1{
+    border: none;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    background-color: #24b4ab;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.btn1:hover{
+    background-color: white;
+    border: 10px;
+    border-color: black;
+    color: #24b4ab;
+}
+.this{
+    text-align: center;
+    align-items: center;
+  
+}
+.this a{
+    font-size: 95%;
+    color: #24b4ab;
+    text-decoration: none;
+}
