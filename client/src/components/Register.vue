@@ -64,21 +64,22 @@
             
 
             <div class="col-sm-6">
-              <select class="form-control" v-model="stat" id="exampleFormControlSelect1">
+              <select class="form-control" v-model="stat" @click="student = (stat == 'student')" id="exampleFormControlSelect1">
                 <option>state</option>
                 <option>student</option>
                 <option>worker</option>
                 </select></div>
-
-                <div class="col-sm-12">
-                  <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect1">
-                    <option>Scolar year</option>
-                    <option>1CPI</option>
-                    <option>2CPI</option>
-                    <option>1CS</option>
-                    <option>2CS</option>
-                    <option>3CS</option>
-                    </select>
+                <div v-if="student" class="scolarYear">
+                  <div class="col-sm-12" >
+                    <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect1">
+                      <option>Scolar year</option>
+                      <option>1CPI</option>
+                      <option>2CPI</option>
+                      <option>1CS</option>
+                      <option>2CS</option>
+                      <option>3CS</option>
+                      </select>
+                  </div>
                 </div>
            </div>
 
@@ -148,4 +149,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+div.scolarYear {display: block;}
+
 </style>
