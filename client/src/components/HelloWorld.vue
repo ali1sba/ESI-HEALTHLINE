@@ -60,7 +60,7 @@
                           <button  @click="login" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit" style=" background-color: #24b4ab;"
                           >S'identifier</button>
                           <div class="text-center">
-                            <a class="small" href="#">Mot de passe oublié?</a>
+                            <a class="small" href="http://192.168.1.3:8081/#/resetpw">Mot de passe oublié?</a>
                             <p >Vous n'avez pas de compte ? <a href="http://192.168.1.3:8081/#/register">Inscrivez-vous ici.</a></p>
                         </div>
                         </form>
@@ -95,6 +95,7 @@
           password : this.password
         })
           console.log(response.data)
+          alert(JSON.stringify(response.data, null, 4));  
       }
     }
   }
