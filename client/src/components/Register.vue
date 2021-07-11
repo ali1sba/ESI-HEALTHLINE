@@ -36,8 +36,8 @@
               <div class="form-group">
                 <select class="form-control" v-model="sexe" id="exampleFormControlSelect1">
                   <option >Sexe</option>
-                  <option>Male</option>
-                  <option>Female</option>
+                  <option>HOMME</option>
+                  <option>FEMME</option>
                   </select></div>
             </div>
           </div>
@@ -82,6 +82,9 @@
                 </div>
            </div>
 
+          <div class="error" v-html="error"/>
+          <br>
+
           <div class="row g-3">
             <div class="col-sm-4">
               <button type="button" @click="register" class="btn1 mt-3 mb-5" >Sign up</button>
@@ -119,12 +122,14 @@
         password2 : '',
         phoneNum : '',
         stat: 'state',
-        scolarYear: 'Scolar year'
+        scolarYear: 'Scolar year',
+        error: null
       }
     },
     // the response of the click
     methods : {
      async register () {
+       try {
         const response = await AuthServices.register({
           firstName: this.firstName,
           lastName: this.lastName,
@@ -136,9 +141,11 @@
           phoneNum : this.phoneNum,
           stat: this.stat,
           scolarYear: this.scolarYear
-          
         })
-          console.log(response.data)
+        console.log(response.data)
+       } catch (error) {
+         this.error = error.response.data.error
+       }
       }
     }
   }
@@ -148,4 +155,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.error {
+  color: red;
+}
 </style>

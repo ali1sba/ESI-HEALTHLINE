@@ -1,7 +1,9 @@
-import express from 'express'
-import cors from 'cors'
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
+const express = require('express')
+const cors = require('cors')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const { sequelize } = require('./models')
+const config = require('./config/config')
 
 const app = express()
 
@@ -11,38 +13,12 @@ app.use(morgan('combined'))
 app.use(bodyParser.json())
 app.use(cors())
 
-// to show that server is on
-
-console.log('server is on on the  :  http://localhost:8083')
-console.log('routes available     :  http://localhost:8083/register')
-
-// login in point
-
-app.post('/login', (req, res) => {
-  res.send({
-    message: `your user : ${req.body.email}  was login`
-  })
-})
-
-// register in point
-
-app.post('/register', (req, res) => {
-  res.send({
-    message: `
-    firstName: ${req.body.firstName},
-    lastName: ${req.body.lastName},
-    date: ${req.body.date},
-    sexe: ${req.body.sexe},
-    email : ${req.body.email},
-    password : ${req.body.password},
-    password2 : ${req.body.password2},
-    phoneNum : ${req.body.phoneNum},
-    stat: ${req.body.stat},
-    scolarYear: ${req.body.scolarYear} 
-     was register`
-  })
-})
+// All endpoints
+require('./routes')(app)
 
 // express application running in port 8081
-
-app.listen(process.env.PORT || 8083)
+sequelize.sync()
+  .then(() => {
+    app.listen(config.port)
+    console.log(`Server started successfully on port ${config.port}`)
+  })
