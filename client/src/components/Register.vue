@@ -1,8 +1,8 @@
 <template>
   <div class="register">
-    <div class="container-fluid">
+    <div class="container-fluid formpage">
     <div class="row no-gutters">
-      <div class="this col-md-8 px-5 pt-5">
+      <div class="this col-md-8 px-5 ">
 
         <form class="needs-validation" novalidate>
           <div class="row g-2">
@@ -37,7 +37,7 @@
                 <select class="form-control" v-model="sexe" id="exampleFormControlSelect1">
                   <option >Sexe</option>
                   <option>Male</option>
-                  <option>Female</option>
+                  <option>Femele</option>
                   </select></div>
             </div>
           </div>
@@ -49,30 +49,30 @@
 
           <div class="row g-3">
             <div class="col-sm-6">
-              <input type="password" class="form-control" v-model="password" id="password" placeholder="password"  required>
+              <input type="password" class="form-control" v-model="password" id="password" placeholder="Mot de passe"  required>
             </div>
 
             <div class="col-sm-6">
-              <input type="password" class="form-control" v-model="password2" id="password" placeholder="confirm password" required>
+              <input type="password" class="form-control" v-model="password2" id="password" placeholder="Confirmer mot de passe" required>
             </div>
           </div><br>
 
           <div class="row g-3">
             <div class="col-sm-6">
-              <input type="" class="form-control" id="number" v-model="phoneNum" placeholder="phone number"  required>
+              <input type="" class="form-control" id="number" v-model="phoneNum" placeholder="Numéro de telephone"  required>
            </div>
             
 
             <div class="col-sm-6">
               <select class="form-control" v-model="stat" id="exampleFormControlSelect1">
-                <option>state</option>
-                <option>student</option>
-                <option>worker</option>
+                <option>état</option>
+                <option>étudiant</option>
+                <option>ouvrier</option>
                 </select></div>
 
                 <div class="col-sm-12">
                   <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect1">
-                    <option>Scolar year</option>
+                    <option>année scolaire</option>
                     <option>1CPI</option>
                     <option>2CPI</option>
                     <option>1CS</option>
@@ -84,10 +84,10 @@
 
           <div class="row g-3">
             <div class="col-sm-4">
-              <button type="button" @click="register" class="btn1 mt-3 mb-5" >Sign up</button>
+              <button type="button" @click="register" class="btn1 mt-3 mb-5" >S'inscrire</button>
             </div>
             <div class="col-sm-8">
-              <p style="padding: 5%; margin-left: 40%;">Already have an account? <a href="#">sign in</a></p>
+              <p style="padding-top: 6%;">Vous avez déjà un compte? <a href="#">s'identifier</a></p>
             </div>
           </div>
           
@@ -96,8 +96,8 @@
       </div>
 
 
-      <div class="image col-md-4" style="padding: 0; outline: 1px;">
-        <img src="image3.jpg">
+      <div class="imageform col-md-4" >
+
       </div>
     </div>
   </div>
