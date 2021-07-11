@@ -43,6 +43,14 @@ app.post('/register', (req, res) => {
   })
 })
 
+// login in point
+
+app.post('/resetpw', (req, res) => {
+  res.send({
+    message: `user : ${req.body.email} \n check your email`
+  })
+})
+
 // express application running in port 8081
 
 app.listen(process.env.PORT || 8083)

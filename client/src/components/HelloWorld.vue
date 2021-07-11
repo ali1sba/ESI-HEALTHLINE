@@ -64,7 +64,7 @@
                                     class="btn1 mt-3 mb-5">Login</button>
                         </div>
                     </div>
-                    <a href="#">Forgot password?</a>
+                    <a href="http://192.168.1.3:8081/#/resetpw">Forgot password?</a>
                     <p >Don't have an account? <a href="http://192.168.1.3:8081/#/register">Register here.</a></p>
                   </form>
               </div>
@@ -94,6 +94,7 @@
           password : this.password
         })
           console.log(response.data)
+          alert(JSON.stringify(response.data, null, 4));  
       }
     }
   }

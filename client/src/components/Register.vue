@@ -140,6 +140,7 @@
           
         })
           console.log(response.data)
+          alert(JSON.stringify(response.data, null, 4));  
       }
     }
   }
@@ -150,6 +151,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-div.scolarYear {display: block;}
+
 
 </style>

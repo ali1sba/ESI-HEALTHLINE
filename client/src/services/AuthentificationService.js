@@ -9,5 +9,9 @@ export default {
 
     register (credantials){
         return Api().post('/register',credantials)
+    },
+
+    resetpw (credantials){
+        return Api().post('/resetpw',credantials)
     }
 }
