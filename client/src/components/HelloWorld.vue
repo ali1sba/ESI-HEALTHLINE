@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <a href="http://192.168.1.3:8081/#/resetpw">Forgot password?</a>
-                    <p >Don't have an account? <a href="http://192.168.1.3:8081/#/register">Register here.</a></p>
+                    <p >Don't have an account? <a href="http://localhost:8081/#/register">Register here.</a></p>
                   </form>
               </div>
              </div>
@@ -94,7 +94,6 @@
           password : this.password
         })
           console.log(response.data)
-          alert(JSON.stringify(response.data, null, 4));  
       }
     }
   }

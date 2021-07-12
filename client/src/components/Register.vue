@@ -36,8 +36,8 @@
               <div class="form-group">
                 <select class="form-control" v-model="sexe" id="exampleFormControlSelect1">
                   <option >Sexe</option>
-                  <option>Male</option>
-                  <option>Female</option>
+                  <option>HOMME</option>
+                  <option>FEMME</option>
                   </select></div>
             </div>
           </div>
@@ -53,7 +53,7 @@
             </div>
 
             <div class="col-sm-6">
-              <input type="password" class="form-control" v-model="password2" id="password" placeholder="confirm password" required>
+              <input type="password" class="form-control" v-model="password2" id="password2" placeholder="confirm password" required>
             </div>
           </div><br>
 
@@ -64,24 +64,26 @@
             
 
             <div class="col-sm-6">
-              <select class="form-control" v-model="stat" @click="student = (stat == 'student')" id="exampleFormControlSelect1">
+              <select class="form-control" v-model="stat" @click="student = (stat == 'Etudiant')" id="exampleFormControlSelect2">
                 <option>state</option>
-                <option>student</option>
-                <option>worker</option>
+                <option>Etudiant</option>
+                <option>ATS</option>
                 </select></div>
-                <div v-if="student" class="scolarYear">
-                  <div class="col-sm-12" >
-                    <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect1">
-                      <option>Scolar year</option>
-                      <option>1CPI</option>
-                      <option>2CPI</option>
-                      <option>1CS</option>
-                      <option>2CS</option>
-                      <option>3CS</option>
-                      </select>
-                  </div>
+
+                <div v-if="student" class="col-sm-12">
+                  <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect3">
+                    <option>Scolar year</option>
+                    <option>1CPI</option>
+                    <option>2CPI</option>
+                    <option>1CS</option>
+                    <option>2CS</option>
+                    <option>3CS</option>
+                    </select>
                 </div>
            </div>
+
+          <div class="error" v-html="error"/>
+          <br>
 
           <div class="row g-3">
             <div class="col-sm-4">
@@ -120,12 +122,14 @@
         password2 : '',
         phoneNum : '',
         stat: 'state',
-        scolarYear: 'Scolar year'
+        scolarYear: 'Scolar year',
+        error: null
       }
     },
     // the response of the click
     methods : {
      async register () {
+       try {
         const response = await AuthServices.register({
           firstName: this.firstName,
           lastName: this.lastName,
@@ -137,10 +141,11 @@
           phoneNum : this.phoneNum,
           stat: this.stat,
           scolarYear: this.scolarYear
-          
         })
-          console.log(response.data)
-          alert(JSON.stringify(response.data, null, 4));  
+        console.log(response.data)
+       } catch (error) {
+         this.error = error.response.data.error
+       }
       }
     }
   }
@@ -150,7 +155,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
-
+.error {
+  color: red;
+}
 </style>
