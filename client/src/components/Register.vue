@@ -126,7 +126,7 @@
         error: null
       }
     },
-    // the response of the click
+    // the response of the clic
     methods : {
      async register () {
        try {
