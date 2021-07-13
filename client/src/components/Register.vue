@@ -2,7 +2,7 @@
   <div class="register">
     <div class="container-fluid formpage">
       <div class="row no-gutters">
-        <div class="this col-md-8 px-5 col-md-8" >
+        <div class="this col-md-8 px-5 " >
           <form class="needs-validation" novalidate>
             <div class="row g-2">
               <div class="col-sm-12">

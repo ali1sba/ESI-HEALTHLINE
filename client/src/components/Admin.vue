@@ -28,14 +28,29 @@
           <section class="panel important">
             <h2>Les Comptes</h2>
               
-               <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>  <br> <br> <br> <br> <br> <br>  <br> <br> <br>
+               <div id="table1">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">City</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 
+                </tbody>
+                 
+              </table>
+            </div>
+             
                 
-              
           </section>
         </section>
 
 
-        <section v-else  id="section2">
+        <section v-if="section === 2"  id="section2">
           <section  class="panel important">
             <h2>Tout les comptes dans le site</h2>
             <ul>
@@ -51,11 +66,11 @@
               
           </section>
         </section>
-
+      </main>
         
         
       
-      </main>
+      
 
      
   </div>
@@ -64,29 +79,9 @@
 <script>
 
 
-
- import AuthServices from '@/services/AuthentificationService' 
-  export default {
-    data () {
-      return{
-        email : ''
-      }
-    },
-    // the response of the click
-    methods : {
-     async resetpw () {
-        const response = await AuthServices.resetpw({
-          email : this.email 
-        })
-          console.log(response.data)
-          alert(JSON.stringify(response.data, null, 4));      
-        }
-    }}
-
 </script>
 
 
 
 <style scoped>
-
 </style>

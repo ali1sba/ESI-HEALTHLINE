@@ -73,44 +73,42 @@
             </div>
          </div>
         </div>
-
-    
+</div>
+    </div>
   </body>
   </div>
 </template>
 
 <script>
-  import AuthServices from '@/services/AuthentificationService' 
-  export default {
-    data () {
-      return{
-        email : '',
-        password : ''
+import AuthServices from "@/services/AuthentificationService";
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  // the response of the click
+  methods: {
+    async login() {
+      try {
+        const response = await AuthServices.login({
+          email: this.email,
+          password: this.password,
+        });
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
       }
     },
-    // the response of the click
-    methods : {
-     async login () {
-       try {
-        const response = await AuthServices.login({
-          email : this.email, 
-          password : this.password
-        })
-        console.log(response.data)
-       } catch (error) {
-         this.error = error.response.data.error
-         console.log(this.error)
-       }
-      }
-    }
-  }
-
-
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .error {
-  color: red
+  color: red;
 }
 </style>

@@ -47,9 +47,6 @@ body {
     align-items: center; 
     background-color: white;
     height:inherit ;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
     
 }
 .this a{
@@ -57,11 +54,12 @@ body {
     color: #24b4ab;
     text-decoration: none;
 }
-@media(min-width:1440px){
+@media(min-width:1050px){
     .this{
-        padding-top:10%;
+        padding-top:6%;
         padding-bottom:15%
     }
+
     
   .register p{
       padding-left:40%;
