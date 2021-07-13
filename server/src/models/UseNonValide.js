@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       allowNull: false
     },
-    date: {
+    birthday: {
       type: DataTypes.DATE,
       allowNull: false
     },
@@ -25,15 +25,11 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       allowNull: false
     },
-    password2: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    phoneNum: {
+    phoneNumber: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    stat: {
+    state: {
       type: DataTypes.STRING,
       allowNull: false
     },

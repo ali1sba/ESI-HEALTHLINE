@@ -10,9 +10,9 @@ module.exports = {
       email: Joi.string().email(),
       password: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
       password2: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
-      phoneNum: Joi.string().regex(/^[0-9]{4}$/),
+      phoneNum: Joi.string().regex(/^[0-9]{10}$/),
       stat: Joi.string().valid('Etudiant', 'ATS'),
-      scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', 'NULL')
+      scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', null)
     })
 
     const { error } = schema.validate(req.body)
@@ -54,16 +54,6 @@ module.exports = {
             `
           })
           break
-        case 'password2':
-          res.status(400).send({
-            error: `The password provided failed to match the following rules:
-            <br>
-            1. It must contain ONLY the following characters: lower case, upper case, numerics.
-            <br>
-            2. It must be at least 8 characters in length and not greater than 32 characters in length.
-            `
-          })
-          break
         case 'phoneNum':
           res.status(400).send({
             error: 'You must provide a valid phoneNumber'
@@ -81,7 +71,7 @@ module.exports = {
           break
         default:
           res.status(400).send({
-            error: `Invalid registration information ${error.details[0].context.key}`
+            error: `Invalid registration information ${error}`
           })
       }
     } else {

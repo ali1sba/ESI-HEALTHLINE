@@ -149,7 +149,7 @@
 
             <div class="error" v-html="error" ></div>
             <br/>
-
+            
             <div class="row g-3">
               <div class="col-sm-4">
                 <button type="button" @click="register" class="btn1 mt-3 mb-5">
@@ -158,7 +158,7 @@
               </div>
               <div class="col-sm-8">
                 <p style="padding-top: 6%">
-                  Vous avez déjà un compte? <a href="#">s'identifier</a>
+                  Vous avez déjà un compte? <router-link to="/">identifier . </router-link>
                 </p>
               </div>
             </div>
@@ -203,12 +203,16 @@ export default {
           password2: this.password2,
           phoneNum: this.phoneNum,
           stat: this.stat,
-          scolarYear: this.scolarYear,
-        });
-        console.log(response.data);
-      } catch (error) {
-        this.error = error.response.data.error;
-      }
+
+          scolarYear: this.scolarYear
+        })
+        console.log(response.data)
+       } catch (error) {
+         this.error = error.response.data.error
+         console.log(this.error)
+       }
+
+     
     },
   },
 };

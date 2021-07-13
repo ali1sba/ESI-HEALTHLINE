@@ -1,2 +1,2 @@
 -- SQLite
-DROP TABLE 'UserNonValide'
+DROP TABLE 'Users'
