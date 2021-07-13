@@ -53,7 +53,7 @@
             </div>
 
             <div class="col-sm-6">
-              <input type="password" class="form-control" v-model="password2" id="password" placeholder="confirm password" required>
+              <input type="password" class="form-control" v-model="password2" id="password2" placeholder="confirm password" required>
             </div>
           </div><br>
 
@@ -64,14 +64,14 @@
             
 
             <div class="col-sm-6">
-              <select class="form-control" v-model="stat" id="exampleFormControlSelect1">
+              <select class="form-control" v-model="stat" @click="student = (stat == 'Etudiant')" id="exampleFormControlSelect2">
                 <option>state</option>
-                <option>student</option>
-                <option>worker</option>
+                <option>Etudiant</option>
+                <option>ATS</option>
                 </select></div>
 
-                <div class="col-sm-12">
-                  <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect1">
+                <div v-if="student" class="col-sm-12">
+                  <select class="form-control" v-model="scolarYear" id="exampleFormControlSelect3">
                     <option>Scolar year</option>
                     <option>1CPI</option>
                     <option>2CPI</option>
@@ -90,7 +90,7 @@
               <button type="button" @click="register" class="btn1 mt-3 mb-5" >Sign up</button>
             </div>
             <div class="col-sm-8">
-              <p style="padding: 5%; margin-left: 40%;">Already have an account? <a href="#">sign in</a></p>
+              <p style="padding: 5%; margin-left: 40%;">Already have an account? <router-link to="/">sign in</router-link></p>
             </div>
           </div>
           
@@ -126,7 +126,7 @@
         error: null
       }
     },
-    // the response of the clic
+    // the response of the click
     methods : {
      async register () {
        try {
@@ -145,6 +145,7 @@
         console.log(response.data)
        } catch (error) {
          this.error = error.response.data.error
+         console.log(this.error)
        }
       }
     }

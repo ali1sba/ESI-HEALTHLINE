@@ -64,8 +64,12 @@
                                     class="btn1 mt-3 mb-5">Login</button>
                         </div>
                     </div>
-                    <a href="#">Forgot password?</a>
-                    <p >Don't have an account? <a href="http://localhost:8080/#/register">Register here.</a></p>
+
+                    <div class="error" v-html="error"/>
+                    <br>
+
+                    <router-link to="resetpw">Forgot password?</router-link>
+                    <p >Don't have an account? <router-link to="register">Register here.</router-link></p>
                   </form>
               </div>
              </div>
@@ -89,11 +93,16 @@
     // the response of the click
     methods : {
      async login () {
+       try {
         const response = await AuthServices.login({
-          email : this.email , 
+          email : this.email, 
           password : this.password
         })
-          console.log(response.data)
+        console.log(response.data)
+       } catch (error) {
+         this.error = error.response.data.error
+         console.log(this.error)
+       }
       }
     }
   }
@@ -103,5 +112,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.error {
+  color: red
+}
 </style>

@@ -5,13 +5,14 @@ module.exports = {
     const schema = Joi.object({
       firstName: Joi.string(),
       lastName: Joi.string(),
-      birthday: Joi.date(),
+      date: Joi.date(),
       sexe: Joi.string().valid('HOMME', 'FEMME'),
       email: Joi.string().email(),
       password: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
-      phoneNumber: Joi.string().regex(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/),
-      state: Joi.string().valid('Etudiant', 'Enseignant', 'AS'),
-      scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', 'NULL')
+      password2: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
+      phoneNum: Joi.string().regex(/^[0-9]{10}$/),
+      stat: Joi.string().valid('Etudiant', 'ATS'),
+      scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', null)
     })
 
     const { error } = schema.validate(req.body)
@@ -28,7 +29,7 @@ module.exports = {
             error: 'You must provide a valid lastName'
           })
           break
-        case 'birthday':
+        case 'date':
           res.status(400).send({
             error: 'You must provide a valid birthday'
           })
@@ -53,12 +54,12 @@ module.exports = {
             `
           })
           break
-        case 'phoneNumber':
+        case 'phoneNum':
           res.status(400).send({
             error: 'You must provide a valid phoneNumber'
           })
           break
-        case 'state':
+        case 'stat':
           res.status(400).send({
             error: 'You must provide a valid state'
           })
@@ -70,7 +71,7 @@ module.exports = {
           break
         default:
           res.status(400).send({
-            error: 'Invalid registration information'
+            error: `Invalid registration information ${error}`
           })
       }
     } else {
