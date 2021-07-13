@@ -1,0 +1,70 @@
+
+*{
+    margin:0;
+    padding:0;
+    overflow: hidden
+}
+body {
+    border: 1px solid transparent;
+}
+ .formpage {
+    width: 100%;
+    background-image: url("image4.jpg");
+    background-size: cover;  
+    height: 100%;
+}
+
+.imageform{
+    max-height: 100vh;
+    opacity: 0%;
+}
+.image{
+    padding: 0;
+    position: relative;
+}
+.row{
+    height:inherit;
+}
+
+.btn1{
+    border: none;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    background-color: #24b4ab;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.btn1:hover{
+    background-color: white;
+    border: 10px;
+    border-color: black;
+    color: #24b4ab;
+}
+.this{
+    text-align: center;
+    align-items: center; 
+    background-color: white;
+    height:inherit ;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.this a{
+    font-size: 95%;
+    color: #24b4ab;
+    text-decoration: none;
+}
+@media(min-width:1440px){
+    .this{
+        padding-top:10%;
+        padding-bottom:15%
+    }
+    
+  .register p{
+      padding-left:40%;
+      font-size:125%
+  }
+}

@@ -30,49 +30,47 @@
     </ul>-->
 
 
-    <body>
+     <body>
     <div class="app">
          <div class="container-fluid">
-             <div class="row no-gutters">
-              <div class="image col-lg-8" style="padding: 0;">
-                  <img src="image2.jpg" class="img-fluid">
-              </div>
-              <div class=" this col-lg-4 px-5 pt-5">
-                  <img src="logo.png"><br>
-                  <h4>keeping you well</h4><br>
-                  <form>
-                      <div class="form-row">
-                          <div class="col-lg-10" style="margin-left:7%;">
-                              <input type="email" 
-                                    placeholder="Email Address" 
-                                    v-model="email"
-                                    class="form-control my-3 p-2" >
+             <div class="row no-gutter">
+              <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+              <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-9 col-lg-8 mx-auto">
+                        <img class='logoimage' src="logo.png"><br>
+                        <h3 style="font-size: large; padding-left:28%;">keeping you well</h3><br>
+                        <form>
+                          <div class="form-label-group">
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" v-model="email" required >
+                            <label for="inputEmail">Adresse e-mail</label>
                           </div>
+          
+                          <div class="form-label-group">
+                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" v-model="password" required>
+                            <label for="inputPassword">Mot de passe</label>
+                          </div>
+          
+                          <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                            <label class="custom-control-label" for="customCheck1">Se souvenir du mot de passe</label>
+                          </div>
+                          <button  @click="login" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit" style=" background-color: #24b4ab;"
+                          >S'identifier</button>
+                           <div class="error" v-html="error"/>
+                            <br>
+                          <div class="text-center">
+                           <router-link to="resetpw" class="small">Mot de passe oublié?</router-link>
+                            <p >Vous n'avez pas de compte ? <router-link to="register">Inscrivez-vous ici.</router-link></p>
+                        </div>
+                        </form>
                       </div>
-                      <div class="form-row">
-                        <div class="col-lg-10" style="margin-left:7%;">
-                            <input type="password" 
-                                  placeholder="********" 
-                                  v-model="password"
-                                  class="form-control my-3 p-2">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-lg-10" style="margin-left:7%;">
-                            <button type="button" 
-                                    @click="login"
-                                    class="btn1 mt-3 mb-5">Login</button>
-                        </div>
                     </div>
 
-                    <div class="error" v-html="error"/>
-                    <br>
-
-                    <router-link to="resetpw">Forgot password?</router-link>
-                    <p >Don't have an account? <router-link to="register">Register here.</router-link></p>
-                  </form>
               </div>
-             </div>
+            </div>
          </div>
         </div>
 
