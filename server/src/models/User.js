@@ -1,5 +1,8 @@
-module.exports = (sequelize, DataTypes) =>
-  sequelize.define('User', {
+const Promise = require('bluebird')
+const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
+
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
     firstName: {
       type: DataTypes.STRING,
       allowNull: false
@@ -8,7 +11,7 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       allowNull: false
     },
-    birthday: {
+    date: {
       type: DataTypes.DATE,
       allowNull: false
     },
@@ -25,11 +28,11 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       allowNull: false
     },
-    phoneNumber: {
+    phoneNum: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    state: {
+    stat: {
       type: DataTypes.STRING
     },
     scolarYear: {
@@ -37,6 +40,13 @@ module.exports = (sequelize, DataTypes) =>
     },
     role: {
       type: DataTypes.ENUM('ADMIN', 'ADMINISTRATION', 'MED', 'ASSIS', 'PATIENT'),
-      allowNull: false
+      allowNull: true
     }
   })
+
+  User.prototype.comparePassword = function (password) {
+    return bcrypt.compareAsync(password, this.password)
+  }
+
+  return User
+}

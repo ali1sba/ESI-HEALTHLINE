@@ -11,5 +11,8 @@ module.exports = {
       host: process.env.HOST || 'localhost',
       storage: path.resolve(__dirname, '../../HealthLineDB.sqlite')
     }
+  },
+  authentication: {
+    jwtSecret: process.env.JWT_SECRET || 'secret'
   }
 }
