@@ -4,7 +4,7 @@ import Api from '@/services/api'
 
 export default {
     login (credantials){
-        return Api().post('/login',credantials)
+        return Api().post('/',credantials)
     },
 
     register (credantials){

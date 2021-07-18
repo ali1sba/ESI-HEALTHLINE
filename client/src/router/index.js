@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Register from '@/components/Register.vue'
 import Resetpw from '@/components/Resetpw.vue'
+import Admin from '@/components/Admin.vue'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/resetpw',
     name: 'resetpw',
     component: Resetpw
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: Admin
   },
   {
     path: '/about',
