@@ -1,5 +1,6 @@
 <template>
   <div class="admin">
+
     <header role="banner">
       <h1>Admin Panel</h1>
       <ul class="utilities">
@@ -133,6 +134,7 @@
 </template>
 
 <script>
+
 import axios from "axios";
 import adminservice from "../services/adminservice";
 export default {
@@ -213,6 +215,7 @@ export default {
     },
   },
 };
+
 </script>
 
 
