@@ -4,7 +4,7 @@ import Api from '@/services/api'
 
 export default {
     activer (credantials){
-        return Api().post('/admin/activer',credantials)
+        return Api().post('/admin/valider',credantials)
     },
     delate (credantials){
         return Api().post('/admin/delate',credantials)

@@ -1,8 +1,12 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,400italic);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css);
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+
 html {
-  box-sizing: border-box;
+  
+  
+  
 }
 
 *,
@@ -12,18 +16,12 @@ html {
 }
 
 body {
+  overflow: auto;
   background: #f1f2f7;
   font-family: "Open Sans", arial, sans-serif;
   color: darkslategray;
 }
 
-body.login {
-  background-color: white;
-  max-width: 500px;
-  margin: 10vh auto;
-  padding: 1em;
-  height: auto;
-}
 
 .warn {
   color: red;
@@ -428,9 +426,11 @@ td {
   }
   .panel.important {
     width: 96%;
+    
+   
   }
   .panel.secondary {
-    width: 23%;
+    width: 100%;
   }
 }
 
@@ -440,7 +440,7 @@ td {
   background-color: #4CAF50; 
   border: none;
   color: white;
-  padding: 10px 24px;
+  padding: 5px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -458,16 +458,160 @@ td {
   background-color: #f44336; 
   border: none;
   color: white;
-  padding: 10px 24px;
+  padding: 5px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   
 }
+
 .SupprimerBtn:hover{
   background-color: #f39089;
   color: white;
   border: 1px solid #f44336;
 
 }
+
+.responsive-table {
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+.responsive-table thead {
+  position: absolute;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: scroll;
+}
+.responsive-table thead th {
+  background-color: #24b4ab;
+  border: 1px solid #24b4ab;
+  font-weight: normal;
+  text-align: center;
+  color: white;
+}
+.responsive-table thead th:first-of-type {
+  text-align: left;
+}
+.responsive-table tbody,
+.responsive-table tr,
+.responsive-table th,
+.responsive-table td {
+  display: block;
+  padding: 0;
+  text-align: left;
+  white-space: normal;
+}
+.responsive-table th,
+.responsive-table td {
+  padding: .5em;
+  vertical-align: middle;
+}
+.responsive-table caption {
+  margin-bottom: 1em;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+}
+.responsive-table tfoot {
+  font-size: .8em;
+  font-style: italic;
+}
+.responsive-table tbody tr {
+  margin-bottom: 1em;
+  border: 2px solid #24b4ab;
+}
+.responsive-table tbody tr:last-of-type {
+  margin-bottom: 0;
+}
+.responsive-table tbody th[scope="row"] {
+  background-color: #24b4ab;
+
+  color: white;
+}
+.responsive-table tbody td[data-type=currency] {
+  text-align: right;
+}
+.responsive-table tbody td[data-title]:before {
+  content: attr(data-title);
+  float: left;
+  font-size: .8em;
+  color: rgba(94, 93, 82, 0.75);
+}
+.responsive-table tbody td {
+  text-align: right;
+  border-bottom: 1px solid #24b4ab;
+}
+
+
+@media (min-width: 80em) {
+  .responsive-table {
+    font-size: .9em;
+  }
+  .responsive-table thead {
+    position: relative;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: scroll;
+  }
+  .responsive-table tr {
+    display: table-row;
+  }
+  .responsive-table th,
+  .responsive-table td {
+    display: table-cell;
+    padding: .5em;
+  }
+
+  .responsive-table caption {
+    font-size: 1.5em;
+  }
+  .responsive-table tbody {
+    display: table-row-group;
+  }
+  .responsive-table tbody tr {
+    display: table-row;
+    border-width: 1px;
+  }
+  .responsive-table tbody tr:nth-of-type(even) {
+    background-color: rgba(94, 93, 82, 0.1);
+  }
+  .responsive-table tbody th[scope="row"] {
+    background-color: transparent;
+    color: #5e5d52;
+    text-align: left;
+  }
+  .responsive-table tbody td {
+    text-align: center;
+  }
+  .responsive-table tbody td[data-title]:before {
+    content: none;
+  }
+}
+@media (min-width: 62em) {
+  .responsive-table {
+    font-size: 1em;
+  }
+  .responsive-table th,
+  .responsive-table td {
+    padding: .75em .5em;
+  }
+  .responsive-table tfoot {
+    font-size: .9em;
+  }
+}
+
+@media (min-width:64em) {
+  .responsive-table th,
+  .responsive-table td,
+  .SupprimerBtn,
+  .ActiverBtn {
+    padding: .75em;
+  }
+}
+

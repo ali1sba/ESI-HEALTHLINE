@@ -1,8 +1,19 @@
+const { UserNonValide } = require('../models')
+const { User } = require('../models')
 module.exports = {
-  async activer (req, res) {
+  async valider (req, res) {
     try {
+      const { email } = req.body
+      const user = await UserNonValide.findOne({
+        where: {
+          email: email
+        }
+      })
+      const uservalider = await User.create(user.toJSON())
+      // const userJson = uservalider.toJSON()
       res.send({
-        message: `user : ${req.body.email} \n check your email`
+        // user: userJson
+        message: `user : ${uservalider} hello`
       })
     } catch (err) {
       res.status(400).send({ error: `This email account have problem. ${err}` })
