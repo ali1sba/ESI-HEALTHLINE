@@ -16,7 +16,8 @@ module.exports = {
       const user = await UserNonValide.create(req.body)
       const userJson = user.toJSON()
       res.send({
-        user: userJson
+        user: userJson,
+        token: jwtSignUser(userJson)
       })
     } catch (err) {
       res.status(400).send({ error: `This email account is already in use. ${err}` })
@@ -36,10 +37,10 @@ module.exports = {
           error: 'The login information was incorrect {email} !'
         })
       } else {
-        const isPasswordValid = await user.comparePassword(password)
+        const isPasswordValid = user.comparePassword(password)
         if (!isPasswordValid) {
           res.status(400).send({
-            error: `The login information was incorrect ${password} and ${user.password} !`
+            error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
           })
         } else {
           const userJson = user.toJSON()

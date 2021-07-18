@@ -435,3 +435,39 @@ td {
 }
 
 
+.ActiverBtn{
+  transition-duration: 0.4s;
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  
+}
+.ActiverBtn:hover{
+  background-color: #8fd491; 
+  color: white;
+  border: 1px solid green;
+}
+
+.SupprimerBtn{
+  transition-duration: 0.4s;
+  background-color: #f44336; 
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  
+}
+.SupprimerBtn:hover{
+  background-color: #f39089;
+  color: white;
+  border: 1px solid #f44336;
+
+}

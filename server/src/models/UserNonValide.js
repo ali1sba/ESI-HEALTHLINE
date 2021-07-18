@@ -62,13 +62,5 @@ module.exports = (sequelize, DataTypes) => {
       beforeSave: hashPassword
     }
   })
-
-  UserNonValide.prototype.comparePassword = function (password) {
-    return bcrypt.compareAsync(password, this.password)
-  }
-
-  UserNonValide.associate = function (models) {
-  }
-
   return UserNonValide
 }

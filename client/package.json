@@ -12,9 +12,11 @@
     "core-js": "^3.6.5",
     "save": "^2.4.0",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vuejs-smart-table": "0.0.8"
   },
   "devDependencies": {
+    "@nuxtjs/vuetify": "^1.12.1",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "^4.5.13",
@@ -22,7 +24,8 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0",
+    "vue-cli-plugin-vuetify": "^2.4.1"
   },
   "eslintConfig": {
     "root": true,

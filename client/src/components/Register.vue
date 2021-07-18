@@ -122,7 +122,7 @@
                 <select
                   class="form-control"
                   v-model="stat"
-                  @click="student = stat == 'Etudiant'"
+                  @click="student = stat"
                   id="exampleFormControlSelect2"
                 >
                   <option>state</option>
@@ -131,7 +131,7 @@
                 </select>
               </div>
 
-              <div v-if="student" class="col-sm-12">
+              <div v-if="student === 'Etudiant'" class="col-sm-12">
                 <select
                   class="form-control"
                   v-model="scolarYear"
@@ -206,7 +206,9 @@ export default {
 
           scolarYear: this.scolarYear
         })
+        alert("regiter sussecfull")
         console.log(response.data)
+        
        } catch (error) {
          this.error = error.response.data.error
          console.log(this.error)
