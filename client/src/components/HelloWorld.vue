@@ -96,11 +96,11 @@ export default {
           email: this.email,
           password: this.password,
         });
-        alert("welecome")
-        console.log(response.data);
+        // alert("welecome")
+        console.log(response.data)
       } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
+        this.error = error.response.data.error
+        console.log(this.error)
       }
     },
   },

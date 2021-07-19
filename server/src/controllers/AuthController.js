@@ -1,5 +1,5 @@
 const { UserNonValide } = require('../models')
-const { User } = require('../models')
+const { Compte } = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
@@ -27,7 +27,7 @@ module.exports = {
   async login (req, res) {
     try {
       const { email, password } = req.body
-      const user = await User.findOne({
+      const user = await Compte.findOne({
         where: {
           email: email
         }
@@ -37,16 +37,23 @@ module.exports = {
           error: 'The login information was incorrect {email} !'
         })
       } else {
-        const isPasswordValid = user.comparePassword(password)
-        if (!isPasswordValid) {
-          res.status(400).send({
-            error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
-          })
+        if (user.state === 'ACTIVATED') {
+          const isPasswordValid = await user.comparePassword(password)
+          if (!isPasswordValid) {
+            res.status(400).send({
+              error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
+            })
+          } else {
+            const userJson = user.toJSON()
+            res.send({
+              user: userJson,
+              token: jwtSignUser(userJson),
+              message: `The login information isPasswordValid : ${isPasswordValid}`
+            })
+          }
         } else {
-          const userJson = user.toJSON()
-          res.send({
-            user: userJson,
-            token: jwtSignUser(userJson)
+          res.status(400).send({
+            error: 'This account is desactivated !'
           })
         }
       }

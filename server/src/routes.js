@@ -10,7 +10,7 @@ module.exports = (app) => {
   app.post('/resetpw', AuthController.resetpw)
   app.get('/admin/novalid/', adminControler.index)
   app.get('/admin/valid/', adminControler2.index)
-  app.post('/admin/valider', AdminControlerGestion.valider)
-  app.post('/admin/delate', AdminControlerGestion.delate)
-  app.post('/admin/disactiver', AdminControlerGestion.disactiver)
+  app.post('/admin/validateUser', AdminControlerGestion.validateUser)
+  app.post('/admin/deleteUser', AdminControlerGestion.deleteUser)
+  app.post('/admin/desactivateUser', AdminControlerGestion.desactivateUser)
 }
