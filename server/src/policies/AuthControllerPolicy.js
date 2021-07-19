@@ -12,7 +12,7 @@ module.exports = {
       password2: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
       phoneNum: Joi.string().regex(/^[0-9]{10}$/),
       stat: Joi.string().valid('Etudiant', 'ATS'),
-      scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', null)
+      scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', '/')
     })
 
     const { error } = schema.validate(req.body)

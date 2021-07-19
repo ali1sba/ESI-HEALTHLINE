@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     scolarYear: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     }
   }, {
     hooks: {

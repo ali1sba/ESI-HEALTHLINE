@@ -122,7 +122,7 @@
                 <select
                   class="form-control"
                   v-model="stat"
-                  @click="student = stat"
+                  @click="switcher(stat)"
                   id="exampleFormControlSelect2"
                 >
                   <option>state</option>
@@ -176,6 +176,7 @@ import AuthServices from "@/services/AuthentificationService";
 export default {
   data() {
     return {
+      student : "ATS",
       firstName: "",
       lastName: "",
       date: "",
@@ -193,7 +194,9 @@ export default {
   methods: {
     async register() {
       try {
-        const response = await AuthServices.register({
+        if (this.password === this.password2){
+          this.error = ''
+           const response = await AuthServices.register({
           firstName: this.firstName,
           lastName: this.lastName,
           date: this.date,
@@ -205,9 +208,15 @@ export default {
           stat: this.stat,
 
           scolarYear: this.scolarYear
+          
         })
         alert("regiter sussecfull")
         console.log(response.data)
+        }else {
+          this.error = 'problem in confirmation of the passeword'
+        }
+       
+        
         
        } catch (error) {
          this.error = error.response.data.error
@@ -215,6 +224,12 @@ export default {
        }
 
      
+    },
+    async switcher (stat){
+        this.student = stat 
+        if (!(this.student === 'Etudiant') ){
+          this.scolarYear = '/'
+        }
     },
   },
 };
