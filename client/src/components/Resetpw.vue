@@ -1,5 +1,5 @@
 <template>
-  <div class="Resetpw">
+  <div class="ResetpwToken">
   
       <div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
         <div class="container" >
@@ -7,14 +7,17 @@
                 <div class="col-md-7">
                     <div class="card rounded-0 shadow">
                         <div class="card-body">
-                            <h3>Forget Password</h3>
+                            <h3>Reset Password</h3>
                             <form>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address:</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" v-model="email" placeholder="Enter email">
-                                    <small id="emailHelp" class="form-text text-muted">we'll send forget password link on your email.</small>
+                                    <label for="exampleInputEmail1">Password:</label>
+                                    <input type="password" class="form-control" id="resetPassword" v-model="password" placeholder="Enter the new password">
+                                    <br>
+                                    <input type="password" class="form-control" id="resetPassword" v-model="password2" placeholder="Confirm the new password">
                                 </div>
-                                <button type="submit"  class="btn btn-primary"  @click="resetpw">Forget password</button>
+                                <div class="error" v-html="error" ></div>
+                                <br/>
+                                <button type="submit"  class="btn btn-primary"  @click="resetpw">Submit new password</button>
                             </form>
                         </div>
                     </div>
@@ -30,18 +33,28 @@
   export default {
     data () {
       return{
-        email : ''
+        password : ''
       }
     },
     // the response of the click
     methods : {
      async resetpw () {
-        const response = await AuthServices.resetpw({
-          email : this.email 
-        })
-          console.log(response.data)
-          alert(JSON.stringify(response.data, null, 4));      
+        try {
+          if (this.password === this.password2){
+            const response = await AuthServices.resetpw({
+                password : this.password,
+                id: this.$route.params.ResetPasswordToken
+            })
+            console.log(response.data)
+            alert(JSON.stringify(response.data, null, 4))
+          } else {
+            this.error = 'problem in confirmation of the passeword'
+          }
+        } catch (error) {
+            this.error = error.response.data.error
+            console.log(this.error)
         }
+     }
     }
   }
 

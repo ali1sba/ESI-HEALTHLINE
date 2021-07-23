@@ -196,7 +196,7 @@ export default {
       try {
         if (this.password === this.password2){
           this.error = ''
-           const response = await AuthServices.register({
+          const response = await AuthServices.register({
           firstName: this.firstName,
           lastName: this.lastName,
           birthday: this.birthday,
@@ -211,7 +211,7 @@ export default {
         })
         alert("regiter sussecfull")
         console.log(response.data)
-        }else {
+        } else {
           this.error = 'problem in confirmation of the passeword'
         }
        

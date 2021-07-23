@@ -7,6 +7,7 @@ const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 module.exports = (app) => {
   app.post('/', AuthController.login)
   app.post('/register', AuthControllerPolicy.register, AuthController.register)
+  app.post('/forgotpw', AuthController.forgotpw)
   app.post('/resetpw', AuthController.resetpw)
   app.get('/admin/novalid/', adminControler.index)
   app.get('/admin/valid/', adminControler2.index)
