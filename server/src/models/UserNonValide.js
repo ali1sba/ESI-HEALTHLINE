@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    date: {
+    birthday: {
       type: DataTypes.DATE,
       allowNull: false
     },
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    stat: {
+    state: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -58,8 +58,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: hashPassword,
-      beforeUpdate: hashPassword,
-      beforeSave: hashPassword
+      beforeUpdate: hashPassword
     }
   })
 

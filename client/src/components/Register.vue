@@ -51,7 +51,7 @@
                   type="date"
                   class="form-control"
                   id="datenaiss"
-                  v-model="date"
+                  v-model="birthday"
                   placeholder="date de naissance"
                   required
                 />
@@ -121,8 +121,8 @@
               <div class="col-sm-6">
                 <select
                   class="form-control"
-                  v-model="stat"
-                  @click="switcher(stat)"
+                  v-model="state"
+                  @click="switcher(state)"
                   id="exampleFormControlSelect2"
                 >
                   <option>state</option>
@@ -179,13 +179,13 @@ export default {
       student : "ATS",
       firstName: "",
       lastName: "",
-      date: "",
+      birthday: "",
       sexe: "Sexe",
       email: "",
       password: "",
       password2: "",
       phoneNum: "",
-      stat: "state",
+      state: "state",
       scolarYear: "Scolar year",
       error: null,
     };
@@ -196,23 +196,22 @@ export default {
       try {
         if (this.password === this.password2){
           this.error = ''
-           const response = await AuthServices.register({
+          const response = await AuthServices.register({
           firstName: this.firstName,
           lastName: this.lastName,
-          date: this.date,
+          birthday: this.birthday,
           sexe: this.sexe,
           email: this.email,
           password: this.password,
           password2: this.password2,
           phoneNum: this.phoneNum,
-          stat: this.stat,
-
+          state: this.state,
           scolarYear: this.scolarYear
           
         })
         alert("regiter sussecfull")
         console.log(response.data)
-        }else {
+        } else {
           this.error = 'problem in confirmation of the passeword'
         }
        
@@ -225,8 +224,8 @@ export default {
 
      
     },
-    async switcher (stat){
-        this.student = stat 
+    async switcher (state){
+        this.student = state 
         if (!(this.student === 'Etudiant') ){
           this.scolarYear = '/'
         }

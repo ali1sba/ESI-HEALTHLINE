@@ -11,7 +11,15 @@ export default {
         return Api().post('/register',credantials)
     },
 
+    forgotpw (credantials){
+        return Api().post('/forgotpw',credantials)
+    },
+
     resetpw (credantials){
         return Api().post('/resetpw',credantials)
+    },
+
+    resetpwToken (credantials){
+        return Api().post('/resetpw/:token',credantials)
     }
 }

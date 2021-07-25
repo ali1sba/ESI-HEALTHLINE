@@ -62,7 +62,7 @@
                            <div class="error" v-html="error"/>
                             <br>
                           <div class="text-center">
-                           <router-link to="resetpw" class="small">Mot de passe oublié?</router-link>
+                           <router-link to="forgotpw" class="small">Mot de passe oublié?</router-link>
                             <p >Vous n'avez pas de compte ? <router-link to="register">Inscrivez-vous ici.</router-link></p>
                         </div>
                         </form>
@@ -96,11 +96,11 @@ export default {
           email: this.email,
           password: this.password,
         });
-        alert("welecome")
-        console.log(response.data);
+        // alert("welecome")
+        console.log(response.data)
       } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
+        this.error = error.response.data.error
+        console.log(this.error)
       }
     },
   },

@@ -5,13 +5,13 @@ module.exports = {
     const schema = Joi.object({
       firstName: Joi.string(),
       lastName: Joi.string(),
-      date: Joi.date(),
+      birthday: Joi.date(),
       sexe: Joi.string().valid('HOMME', 'FEMME'),
       email: Joi.string().email(),
       password: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
       password2: Joi.string().regex(/^[a-zA-Z0-9]{8,32}$/),
       phoneNum: Joi.string().regex(/^[0-9]{10}$/),
-      stat: Joi.string().valid('Etudiant', 'ATS'),
+      state: Joi.string().valid('Etudiant', 'ATS'),
       scolarYear: Joi.string().valid('1CPI', '2CPI', '1CS', '2CS', '3CS', '/')
     })
 
@@ -29,7 +29,7 @@ module.exports = {
             error: 'You must provide a valid lastName'
           })
           break
-        case 'date':
+        case 'birthday':
           res.status(400).send({
             error: 'You must provide a valid birthday'
           })
@@ -59,7 +59,7 @@ module.exports = {
             error: 'You must provide a valid phoneNumber'
           })
           break
-        case 'stat':
+        case 'state':
           res.status(400).send({
             error: 'You must provide a valid state'
           })
