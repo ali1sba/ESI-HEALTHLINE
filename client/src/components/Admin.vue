@@ -55,15 +55,15 @@
                   <td>{{ user.sexe }}</td>
 
                   <td>{{ user.phoneNum }}</td>
-                  <td>{{ user.stat }}</td>
+                  <td>{{ user.state }}</td>
                   <td>{{ user.scolarYear }}</td>
                   <td>
                     <input
                       type="button"
                       ref="myRef"
-                      value="Activer"
-                      class="ActiverBtn"
-                      @click="avtive(index, user)"
+                      value="Valider"
+                      class="ValiderBtn"
+                      @click="validateUser(index, user)"
                     />
                   </td>
                   <td>
@@ -71,7 +71,7 @@
                       type="button"
                       value="Supprimer"
                       class="SupprimerBtn"
-                      @click="delate(index,user)"
+                      @click="deleteUser(index,user)"
                     />
                   </td>
                 </tr>
@@ -119,7 +119,7 @@
                       type="button"
                       value="disactiver"
                       class="SupprimerBtn"
-                      @click="disactiver(user)"
+                      @click="desactivateUser(user)"
                     />
                   </td>
                 </tr>
@@ -165,45 +165,39 @@ export default {
       });
   },
   methods: {
-    async avtive(index, user) {
+    async validateUser(index, user) {
       console.log(user.email);
-
-      
-        const response = await adminservice.activer({
-          email: user.email
-        });
-        alert("activation sussecfull");
-        console.log(response.data);
-      
-
+      const response = await adminservice.validateUser({
+        email: user.email
+      });
+      // alert("activation sussecfull");
+      console.log(response.data);   
       this.users.splice(index, 1);
     },
 
-
-    async delate(index, user) {
+    async deleteUser(index, user) {
       console.log(user.email);
-
       try {
-        const response = await adminservice.delate({
+        const response = await adminservice.deleteUser({
           email: user.email
         });
-        alert("delate sussecfull");
+        alert("delete sussecfull");
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
         console.log(this.error);
       }
-
       this.users.splice(index, 1);
     },
-    async disactiver( user) {
+
+    async desactivateUser(user) {
       console.log(user.email);
 
       try {
-        const response = await adminservice.disactiver({
+        const response = await adminservice.desactivateUser({
           email: user.email,
         });
-        alert("disactivation sussecfull");
+        alert("desactivation sussecfull");
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;

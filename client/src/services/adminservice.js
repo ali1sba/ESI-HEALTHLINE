@@ -3,15 +3,13 @@ import Api from '@/services/api'
 // the post methode of admin
 
 export default {
-    activer (credantials){
-        return Api().post('/admin/valider',credantials)
+    validateUser (credantials){
+        return Api().post('/admin/validateUser',credantials)
     },
-    delate (credantials){
-        return Api().post('/admin/delate',credantials)
+    deleteUser (credantials){
+        return Api().post('/admin/deleteUser',credantials)
     },
-    disactiver (credantials){
-        return Api().post('/admin/disactiver',credantials)
-    },
-
-    
+    desactivateUser (credantials){
+        return Api().post('/admin/desactivateUser',credantials)
+    }, 
 }
