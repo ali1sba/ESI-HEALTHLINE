@@ -3,6 +3,8 @@ import Home from '../views/Home.vue'
 import Register from '@/components/Register.vue'
 import Forgotpw from '@/components/Forgotpw.vue'
 import Admin from '@/components/Admin.vue'
+import DOCdashboard from '@/components/DOCdashboard.vue'
+import patientinterface from '@/components/patientinterface.vue'
 import Resetpw from '@/components/Resetpw.vue'
 
 const routes = [
@@ -30,6 +32,16 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin
+  },
+  {
+    path: '/patientinterface',
+    name: 'patientinterface',
+    component: patientinterface
+  },
+  {
+    path: '/DOCdashboard',
+    name: 'DOCdashboard',
+    component: DOCdashboard
   },
   {
     path: '/about',
