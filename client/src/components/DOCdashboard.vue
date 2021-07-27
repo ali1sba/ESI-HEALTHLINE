@@ -100,8 +100,7 @@
                   class="leaderboard__picture"
                 />
                 <span class="leaderboard__name" @click="showPatient(patient)" >
-                  {{ patient.firstName }} {{ patient.lastName }}</span
-                >
+                  {{ patient.lastName }}</span>
               </article>
             </main>
           </article>
@@ -115,7 +114,7 @@
               <img src="assets/dashboard/doctorr.png" />
               <div>
                 <h1>BIENVENUE Dr.Merabet</h1>
-                <h3>Passez un belle journée</h3>
+                <h3>Passez une belle journée</h3>
               </div>
             </div>
             <div>
@@ -154,14 +153,18 @@
                 <span >{{ userselected.firstName }} {{ userselected.lastName }}</span>
                 <p>{{ userselected.state }}</p>
               </div>
-              <br />
+              <br>
             </div>
             <nav id="menutab">
               <a><i></i>Dossier Médical</a>
               <a><i></i>Décision</a>
               <a><i></i>other</a>
-              <a><i></i>moerein </a>
+              <a><i></i>moerein</a>
             </nav>
+            <br>
+
+            <button  @click="createMF(userselected)" class="btn btn-primary btn-block font-weight-bold mb-2" style=" background-color: #24b4ab;">Créer le dossier médical</button>
+              
           </div>
 
 
@@ -198,7 +201,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
+import DocServices from "@/services/DocServices.js"
 export default {
   data() {
     return {
@@ -222,7 +226,7 @@ export default {
   },
   mounted: function () {
     axios
-      .get("http://localhost:8083/admin/valid/")
+      .get("http://localhost:8083/doc/patients")
       .then((response) => {
         this.patients = response.data;
         console.log(response);
@@ -232,11 +236,23 @@ export default {
       });
   },
   methods: {
-    async showPatient(user) {
-      console.log(user.email);
+    async showPatient (user) {
       this.content = 'dossier'
       this.userselected = user;
     },
+
+    async createMF (user) {
+      try {
+        const response = await DocServices.createMF({
+          id: user.id
+        })
+        // alert("welecome")
+        console.log(response.data)
+      } catch (error) {
+        this.error = error.response.data.error
+        console.log(this.error)
+      }
+    }
   },
 };
 </script>
