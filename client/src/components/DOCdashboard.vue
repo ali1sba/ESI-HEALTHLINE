@@ -10,27 +10,29 @@
           <li>
             <a>
               <span class="fa fa-home" @click="content = 'dashboard'"></span>
-              <p class="nom">Home</p></a>
+              <p class="nom">Home</p></a
+            >
           </li>
           <li>
             <a>
-            <span class="fa fa-user" @click="content = 'dossier'"></span>
-              <p class="nom">About</p></a>
+              <span class="fa fa-user" @click="content = 'dossier'"></span>
+              <p class="nom">About</p></a
+            >
           </li>
           <li>
-            <a 
+            <a
               ><span class="fa fa-sticky-note" @click="content = '3'"></span>
               <p class="nom">Blog</p></a
             >
           </li>
           <li>
-            <a 
+            <a
               ><span class="fa fa-cogs" @click="content = '4'"></span>
               <p class="nom">Services</p>
             </a>
           </li>
           <li>
-            <a 
+            <a
               ><span class="fa fa-paper-plane" @click="content = '5'"></span>
               <p class="nom">Contacts</p></a
             >
@@ -99,15 +101,14 @@
                   src="https://randomuser.me/api/portraits/men/32.jpg"
                   class="leaderboard__picture"
                 />
-                <span class="leaderboard__name" @click="showPatient(patient)" >
-                  {{ patient.lastName }}</span>
+                <span class="leaderboard__name" @click="showPatient(patient)">
+                  {{ patient.lastName }}</span
+                >
               </article>
             </main>
           </article>
 
-
-             <!-- ********************** home ***************************** -->
-
+          <!-- ********************** home ***************************** -->
 
           <div v-show="content === 'dashboard'" class="dossier">
             <div class="doctor">
@@ -119,27 +120,54 @@
             </div>
             <div>
               <svg class="Rectangle1">
-                    <rect id="Rectangle1" rx="29" ry="29" x="0" y="0" width="109" height="140">
-                    </rect>
-                </svg>
-                <svg class="Rectangle2">
-                    <rect id="Rectangle2" rx="29" ry="29" x="0" y="0" width="109" height="140">
-                    </rect>
-                </svg>
-                <svg class="Rectangle3">
-                    <rect id="Rectangle3" rx="29" ry="29" x="0" y="0" width="109" height="140">
-                    </rect>
-                </svg>
-                <svg class="Rectangle4">
-                    <rect id="Rectangle4" rx="29" ry="29" x="0" y="0" width="109" height="140">
-                    </rect>
-                </svg>
+                <rect
+                  id="Rectangle1"
+                  rx="29"
+                  ry="29"
+                  x="0"
+                  y="0"
+                  width="109"
+                  height="140"
+                ></rect>
+              </svg>
+              <svg class="Rectangle2">
+                <rect
+                  id="Rectangle2"
+                  rx="29"
+                  ry="29"
+                  x="0"
+                  y="0"
+                  width="109"
+                  height="140"
+                ></rect>
+              </svg>
+              <svg class="Rectangle3">
+                <rect
+                  id="Rectangle3"
+                  rx="29"
+                  ry="29"
+                  x="0"
+                  y="0"
+                  width="109"
+                  height="140"
+                ></rect>
+              </svg>
+              <svg class="Rectangle4">
+                <rect
+                  id="Rectangle4"
+                  rx="29"
+                  ry="29"
+                  x="0"
+                  y="0"
+                  width="109"
+                  height="140"
+                ></rect>
+              </svg>
             </div>
             <div>
               <button>+ ajouter RDV</button>
             </div>
           </div>
-
 
           <!-- ********************** dossier ***************************** -->
 
@@ -150,50 +178,112 @@
                 alt="Evan Spiegel"
               />
               <div>
-                <span >{{ userselected.firstName }} {{ userselected.lastName }}</span>
+                <span
+                  >{{ userselected.firstName }}
+                  {{ userselected.lastName }}</span
+                >
                 <p>{{ userselected.state }}</p>
               </div>
-              <br>
-            </div>
-            <nav id="menutab">
-              <a><i></i>Dossier Médical</a>
-              <a><i></i>Décision</a>
-              <a><i></i>other</a>
-              <a><i></i>moerein</a>
-            </nav>
-            <br>
-
-            <button  @click="createMF(userselected)" class="btn btn-primary btn-block font-weight-bold mb-2" style=" background-color: #24b4ab;">Créer le dossier médical</button>
+              <br />
+            </div> 
+            <center>
+              <div>
               
-          </div>
+              <el-radio-group v-model="radio1">
+                <el-radio-button label="Dossier Médical"></el-radio-button>
+                <el-radio-button label="Examen Médical"></el-radio-button>
+                <el-radio-button label="Statistique"></el-radio-button>
+                <el-radio-button label="RDV"></el-radio-button>
+              </el-radio-group>
+            </div>
+            </center>
+            <br />
+            <el-scrollbar height="400px">
+              <button
+                @click="createMF(userselected)"
+                class="btn btn-primary btn-block font-weight-bold mb-2"
+                style="background-color: #24b4ab"
+              >
+                Créer le dossier médical
+              </button>
 
+              <!-- **********************mehdi********************** -->
+
+              <el-card class="box-card" id="information-personnelles">
+                <h6>nformations personnelles</h6>
+                <div class="text item">
+                  
+                  
+                  <!-- TODO -->
+
+
+                </div>
+              </el-card>
+              <!-- **********************nour********************** -->
+              <el-card class="box-card" id="Informations-Biométriques">
+                <h6>Informations Biométriques</h6>
+                <div class="text item">
+                  
+                  <!-- TODO -->
+
+
+                </div>
+              </el-card>
+              <!-- **********************ilhem********************** -->
+              <el-card class="box-card" id="Antécédents">
+                <h6>Antécédents</h6>
+                <div class="text item">
+                  
+
+                  <!-- TODO -->
+
+
+                </div>
+              </el-card>
+              <!-- **********************ali********************** -->
+              <el-card class="box-card" id="Dépistage">
+                <h6>Dépistage</h6>
+                <div class="text item">
+                  visite médical
+                  <el-select v-model="value" placeholder="Select">
+                    <el-option>admission</el-option>
+                    <el-option>Systimatique</el-option>
+                  </el-select>
+
+
+
+                  <el-input placeholder="Entrez quelque chose" v-model="input"></el-input>
+
+
+                  <!-- TODO -->
+                </div>
+              </el-card>
+
+           
+              <center>
+                © Designed and Developed by linara it solutions 2021
+              </center>
+            </el-scrollbar>
+          </div>
 
           <!-- ********************** 3 ***************************** -->
 
-
           <div v-show="content === '3'" class="dossier">
-            <div class="doctor">
-             3
-            </div>
+            <div class="doctor">3</div>
           </div>
           <!-- ********************** 4 ***************************** -->
 
-
           <div v-show="content === '4'" class="dossier">
-            <div class="doctor">
-             4
-            </div>
+            <div class="doctor">4</div>
           </div>
           <!-- ********************** 5 ***************************** -->
 
-
           <div v-show="content === '5'" class="dossier">
             <div class="doctor">
-             <br><br><br> 5
+              <br /><br /><br />
+              5
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -201,24 +291,33 @@
 </template>
 
 <script>
-import axios from "axios"
-import DocServices from "@/services/DocServices.js"
+
+import axios from "axios";
+import DocServices from "@/services/DocServices.js";
 export default {
   data() {
     return {
+      //*********** 
       patients: [],
-      content:"dashboard",
-      userselected : {
-          "firstName": "none",
-          "lastName": "none",
-          "birthday": "none",
-          "sexe": "none",
-          "phoneNum": "none",
-          "state":"none",
-          "scolarYear": "none",
-          "idCompte" : "none" ,
-          "createdAt" : "none" ,
-          "updatedAt" : "none" 
+      content: "dashboard",
+      userselected: {
+        firstName: "none",
+        lastName: "none",
+        birthday: "none",
+        sexe: "none",
+        phoneNum: "none",
+        state: "none",
+        scolarYear: "none",
+        idCompte: "none",
+        createdAt: "none",
+        updatedAt: "none",
+
+
+        // navigation bar 
+        radio1: 'New York',
+        radio2: 'New York',
+        radio3: 'New York',
+        radio4: 'New York',
       },
       error: null,
       email: "",
@@ -236,23 +335,23 @@ export default {
       });
   },
   methods: {
-    async showPatient (user) {
-      this.content = 'dossier'
+    async showPatient(user) {
+      this.content = "dossier";
       this.userselected = user;
     },
 
-    async createMF (user) {
+    async createMF(user) {
       try {
         const response = await DocServices.createMF({
-          id: user.id
-        })
+          id: user.id,
+        });
         // alert("welecome")
-        console.log(response.data)
+        console.log(response.data);
       } catch (error) {
-        this.error = error.response.data.error
-        console.log(this.error)
+        this.error = error.response.data.error;
+        console.log(this.error);
       }
-    }
+    },
   },
 };
 </script>
@@ -260,4 +359,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin: 20px;
+  padding: 18px 0;
+}
+
+.box-card {
+  width: 1000px;
+  margin: 20px;
+  border-radius: 15px;
+}
 </style>
