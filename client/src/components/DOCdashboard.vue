@@ -144,6 +144,7 @@
           <!-- ********************** dossier ***************************** -->
 
           <div v-show="content === 'dossier'" class="dossier">
+            
             <div class="currentpatient">
               <img
                 src="https://randomuser.me/api/portraits/men/37.jpg"
@@ -157,14 +158,23 @@
             </div>
             <nav id="menutab">
               <a><i></i>Dossier Médical</a>
-              <a><i></i>Décision</a>
-              <a><i></i>other</a>
-              <a><i></i>moerein</a>
+              <a><i></i>Examen Médical</a>
+              <a><i></i>Statistique</a>
+              <a><i></i>RDV</a>
             </nav>
             <br>
-
+<el-scrollbar height="400px">
             <button  @click="createMF(userselected)" class="btn btn-primary btn-block font-weight-bold mb-2" style=" background-color: #24b4ab;">Créer le dossier médical</button>
               
+              <el-card class="box-card">
+                <h6>Personal Informations</h6>
+                <div  class="text item">
+                  <!-- TODO -->
+                </div>
+              </el-card>
+              <center> © Designed and Developed by linara it solutions 2021 </center>
+              </el-scrollbar>
+
           </div>
 
 
@@ -260,4 +270,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.text {
+    font-size: 14px;
+  }
+
+  .item {
+    margin: 20px;
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 1000px;
+    margin: 20px;
+  }
+
+
 </style>
