@@ -19,6 +19,7 @@
     </nav>
 
     <main role="main">
+      <el-scrollbar height=100%>
       <section v-if="section === 1" id="section1">
         <section class="panel important">
           <h2>Les comptes a validée</h2>
@@ -51,7 +52,7 @@
                 <tr v-for="(user, index) in users" :key="user.id">
                   <th scope="row">{{ index + 1 }}</th>
                   <td>{{ user.firstName }} {{ user.lastName }}</td>
-                  <td id="Email">{{ user.email }}</td>
+                  <td id="Email">/</td>
                   <td>{{ user.sexe }}</td>
 
                   <td>{{ user.phoneNum }}</td>
@@ -108,7 +109,7 @@
                 <tr v-for="(user, index) in usersvalid" :key="user.id">
                   <th scope="row">{{ index + 1 }}</th>
                   <td>{{ user.firstName }} {{ user.lastName }}</td>
-                  <td id="Email">{{ user.email }}</td>
+                  <td id="Email">/</td>
                   <td>{{ user.sexe }}</td>
 
                   <td>{{ user.phoneNum }}</td>
@@ -128,7 +129,9 @@
           </div>
         </section>
       </section>
+      </el-scrollbar >
     </main>
+    
   </div>
 </template>
 
@@ -142,6 +145,7 @@ export default {
       usersvalid: [],
       error: null,
       email: "",
+      section : 1,
     };
   },
   mounted: function () {
