@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/app.js --exec  \"npm run lint && node\"",
@@ -12,12 +12,24 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^3.2.0",
     "axios": "^0.21.1",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.0.0",
     "express": "^4.17.1",
+    "joi": "^17.4.1",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.10"
+    "nodemailer": "^6.6.3",
+    "nodemon": "^2.0.10",
+    "password-hash": "^1.2.2",
+    "sequelize": "^6.6.5",
+    "sqlite3": "^5.0.2",
+    "uuidv4": "^6.2.11"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.28.2",

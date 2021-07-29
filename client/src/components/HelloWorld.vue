@@ -30,7 +30,7 @@
     </ul>-->
 
 
-    <body>
+     <body>
     <div class="app">
          <div class="container-fluid">
              <div class="row no-gutter">
@@ -44,7 +44,11 @@
                         <h3 style="font-size: large; padding-left:28%;">keeping you well</h3><br>
                         <form>
                           <div class="form-label-group">
+<<<<<<< HEAD
                             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" v-model="email" required autofocus>
+=======
+                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" v-model="email" required >
+>>>>>>> 2abaaf4f6ee5a1a774abc1dca655b063382470dd
                             <label for="inputEmail">Adresse e-mail</label>
                           </div>
           
@@ -59,51 +63,68 @@
                           </div>
                           <button  @click="login" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit" style=" background-color: #24b4ab;"
                           >S'identifier</button>
+<<<<<<< HEAD
                           <div class="text-center">
                             <a class="small" href="http://192.168.1.3:8081/#/resetpw">Mot de passe oublié?</a>
                             <p >Vous n'avez pas de compte ? <a href="http://192.168.1.3:8081/#/register">Inscrivez-vous ici.</a></p>
+=======
+                           <div class="error" v-html="error"/>
+                            <br>
+                          <div class="text-center">
+                           <router-link to="forgotpw" class="small">Mot de passe oublié?</router-link>
+                            <p >Vous n'avez pas de compte ? <router-link to="register">Inscrivez-vous ici.</router-link></p>
+>>>>>>> 2abaaf4f6ee5a1a774abc1dca655b063382470dd
                         </div>
                         </form>
                       </div>
                     </div>
+<<<<<<< HEAD
                   </div>
                 </div>
+=======
+
+>>>>>>> 2abaaf4f6ee5a1a774abc1dca655b063382470dd
               </div>
             </div>
          </div>
         </div>
-
-    
+</div>
+    </div>
   </body>
   </div>
 </template>
 
 <script>
-  import AuthServices from '@/services/AuthentificationService' 
-  export default {
-    data () {
-      return{
-        email : '',
-        password : ''
+import AuthServices from "@/services/AuthentificationService";
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  // the response of the click
+  methods: {
+    async login() {
+      try {
+        const response = await AuthServices.login({
+          email: this.email,
+          password: this.password,
+        });
+        // alert("welecome")
+        console.log(response.data)
+      } catch (error) {
+        this.error = error.response.data.error
+        console.log(this.error)
       }
     },
-    // the response of the click
-    methods : {
-     async login () {
-        const response = await AuthServices.login({
-          email : this.email , 
-          password : this.password
-        })
-          console.log(response.data)
-          alert(JSON.stringify(response.data, null, 4));  
-      }
-    }
-  }
-
-
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.error {
+  color: red;
+}
 </style>
