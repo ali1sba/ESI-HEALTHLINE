@@ -165,11 +165,11 @@ body {
     padding: 0;
     position: relative;
 }
-.row{
+.formrow{
     height:inherit;
 }
 
-.btn1{
+.btnform{
     border: none;
     outline: none;
     height: 50px;
@@ -179,26 +179,26 @@ body {
     border-radius: 4px;
     font-weight: bold;
 }
-.btn1:hover{
+.btnform:hover{
     background-color: white;
     border: 10px;
     border-color: black;
     color: #24b4ab;
 }
-.this{
+.thisform{
     text-align: center;
     align-items: center; 
     background-color: white;
     height:inherit ;
     
 }
-.this a{
+.thisform a{
     font-size: 95%;
     color: #24b4ab;
     text-decoration: none;
 }
 @media(min-width:1050px){
-    .this{
+    .thisform{
         padding-top:6%;
         padding-bottom:15%
     }

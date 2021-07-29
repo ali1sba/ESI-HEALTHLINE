@@ -1,10 +1,10 @@
 <template>
   <div class="register">
     <div class="container-fluid formpage">
-      <div class="row no-gutters">
-        <div class="this col-md-8 px-5 " >
+      <div class="row formrow no-gutters">
+        <div class="thisform col-md-8 px-5 " >
           <form class="needs-validation" novalidate>
-            <div class="row g-2">
+            <div class="row formrow g-2">
               <div class="col-sm-12">
                 <img
                   src="logo.png"
@@ -16,7 +16,7 @@
                 />
               </div>
             </div>
-            <div class="row g-3">
+            <div class="row formrowm g-3">
               <div class="col-sm-6">
                 <input
                   type="text"
@@ -45,7 +45,7 @@
             </div>
             <br />
 
-            <div class="row g-3">
+            <div class="row formrow g-3">
               <div class="col-sm-6">
                 <input
                   type="date"
@@ -81,7 +81,7 @@
               />
             </div>
 
-            <div class="row g-3">
+            <div class="row formrow g-3">
               <div class="col-sm-6">
                 <input
                   type="password"
@@ -106,7 +106,7 @@
             </div>
             <br />
 
-            <div class="row g-3">
+            <div class="row formrow g-3">
               <div class="col-sm-6">
                 <input
                   type=""
@@ -150,9 +150,9 @@
             <div class="error" v-html="error" ></div>
             <br/>
             
-            <div class="row g-3">
+            <div class="row formrow g-3">
               <div class="col-sm-4">
-                <button type="button" @click="register" class="btn1 mt-3 mb-5">
+                <button type="button" @click="register" class="btnform mt-3 mb-5">
                   S'inscrire
                 </button>
               </div>
