@@ -185,17 +185,16 @@
                 <p>{{ userselected.state }}</p>
               </div>
               <br />
-            </div> 
+            </div>
             <center>
               <div>
-              
-              <el-radio-group v-model="radio1">
-                <el-radio-button label="Dossier Médical"></el-radio-button>
-                <el-radio-button label="Examen Médical"></el-radio-button>
-                <el-radio-button label="Statistique"></el-radio-button>
-                <el-radio-button label="RDV"></el-radio-button>
-              </el-radio-group>
-            </div>
+                <el-radio-group v-model="radio1">
+                  <el-radio-button label="Dossier Médical"></el-radio-button>
+                  <el-radio-button label="Examen Médical"></el-radio-button>
+                  <el-radio-button label="Statistique"></el-radio-button>
+                  <el-radio-button label="RDV"></el-radio-button>
+                </el-radio-group>
+              </div>
             </center>
             <br />
             <el-scrollbar height="400px">
@@ -212,54 +211,107 @@
               <el-card class="box-card" id="information-personnelles">
                 <h6>nformations personnelles</h6>
                 <div class="text item">
-                  
-                  
                   <!-- TODO -->
-
-
                 </div>
               </el-card>
               <!-- **********************nour********************** -->
               <el-card class="box-card" id="Informations-Biométriques">
                 <h6>Informations Biométriques</h6>
                 <div class="text item">
-                  
                   <!-- TODO -->
-
-
                 </div>
               </el-card>
               <!-- **********************ilhem********************** -->
               <el-card class="box-card" id="Antécédents">
                 <h6>Antécédents</h6>
                 <div class="text item">
-                  
-
                   <!-- TODO -->
-
-
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
               <el-card class="box-card" id="Dépistage">
                 <h6>Dépistage</h6>
                 <div class="text item">
-                  visite médical
-                  <el-select v-model="value" placeholder="Select">
-                    <el-option>admission</el-option>
-                    <el-option>Systimatique</el-option>
-                  </el-select>
+                  
+                  <el-space direction="vertical">
+                    <el-row>
+                      <el-col :span="24">
+                    <el-space wrap :size="10">
+                      visite médical
+                      <el-select v-model="typeDeVisite" placeholder="Select">
+                        <el-option
+                          v-for="item in options1"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        >
+                        </el-option>
+                      </el-select>
+                      Date
+                      <el-date-picker
+                        v-model="DépistageDate1"
+                        type="date"
+                        placeholder="Choississez un jour"
+                        :disabled-date="disabledDate"
+                        :shortcuts="shortcuts"
+                      >
+                      </el-date-picker>
+                      Docteur
+                      <el-input
+                        placeholder="Entrez quelque chose"
+                        v-model="docteurName"
+                      ></el-input>
+                    </el-space>
+                    </el-col >
+                    </el-row>
+                    <el-row>
+                      <el-col :span="24">
+                    <el-space wrap :size="50">
+                     <el-space wrap :size="10"> Poids <el-input placeholder="KG" v-model="poids"></el-input></el-space>
+                      <el-space wrap :size="10">Taille <el-input placeholder="Mètre" v-model="taille"></el-input></el-space>
+                    </el-space>
+                    </el-col>
+                    </el-row>
+                    <el-divider></el-divider>
 
+                     <el-collapse v-model="activeNames" @change="handleChange">
+                      <el-collapse-item title="Audition" name="1">
+                        <el-space wrap :size="10"> OD <el-input placeholder="/10" v-model="auditionOD"></el-input></el-space>
+                        <el-space wrap :size="10">OG <el-input placeholder="/10" v-model="auditionOG"></el-input></el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="Acuite Visuelle" name="2">
+                        <el-space orientation="vertical">
+                        <el-space wrap :size="10"> OD <el-input placeholder="/10" v-model="AcuiteVisuelleSansCOD"></el-input></el-space>
+                        <el-space wrap :size="10">OG <el-input placeholder="/10" v-model="AcuiteVisuelleSansCOG"></el-input></el-space>
+                        SANS CORRECTIONS
+                        </el-space>
+                        <el-space orientation="vertical">
+                        <el-space wrap :size="10"> OD <el-input placeholder="/10" v-model="AcuiteVisuelleAvecCOD"></el-input></el-space>
+                        <el-space wrap :size="10">OG <el-input placeholder="/10" v-model="AcuiteVisuelleAvecCOG"></el-input></el-space>
+                        AVEC CORRECTIONS
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="Efficacité" name="3">
+                        peau et muqueu
+                      </el-collapse-item>
+  <el-collapse-item title="Controllabilité" name="4">
+    <div>Prise de décision: possibilité de donner des conseils sur les opérations, mais ne jamais prendre de décisions à la place des utilisateurs;</div>
+    <div>Contrôle des conséquences: les utilisateurs devraient pouvoir contrôler l'exécution de leurs opérations, y compris l'annulation et la suppression des opérations courantes.</div>
+  </el-collapse-item>
+</el-collapse>
 
-
-                  <el-input placeholder="Entrez quelque chose" v-model="input"></el-input>
-
+                    <el-space></el-space>
+                    <el-space></el-space>
+                    <el-space></el-space>
+                    <el-space></el-space>
+                    <el-space></el-space>
+                    <el-space></el-space>
+                  </el-space>
 
                   <!-- TODO -->
                 </div>
               </el-card>
 
-           
               <center>
                 © Designed and Developed by linara it solutions 2021
               </center>
@@ -291,13 +343,12 @@
 </template>
 
 <script>
-
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 export default {
   data() {
     return {
-      //*********** 
+      //************************************************************************************************************
       patients: [],
       content: "dashboard",
       userselected: {
@@ -311,19 +362,81 @@ export default {
         idCompte: "none",
         createdAt: "none",
         updatedAt: "none",
-
-
-        // navigation bar 
-        radio1: 'New York',
-        radio2: 'New York',
-        radio3: 'New York',
-        radio4: 'New York',
       },
+      // err
       error: null,
       email: "",
+      // navigation bar*******************************************************************************************
+      radio1: "",
+
+      //the data for Dépistage section****************************************************************************
+
+      // the first selection typeDeVisite
+      options1: [
+        {
+          value: "admission",
+          label: "admission",
+        },
+        {
+          value: "Systimatique",
+          label: "Systimatique",
+        },
+      ],
+      typeDeVisite: "",
+
+      docteurName: "Merabet ",
+      poids: "0",
+      taille : "0",
+
+      // date
+      disabledDate(time) {
+        return time.getTime() > Date.now();
+      },
+      shortcuts: [
+        {
+          text: "Today",
+          value: new Date(),
+        },
+        {
+          text: "Yesterday",
+          value: () => {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            return date;
+          },
+        },
+        {
+          text: "A week ago",
+          value: () => {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            return date;
+          },
+        },
+      ],
+      DépistageDate1: "",
+
+      //variable de taitement des defferantes sections 
+      activeNames: ['1'],
+
+      handleChange(val) {
+        console.log(val);
+      },
+      auditionOD:"",
+      auditionOG:"",
+      AcuiteVisuelleSansCOD:"",
+      AcuiteVisuelleSansCOG:"",
+      AcuiteVisuelleAvecCOD:"",
+      AcuiteVisuelleAvecCOG:"",
+
+
+
+
+
+
     };
   },
-  mounted: function () {
+  mounted: function() {
     axios
       .get("http://localhost:8083/doc/patients")
       .then((response) => {
@@ -356,7 +469,6 @@ export default {
 };
 </script>
 
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .text {
@@ -369,8 +481,16 @@ export default {
 }
 
 .box-card {
-  width: 1000px;
+  width: 97%;
   margin: 20px;
   border-radius: 15px;
 }
+
+.el-row {
+    margin-bottom: 20px;
+  
+  }
+  .el-col {
+    border-radius: 4px;
+  }
 </style>
