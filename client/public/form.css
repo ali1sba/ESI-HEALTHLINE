@@ -1,8 +1,12 @@
+
 *{
     margin:0;
     padding:0;
+    overflow: hidden
 }
-
+body {
+    border: 1px solid transparent;
+}
  .formpage {
     width: 100%;
     background-image: url("image4.jpg");
@@ -14,7 +18,10 @@
     max-height: 100vh;
     opacity: 0%;
 }
-
+.image{
+    padding: 0;
+    position: relative;
+}
 .row{
     height:inherit;
 }
@@ -39,10 +46,23 @@
     text-align: center;
     align-items: center; 
     background-color: white;
-    height:inherit 
+    height:inherit ;
+    
 }
 .this a{
     font-size: 95%;
     color: #24b4ab;
     text-decoration: none;
+}
+@media(min-width:1050px){
+    .this{
+        padding-top:6%;
+        padding-bottom:15%
+    }
+
+    
+  .register p{
+      padding-left:40%;
+      font-size:125%
+  }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <div class="container-fluid formpage">
+    <!-- <div class="container-fluid formpage">
       <div class="row formrow no-gutters">
         <div class="thisform col-md-8 px-5 " >
           <form class="needs-validation" novalidate>
@@ -167,11 +167,71 @@
 
         <div class="imageform col-md-4"></div>
       </div>
-    </div>
+    </div> -->
+  <!-- code starts here -->
+  <!-- first half data form -->
+ 
+
+  <el-row class="formrow">
+  <el-col class="firsthalf" :span="16">
+    <div class=" coldiv grid-content bg-purple">
+      <!-- first row logo part -->
+   <el-row>
+     <el-col class="formlogo" :span="6"><img src="logo.png" ></el-col>
+   </el-row> 
+   <div class="formelems">
+   <!-- second row name  -->
+   <el-row> 
+   <el-col class="m1" :span="10"><el-input v-model="lastName" placeholder="nom" required></el-input><div class="invalid-feedback">  Valid last name is required. </div></el-col> 
+   <el-col :span="10"><el-input v-model="firstName" placeholder="prenom" required></el-input><div class="invalid-feedback">  Valid first name is required. </div></el-col>  
+   </el-row> 
+   <!-- third row input --> 
+   <el-row>
+     <el-col :span="20"><el-input v-model="email" placeholder="email"></el-input></el-col> 
+   </el-row>
+   <!-- forth row input  -->
+   <el-row>
+     <el-col class="m1" :span="10"><el-input id="password" placeholder="mot de passe" v-model="password" show-password></el-input></el-col>
+     <el-col :span="10"><el-input id="password2" placeholder="confirmer votre mot de passe" v-model="password2" show-password></el-input></el-col>
+   </el-row>
+   <!-- fifth row password  -->
+   <el-row>
+    <el-col :span="20"><el-input id="number" v-model="phoneNum" placeholder="numero de telephone"></el-input></el-col> 
+   </el-row>
+   <el-row>
+      <!-- sixth row input  -->
+   <el-col :span="7"><el-date-picker id="datenaiss" v-model="birthday" type="date" placeholder="date de naiss"> </el-date-picker></el-col>
+   <!-- <el-col  style="margin-right:1%" :span="7"><el-input v-model="birthplace" placeholder="lieu de naissance" ></el-input> </el-col> -->
+   <el-col  :span="7"><el-select id="exampleFormControlSelect1" v-model="sexe" placeholder="sexe">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col>
+      <el-col style="margin-right:1%" :span="6"><el-select v-model="state">
+        <el-option v-for="item in optionstate" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col> 
+    </el-row>
+  <!-- seventh row year  -->
+  <el-row>
+    <el-col :span="6"><el-select v-model="scolarYear" >
+       <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col>
+    <div class="error" v-html="error" ></div>
+  </el-row>
+ <!-- sign up button  -->
+  <el-row>
+    <el-col :span="4"><el-button @click="register" type="primary" plain>s'inscrire</el-button></el-col>
+    <el-col class="formline" :span="7"><p> Vous avez déjà un compte? <router-link to="/">s'identifier </router-link> </p></el-col>
+  </el-row>
+   </div>
   </div>
+  </el-col>
+ <!-- second half image  -->
+  </el-row>
+  <!-- styling goes here -->
+  </div>  
 </template>
 
 <script>
+// here starts script of element
 import AuthServices from "@/services/AuthentificationService";
 export default {
   data() {
@@ -180,14 +240,48 @@ export default {
       firstName: "",
       lastName: "",
       birthday: "",
+      // birthplace: "",
       sexe: "Sexe",
       email: "",
       password: "",
       password2: "",
       phoneNum: "",
-      state: "state",
-      scolarYear: "Scolar year",
+      state: "etat",
+      scolarYear: "annee scolaire",
       error: null,
+       options: [{
+          value: 'femme',
+          label: 'femme'
+        }, {
+          value: 'homme',
+          label: 'homme'
+        }],
+        value: '',
+        optionstate: [{
+          value: 'ATS',
+          label: 'ATS'
+        }, {
+          value: 'etudiant',
+          label: 'etudiant'
+        }],
+        valuestate: '',
+        optionyear: [{
+          value: '1CPI',
+          label: '1CPI'
+        }, {
+          value: '2CPI',
+          label: '2CPI'
+         }, {
+          value: '1CS',
+          label: '1CS'
+          }, {
+          value: '2CS',
+          label: '2CS'
+          }, {
+          value: '3CS',
+          label: '3CS'
+        }],
+        valueyear: ''
     };
   },
   // the response of the click
@@ -200,6 +294,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           birthday: this.birthday,
+          // birthplace: this.birthplace,
           sexe: this.sexe,
           email: this.email,
           password: this.password,
@@ -209,10 +304,10 @@ export default {
           scolarYear: this.scolarYear
           
         })
-        alert("regiter sussecfull")
+        alert("regiter successfull")
         console.log(response.data)
         } else {
-          this.error = 'problem in confirmation of the passeword'
+          this.error = 'problem in confirmation of the password'
         }
        
         
@@ -236,9 +331,52 @@ export default {
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style >
 
 .error {
   color: red;
 }
+body{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+    background-image: url("image4.jpg");
+    background-size: cover;  
+    height: 100%;
+}
+
+.el-col{
+ margin-top: 2%;
+ width: 100%;
+}
+
+.firsthalf{
+  margin:0;
+  background-color: white;
+  bottom: 0;
+}
+.formlogo{
+ margin-left: 35%;
+ 
+}
+
+.formline{
+  margin-left: 40%;
+}
+.coldiv{
+  padding: 2% 0 2% 12% ;
+}
+.formrow{
+  margin: 0;
+  height: 100vh;
+  background-size: cover;
+}
+.register{
+  height: 100vh;
+}
+.m1{
+margin-right: 0.3%;
+padding: 0;
+}
+
 </style>

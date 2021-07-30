@@ -29,52 +29,95 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>-->
 
-
-     <body>
-    <div class="app">
-         <div class="container-fluid">
-             <div class="row no-gutter">
-              <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-              <div class="col-md-8 col-lg-6">
-                <div class="login d-flex align-items-center py-5">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-md-9 col-lg-8 mx-auto">
-                        <img class='logoimage' src="logo.png"><br>
-                        <h3 style="font-size: large; padding-left:28%;">keeping you well</h3><br>
-                        <form>
-                          <div class="form-label-group">
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" v-model="email" required >
-                            <label for="inputEmail">Adresse e-mail</label>
-                          </div>
-          
-                          <div class="form-label-group">
-                            <input type="password" id="inputPassword" class="form-control" placeholder="Password" v-model="password" required>
-                            <label for="inputPassword">Mot de passe</label>
-                          </div>
-          
-                          <div class="custom-control custom-checkbox mb-3">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                            <label class="custom-control-label" for="customCheck1">Se souvenir du mot de passe</label>
-                          </div>
-                          <button  @click="login" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit" style=" background-color: #24b4ab;"
-                          >S'identifier</button>
-                           <div class="error" v-html="error"/>
-                            <br>
-                          <div class="text-center">
-                           <router-link to="forgotpw" class="small">Mot de passe oublié?</router-link>
-                            <p >Vous n'avez pas de compte ? <router-link to="register">Inscrivez-vous ici.</router-link></p>
+    <body>
+      <div class="app">
+        <div class="container-fluid">
+          <div class="row no-gutter">
+            <div
+              class="d-none d-md-flex col-md-4 col-lg-6 login-bg-image"
+            ></div>
+            <div class="col-md-8 col-lg-6">
+              <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-9 col-lg-8 mx-auto">
+                      <img class="logoimage" src="logo.png" /><br />
+                      <h3 style="font-size: large; padding-left: 28%">
+                        keeping you well
+                      </h3>
+                      <br />
+                      <form>
+                        <div class="login-form-label-group">
+                          <input
+                            type="email"
+                            id="inputEmail"
+                            class="form-control"
+                            placeholder="Email address"
+                            v-model="email"
+                            required
+                          />
+                          <label for="inputEmail">Adresse e-mail</label>
                         </div>
-                        </form>
-                      </div>
+
+                        <div class="login-form-label-group">
+                          <input
+                            type="password"
+                            id="inputPassword"
+                            class="form-control"
+                            placeholder="Password"
+                            v-model="password"
+                            required
+                          />
+                          <label for="inputPassword">Mot de passe</label>
+                        </div>
+
+                        <div class="custom-control custom-checkbox mb-3">
+                          <input
+                            type="checkbox"
+                            class="custom-control-input"
+                            id="customCheck1"
+                          />
+                          <label class="custom-control-label" for="customCheck1"
+                            >Se souvenir du mot de passe</label
+                          >
+                        </div>
+                        <button
+                          @click="login"
+                          class="
+                            btn btn-lg btn-primary btn-block
+                            login-btn-login
+                            text-uppercase
+                            font-weight-bold
+                            mb-2
+                          "
+                          type="submit"
+                          style="background-color: #24b4ab"
+                        >
+                          S'identifier
+                        </button>
+                        <div class="error" v-html="error" />
+                        <br />
+                        <div class="login-text-center">
+                          <router-link to="forgotpw" class="small"
+                            >Mot de passe oublié?</router-link
+                          >
+                          <p>
+                            Vous n'avez pas de compte ?
+                            <router-link to="register"
+                              >Inscrivez-vous ici.</router-link
+                            >
+                          </p>
+                        </div>
+                      </form>
                     </div>
+                  </div>
+                </div>
               </div>
             </div>
-         </div>
+          </div>
         </div>
-</div>
-    </div>
-  </body>
+      </div>
+    </body>
   </div>
 </template>
 
@@ -96,10 +139,10 @@ export default {
           password: this.password,
         });
         // alert("welecome")
-        console.log(response.data)
+        console.log(response.data);
       } catch (error) {
-        this.error = error.response.data.error
-        console.log(this.error)
+        this.error = error.response.data.error;
+        console.log(this.error);
       }
     },
   },
@@ -110,5 +153,20 @@ export default {
 <style scoped>
 .error {
   color: red;
+}
+a {
+  color: #24b4ab;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Poppins);
+body {
+  font-family: "Poppins", sans-serif;
+}
+.light-blue-gradient {
+  background: linear-gradient(120deg, #24b4ab 0%, #c2e9fb 100%);
+}
+
+.btn btn-primary {
+  color: #24b4ab;
 }
 </style>

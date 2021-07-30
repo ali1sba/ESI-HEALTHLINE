@@ -1,26 +1,25 @@
 <template>
   <div class="admin">
-    <header role="banner">
+    <header role="bannerAdmin">
       <h1>Admin Panel</h1>
-      <ul class="utilities">
-        <br />
-        <li class="users"><a href="#">My Account</a></li>
-      </ul>
     </header>
-    <nav role="navigation">
-      <ul class="main">
+    <nav role="navigationAdmin">
+      <ul class="mainAdmin">
         <div id="dashboard_btn" @click="section = 1">
-          <li class="dashboard"><a href="#/admin">Section 1</a></li>
+          <li class="dashboardAdmin"><a href="#/admin">Section 1</a></li>
         </div>
         <div id="edit_btn" @click="section = 2">
-          <li class="edit"><a href="#/admin">Section 2</a></li>
+          <li class="editAdmin"><a href="#/admin">Section 2</a></li>
+        </div>
+        <div id="message_btn" @click="section = 3">
+          <li class="AddNewAdmin"><a href="#/admin">Section 3</a></li>
         </div>
       </ul>
     </nav>
 
-    <main role="main">
+    <main role="mainAdmin">
       <section v-if="section === 1" id="section1">
-        <section class="panel important">
+        <section class="PanelAdmin">
           <h2>Les comptes a validée</h2>
           <ul>
             <li>
@@ -30,7 +29,7 @@
           </ul>
         </section>
 
-        <section class="panel important">
+        <section class="PanelAdmin">
           <h2>Les Comptes</h2>
           <div id="app">
             <table class="responsive-table">
@@ -82,13 +81,13 @@
       </section>
 
       <section v-if="section === 2" id="section2">
-        <section class="panel important">
+        <section class="PanelAdmin">
           <h2>Tout les comptes dans le site</h2>
           <ul>
             <li>Ici se retrouve tout les comptes qui sont deja validée</li>
           </ul>
         </section>
-        <section class="panel important">
+        <section class="PanelAdmin">
           <h2>Les Comptes</h2>
           <div id="app2">
             <table class="responsive-table">
