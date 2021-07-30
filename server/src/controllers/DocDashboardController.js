@@ -9,7 +9,7 @@ module.exports = {
   async recoverPatients (req, res) {
     try {
       const patients = await User.findAll({
-        attributes: ['id', 'firstName', 'lastName', 'birthday', 'sexe', 'phoneNum', 'state', 'scolarYear'],
+        attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
         where: {
           [Op.or]: [{ state: 'Etudiant' }, { state: 'ATS' }]
         }
@@ -90,14 +90,64 @@ module.exports = {
     }
   },
 
+  async showPatient (req, res) {
+    try {
+      const userId = req.body.id
+      const userUser = await MedicalFile.findOne({
+        where: {
+          id: userId
+        }
+      })
+      if (!userUser) {
+        res.send({
+          message: "Ce patient n'a aucun dossier médical dans le système"
+        })
+      } else {
+        const userPI = await PersonalInfo.findOne({
+          where: {
+            id: userUser.personalInfoId
+          }
+        })
+        // here we add userBI, userAI and userDI // same thing with ExamenMedical, RDV and statistics
+        const medFile = {
+          personalInfo: {
+            firstName: userPI.firstName,
+            lastName: userPI.lastName,
+            dateOfBirth: userPI.dateOfBirth,
+            placeOfBirth: userPI.placeOfBirth,
+            sexe: userPI.sexe,
+            bloodGroup: userPI.bloodGroup,
+            addresse: userPI.addresse,
+            phoneNum: userPI.phoneNum,
+            email: userPI.email,
+            numSS: userPI.numSS,
+            state: userPI.state,
+            scolarYear: userPI.scolarYear,
+            category: userPI.category
+          }
+          // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
+        }
+        res.send({
+          medFile: medFile
+        })
+      }
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to showPatient ${err}`
+      })
+    }
+  },
+
   async savePersInfo (req, res) {
     try {
+      const userPI = req.body.personalInfo
+      // update the tables with save function of sequelize
       res.send({
-        message: 'PersInfo'
+        message: `PersInfo successfully updated... ${userPI.firstName}`
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to fetch the users ${err}`
+        error: `an error has occured trying to savePersInfo the users ${err}`
       })
     }
   },

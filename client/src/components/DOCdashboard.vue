@@ -197,7 +197,7 @@
               </div>
             </center>
             <br />
-            <el-scrollbar height="400px">
+            <el-scrollbar height="500px">
               <button
                 @click="createMF(userselected)"
                 class="btn btn-primary btn-block font-weight-bold mb-2"
@@ -209,9 +209,39 @@
               <!-- **********************mehdi********************** -->
 
               <el-card class="box-card" id="information-personnelles">
-                <h6>nformations personnelles</h6>
+                <h6>Informations personnelles</h6>
                 <div class="text item">
-                  <!-- TODO -->
+                  <el-space direction="vertical">
+                    <el-space wrap :size="10">
+                      <el-space> Nom <el-input v-model="userPersInfo.lastName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                      <el-space> Prénom <el-input v-model="userPersInfo.firstName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    </el-space>
+                    <el-space wrap :size="10"> Date de naissance 
+                      <el-date-picker
+                        v-model="userPersInfo.dateOfBirth"
+                        type="date"
+                        :disabled-date="disabledDate"
+                        :shortcuts="shortcuts"
+                        :disabled="isDisabledPersInfo"
+                      >
+                      </el-date-picker>
+                      Lieu de naissance <el-input v-model="userPersInfo.placeOfBirth" :disabled="isDisabledPersInfo"></el-input>
+                    </el-space>
+                    <el-space wrap :size="10"> Sexe <el-input v-model="userPersInfo.sexe" :disabled="isDisabledPersInfo"></el-input> Groupe sanguin <el-input v-model="userPersInfo.bloodGroup" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> Adresse <el-input v-model="userPersInfo.addresse" :disabled="isDisabledPersInfo"></el-input> Téléphone <el-input v-model="userPersInfo.phoneNum" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> Email <el-input v-model="userPersInfo.email" :disabled="isDisabledPersInfo"></el-input> NSS <el-input v-model="userPersInfo.numSS" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> 
+                      Fonction <el-input v-model="userPersInfo.state" :disabled="isDisabledPersInfo"></el-input>
+                      Année scolaire <el-input v-model="userPersInfo.scolarYear" :disabled="isDisabledPersInfo"></el-input>
+                    </el-space>
+                    <el-space wrap :size="10"> Catégorie <el-input v-model="userPersInfo.category" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <div v-if="isDisabledPersInfo">
+                      <el-space><el-button icon="el-icon-edit" @click="modifierInfoPers"> Modifier </el-button></el-space>
+                    </div>
+                    <div v-else>
+                      <el-space><el-button type="success" icon="el-icon-check" @click="savePersInfo"> Enregister </el-button><el-button type="danger" icon="el-icon-delete" @click="cancelInfoPers"> Annuler </el-button></el-space>
+                    </div>
+                  </el-space>
                 </div>
               </el-card>
               <!-- **********************nour********************** -->
@@ -354,14 +384,8 @@ export default {
       userselected: {
         firstName: "none",
         lastName: "none",
-        birthday: "none",
-        sexe: "none",
-        phoneNum: "none",
         state: "none",
         scolarYear: "none",
-        idCompte: "none",
-        createdAt: "none",
-        updatedAt: "none",
       },
       // err
       error: null,
@@ -369,6 +393,33 @@ export default {
       // navigation bar*******************************************************************************************
       radio1: "",
 
+
+
+      // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
+      patientDM: "",
+
+
+
+
+      //the data for personalInfo section****************************************************************************
+      userPersInfo: {
+        firstName: "none",
+        lastName: "none",
+        dateOfBirth: "none",
+        placeOfBirth: "none",
+        sexe: "none",
+        bloodGroup: "none",
+        addresse: "none",
+        phoneNum: "none",
+        email: "none",
+        numSS: "none",
+        state: "none",
+        scolarYear: "none",
+        category: "none",
+      },
+      cachedUser : "",
+      isDisabledPersInfo: true,
+      catégorie: "",
       //the data for Dépistage section****************************************************************************
 
       // the first selection typeDeVisite
@@ -428,12 +479,6 @@ export default {
       AcuiteVisuelleSansCOG:"",
       AcuiteVisuelleAvecCOD:"",
       AcuiteVisuelleAvecCOG:"",
-
-
-
-
-
-
     };
   },
   mounted: function() {
@@ -450,7 +495,18 @@ export default {
   methods: {
     async showPatient(user) {
       this.content = "dossier";
-      this.userselected = user;
+      // this.userselected = user;
+      try {
+        const response = await DocServices.showPatient({
+          id: user.id
+        });
+        // this.patientDM = response
+        this.userPersInfo = response.data.medFile.personalInfo
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
     },
 
     async createMF(user) {
@@ -458,11 +514,46 @@ export default {
         const response = await DocServices.createMF({
           id: user.id,
         });
-        // alert("welecome")
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
         console.log(this.error);
+      }
+    },
+
+    async modifierInfoPers () {
+      try {
+        this.cachedUser = Object.assign({}, this.userPersInfo);
+        this.isDisabledPersInfo = false
+        console.log("modifierInfoPers button was clicked !");
+      } catch (error) {
+        console.log("something went wrong");
+      }
+    },
+
+    async cancelInfoPers () {
+      try {
+        this.userPersInfo = Object.assign({}, this.cachedUser);
+        this.isDisabledPersInfo = true
+        console.log("cancelInfoPers button was clicked !");
+      } catch (error) {
+        console.log("something went wrong");
+      }
+    },
+
+    async savePersInfo () {
+      try {
+        this.cachedUser = Object.assign({}, this.userPersInfo);
+        this.isDisabledPersInfo = true
+        console.log("savePersInfo button was clicked !");
+        console.log(this.userPersInfo);
+        
+        const response = await DocServices.savePersInfo({
+          personalInfo: this.userPersInfo
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
       }
     },
   },
