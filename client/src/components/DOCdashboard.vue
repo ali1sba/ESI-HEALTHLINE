@@ -217,9 +217,9 @@
                       <el-space> Prénom <el-input v-model="userPersInfo.firstName" :disabled="isDisabledPersInfo"></el-input></el-space>
                     </el-space>
                     <el-space wrap :size="10"> Date de naissance 
-                      <el-date-picker
-                        v-model="userPersInfo.dateOfBirth"
+                      <el-date-picker 
                         type="date"
+                        v-model="userPersInfo.dateOfBirth"
                         :disabled-date="disabledDate"
                         :shortcuts="shortcuts"
                         :disabled="isDisabledPersInfo"
@@ -229,7 +229,7 @@
                     </el-space>
                     <el-space wrap :size="10"> Sexe <el-input v-model="userPersInfo.sexe" :disabled="isDisabledPersInfo"></el-input> Groupe sanguin <el-input v-model="userPersInfo.bloodGroup" :disabled="isDisabledPersInfo"></el-input></el-space>
                     <el-space wrap :size="10"> Adresse <el-input v-model="userPersInfo.addresse" :disabled="isDisabledPersInfo"></el-input> Téléphone <el-input v-model="userPersInfo.phoneNum" :disabled="isDisabledPersInfo"></el-input></el-space>
-                    <el-space wrap :size="10"> Email <el-input v-model="userPersInfo.email" :disabled="isDisabledPersInfo"></el-input> NSS <el-input v-model="userPersInfo.numSS" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> Email <el-input v-model="userPersInfo.email" :disabled="true"></el-input> NSS <el-input v-model="userPersInfo.numSS" :disabled="isDisabledPersInfo"></el-input></el-space>
                     <el-space wrap :size="10"> 
                       Fonction <el-input v-model="userPersInfo.state" :disabled="isDisabledPersInfo"></el-input>
                       Année scolaire <el-input v-model="userPersInfo.scolarYear" :disabled="isDisabledPersInfo"></el-input>
@@ -403,19 +403,21 @@ export default {
 
       //the data for personalInfo section****************************************************************************
       userPersInfo: {
-        firstName: "none",
-        lastName: "none",
-        dateOfBirth: "none",
-        placeOfBirth: "none",
-        sexe: "none",
-        bloodGroup: "none",
-        addresse: "none",
-        phoneNum: "none",
-        email: "none",
-        numSS: "none",
-        state: "none",
-        scolarYear: "none",
-        category: "none",
+        idUser: null,
+        idPI: null,
+        firstName: null,
+        lastName: null,
+        dateOfBirth: null,
+        placeOfBirth: null,
+        sexe: null,
+        bloodGroup: null,
+        addresse: null,
+        phoneNum: null,
+        email: null,
+        numSS: null,
+        state: null,
+        scolarYear: null,
+        category: null,
       },
       cachedUser : "",
       isDisabledPersInfo: true,
@@ -495,11 +497,16 @@ export default {
   methods: {
     async showPatient(user) {
       this.content = "dossier";
-      // this.userselected = user;
+      this.userselected = user;
       try {
         const response = await DocServices.showPatient({
           id: user.id
         });
+
+        // am sending an attribute "haveDM"
+        // haveDM : true => the patient haveDM => display the DM and hide the "créer le dossier médical" button
+        // haveDM : false => the patient dont haveDM => display the "créer le dossier médical" button with some infos
+
         // this.patientDM = response
         this.userPersInfo = response.data.medFile.personalInfo
         console.log(response.data);

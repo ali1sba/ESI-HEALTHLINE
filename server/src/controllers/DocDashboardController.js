@@ -85,7 +85,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to fetch the users ${err}`
+        error: `an error has occured trying to create the users MF ${err}`
       })
     }
   },
@@ -93,24 +93,53 @@ module.exports = {
   async showPatient (req, res) {
     try {
       const userId = req.body.id
-      const userUser = await MedicalFile.findOne({
+      const userMF = await MedicalFile.findOne({
         where: {
-          id: userId
+          idUser: userId
         }
       })
-      if (!userUser) {
+      if (!userMF) {
+        const userUser = await User.findOne({
+          where: {
+            id: userId
+          }
+        })
+        const medFile = {
+          haveDM: false,
+          personalInfo: {
+            idUser: userId,
+            idPI: null,
+            firstName: userUser.firstName,
+            lastName: userUser.lastName,
+            dateOfBirth: userUser.birthday,
+            placeOfBirth: null,
+            sexe: userUser.sexe,
+            bloodGroup: null,
+            addresse: null,
+            phoneNum: userUser.phoneNum,
+            email: null,
+            numSS: null,
+            state: userUser.state,
+            scolarYear: userUser.scolarYear,
+            category: null
+          }
+          // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
+        }
         res.send({
-          message: "Ce patient n'a aucun dossier médical dans le système"
+          medFile: medFile
         })
       } else {
         const userPI = await PersonalInfo.findOne({
           where: {
-            id: userUser.personalInfoId
+            id: userMF.personalInfoId
           }
         })
         // here we add userBI, userAI and userDI // same thing with ExamenMedical, RDV and statistics
         const medFile = {
+          haveDM: true,
           personalInfo: {
+            idUser: userId,
+            idPI: userPI.id,
             firstName: userPI.firstName,
             lastName: userPI.lastName,
             dateOfBirth: userPI.dateOfBirth,
@@ -142,11 +171,44 @@ module.exports = {
     try {
       const userPI = req.body.personalInfo
       // update the tables with save function of sequelize
+      const userUser = await User.findOne({
+        where: {
+          id: userPI.idUser
+        }
+      })
+      const userPersonalInfo = await PersonalInfo.findOne({
+        where: {
+          id: userPI.idPI
+        }
+      })
+      // save changes in Users table
+      userUser.firstName = userPI.firstName
+      userUser.lastName = userPI.lastName
+      userUser.birthday = userPI.dateOfBirth
+      userUser.sexe = userPI.sexe
+      userUser.phoneNum = userPI.phoneNum
+      userUser.state = userPI.state
+      userUser.scolarYear = userPI.scolarYear
+      await userUser.save()
+      // save changes in PersonalInfos table
+      userPersonalInfo.firstName = userPI.firstName
+      userPersonalInfo.lastName = userPI.lastName
+      userPersonalInfo.dateOfBirth = userPI.dateOfBirth
+      userPersonalInfo.placeOfBirth = userPI.placeOfBirth
+      userPersonalInfo.sexe = userPI.sexe
+      userPersonalInfo.bloodGroup = userPI.bloodGroup
+      userPersonalInfo.addresse = userPI.addresse
+      userPersonalInfo.phoneNum = userPI.phoneNum
+      userPersonalInfo.numSS = userPI.numSS
+      userPersonalInfo.state = userPI.state
+      userPersonalInfo.scolarYear = userPI.scolarYear
+      userPersonalInfo.category = userPI.category
+      await userPersonalInfo.save()
       res.send({
-        message: `PersInfo successfully updated... ${userPI.firstName}`
+        message: `PersInfo successfully updated... dateOfBirth: ${userPI.dateOfBirth}`
       })
     } catch (err) {
-      res.status(500).send({
+      res.send({
         error: `an error has occured trying to savePersInfo the users ${err}`
       })
     }

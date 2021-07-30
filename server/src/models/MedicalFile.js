@@ -7,18 +7,23 @@ module.exports = (sequelize, DataTypes) =>
     },
     idUser: {
       type: DataTypes.INTEGER,
+      unique: true,
       allowNull: false
     },
     personalInfoId: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique: true
     },
     biometricInfoId: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique: true
     },
     antecedentsInfoId: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique: true
     },
     screeningInfoId: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      unique: true
     }
   })
