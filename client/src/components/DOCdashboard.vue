@@ -248,7 +248,16 @@
               <el-card class="box-card" id="Informations-Biométriques">
                 <h6>Informations Biométriques</h6>
                 <div class="text item">
-                  <!-- TODO -->
+                  <div class="text item" id="biom">
+                 <p class="droite">Poids : (kg) </p><div classe="gauche"><el-input   placeholder="Entrez le poids" v-model="poids"></el-input></div>
+                 
+                      <p class="droite">Taille :  (cm) </p><div classe="gauche"><el-input id="weight"   placeholder="Entrez la taille" v-model="taille"></el-input></div>
+                         <el-button @click="bmiCalculation" class="droite"> IMC  </el-button>
+ 
+                    <p  class="droite" id="imcValue"> {{responseimc}}</p>
+
+
+                </div>
                 </div>
               </el-card>
               <!-- **********************ilhem********************** -->
@@ -294,14 +303,7 @@
                     </el-space>
                     </el-col >
                     </el-row>
-                    <el-row>
-                      <el-col :span="24">
-                    <el-space wrap :size="50">
-                     <el-space wrap :size="10"> Poids <el-input placeholder="KG" v-model="poids"></el-input></el-space>
-                      <el-space wrap :size="10">Taille <el-input placeholder="Mètre" v-model="taille"></el-input></el-space>
-                    </el-space>
-                    </el-col>
-                    </el-row>
+                   
                     <el-divider></el-divider>
 
                      <el-collapse v-model="activeNames" @change="handleChange">
@@ -438,8 +440,10 @@ export default {
       typeDeVisite: "",
 
       docteurName: "Merabet ",
-      poids: "0",
-      taille : "0",
+      poids: 0,
+      taille : 0,
+      responseimc:"0",
+      
 
       // date
       disabledDate(time) {
@@ -495,6 +499,25 @@ export default {
       });
   },
   methods: {
+
+    
+
+        bmiCalculation () {
+       
+       var bmi = this.poids / (this.taille * (this.taille /100 ));
+      
+        this.responseimc="10";
+      if(bmi < 25) {
+       this.responseimc = 'Low: ' + bmi.toFixed(2) + ' kg/m2';
+      }
+      else if (bmi >=25 && bmi <30 ) {
+        this.responseimc ='Moderate: ' + bmi.toFixed(2) + ' kg/m2';
+      }
+      else if (bmi >=30 ) {
+        this.responseimc = 'High: ' + bmi.toFixed(2) + ' kg/m2';
+    }
+    
+  }, 
     async showPatient(user) {
       this.content = "dossier";
       this.userselected = user;
@@ -563,7 +586,7 @@ export default {
         console.log(`something went wrong ${error}`);
       }
     },
-  },
+   }
 };
 </script>
 
@@ -591,4 +614,29 @@ export default {
   .el-col {
     border-radius: 4px;
   }
+
+.gauche  {
+    float:right;
+     width:70px;
+    }
+
+.droite {
+    
+    margin-right:20px;
+    float:left;
+    margin-top:5px;
+    width:85px;
+  
+  }
+#biom {
+    width:350px;
+      padding-top: 0px;
+    }
+#imcValue{
+     padding:7px;
+      margin-left:10px;
+      width:150px
+   }
+  
+      
 </style>
