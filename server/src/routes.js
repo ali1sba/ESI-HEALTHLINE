@@ -18,5 +18,5 @@ module.exports = (app) => {
   app.get('/doc/patients', DocDashboardController.recoverPatients)
   app.post('/DOCdashboard', DocDashboardController.createMF)
   app.post('/DOCdashboard/showPatient', DocDashboardController.showPatient)
-  app.post('/DOCdashboard/savePersInfo', DocDashboardController.savePersInfo)
+  app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
 }

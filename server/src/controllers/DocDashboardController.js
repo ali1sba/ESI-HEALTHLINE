@@ -239,19 +239,20 @@ module.exports = {
   async saveBiometricInfo (req, res) {
     try {
       const userBI = req.body.biometricInfo
+
       // update the tables with save function of sequelize
       const userBiometricInfo = await biometricInfo.findOne({
         where: {
           id: userBI.id
         }
       })
-      // save changes in PersonalInfos table
+      // save changes in biometricinfos table
       userBiometricInfo.poids = userBI.poids
-      userBiometricInfo.poids = userBI.poids
-      userBiometricInfo.imc = userBI.poids
+      userBiometricInfo.taille = userBI.taille
+      userBiometricInfo.imc = userBI.imc
       await userBiometricInfo.save()
       res.send({
-        message: `BIOMInfo successfully updated... dateOfBirth: ${userBI.poids}`
+        message: ` successfully updated... : ${userBI.poids}`
       })
     } catch (err) {
       res.status(500).send({

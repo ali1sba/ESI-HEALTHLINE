@@ -14,4 +14,7 @@ export default {
     savePersInfo (credantials){
         return Api().post('/DOCdashboard/savePersInfo',credantials)
     },
+    saveBiometricInfo (credantials){
+        return Api().post('/DOCdashboard/saveBioInfo',credantials)
+    },
 }

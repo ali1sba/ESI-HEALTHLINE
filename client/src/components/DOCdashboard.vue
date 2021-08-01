@@ -427,8 +427,7 @@ export default {
       //BIOMETRIC
      responseimc:"0",
        userBiomInfo:{
-         id: null,
-       poids: 0,
+         poids: 0,
       taille : 0,
       imc:0,
        } ,
@@ -604,6 +603,7 @@ export default {
           biometricInfo: this.userBiomInfo
         });
         console.log(response.data);
+        console.log("biom info done")
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
