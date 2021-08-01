@@ -249,12 +249,12 @@
                 <h6>Informations Biométriques</h6>
                 <div class="text item">
                   <div class="text item" id="biom">
-                 <p class="droite">Poids : (kg) </p><div classe="gauche"><el-input   placeholder="Entrez le poids" v-model="poids"></el-input></div>
+                 <p class="droite">Poids : (kg) </p><div classe="gauche"><el-input   placeholder="Entrez le poids" v-model="userBiomInfo.poids"></el-input></div>
                  
-                      <p class="droite">Taille :  (cm) </p><div classe="gauche"><el-input id="weight"   placeholder="Entrez la taille" v-model="taille"></el-input></div>
-                         <el-button @click="bmiCalculation" class="droite"> IMC  </el-button>
+                      <p class="droite">Taille :  (cm) </p><div classe="gauche"><el-input id="weight"   placeholder="Entrez la taille" v-model="userBiomInfo.taille"></el-input></div>
+                         <el-button @click="bmiCalculation(); saveBiometricInfo();" class="droite" v-model="userBiomInfo.imc"> IMC  </el-button>
  
-                    <p  class="droite" id="imcValue"> {{responseimc}}</p>
+                    <p  class="droite" id="imcValue" > {{responseimc}}</p>
 
 
                 </div>
@@ -424,6 +424,14 @@ export default {
       cachedUser : "",
       isDisabledPersInfo: true,
       catégorie: "",
+      //BIOMETRIC
+     responseimc:"0",
+       userBiomInfo:{
+         id: null,
+       poids: 0,
+      taille : 0,
+      imc:0,
+       } ,
       //the data for Dépistage section****************************************************************************
 
       // the first selection typeDeVisite
@@ -440,9 +448,7 @@ export default {
       typeDeVisite: "",
 
       docteurName: "Merabet ",
-      poids: 0,
-      taille : 0,
-      responseimc:"0",
+    
       
 
       // date
@@ -504,9 +510,9 @@ export default {
 
         bmiCalculation () {
        
-       var bmi = this.poids / (this.taille * (this.taille /100 ));
+       var bmi = this.userBiomInfo.poids / (this.userBiomInfo.taille * (this.userBiomInfo.taille /100 ));
       
-        this.responseimc="10";
+        
       if(bmi < 25) {
        this.responseimc = 'Low: ' + bmi.toFixed(2) + ' kg/m2';
       }
@@ -532,6 +538,7 @@ export default {
 
         // this.patientDM = response
         this.userPersInfo = response.data.medFile.personalInfo
+        this.userBiomInfo=response.data.medFile.biometricInfo
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -580,6 +587,21 @@ export default {
         
         const response = await DocServices.savePersInfo({
           personalInfo: this.userPersInfo
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+     async saveBiometricInfo () {
+      try {
+        this.cachedUser = Object.assign({}, this.userBiomInfo);
+        
+        console.log("save biominfo button was clicked !");
+        console.log(this.userBiomInfo);
+        
+        const response = await DocServices.saveBiometricInfo({
+          biometricInfo: this.userBiomInfo
         });
         console.log(response.data);
       } catch (error) {

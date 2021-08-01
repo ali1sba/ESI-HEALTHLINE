@@ -250,19 +250,19 @@ export default {
       scolarYear: "annee scolaire",
       error: null,
        options: [{
-          value: 'femme',
-          label: 'femme'
+          value: 'FEMME',
+          label: 'FEMME'
         }, {
-          value: 'homme',
-          label: 'homme'
+          value: 'HOMME',
+          label: 'HOMME'
         }],
         value: '',
         optionstate: [{
           value: 'ATS',
           label: 'ATS'
         }, {
-          value: 'etudiant',
-          label: 'etudiant'
+          value: 'Etudiant',
+          label: 'Etudiant'
         }],
         valuestate: '',
         optionyear: [{
