@@ -232,29 +232,34 @@
                      
                         <el-row> 
                                 <el-col :span="3">A fumer </el-col>
-                                <el-col :span="3"><el-radio v-model="radioFumer" label="1">Oui</el-radio></el-col>
-                                <el-col :span="3"><el-radio v-model="radioFumer" label="2">Non</el-radio></el-col>
-                                <el-col :span="15"> <el-space wrap :size="4">Nombre cigarettes /j<el-input-number v-model="nbrFumer" controls-position="right" :disabled="true" @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                                <el-col :span="3"><el-radio class="ouinon" v-model="boolFumer" label="1">Oui</el-radio></el-col>
+                                <el-col :span="3"><el-radio class="ouinon" v-model="boolFumer" label="2">Non</el-radio></el-col>
+                                <el-col :span="15"> <el-space wrap :size="4">Nombre cigarettes /j<el-input-number v-model="nbrFumer" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
                         </el-row>  
                         <el-row>      
                       <el-col :span="3">A chiquer</el-col> 
-                      <el-col :span="3"><el-radio v-model="radioChiquer" label="1">Oui</el-radio></el-col>
-                      <el-col :span="3"> <el-radio v-model="radioChiquer" label="2">Non</el-radio></el-col>
-                      <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number v-model="nbrChiquer" controls-position="right" :disabled="true" @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                      <el-col :span="3"><el-radio class="ouinon" v-model="boolChiquer" label="1">Oui</el-radio></el-col>
+                      <el-col :span="3"> <el-radio class="ouinon" v-model="boolChiquer" label="2">Non</el-radio></el-col>
+                      <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number v-model="nbrChiquer" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
                         </el-row>
                        <el-row>
                        <el-col :span="3">A prise</el-col> 
-                       <el-col :span="3"><el-radio v-model="radioPrise" label="1">Oui</el-radio></el-col>
-                       <el-col :span="3"> <el-radio v-model="radioPrise" label="2">Non</el-radio></el-col>
-                       <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number v-model="nbrPrise" controls-position="right" :disabled="true" @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                       <el-col :span="3"><el-radio class="ouinon" v-model="boolPrise" label="1">Oui</el-radio></el-col>
+                       <el-col :span="3"> <el-radio class="ouinon" v-model="boolPrise" label="2">Non</el-radio></el-col>
+                       <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number v-model="nbrPrise" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
                        </el-row>
-                    
+                    <el-row>
+                       <el-col :span="3">ancien fumeur</el-col> 
+                       <el-col :span="3"><el-radio class="ouinon" v-model="ancienFum" label="1">Oui</el-radio></el-col>
+                       <el-col :span="3"> <el-radio class="ouinon" v-model="ancienFum" label="2">Non</el-radio></el-col>
+                       <el-col :span="15"> <el-space wrap :size="4">periode d'exposition <el-input-number v-model="perExpo" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space>ans</el-col>
+                       </el-row>
                      <el-row >
                      <h6>Alcool              
-                     <el-space wrap :size="10"><el-input placeholder="" v-model="alcool"></el-input></el-space>
+                     <el-space wrap :size="10"><el-input placeholder="..." v-model="alcool"></el-input></el-space>
                     </h6>  
                     <h6>Medicaments
-                     <el-space wrap :size="10"><el-input placeholder="" v-model="medicat"></el-input></el-space>
+                     <el-space wrap :size="10"><el-input placeholder="..." v-model="medicat"></el-input></el-space>
                     </h6>  </el-row>
                     <h6>Autres
                    <el-space wrap :size="10"><el-input placeholder="" v-model="autres"></el-input></el-space>
@@ -270,6 +275,7 @@
                         <h6>Reactions allergiques au medicaments</h6><el-input v-model="reactMed"  type="textarea" autosize placeholder=".."></el-input>
                     </el-col>
                   </el-row>
+                  <el-button class="savebtnant" v-model="saveBtnAnt" round>Sauvgarder</el-button>
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
@@ -472,20 +478,22 @@ export default {
       AcuiteVisuelleSansCOG:"",
       AcuiteVisuelleAvecCOD:"",
       AcuiteVisuelleAvecCOG:"",
-    //  antecendents
-    radioFumer:'2',
-    radioChiquer:'2',
-    radioPrise:'2',
+    //  antecendents******************************************************************************
+    boolFumer:'2',
+    boolChiquer:'2',
+    boolPrise:'2',
+    ancienFum:'2',
     nbrFumer:"",
     nbrChiquer:"",
     nbrPrise:"",
+    perExpo:"",
     alcool:"",
     medicat:"",
     autres:"none",
     affec:"none",
-    malaGene:"",
-    intChiru:"",
-    reactMed:"",
+    malaGene:"none",
+    intChiru:"none",
+    reactMed:"none",
     };
   },
   mounted: function() {
@@ -518,7 +526,7 @@ export default {
       }
     },
   },
-  //antecedents
+  //antecedents*****************************************************************************************
   handleChange(value) {
   console.log(value);}
 };
@@ -548,4 +556,15 @@ export default {
   .el-col {
     border-radius: 4px;
   }
+  .savebtnant:hover{
+    color: #24b4ab;
+    background-color: white;
+   
+  }
+  .savebtnant{
+    color: white;
+    background-color: #24b4ab;
+    float: right;
+  }
+
 </style>
