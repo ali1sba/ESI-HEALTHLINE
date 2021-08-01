@@ -14,4 +14,14 @@ export default {
     savePersInfo (credantials){
         return Api().post('/DOCdashboard/savePersInfo',credantials)
     },
+
+    saveBioInfo (credantials){
+        return Api().post('/DOCdashboard/saveBioInfo',credantials)
+    },
+    saveAntInfo (credantials){
+        return Api().post('/DOCdashboard/saveAntInfo',credantials)
+    },
+    saveDepiInfo (credantials){
+        return Api().post('/DOCdashboard/saveDepiInfo',credantials)
+    },
 }

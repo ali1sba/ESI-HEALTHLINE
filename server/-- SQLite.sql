@@ -3,6 +3,7 @@
 --DROP TABLE 'Comptes';
 --DROP TABLE 'MedicalFiles';
 --DROP TABLE 'PersonalInfos';
+--DROP TABLE 'Depistages';
 --DROP TABLE 'UserNonValides';
 --DROP TABLE 'Users';
 --DROP TABLE 'ResetPasswordRequests';

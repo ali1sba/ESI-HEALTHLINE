@@ -1,99 +1,136 @@
 <template>
   <div class="admin">
-    <header role="banner">
-      <h1>Admin Panel</h1>
-      <ul class="utilities">
-        <br />
-        <li class="users"><a href="#">My Account</a></li>
-      </ul>
-    </header>
-    <nav role="navigation">
-      <ul class="main">
+  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+</el-menu>
+<el-menu
+  :default-active="activeIndex2"
+  class="el-menu-demo"
+  mode="horizontal"
+  @select="handleSelect"
+  background-color="#545c64"
+  text-color="#fff"
+  active-text-color="#ffd04b">
+  <el-menu-item index="1" @click="section = 1">HealtheLine</el-menu-item>
+  <el-menu-item index="4" @click="section = 2">Profile</el-menu-item>
+</el-menu>
+    <nav role="navigationAdmin">
+      <ul class="mainAdmin">
         <div id="dashboard_btn" @click="section = 1">
-          <li class="dashboard"><a href="#/admin">Section 1</a></li>
+          <li class="dashboardAdmin"><a href="#/admin">Section 1</a></li>
         </div>
         <div id="edit_btn" @click="section = 2">
-          <li class="edit"><a href="#/admin">Section 2</a></li>
+          <li class="editAdmin"><a href="#/admin">Section 2</a></li>
+        </div>
+        <div id="message_btn" @click="section = 3">
+          <li class="AddNewAdmin"><a href="#/admin">Section 3</a></li>
         </div>
       </ul>
     </nav>
-
-    <main role="main">
-      <el-scrollbar height=100%>
+    <main role="mainAdmin">
       <section v-if="section === 1" id="section1">
-        <section class="panel important">
-          <h2>Les comptes a validée</h2>
-          <ul>
-            <li>
-              Ici se retrouve tout les comptes qui attend toujours la validation
-              de l'admin
-            </li>
-          </ul>
-        </section>
-
-        <section class="panel important">
-          <h2>Les Comptes</h2>
-          <div id="app">
-            <table class="responsive-table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">sexe</th>
-
-                  <th scope="col">Num telephone</th>
-                  <th scope="col">statu</th>
-                  <th scope="col">années scolaire</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr v-for="(user, index) in users" :key="user.id">
-                  <th scope="row">{{ index + 1 }}</th>
-                  <td>{{ user.firstName }} {{ user.lastName }}</td>
-                  <td id="Email">/</td>
-                  <td>{{ user.sexe }}</td>
-
-                  <td>{{ user.phoneNum }}</td>
-                  <td>{{ user.state }}</td>
-                  <td>{{ user.scolarYear }}</td>
-                  <td>
-                    <input
-                      type="button"
-                      ref="myRef"
-                      value="Valider"
-                      class="ValiderBtn"
-                      @click="validateUser(index, user)"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="button"
-                      value="Supprimer"
-                      class="SupprimerBtn"
-                      @click="deleteUser(index,user)"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <el-table
+          :data="users"
+          style="width: 100%">
+          <el-table-column
+            label="name"
+            width="180">
+            <template #default="scope">
+              <span style="margin-left: 10px">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="email"
+            width="180">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="numuro telephone"
+            width="180">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.phoneNum }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Operations">
+            <template #default="scope">
+              <el-button
+                size="mini"
+                @click="validateUser(scope.$index, scope.row)">Valider</el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="deleteUser(scope.$index, scope.row)">Supp</el-button>
+            </template>
+            
+          </el-table-column>
+          
+        </el-table>
+        
       </section>
+            <section v-if="section === 2" id="section2">
+          <el-table
+          :data="usersvalid"
+          style="width: 100%">
+          <el-table-column
+            label="name"
+            width="180">
+            <template #default="scope">
+              <span style="margin-left: 10px">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="email"
+            width="180">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="numuro telephone"
+            width="180">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.phoneNum }}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="sexe"
+            width="100">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.sexe}}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="Annee Scolaire"
+            width="80">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.scolarYear }}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="State"
+            width="120">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.state }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Operations">
+            <template #default="scope">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="desactivateUser(scope.row)">desactiver</el-button>
+            </template>
+            
+            
+          </el-table-column>
+        </el-table>
 
-      <section v-if="section === 2" id="section2">
-        <section class="panel important">
-          <h2>Tout les comptes dans le site</h2>
-          <ul>
-            <li>Ici se retrouve tout les comptes qui sont deja validée</li>
-          </ul>
-        </section>
-        <section class="panel important">
-          <h2>Les Comptes</h2>
-          <div id="app2">
-            <table class="responsive-table">
-              <thead>
+
+
+          <!--  <thead>
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Nom</th>
@@ -125,28 +162,130 @@
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </div>
-        </section>
+              </thead> -->
       </section>
-      </el-scrollbar >
+      <section v-if="section === 3" id="section3">
+        <div >
+        <el-row class="formrow">
+  <el-col class="firsthalf" :span="16">
+    <div class=" coldiv grid-content bg-purple">
+      <!-- first row logo part -->
+   <el-row>
+     <el-col class="formlogo" :span="6"><img src="logo.png" ></el-col>
+   </el-row> 
+   <div class="formelems">
+   <!-- second row name  -->
+   <el-row> 
+   <el-col class="m1" :span="10"><el-input v-model="lastName" placeholder="nom" required></el-input><div class="invalid-feedback">  Valid last name is required. </div></el-col> 
+   <el-col :span="10"><el-input v-model="firstName" placeholder="prenom" required></el-input><div class="invalid-feedback">  Valid first name is required. </div></el-col>  
+   </el-row> 
+   <!-- third row input --> 
+   <el-row>
+     <el-col :span="20"><el-input v-model="email" placeholder="email"></el-input></el-col> 
+   </el-row>
+   <!-- forth row input  -->
+   <el-row>
+     <el-col class="m1" :span="10"><el-input id="password" placeholder="mot de passe" v-model="password" show-password></el-input></el-col>
+     <el-col :span="10"><el-input id="password2" placeholder="confirmer votre mot de passe" v-model="password2" show-password></el-input></el-col>
+   </el-row>
+   <!-- fifth row password  -->
+   <el-row>
+    <el-col :span="20"><el-input id="number" v-model="phoneNum" placeholder="numero de telephone"></el-input></el-col> 
+   </el-row>
+   <el-row>
+      <!-- sixth row input  -->
+   <el-col :span="7"><el-date-picker id="datenaiss" v-model="birthday" type="date" placeholder="date de naiss"> </el-date-picker></el-col>
+   <!-- <el-col  style="margin-right:1%" :span="7"><el-input v-model="birthplace" placeholder="lieu de naissance" ></el-input> </el-col> -->
+   <el-col  :span="7"><el-select id="exampleFormControlSelect1" v-model="sexe" placeholder="sexe">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col>
+      <el-col style="margin-right:1%" :span="6"><el-select v-model="state">
+        <el-option v-for="item in optionstate" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col> 
+    </el-row>
+  <!-- seventh row year  -->
+  <el-row>
+    <el-col :span="6"><el-select v-model="scolarYear" >
+       <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col>
+    <div class="error" v-html="error" ></div>
+  </el-row>
+ <!-- sign up button  -->
+  <el-row>
+    <el-col :span="4"><el-button @click="register" type="primary" plain>s'inscrire</el-button></el-col>
+    <el-col class="formline" :span="7"><p> Vous avez déjà un compte? <router-link to="/">s'identifier </router-link> </p></el-col>
+  </el-row>
+   </div>
+  </div>
+  </el-col>
+ <!-- second half image  -->
+  </el-row>
+  <!-- styling goes here -->
+  
+  </div> 
+  
+      </section>
     </main>
-    
   </div>
 </template>
 
 <script>
+import AuthServices from "@/services/AuthentificationService";
 import axios from "axios";
 import adminservice from "../services/adminservice";
 export default {
   data() {
-    return {
+        return {
       users: [],
       usersvalid: [],
-      error: null,
+      student : "ATS",
+      firstName: "",
+      lastName: "",
+      birthday: "",
+      // birthplace: "",
+      sexe: "Sexe",
       email: "",
-      section : 1,
+      password: "",
+      password2: "",
+      phoneNum: "",
+      state: "etat",
+      scolarYear: "annee scolaire",
+      error: null,
+       options: [{
+          value: 'femme',
+          label: 'femme'
+        }, {
+          value: 'homme',
+          label: 'homme'
+        }],
+        value: '',
+        optionstate: [{
+          value: 'ATS',
+          label: 'ATS'
+        }, {
+          value: 'etudiant',
+          label: 'etudiant'
+        }],
+        valuestate: '',
+        optionyear: [{
+          value: '1CPI',
+          label: '1CPI'
+        }, {
+          value: '2CPI',
+          label: '2CPI'
+         }, {
+          value: '1CS',
+          label: '1CS'
+          }, {
+          value: '2CS',
+          label: '2CS'
+          }, {
+          value: '3CS',
+          label: '3CS'
+        }],
+        valueyear: ''
     };
+
   },
   mounted: function () {
     axios
@@ -209,6 +348,45 @@ export default {
       }
 
     },
+    async register() {
+      try {
+        if (this.password === this.password2){
+          this.error = ''
+          const response = await AuthServices.register({
+          firstName: this.firstName,
+          lastName: this.lastName,
+          birthday: this.birthday,
+          // birthplace: this.birthplace,
+          sexe: this.sexe,
+          email: this.email,
+          password: this.password,
+          password2: this.password2,
+          phoneNum: this.phoneNum,
+          state: this.state,
+          scolarYear: this.scolarYear
+          
+        })
+        alert("regiter successfull")
+        console.log(response.data)
+        } else {
+          this.error = 'problem in confirmation of the password'
+        }
+       
+        
+        
+       } catch (error) {
+         this.error = error.response.data.error
+         console.log(this.error)
+       }
+
+     
+    },
+    async switcher (state){
+        this.student = state 
+        if (!(this.student === 'Etudiant') ){
+          this.scolarYear = '/'
+        }
+    },
   },
 };
 </script>
@@ -217,3 +395,46 @@ export default {
 
 <style scoped>
 </style>
+<style >
+
+.error {
+  color: red;
+}
+
+
+.el-col{
+ margin-top: 2%;
+ width: 100%;
+}
+
+.firsthalf{
+  margin:0;
+  background-color: white;
+  bottom: 0;
+}
+.formlogo{
+ margin-left: 35%;
+ 
+}
+
+.formline{
+  margin-left: 40%;
+}
+.coldiv{
+  padding: 2% 0 2% 12% ;
+}
+.formrow{
+  margin: 0;
+  height: 100vh;
+  background-size: cover;
+}
+.register{
+  height: 100vh;
+}
+.m1{
+margin-right: 0.3%;
+padding: 0;
+}
+
+</style>
+
