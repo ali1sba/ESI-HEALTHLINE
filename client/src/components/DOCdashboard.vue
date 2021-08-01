@@ -213,8 +213,8 @@
                 <div class="text item">
                   <el-space direction="vertical">
                     <el-space wrap :size="10">
-                      <el-space> Nom <el-input v-model="userPersInfo.lastName" :disabled="isDisabledPersInfo"></el-input></el-space>
-                      <el-space> Prénom <el-input v-model="userPersInfo.firstName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                      <el-space wrap :size="10"> Nom <el-input v-model="userPersInfo.lastName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                      <el-space wrap :size="10"> Prénom <el-input v-model="userPersInfo.firstName" :disabled="isDisabledPersInfo"></el-input></el-space>
                     </el-space>
                     <el-space wrap :size="10"> Date de naissance 
                       <el-date-picker 
@@ -234,13 +234,15 @@
                       Fonction <el-input v-model="userPersInfo.state" :disabled="isDisabledPersInfo"></el-input>
                       Année scolaire <el-input v-model="userPersInfo.scolarYear" :disabled="isDisabledPersInfo"></el-input>
                     </el-space>
-                    <el-space wrap :size="10"> Catégorie <el-input v-model="userPersInfo.category" :disabled="isDisabledPersInfo"></el-input></el-space>
-                    <div v-if="isDisabledPersInfo">
-                      <el-space><el-button icon="el-icon-edit" @click="modifierInfoPers"> Modifier </el-button></el-space>
-                    </div>
-                    <div v-else>
-                      <el-space><el-button type="success" icon="el-icon-check" @click="savePersInfo"> Enregister </el-button><el-button type="danger" icon="el-icon-delete" @click="cancelInfoPers"> Annuler </el-button></el-space>
-                    </div>
+                    <el-space wrap :size="10">
+                      Catégorie <el-input v-model="userPersInfo.category" :disabled="isDisabledPersInfo"></el-input>
+                      <div v-if="isDisabledPersInfo">
+                        <el-space><el-button icon="el-icon-edit" @click="modifierInfoPers"> Modifier </el-button></el-space>
+                      </div>
+                      <div v-else>
+                        <el-space><el-button type="success" icon="el-icon-check" @click="savePersInfo"> Enregister </el-button><el-button type="danger" icon="el-icon-delete" @click="cancelInfoPers"> Annuler </el-button></el-space>
+                      </div>
+                    </el-space>
                   </el-space>
                 </div>
               </el-card>
