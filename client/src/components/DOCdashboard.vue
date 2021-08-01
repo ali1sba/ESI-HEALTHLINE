@@ -225,7 +225,51 @@
               <el-card class="box-card" id="Antécédents">
                 <h6>Antécédents</h6>
                 <div class="text item">
-                  <!-- TODO -->
+                  <el-row>
+                    <el-col  class="intox" :span="20">
+                      <h5>INTOXICATIONS : </h5>
+                      <h6>Tabacs</h6> 
+                     
+                        <el-row> 
+                                <el-col :span="3">A fumer </el-col>
+                                <el-col :span="3"><el-radio v-model="radioFumer" label="1">Oui</el-radio></el-col>
+                                <el-col :span="3"><el-radio v-model="radioFumer" label="2">Non</el-radio></el-col>
+                                <el-col :span="15"> <el-space wrap :size="4">Nombre cigarettes /j<el-input-number v-model="nbrFumer" controls-position="right" :disabled="true" @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                        </el-row>  
+                        <el-row>      
+                      <el-col :span="3">A chiquer</el-col> 
+                      <el-col :span="3"><el-radio v-model="radioChiquer" label="1">Oui</el-radio></el-col>
+                      <el-col :span="3"> <el-radio v-model="radioChiquer" label="2">Non</el-radio></el-col>
+                      <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number v-model="nbrChiquer" controls-position="right" :disabled="true" @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                        </el-row>
+                       <el-row>
+                       <el-col :span="3">A prise</el-col> 
+                       <el-col :span="3"><el-radio v-model="radioPrise" label="1">Oui</el-radio></el-col>
+                       <el-col :span="3"> <el-radio v-model="radioPrise" label="2">Non</el-radio></el-col>
+                       <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number v-model="nbrPrise" controls-position="right" :disabled="true" @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                       </el-row>
+                    
+                     <el-row >
+                     <h6>Alcool              
+                     <el-space wrap :size="10"><el-input placeholder="" v-model="alcool"></el-input></el-space>
+                    </h6>  
+                    <h6>Medicaments
+                     <el-space wrap :size="10"><el-input placeholder="" v-model="medicat"></el-input></el-space>
+                    </h6>  </el-row>
+                    <h6>Autres
+                   <el-space wrap :size="10"><el-input placeholder="" v-model="autres"></el-input></el-space>
+                    </h6>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20">
+                       <h5>ANTECEDENTS MEDICO /CHIRUGICAUX : </h5>
+                        <h6>Affections congenitales</h6><el-input v-model="affec"  type="textarea" autosize placeholder=".."></el-input>
+                        <h6>Maladies generalees</h6><el-input v-model="malaGene"  type="textarea" autosize placeholder=".."></el-input>
+                        <h6>Intervention chirurgicales</h6><el-input v-model="intChiru"  type="textarea" autosize placeholder=".."></el-input>
+                        <h6>Reactions allergiques au medicaments</h6><el-input v-model="reactMed"  type="textarea" autosize placeholder=".."></el-input>
+                    </el-col>
+                  </el-row>
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
@@ -428,12 +472,20 @@ export default {
       AcuiteVisuelleSansCOG:"",
       AcuiteVisuelleAvecCOD:"",
       AcuiteVisuelleAvecCOG:"",
-
-
-
-
-
-
+    //  antecendents
+    radioFumer:'2',
+    radioChiquer:'2',
+    radioPrise:'2',
+    nbrFumer:"",
+    nbrChiquer:"",
+    nbrPrise:"",
+    alcool:"",
+    medicat:"",
+    autres:"none",
+    affec:"none",
+    malaGene:"",
+    intChiru:"",
+    reactMed:"",
     };
   },
   mounted: function() {
@@ -466,6 +518,9 @@ export default {
       }
     },
   },
+  //antecedents
+  handleChange(value) {
+  console.log(value);}
 };
 </script>
 
