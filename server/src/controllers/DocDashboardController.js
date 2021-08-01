@@ -247,7 +247,7 @@ module.exports = {
       })
       // save changes in PersonalInfos table
       userBiometricInfo.poids = userBI.poids
-      userBiometricInfo.taille = userBI.taille
+      userBiometricInfo.poids = userBI.poids
       userBiometricInfo.imc = userBI.poids
       await userBiometricInfo.save()
       res.send({
