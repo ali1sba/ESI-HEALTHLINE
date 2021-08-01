@@ -64,5 +64,15 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+@import url(https://fonts.googleapis.com/css?family=Poppins);
+body {
+  font-family: "Poppins", sans-serif;
+}
+.light-blue-gradient {
+  background: linear-gradient(120deg, #24b4ab 0%, #c2e9fb 100%);
+}
 
+.btn btn-primary{
+  color: #24b4ab;
+}
 </style>

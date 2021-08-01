@@ -197,7 +197,7 @@
               </div>
             </center>
             <br />
-            <el-scrollbar height="400px">
+            <el-scrollbar >
               <button
                 @click="createMF(userselected)"
                 class="btn btn-primary btn-block font-weight-bold mb-2"
@@ -209,9 +209,39 @@
               <!-- **********************mehdi********************** -->
 
               <el-card class="box-card" id="information-personnelles">
-                <h6>nformations personnelles</h6>
+                <h6>Informations personnelles</h6>
                 <div class="text item">
-                  <!-- TODO -->
+                  <el-space direction="vertical">
+                    <el-space wrap :size="10">
+                      <el-space> Nom <el-input v-model="userPersInfo.lastName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                      <el-space> Prénom <el-input v-model="userPersInfo.firstName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    </el-space>
+                    <el-space wrap :size="10"> Date de naissance 
+                      <el-date-picker 
+                        type="date"
+                        v-model="userPersInfo.dateOfBirth"
+                        :disabled-date="disabledDate"
+                        :shortcuts="shortcuts"
+                        :disabled="isDisabledPersInfo"
+                      >
+                      </el-date-picker>
+                      Lieu de naissance <el-input v-model="userPersInfo.placeOfBirth" :disabled="isDisabledPersInfo"></el-input>
+                    </el-space>
+                    <el-space wrap :size="10"> Sexe <el-input v-model="userPersInfo.sexe" :disabled="isDisabledPersInfo"></el-input> Groupe sanguin <el-input v-model="userPersInfo.bloodGroup" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> Adresse <el-input v-model="userPersInfo.addresse" :disabled="isDisabledPersInfo"></el-input> Téléphone <el-input v-model="userPersInfo.phoneNum" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> Email <el-input v-model="userPersInfo.email" :disabled="true"></el-input> NSS <el-input v-model="userPersInfo.numSS" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10"> 
+                      Fonction <el-input v-model="userPersInfo.state" :disabled="isDisabledPersInfo"></el-input>
+                      Année scolaire <el-input v-model="userPersInfo.scolarYear" :disabled="isDisabledPersInfo"></el-input>
+                    </el-space>
+                    <el-space wrap :size="10"> Catégorie <el-input v-model="userPersInfo.category" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <div v-if="isDisabledPersInfo">
+                      <el-space><el-button icon="el-icon-edit" @click="modifierInfoPers"> Modifier </el-button></el-space>
+                    </div>
+                    <div v-else>
+                      <el-space><el-button type="success" icon="el-icon-check" @click="savePersInfo"> Enregister </el-button><el-button type="danger" icon="el-icon-delete" @click="cancelInfoPers"> Annuler </el-button></el-space>
+                    </div>
+                  </el-space>
                 </div>
               </el-card>
               <!-- **********************nour********************** -->
@@ -229,7 +259,7 @@
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
-              <el-card class="box-card" id="Dépistage">
+             <el-card class="box-card" id="Dépistage">
                 <h6>Dépistage</h6>
                 <div class="text item">
                   
@@ -263,14 +293,16 @@
                       ></el-input>
                     </el-space>
                     </el-col >
-                    </el-row>
+                    </el-row> 
                     <el-row>
+                     
                       <el-col :span="24">
                     <el-space wrap :size="50">
                      <el-space wrap :size="10"> Poids <el-input placeholder="KG" v-model="poids"></el-input></el-space>
                       <el-space wrap :size="10">Taille <el-input placeholder="Mètre" v-model="taille"></el-input></el-space>
                     </el-space>
                     </el-col>
+                   
                     </el-row>
                     <el-divider></el-divider>
 
@@ -291,16 +323,382 @@
                         AVEC CORRECTIONS
                         </el-space>
                       </el-collapse-item>
-                      <el-collapse-item title="Efficacité" name="3">
-                        peau et muqueu
-                      </el-collapse-item>
-  <el-collapse-item title="Controllabilité" name="4">
-    <div>Prise de décision: possibilité de donner des conseils sur les opérations, mais ne jamais prendre de décisions à la place des utilisateurs;</div>
-    <div>Contrôle des conséquences: les utilisateurs devraient pouvoir contrôler l'exécution de leurs opérations, y compris l'annulation et la suppression des opérations courantes.</div>
-  </el-collapse-item>
-</el-collapse>
+                     
 
-                    <el-space></el-space>
+                      <el-collapse-item title="les tests" name="3">
+                        
+                                 <el-row :gutter="10">
+                        <el-col :span="8">
+                          Appareils
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          
+                         Interrogatoire
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          
+                          Examens Clinique
+                        </el-col>
+                        </el-row>
+
+<el-divider></el-divider>
+                        <el-row :gutter="10">
+                        <el-col :span="8">
+                          peau et muqueu
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          
+                          <el-checkbox v-model="checkedDouleurs">douleurs</el-checkbox>
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          
+                          <el-input
+                            type="textarea"
+                            :rows="2"
+                            placeholder="Examens clinique"
+                            v-model="textarea1">
+                          </el-input>
+                        </el-col>
+                        </el-row>
+
+<el-divider></el-divider>
+                          
+                        <el-row :gutter="10">
+                          <el-col :span="8">
+                            Ophtalmolodique
+                          </el-col>
+                          
+                          <el-col :span="8">
+                            
+                            <el-checkbox-group v-model="checkListOphtalmolodique">
+                              <el-checkbox label="Larmoiement"></el-checkbox>
+                              <el-checkbox label="Douleurs"></el-checkbox>
+                              <el-checkbox label="Taches devant les yeux"></el-checkbox>
+                            
+                            </el-checkbox-group>
+                          </el-col>
+                          
+                          <el-col :span="8" >
+                          
+                            <el-input
+                              type="textarea"
+                              :rows="2"
+                              placeholder="Examens clinique"
+                              v-model="textarea2">
+                            </el-input>
+                          </el-col>
+                        </el-row>
+<el-divider></el-divider>
+                        <el-row :gutter="10">
+                        <el-col :span="8">
+                          O.R.L
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          
+                           <el-checkbox-group v-model="checkListORL">
+                            <el-checkbox label="sifflements"></el-checkbox>
+                            <el-checkbox label="Angines répétées"></el-checkbox>
+                            <el-checkbox label="Epistaxis"></el-checkbox>
+                            <el-checkbox label="Rhinorhée"></el-checkbox>
+                           
+                          </el-checkbox-group>
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            type="textarea"
+                            :rows="2"
+                            placeholder="Examens clinique"
+                            v-model="textarea3">
+                          </el-input>
+                        </el-col>
+                        </el-row>
+<el-divider></el-divider>  
+                      <el-row :gutter="10">
+                        <el-col :span="8">
+                          Locomoteur
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          Douleurs
+                           <el-checkbox-group v-model="checkListLocomoteur">
+                            <el-checkbox label="Musculaire"></el-checkbox>
+                            <el-checkbox label="Articulaire"></el-checkbox>
+                            <el-checkbox label="vertébraire"></el-checkbox>
+                            <el-checkbox label="Neurologique"></el-checkbox>
+                           
+                          </el-checkbox-group>
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            type="textarea"
+                            :rows="2"
+                            placeholder="Examens clinique"
+                            v-model="textarea4">
+                          </el-input>
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+                      <el-row :gutter="10">
+                        <el-col :span="8">
+                          cardio-vasculaire
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          Douleurs
+                           <el-checkbox-group v-model="checkListCardioVasculaire">
+                            <el-checkbox label="Oedémes"></el-checkbox>
+                            <el-checkbox label="A la marche"></el-checkbox>
+                            <el-checkbox label="au repos"></el-checkbox>
+                            <el-checkbox label="A l'efforts"></el-checkbox>
+                            <el-checkbox label="Permanents"></el-checkbox>
+                            <el-checkbox label="palpitation"></el-checkbox>
+                          </el-checkbox-group>
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            placeholder="Pouls"
+                            v-model="CVPouls">
+                          </el-input>
+                          <el-input
+                            placeholder="T.A"
+                            v-model="CVTa">
+                          </el-input>
+                          <el-input
+                            placeholder="Cyanose"
+                            v-model="CVCyanose">
+                          </el-input>
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+                      <el-row :gutter="10">
+                        <el-col :span="8">
+                          Respiratoire
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          Douleurs
+                           <el-checkbox-group v-model="checkListRespiratoire">
+                            <el-checkbox label="Toux"></el-checkbox>
+                            <el-checkbox label="Dyspnee nacturne"></el-checkbox>
+                            <el-checkbox label="Dyspnee dlurne"></el-checkbox>
+                            <el-checkbox label="Expectorations"></el-checkbox>
+                            <el-checkbox label="douleures toracique"></el-checkbox>
+                          </el-checkbox-group>
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            type="textarea"
+                            :rows="2"
+                            placeholder="Fréquence respiratoire"
+                            v-model="textarea6">
+                          </el-input>
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+     <el-row >
+                        <el-col :span="8">
+                          Digestif
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          <el-checkbox v-model="DigestifPyrosis" label="Pyrosis"></el-checkbox>
+                          <el-checkbox v-model="DigestifVomissements" label="Vomissements"></el-checkbox>
+                            <el-input
+                            placeholder="Appétit"
+                            v-model="DigestifAppétit">
+                          </el-input><el-checkbox v-model="checkDigestifAppétit"></el-checkbox>
+                          <el-input
+                            placeholder="Transit"
+                            v-model="DigestifTransit">
+                          </el-input><el-checkbox v-model="checkDigestifTransit"></el-checkbox>
+                          <el-input
+                            placeholder="Selles"
+                            v-model="DigestifSelles">
+                          </el-input><el-checkbox v-model="checkDigestifSelles"></el-checkbox>
+                          <el-input
+                            placeholder="Rectorragies"
+                            v-model="DigestifRectorragies">
+                          </el-input><el-checkbox v-model="checkDigestifRectorragies"></el-checkbox>
+                          <el-input
+                            placeholder="Douleur Abdominales"
+                            v-model="DigestifDouleurAbdominales">
+                          </el-input><el-checkbox v-model="checkDigestifDouleurAbdominales"></el-checkbox>
+                          <el-input
+                            placeholder="Autres"
+                            v-model="DigestifAutres">
+                          </el-input><el-checkbox v-model="checkDigestifAutres"></el-checkbox>
+
+                          
+                           
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            placeholder="Denture:Carie:"
+                            v-model="DigestifDentureCarie">
+                          </el-input>
+                          <el-input
+                            placeholder="Gingivopatie"
+                            v-model="DigestifGingivopatie">
+                          </el-input>
+                          <el-input
+                            placeholder="autres"
+                            v-model="Digestifautres">
+                          </el-input>
+                          <el-input
+                            placeholder="abdomens"
+                            v-model="Digestifabdomens">
+                          </el-input>
+                          <el-input
+                            placeholder="Hernie"
+                            v-model="DigestifHernie">
+                          </el-input>
+                          <el-input
+                            placeholder="Foie"
+                            v-model="DigestifFoie">
+                          </el-input>
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+<el-row :gutter="10">
+                        <el-col :span="8">
+                          Hematologique et Ganglionnaire
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          <el-checkbox-group v-model="checkListHematologique">
+                            <el-checkbox label="Ecchymoses"></el-checkbox>
+                            <el-checkbox label="Tendances aux hémorragies"></el-checkbox>
+                          </el-checkbox-group>
+                          
+                           
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            placeholder="Pétéchies"
+                            v-model="HematologiquePétéchies">
+                          </el-input>
+                          <el-input
+                            placeholder="Purpura"
+                            v-model="HematologiquePurpura">
+                          </el-input>
+                          <el-input
+                            placeholder="Rate"
+                            v-model="HematologiqueRate">
+                          </el-input>
+                          Ganglions
+                          <el-input
+                            placeholder="Cervicaux"
+                            v-model="HematologiqueCervicaux">
+                          </el-input>
+                          <el-input
+                            placeholder="Sous Auxillaires"
+                            v-model="HematologiqueSsAuxillaires">
+                          </el-input>
+                          <el-input
+                            placeholder="Sous Claviculaires"
+                            v-model="HematologiqueSsClaviculaires">
+                          </el-input>
+                          <el-input
+                            placeholder="Ingionaux"
+                            v-model="HematologiqueIngionaux">
+                          </el-input>
+
+                          
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+ <el-row :gutter="10">
+                        <el-col :span="8">
+                          Endocrinologie
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          Douleurs
+                           <el-checkbox-group v-model="checkListEndocrinologie">
+                            <el-checkbox label="Obésité familiales"></el-checkbox>
+                            <el-checkbox label="A la marche"></el-checkbox>
+                          </el-checkbox-group>
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                          <el-input
+                            placeholder="Tyroide"
+                            v-model="EndocrinologieTyroide">
+                          </el-input>
+                          <el-input
+                            placeholder="Testicules"
+                            v-model="EndocrinologieTesticules">
+                          </el-input>
+                          <el-input
+                            placeholder="Glandes Mammaires"
+                            v-model="EndocrinologieGlandesMammaires">
+                          </el-input>
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+
+ <el-row :gutter="10">
+                        <el-col :span="8">
+                          Profil Psychologique
+                        </el-col>
+                        
+                        <el-col :span="8">
+                          
+                            <el-input
+                              type="textarea"
+                              :rows="3"
+                              placeholder="Interrogatoire"
+                              v-model="PsychoInterrogatoire">
+                            </el-input>
+                        </el-col>
+                        
+                        <el-col :span="8" >
+                         
+                           <el-input
+                              type="textarea"
+                              :rows="3"
+                              placeholder="Examens Clinique"
+                              v-model="PsychoExamensClinique">
+                            </el-input>
+                        </el-col>
+                      </el-row>
+<el-divider></el-divider>
+
+
+
+
+                      </el-collapse-item>
+                      
+
+
+
+
+
+
+
+
+
+
+</el-collapse>
+                    
                     <el-space></el-space>
                     <el-space></el-space>
                     <el-space></el-space>
@@ -354,22 +752,98 @@ export default {
       userselected: {
         firstName: "none",
         lastName: "none",
-        birthday: "none",
-        sexe: "none",
-        phoneNum: "none",
         state: "none",
         scolarYear: "none",
-        idCompte: "none",
-        createdAt: "none",
-        updatedAt: "none",
       },
       // err
       error: null,
       email: "",
       // navigation bar*******************************************************************************************
       radio1: "",
-
-      //the data for Dépistage section****************************************************************************
+      // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
+      patientDM: "",
+      //the data for personalInfo section****************************************************************************
+      userPersInfo: {
+        idUser: null,
+        idPI: null,
+        firstName: null,
+        lastName: null,
+        dateOfBirth: null,
+        placeOfBirth: null,
+        sexe: null,
+        bloodGroup: null,
+        addresse: null,
+        phoneNum: null,
+        email: null,
+        numSS: null,
+        state: null,
+        scolarYear: null,
+        category: null,
+      },
+      cachedUser : "",
+      isDisabledPersInfo: true,
+      catégorie: "",
+     //the data for Dépistage section****************************************************************************
+      typeDeVisite:"",
+      docteurName: "Merabet ",
+      poids:"",
+      taille :"",
+      DépistageDate1:"",
+      auditionOD:"",
+      auditionOG:"",
+      AcuiteVisuelleSansCOD:"",
+      AcuiteVisuelleSansCOG:"",
+      AcuiteVisuelleAvecCOD:"",
+      AcuiteVisuelleAvecCOG:"",
+      checkedDouleurs: true,
+      textarea1:"",
+      textarea2:"",
+      textarea3:"",
+      textarea4:"",
+      textarea5:"",
+      textarea6:"",
+      CVPouls:"",
+      CVTa:"",
+      CVCyanose:"",
+      checkListOphtalmolodique: [''],
+      checkListORL: [''],
+      checkListLocomoteur: [''],
+      checkListRespiratoire: [''],
+      checkListCardioVasculaire: [''],
+      DigestifDentureCarie:"",
+      DigestifGingivopatie:"",
+      Digestifautres:"",
+      Digestifabdomens:"",
+      DigestifHernie:"",
+      DigestifFoie:"",
+      DigestifAppétit:"",
+      DigestifTransit:"",
+      DigestifSelles:"",
+      DigestifRectorragies:"",
+      DigestifDouleurAbdominales:"",
+      DigestifAutres:"",
+      DigestifPyrosis: false,
+      DigestifVomissements: false,
+      checkDigestifAppétit: false,
+      checkDigestifTransit: false,
+      checkDigestifSelles: false,
+      checkDigestifRectorragies: false,
+      checkDigestifDouleurAbdominales: false,
+      checkDigestifAutres: false,
+      checkListHematologique: [''],
+      HematologiquePétéchies:"",
+      HematologiquePurpura:"",
+      HematologiqueRate:"",
+      HematologiqueCervicaux:"",
+      HematologiqueSsAuxillaires:"",
+      HematologiqueSsClaviculaires:"",
+      HematologiqueIngionaux:"",
+      checkListEndocrinologie: [''],
+      EndocrinologieTyroide:"",
+      EndocrinologieTesticules:"",
+      EndocrinologieGlandesMammaires:"",
+      PsychoInterrogatoire:"",
+      PsychoExamensClinique:"",
 
       // the first selection typeDeVisite
       options1: [
@@ -382,13 +856,11 @@ export default {
           label: "Systimatique",
         },
       ],
-      typeDeVisite: "",
+    
+      
+      
 
-      docteurName: "Merabet ",
-      poids: "0",
-      taille : "0",
-
-      // date
+      // date function
       disabledDate(time) {
         return time.getTime() > Date.now();
       },
@@ -414,7 +886,7 @@ export default {
           },
         },
       ],
-      DépistageDate1: "",
+      
 
       //variable de taitement des defferantes sections 
       activeNames: ['1'],
@@ -422,17 +894,7 @@ export default {
       handleChange(val) {
         console.log(val);
       },
-      auditionOD:"",
-      auditionOG:"",
-      AcuiteVisuelleSansCOD:"",
-      AcuiteVisuelleSansCOG:"",
-      AcuiteVisuelleAvecCOD:"",
-      AcuiteVisuelleAvecCOG:"",
-
-
-
-
-
+      
 
     };
   },
@@ -451,18 +913,63 @@ export default {
     async showPatient(user) {
       this.content = "dossier";
       this.userselected = user;
+      try {
+        const response = await DocServices.showPatient({
+          id: user.id
+        });
+        // am sending an attribute "haveDM"
+        // haveDM : true => the patient haveDM => display the DM and hide the "créer le dossier médical" button
+        // haveDM : false => the patient dont haveDM => display the "créer le dossier médical" button with some infos
+        // this.patientDM = response
+        this.userPersInfo = response.data.medFile.personalInfo
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
     },
-
     async createMF(user) {
       try {
         const response = await DocServices.createMF({
           id: user.id,
         });
-        // alert("welecome")
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
         console.log(this.error);
+      }
+    },
+    async modifierInfoPers () {
+      try {
+        this.cachedUser = Object.assign({}, this.userPersInfo);
+        this.isDisabledPersInfo = false
+        console.log("modifierInfoPers button was clicked !");
+      } catch (error) {
+        console.log("something went wrong");
+      }
+    },
+    async cancelInfoPers () {
+      try {
+        this.userPersInfo = Object.assign({}, this.cachedUser);
+        this.isDisabledPersInfo = true
+        console.log("cancelInfoPers button was clicked !");
+      } catch (error) {
+        console.log("something went wrong");
+      }
+    },
+    async savePersInfo () {
+      try {
+        this.cachedUser = Object.assign({}, this.userPersInfo);
+        this.isDisabledPersInfo = true
+        console.log("savePersInfo button was clicked !");
+        console.log(this.userPersInfo);
+        
+        const response = await DocServices.savePersInfo({
+          personalInfo: this.userPersInfo
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
       }
     },
   },
@@ -474,18 +981,15 @@ export default {
 .text {
   font-size: 14px;
 }
-
 .item {
   margin: 20px;
   padding: 18px 0;
 }
-
 .box-card {
   width: 97%;
   margin: 20px;
   border-radius: 15px;
 }
-
 .el-row {
     margin-bottom: 20px;
   
