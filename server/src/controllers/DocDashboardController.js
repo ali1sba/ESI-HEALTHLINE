@@ -7,6 +7,7 @@ const { PersonalInfo } = require('../models')
 const { Depistage } = require('../models')
 const { antecedentsInfo } = require('../models')
 
+
 module.exports = {
   async recoverPatients (req, res) {
     try {
@@ -59,6 +60,7 @@ module.exports = {
       // second : create biometricInfo
 
       // third : create antecedentsInfo
+
       const antInfo = {
         boolFumer: null,
         boolChiquer: null,
@@ -77,6 +79,7 @@ module.exports = {
         reactMed: null
       }
       const antecedentsInfoList = await antecedentsInfo.create(antInfo)
+
 
       // fourth : create screeningInfo
       const DepistageInfo = {
@@ -147,7 +150,9 @@ module.exports = {
         idUser: userId,
         personalInfoId: userPersonalInfo.id,
         biometricInfoId: null,
+
         antecedentsInfoId: antecedentsInfoList.id,
+
         screeningInfoId: DepistageInformation.id
       }
       const userMF = await MedicalFile.create(medFile)
@@ -155,7 +160,9 @@ module.exports = {
       const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
       const biJson = ''
+
       const aiJson = antecedentsInfoList.toJSON()
+
       const siJson = DepistageInformation.toJSON()
       res.send({
         mf: mfJson,
@@ -205,6 +212,7 @@ module.exports = {
             category: null
           },
           depistagelInfo: {
+            idDI: null,
             typeDeVisite: '',
             docteurName: '',
             poids: '',
@@ -308,6 +316,7 @@ module.exports = {
             category: userPI.category
           },
           depistagelInfo: {
+            idDI: userDepInfo.id,
             typeDeVisite: userDepInfo.typeDeVisite,
             docteurName: userDepInfo.docteurName,
             poids: userDepInfo.poids,
@@ -479,7 +488,7 @@ module.exports = {
 
   async saveScreeningInfo (req, res) {
     try {
-      const userDI = req.body.depistagelInfo
+      const userDI = req.body.DepistageInfo
       const userdepistagelInfo = await Depistage.findOne({
         where: {
           id: userDI.idDI

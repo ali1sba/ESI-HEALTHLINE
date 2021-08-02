@@ -173,12 +173,14 @@
  
 
   <el-row class="formrow">
-  <el-col class="firsthalf" :span="16">
+  <el-col class="firsthalf" :span="14">
     <div class=" coldiv grid-content bg-purple">
       <!-- first row logo part -->
+      <br/>
    <el-row>
-     <el-col class="formlogo" :span="6"><img src="logo.png" ></el-col>
+     <el-col class="formlogo" :span="8"><img src="logo.png" ></el-col>
    </el-row> 
+    <br/><br/>
    <div class="formelems">
    <!-- second row name  -->
    <el-row> 
@@ -205,13 +207,13 @@
    <el-col  :span="7"><el-select id="exampleFormControlSelect1" v-model="sexe" placeholder="sexe">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" ></el-option>
       </el-select></el-col>
-      <el-col style="margin-right:1%" :span="6"><el-select v-model="state">
-        <el-option v-for="item in optionstate" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      <el-col  style="margin-right:1%" :span="6"><el-select  v-model="state" >
+        <el-option  v-for="item in optionstate" :key="item.value" :label="item.label" :value="item.value" ></el-option>
       </el-select></el-col> 
     </el-row>
   <!-- seventh row year  -->
   <el-row>
-    <el-col :span="6"><el-select v-model="scolarYear" >
+    <el-col :span="6"><el-select v-if="state === 'Etudiant'" v-model="scolarYear" >
        <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
       </el-select></el-col>
     <div class="error" v-html="error" ></div>
@@ -247,22 +249,22 @@ export default {
       password2: "",
       phoneNum: "",
       state: "etat",
-      scolarYear: "annee scolaire",
+      scolarYear: "",
       error: null,
        options: [{
-          value: 'femme',
-          label: 'femme'
+          value: 'FEMME',
+          label: 'FEMME'
         }, {
-          value: 'homme',
-          label: 'homme'
+          value: 'HOMME',
+          label: 'HOMME'
         }],
         value: '',
         optionstate: [{
           value: 'ATS',
           label: 'ATS'
         }, {
-          value: 'etudiant',
-          label: 'etudiant'
+          value: 'Etudiant',
+          label: 'Etudiant'
         }],
         valuestate: '',
         optionyear: [{
@@ -289,6 +291,7 @@ export default {
     async register() {
       try {
         if (this.password === this.password2){
+          if (this.state === "ATS"){this.scolarYear= "/"}
           this.error = ''
           const response = await AuthServices.register({
           firstName: this.firstName,
@@ -319,20 +322,25 @@ export default {
 
      
     },
-    async switcher (state){
-        this.student = state 
-        if (!(this.student === 'Etudiant') ){
-          this.scolarYear = '/'
-        }
-    },
+   
+   
   },
 };
 </script>
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped >
 
+
+
+<style >
+.register{
+  background-image: url("image4.jpg");
+    background-size: cover;  
+}
+.imageform{
+  opacity: 0;
+}
 .error {
   color: red;
 }
@@ -340,9 +348,7 @@ body{
   margin: 0;
   padding: 0;
   width: 100%;
-    background-image: url("image4.jpg");
-    background-size: cover;  
-    height: 100%;
+  height: 100%;
 }
 
 .el-col{

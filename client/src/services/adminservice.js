@@ -12,4 +12,11 @@ export default {
     desactivateUser (credantials){
         return Api().post('/admin/desactivateUser',credantials)
     }, 
+    activateUser (credantials){
+        return Api().post('/admin/activateUser',credantials)
+    }, 
+    register (credantials){
+        return Api().post('/admin/adminRegister',credantials)
+    }, 
+    
 }
