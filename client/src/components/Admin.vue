@@ -27,7 +27,15 @@
       </ul>
     </nav>
     <main role="mainAdmin">
+    <div class="section1Admin">
+    
       <section v-if="section === 1" id="section1">
+        <section class="panel important">
+            <h2>Les comptes a validée</h2>
+            <ul>
+              <li>Ici se retrouve tout les comptes qui attend toujours la validation de l'admin</li>
+            </ul>
+          </section>
         <el-table
           :data="users"
           style="width: 100%">
@@ -69,14 +77,22 @@
         </el-table>
         
       </section>
+      </div>
             <section v-if="section === 2" id="section2">
+             <section class="panel important">
+            <h2>Tout les comptes dans le site</h2>
+            <ul>
+              <li>Ici se retrouve tout les comptes qui sont deja validée</li>
+            </ul>
+          </section>
+            
           <el-table
-          :data="usersvalid"
-          style="width: 100%">
+          :data="usersvalidcomplet"
+          >
           <el-table-column
             label="name"
             width="180">
-            <template #default="scope">
+            <template #default="scope" >
               <span style="margin-left: 10px">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
             </template>
           </el-table-column>
@@ -120,13 +136,20 @@
             <template #default="scope">
               <el-button
                 size="mini"
+                type="success"
+                v-if="scope.row.compteState === 'DISACTIVATED'"
+                @click="activateUser(scope.row)">Activate</el-button>
+                <el-button
+                size="mini"
                 type="danger"
-                @click="desactivateUser(scope.row)">desactiver</el-button>
+                v-if="scope.row.compteState === 'ACTIVATED'"
+                @click="desactivateUser(scope.row)">Disactivate</el-button>
             </template>
             
             
           </el-table-column>
         </el-table>
+       
 
 
 
@@ -167,7 +190,7 @@
       <section v-if="section === 3" id="section3">
         <div >
         <el-row class="formrow">
-  <el-col class="firsthalf" :span="16">
+  <el-col class="firsthalf" :span="20">
     <div class=" coldiv grid-content bg-purple">
       <!-- first row logo part -->
    <el-row>
@@ -198,22 +221,25 @@
    <!-- <el-col  style="margin-right:1%" :span="7"><el-input v-model="birthplace" placeholder="lieu de naissance" ></el-input> </el-col> -->
    <el-col  :span="7"><el-select id="exampleFormControlSelect1" v-model="sexe" placeholder="sexe">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" ></el-option>
-      </el-select></el-col>
+   </el-select></el-col>
       <el-col style="margin-right:1%" :span="6"><el-select v-model="state">
         <el-option v-for="item in optionstate" :key="item.value" :label="item.label" :value="item.value" ></el-option>
       </el-select></el-col> 
     </el-row>
   <!-- seventh row year  -->
   <el-row>
-    <el-col :span="6"><el-select v-model="scolarYear" >
+    <el-col :span="6"><el-select v-model="scolarYear" v-if="state === 'Etudiant'" >
        <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select></el-col>
+       <el-col :span="6"><el-select v-model="role" v-if="state === 'ATS'" >
+       <el-option v-for="item in optionroleATS" :key="item.value" :label="item.label" :value="item.value" ></el-option>
       </el-select></el-col>
     <div class="error" v-html="error" ></div>
   </el-row>
  <!-- sign up button  -->
   <el-row>
-    <el-col :span="4"><el-button @click="register" type="primary" plain>s'inscrire</el-button></el-col>
-    <el-col class="formline" :span="7"><p> Vous avez déjà un compte? <router-link to="/">s'identifier </router-link> </p></el-col>
+    <el-col :span="24"><el-button @click="register" type="primary" plain>s'inscrire</el-button></el-col>
+    
   </el-row>
    </div>
   </div>
@@ -230,7 +256,6 @@
 </template>
 
 <script>
-import AuthServices from "@/services/AuthentificationService";
 import axios from "axios";
 import adminservice from "../services/adminservice";
 export default {
@@ -238,6 +263,22 @@ export default {
         return {
       users: [],
       usersvalid: [],
+      comptes: [],
+      usersvalidcomplet: [{
+        firstName: '',
+        lastName: '',
+        birthday: '',
+        sexe: '',
+        phoneNum: '',
+        state: '',
+        scolarYear: '',
+        idCompte: '',
+        email: '',
+        role: '',
+        compteState: '',
+      }],
+
+      
       student : "ATS",
       firstName: "",
       lastName: "",
@@ -249,22 +290,23 @@ export default {
       password2: "",
       phoneNum: "",
       state: "etat",
-      scolarYear: "annee scolaire",
+      scolarYear: "/",
+      role: "Role",
       error: null,
        options: [{
-          value: 'femme',
-          label: 'femme'
+          value: 'FEMME',
+          label: 'FEMME'
         }, {
-          value: 'homme',
-          label: 'homme'
+          value: 'HOMME',
+          label: 'HOMME'
         }],
         value: '',
         optionstate: [{
           value: 'ATS',
           label: 'ATS'
         }, {
-          value: 'etudiant',
-          label: 'etudiant'
+          value: 'Etudiant',
+          label: 'Etudiant'
         }],
         valuestate: '',
         optionyear: [{
@@ -283,7 +325,20 @@ export default {
           value: '3CS',
           label: '3CS'
         }],
-        valueyear: ''
+        optionroleATS: [{
+          value: 'MED',
+          label: 'MED'
+        }, {
+          value: 'ASSIS',
+          label: 'ASSIS'
+         }, {
+          value: 'ADMINISTRATION',
+          label: 'ADMINISTRATION'
+          }, {
+          value: 'PATIENT',
+          label: 'PATIENT'
+        }],
+          valueyear: ''
     };
 
   },
@@ -301,6 +356,18 @@ export default {
       .get("http://localhost:8083/admin/valid/")
       .then((response) => {
         this.usersvalid = response.data;
+        this.convertVTVC(this.usersvalid,this.usersvalidcomplet);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
+  axios
+      .get("http://localhost:8083/admin/compte/")
+      .then((response) => {
+        this.comptes = response.data;
+        this.convertCTVC(this.comptes,this.usersvalidcomplet);
         console.log(response);
       })
       .catch((error) => {
@@ -308,6 +375,33 @@ export default {
       });
   },
   methods: {
+    convertVTVC(V , VC){
+      
+      V.forEach(user => {
+        VC.push({
+        firstName: user.firstName,       
+        lastName: user.lastName,
+        birthday: user.birthday,
+        sexe: user.sexe,
+        phoneNum: user.phoneNum,
+        state: user.state,
+        scolarYear: user.scolarYear,
+        idCompte: user.idCompte,
+      });
+        
+      });
+    },
+    convertCTVC(C , VC){
+      let i = 1;
+      
+      C.forEach(cmpte => {
+        VC[i].email = cmpte.email;
+        VC[i].role = cmpte.role;
+        VC[i].compteState = cmpte.state;
+        i = i+1;
+      });
+    },
+
     async validateUser(index, user) {
       console.log(user.email);
       const response = await adminservice.validateUser({
@@ -338,7 +432,22 @@ export default {
 
       try {
         const response = await adminservice.desactivateUser({
-          email: user.email,
+           idcmpt: user.idCompte,
+        });
+        alert("desactivation sussecfull");
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+
+    },
+    async activateUser(user) {
+      console.log(user.email);
+
+      try {
+        const response = await adminservice.activateUser({
+          idcmpt: user.idCompte,
         });
         alert("desactivation sussecfull");
         console.log(response.data);
@@ -351,8 +460,11 @@ export default {
     async register() {
       try {
         if (this.password === this.password2){
+          
+          if (this.state === "Etudiant"){this.role= "PATIENT" }
+          if (this.state === "ATS"){this.scolarYear= "/"}
           this.error = ''
-          const response = await AuthServices.register({
+          const response = await adminservice.register({
           firstName: this.firstName,
           lastName: this.lastName,
           birthday: this.birthday,
@@ -363,8 +475,8 @@ export default {
           password2: this.password2,
           phoneNum: this.phoneNum,
           state: this.state,
-          scolarYear: this.scolarYear
-          
+          role:this.role,
+          scolarYear: this.scolarYear          
         })
         alert("regiter successfull")
         console.log(response.data)
@@ -395,8 +507,7 @@ export default {
 
 <style scoped>
 </style>
-<style >
-
+<style>
 .error {
   color: red;
 }
@@ -420,6 +531,7 @@ export default {
 .formline{
   margin-left: 40%;
 }
+
 .coldiv{
   padding: 2% 0 2% 12% ;
 }
@@ -435,6 +547,5 @@ export default {
 margin-right: 0.3%;
 padding: 0;
 }
-
 </style>
 

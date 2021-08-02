@@ -186,6 +186,7 @@ module.exports = {
             category: null
           },
           depistagelInfo: {
+            idDI: null,
             typeDeVisite: '',
             docteurName: '',
             poids: '',
@@ -289,6 +290,7 @@ module.exports = {
             category: userPI.category
           },
           depistagelInfo: {
+            idDI: userDepInfo.id,
             typeDeVisite: userDepInfo.typeDeVisite,
             docteurName: userDepInfo.docteurName,
             poids: userDepInfo.poids,
@@ -435,7 +437,7 @@ module.exports = {
 
   async saveScreeningInfo (req, res) {
     try {
-      const userDI = req.body.depistagelInfo
+      const userDI = req.body.DepistageInfo
       const userdepistagelInfo = await Depistage.findOne({
         where: {
           id: userDI.idDI
