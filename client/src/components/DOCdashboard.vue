@@ -1293,6 +1293,7 @@ export default {
       },
 
     //  antecendents******************************************************************************
+    userAntInfo: {
     boolFumer:'2',
     boolChiquer:'2',
     boolPrise:'2',
@@ -1308,8 +1309,9 @@ export default {
     malaGene:"none",
     intChiru:"none",
     reactMed:"none",
+    },
+    cashedUserAnt: "",
     isDisabledAnts:true,
-    
     
       cachedUserdepistage: "",
       isDisabledDepiInfo: true,
@@ -1477,7 +1479,7 @@ export default {
   //antecedents*****************************************************************************************
   async modifierAntecedents () {
       try {
-        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = false
         console.log("modifierAntecedents button was clicked !");
       } catch (error) {
@@ -1486,7 +1488,7 @@ export default {
     },
     async annulerAntecedents () {
       try {
-        this.userAntInfo = Object.assign({}, this.cachedUser);
+        this.userAntInfo = Object.assign({}, this.cachedUserAnt);
         this.isDisabledAnts = true
         console.log("annulerAntecedents button was clicked !");
       } catch (error) {
@@ -1495,7 +1497,7 @@ export default {
     },
     async saveAntecedents () {
       try {
-        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
         console.log(this.userAntInfo);

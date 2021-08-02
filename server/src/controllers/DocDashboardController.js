@@ -272,8 +272,26 @@ module.exports = {
             EndocrinologieGlandesMammaires: '',
             PsychoInterrogatoire: '',
             PsychoExamensClinique: ''
+          },
+          antecedentsInfo: {
+            idAI:null,
+            boolFumer: '',
+            boolChiquer: '',
+            boolPrise: '',
+            ancienFum: '',
+            nbrFumer: '',
+            nbrChiquer: '',
+            nbrPrise: '',
+            perExpo: '',
+            alcool: '',
+            medicat: '',
+            autres: '',
+            affec: '',
+            malaGene: '',
+            intChiru: '',
+            reactMed: ''
           }
-          // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
+          // here we add bioInfo  // same thing with ExamenMedical, RDV and statistics
         }
         res.send({
           medFile: medFile
@@ -288,7 +306,11 @@ module.exports = {
         // find biometricInfo record by id
 
         // find antecedentsInfo record by id
-
+        const userAI = await antecedentsInfo.findOne({
+          where: {
+            id: userMF.antecedentsInfoId
+          }
+        })
         // find depistage record by id
         const userDepInfo = await Depistage.findOne({
           where: {
@@ -376,6 +398,24 @@ module.exports = {
             EndocrinologieGlandesMammaires: userDepInfo.EndocrinologieGlandesMammaires,
             PsychoInterrogatoire: userDepInfo.PsychoInterrogatoire,
             PsychoExamensClinique: userDepInfo.PsychoExamensClinique
+          },
+          antecedentsInfo:{
+            idAI:userAI.id,
+            boolFumer: userAI.boolFumer,
+            boolChiquer: userAI.boolChiquer,
+            boolPrise: userAI.boolPrise,
+            ancienFum: userAI.ancienFum,
+            nbrFumer: userAI.nbrFumer,
+            nbrChiquer: userAI.nbrChiquer,
+            nbrPrise: userAI.nbrPrise,
+            perExpo: userAI.perExpo,
+            alcool: userAI.alcool,
+            medicat: userAI.medicat,
+            autres: userAI.autres,
+            affec: userAI.affec,
+            malaGene: userAI.malaGene,
+            intChiru: userAI.intChiru,
+            reactMed: userAI.reactMed
           }
           // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
         }
