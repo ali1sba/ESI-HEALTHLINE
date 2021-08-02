@@ -3,6 +3,10 @@
 --DROP TABLE 'Comptes';
 --DROP TABLE 'MedicalFiles';
 --DROP TABLE 'PersonalInfos';
+<<<<<<< HEAD
+=======
+--DROP TABLE 'Depistages';
+>>>>>>> 0b44b5e1cd44e06c3f1ec45757f92e2ebbd013f9
 --DROP TABLE 'UserNonValides';
 --DROP TABLE 'Users';
 --DROP TABLE 'ResetPasswordRequests';

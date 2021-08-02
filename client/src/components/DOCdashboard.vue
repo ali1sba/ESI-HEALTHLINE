@@ -213,11 +213,24 @@
                 <div class="text item">
                   <el-space direction="vertical">
                     <el-space wrap :size="10">
-                      <el-space> Nom <el-input v-model="userPersInfo.lastName" :disabled="isDisabledPersInfo"></el-input></el-space>
-                      <el-space> Prénom <el-input v-model="userPersInfo.firstName" :disabled="isDisabledPersInfo"></el-input></el-space>
+                      <el-space>
+                        Nom
+                        <el-input
+                          v-model="userPersInfo.lastName"
+                          :disabled="isDisabledPersInfo"
+                        ></el-input
+                      ></el-space>
+                      <el-space>
+                        Prénom
+                        <el-input
+                          v-model="userPersInfo.firstName"
+                          :disabled="isDisabledPersInfo"
+                        ></el-input
+                      ></el-space>
                     </el-space>
-                    <el-space wrap :size="10"> Date de naissance 
-                      <el-date-picker 
+                    <el-space wrap :size="10">
+                      Date de naissance
+                      <el-date-picker
                         type="date"
                         v-model="userPersInfo.dateOfBirth"
                         :disabled-date="disabledDate"
@@ -225,21 +238,93 @@
                         :disabled="isDisabledPersInfo"
                       >
                       </el-date-picker>
-                      Lieu de naissance <el-input v-model="userPersInfo.placeOfBirth" :disabled="isDisabledPersInfo"></el-input>
+                      Lieu de naissance
+                      <el-input
+                        v-model="userPersInfo.placeOfBirth"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input>
                     </el-space>
-                    <el-space wrap :size="10"> Sexe <el-input v-model="userPersInfo.sexe" :disabled="isDisabledPersInfo"></el-input> Groupe sanguin <el-input v-model="userPersInfo.bloodGroup" :disabled="isDisabledPersInfo"></el-input></el-space>
-                    <el-space wrap :size="10"> Adresse <el-input v-model="userPersInfo.addresse" :disabled="isDisabledPersInfo"></el-input> Téléphone <el-input v-model="userPersInfo.phoneNum" :disabled="isDisabledPersInfo"></el-input></el-space>
-                    <el-space wrap :size="10"> Email <el-input v-model="userPersInfo.email" :disabled="true"></el-input> NSS <el-input v-model="userPersInfo.numSS" :disabled="isDisabledPersInfo"></el-input></el-space>
-                    <el-space wrap :size="10"> 
-                      Fonction <el-input v-model="userPersInfo.state" :disabled="isDisabledPersInfo"></el-input>
-                      Année scolaire <el-input v-model="userPersInfo.scolarYear" :disabled="isDisabledPersInfo"></el-input>
+                    <el-space wrap :size="10">
+                      Sexe
+                      <el-input
+                        v-model="userPersInfo.sexe"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input>
+                      Groupe sanguin
+                      <el-input
+                        v-model="userPersInfo.bloodGroup"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input
+                    ></el-space>
+                    <el-space wrap :size="10">
+                      Adresse
+                      <el-input
+                        v-model="userPersInfo.addresse"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input>
+                      Téléphone
+                      <el-input
+                        v-model="userPersInfo.phoneNum"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input
+                    ></el-space>
+                    <el-space wrap :size="10">
+                      Email
+                      <el-input
+                        v-model="userPersInfo.email"
+                        :disabled="true"
+                      ></el-input>
+                      NSS
+                      <el-input
+                        v-model="userPersInfo.numSS"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input
+                    ></el-space>
+                    <el-space wrap :size="10">
+                      Fonction
+                      <el-input
+                        v-model="userPersInfo.state"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input>
+                      Année scolaire
+                      <el-input
+                        v-model="userPersInfo.scolarYear"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input>
                     </el-space>
-                    <el-space wrap :size="10"> Catégorie <el-input v-model="userPersInfo.category" :disabled="isDisabledPersInfo"></el-input></el-space>
+                    <el-space wrap :size="10">
+                      Catégorie
+                      <el-input
+                        v-model="userPersInfo.category"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input
+                    ></el-space>
                     <div v-if="isDisabledPersInfo">
-                      <el-space><el-button icon="el-icon-edit" @click="modifierInfoPers"> Modifier </el-button></el-space>
+                      <el-space
+                        ><el-button
+                          icon="el-icon-edit"
+                          @click="modifierInfoPers"
+                        >
+                          Modifier
+                        </el-button></el-space
+                      >
                     </div>
                     <div v-else>
-                      <el-space><el-button type="success" icon="el-icon-check" @click="savePersInfo"> Enregister </el-button><el-button type="danger" icon="el-icon-delete" @click="cancelInfoPers"> Annuler </el-button></el-space>
+                      <el-space
+                        ><el-button
+                          type="success"
+                          icon="el-icon-check"
+                          @click="savePersInfo"
+                        >
+                          Enregister </el-button
+                        ><el-button
+                          type="danger"
+                          icon="el-icon-delete"
+                          @click="cancelInfoPers"
+                        >
+                          Annuler
+                        </el-button></el-space
+                      >
                     </div>
                   </el-space>
                 </div>
@@ -249,16 +334,34 @@
                 <h6>Informations Biométriques</h6>
                 <div class="text item">
                   <div class="text item" id="biom">
-                 <p class="droite">Poids : (kg) </p><div classe="gauche"><el-input   placeholder="Entrez le poids" v-model="userBiomInfo.poids"></el-input></div>
-                 
-                      <p class="droite">Taille :  (cm) </p><div classe="gauche"><el-input id="weight"   placeholder="Entrez la taille" v-model="userBiomInfo.taille"></el-input></div>
-                         <el-button @click="bmiCalculation(); saveBiometricInfo();" class="droite" > IMC  </el-button>
- 
-                    <p  class="droite" id="imcValue" > {{responseimc}}</p>
-                    
+                    <p class="droite">Poids : (kg)</p>
+                    <div classe="gauche">
+                      <el-input
+                        placeholder="Entrez le poids"
+                        v-model="userBiomInfo.poids"
+                      ></el-input>
+                    </div>
 
+                    <p class="droite">Taille : (cm)</p>
+                    <div classe="gauche">
+                      <el-input
+                        id="weight"
+                        placeholder="Entrez la taille"
+                        v-model="userBiomInfo.taille"
+                      ></el-input>
+                    </div>
+                    <el-button
+                      @click="
+                        bmiCalculation();
+                        saveBiometricInfo();
+                      "
+                      class="droite"
+                    >
+                      IMC
+                    </el-button>
 
-                </div>
+                    <p class="droite" id="imcValue">{{ responseimc }}</p>
+                  </div>
                 </div>
               </el-card>
               <!-- **********************ilhem********************** -->
@@ -272,66 +375,113 @@
               <el-card class="box-card" id="Dépistage">
                 <h6>Dépistage</h6>
                 <div class="text item">
-                  
                   <el-space direction="vertical">
                     <el-row>
                       <el-col :span="24">
-                    <el-space wrap :size="10">
-                      visite médical
-                      <el-select v-model="typeDeVisite" placeholder="Select">
-                        <el-option
-                          v-for="item in options1"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                        >
-                        </el-option>
-                      </el-select>
-                      Date
-                      <el-date-picker
-                        v-model="DépistageDate1"
-                        type="date"
-                        placeholder="Choississez un jour"
-                        :disabled-date="disabledDate"
-                        :shortcuts="shortcuts"
-                      >
-                      </el-date-picker>
-                      Docteur
-                      <el-input
-                        placeholder="Entrez quelque chose"
-                        v-model="docteurName"
-                      ></el-input>
-                    </el-space>
-                    </el-col >
+                        <el-space wrap :size="10">
+                          visite médical
+                          <el-select
+                            v-model="typeDeVisite"
+                            placeholder="Select"
+                          >
+                            <el-option
+                              v-for="item in options1"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          Date
+                          <el-date-picker
+                            v-model="DépistageDate1"
+                            type="date"
+                            placeholder="Choississez un jour"
+                            :disabled-date="disabledDate"
+                            :shortcuts="shortcuts"
+                          >
+                          </el-date-picker>
+                          Docteur
+                          <el-input
+                            placeholder="Entrez quelque chose"
+                            v-model="docteurName"
+                          ></el-input>
+                        </el-space>
+                      </el-col>
                     </el-row>
-                   
+
                     <el-divider></el-divider>
 
-                     <el-collapse v-model="activeNames" @change="handleChange">
+                    <el-collapse v-model="activeNames" @change="handleChange">
                       <el-collapse-item title="Audition" name="1">
-                        <el-space wrap :size="10"> OD <el-input placeholder="/10" v-model="auditionOD"></el-input></el-space>
-                        <el-space wrap :size="10">OG <el-input placeholder="/10" v-model="auditionOG"></el-input></el-space>
+                        <el-space wrap :size="10">
+                          OD
+                          <el-input
+                            placeholder="/10"
+                            v-model="auditionOD"
+                          ></el-input
+                        ></el-space>
+                        <el-space wrap :size="10"
+                          >OG
+                          <el-input
+                            placeholder="/10"
+                            v-model="auditionOG"
+                          ></el-input
+                        ></el-space>
                       </el-collapse-item>
                       <el-collapse-item title="Acuite Visuelle" name="2">
                         <el-space orientation="vertical">
-                        <el-space wrap :size="10"> OD <el-input placeholder="/10" v-model="AcuiteVisuelleSansCOD"></el-input></el-space>
-                        <el-space wrap :size="10">OG <el-input placeholder="/10" v-model="AcuiteVisuelleSansCOG"></el-input></el-space>
-                        SANS CORRECTIONS
+                          <el-space wrap :size="10">
+                            OD
+                            <el-input
+                              placeholder="/10"
+                              v-model="AcuiteVisuelleSansCOD"
+                            ></el-input
+                          ></el-space>
+                          <el-space wrap :size="10"
+                            >OG
+                            <el-input
+                              placeholder="/10"
+                              v-model="AcuiteVisuelleSansCOG"
+                            ></el-input
+                          ></el-space>
+                          SANS CORRECTIONS
                         </el-space>
                         <el-space orientation="vertical">
-                        <el-space wrap :size="10"> OD <el-input placeholder="/10" v-model="AcuiteVisuelleAvecCOD"></el-input></el-space>
-                        <el-space wrap :size="10">OG <el-input placeholder="/10" v-model="AcuiteVisuelleAvecCOG"></el-input></el-space>
-                        AVEC CORRECTIONS
+                          <el-space wrap :size="10">
+                            OD
+                            <el-input
+                              placeholder="/10"
+                              v-model="AcuiteVisuelleAvecCOD"
+                            ></el-input
+                          ></el-space>
+                          <el-space wrap :size="10"
+                            >OG
+                            <el-input
+                              placeholder="/10"
+                              v-model="AcuiteVisuelleAvecCOG"
+                            ></el-input
+                          ></el-space>
+                          AVEC CORRECTIONS
                         </el-space>
                       </el-collapse-item>
                       <el-collapse-item title="Efficacité" name="3">
                         peau et muqueu
                       </el-collapse-item>
-  <el-collapse-item title="Controllabilité" name="4">
-    <div>Prise de décision: possibilité de donner des conseils sur les opérations, mais ne jamais prendre de décisions à la place des utilisateurs;</div>
-    <div>Contrôle des conséquences: les utilisateurs devraient pouvoir contrôler l'exécution de leurs opérations, y compris l'annulation et la suppression des opérations courantes.</div>
-  </el-collapse-item>
-</el-collapse>
+                      <el-collapse-item title="Controllabilité" name="4">
+                        <div>
+                          Prise de décision: possibilité de donner des conseils
+                          sur les opérations, mais ne jamais prendre de
+                          décisions à la place des utilisateurs;
+                        </div>
+                        <div>
+                          Contrôle des conséquences: les utilisateurs devraient
+                          pouvoir contrôler l'exécution de leurs opérations, y
+                          compris l'annulation et la suppression des opérations
+                          courantes.
+                        </div>
+                      </el-collapse-item>
+                    </el-collapse>
 
                     <el-space></el-space>
                     <el-space></el-space>
@@ -396,13 +546,8 @@ export default {
       // navigation bar*******************************************************************************************
       radio1: "",
 
-
-
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
-
-
-
 
       //the data for personalInfo section****************************************************************************
       userPersInfo: {
@@ -422,16 +567,16 @@ export default {
         scolarYear: null,
         category: null,
       },
-      cachedUser : "",
+      cachedUser: "",
       isDisabledPersInfo: true,
       catégorie: "",
       //BIOMETRIC
-     responseimc:"0",
-       userBiomInfo:{
-         poids: 0,
-      taille : 0,
-      imc:0,
-       } ,
+      responseimc: "0",
+      userBiomInfo: {
+        poids: 0,
+        taille: 0,
+        imc: 0,
+      },
       //the data for Dépistage section****************************************************************************
 
       // the first selection typeDeVisite
@@ -448,8 +593,6 @@ export default {
       typeDeVisite: "",
 
       docteurName: "Merabet ",
-    
-      
 
       // date
       disabledDate(time) {
@@ -479,18 +622,18 @@ export default {
       ],
       DépistageDate1: "",
 
-      //variable de taitement des defferantes sections 
-      activeNames: ['1'],
+      //variable de taitement des defferantes sections
+      activeNames: ["1"],
 
       handleChange(val) {
         console.log(val);
       },
-      auditionOD:"",
-      auditionOG:"",
-      AcuiteVisuelleSansCOD:"",
-      AcuiteVisuelleSansCOG:"",
-      AcuiteVisuelleAvecCOD:"",
-      AcuiteVisuelleAvecCOG:"",
+      auditionOD: "",
+      auditionOG: "",
+      AcuiteVisuelleSansCOD: "",
+      AcuiteVisuelleSansCOG: "",
+      AcuiteVisuelleAvecCOD: "",
+      AcuiteVisuelleAvecCOG: "",
     };
   },
   mounted: function() {
@@ -505,31 +648,26 @@ export default {
       });
   },
   methods: {
+    bmiCalculation() {
+      var bmi =
+        this.userBiomInfo.poids /
+        ((this.userBiomInfo.taille / 100) * (this.userBiomInfo.taille / 100));
 
-    
-
-        bmiCalculation () {
-       
-       var bmi = this.userBiomInfo.poids / ((this.userBiomInfo.taille /100 ) * (this.userBiomInfo.taille /100 ));
-      
-        this.userBiomInfo.imc=bmi;
-      if(bmi < 25) {
-       this.responseimc = 'Low: ' + bmi.toFixed(2) + ' kg/m2';
+      this.userBiomInfo.imc = bmi;
+      if (bmi < 25) {
+        this.responseimc = "Low: " + bmi.toFixed(2) + " kg/m2";
+      } else if (bmi >= 25 && bmi < 30) {
+        this.responseimc = "Moderate: " + bmi.toFixed(2) + " kg/m2";
+      } else if (bmi >= 30) {
+        this.responseimc = "High: " + bmi.toFixed(2) + " kg/m2";
       }
-      else if (bmi >=25 && bmi <30 ) {
-        this.responseimc ='Moderate: ' + bmi.toFixed(2) + ' kg/m2';
-      }
-      else if (bmi >=30 ) {
-        this.responseimc = 'High: ' + bmi.toFixed(2) + ' kg/m2';
-    }
-    
-  }, 
+    },
     async showPatient(user) {
       this.content = "dossier";
       this.userselected = user;
       try {
         const response = await DocServices.showPatient({
-          id: user.id
+          id: user.id,
         });
 
         // am sending an attribute "haveDM"
@@ -537,8 +675,8 @@ export default {
         // haveDM : false => the patient dont haveDM => display the "créer le dossier médical" button with some infos
 
         // this.patientDM = response
-        this.userPersInfo = response.data.medFile.personalInfo
-        this.userBiomInfo=response.data.medFile.biometricInfo
+        this.userPersInfo = response.data.medFile.personalInfo;
+        this.userBiomInfo = response.data.medFile.biometricInfo;
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -558,58 +696,58 @@ export default {
       }
     },
 
-    async modifierInfoPers () {
+    async modifierInfoPers() {
       try {
         this.cachedUser = Object.assign({}, this.userPersInfo);
-        this.isDisabledPersInfo = false
+        this.isDisabledPersInfo = false;
         console.log("modifierInfoPers button was clicked !");
       } catch (error) {
         console.log("something went wrong");
       }
     },
 
-    async cancelInfoPers () {
+    async cancelInfoPers() {
       try {
         this.userPersInfo = Object.assign({}, this.cachedUser);
-        this.isDisabledPersInfo = true
+        this.isDisabledPersInfo = true;
         console.log("cancelInfoPers button was clicked !");
       } catch (error) {
         console.log("something went wrong");
       }
     },
 
-    async savePersInfo () {
+    async savePersInfo() {
       try {
         this.cachedUser = Object.assign({}, this.userPersInfo);
-        this.isDisabledPersInfo = true
+        this.isDisabledPersInfo = true;
         console.log("savePersInfo button was clicked !");
         console.log(this.userPersInfo);
-        
+
         const response = await DocServices.savePersInfo({
-          personalInfo: this.userPersInfo
+          personalInfo: this.userPersInfo,
         });
         console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
     },
-     async saveBiometricInfo () {
+    async saveBiometricInfo() {
       try {
         this.cachedUser = Object.assign({}, this.userBiomInfo);
-        
+
         console.log("save biominfo button was clicked !");
         console.log(this.userBiomInfo);
-        
+
         const response = await DocServices.saveBiometricInfo({
-          biometricInfo: this.userBiomInfo
+          biometricInfo: this.userBiomInfo,
         });
         console.log(response.data);
-        console.log("biom info done")
+        console.log("biom info done");
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
     },
-   }
+  },
 };
 </script>
 
@@ -631,35 +769,30 @@ export default {
 }
 
 .el-row {
-    margin-bottom: 20px;
-  
-  }
-  .el-col {
-    border-radius: 4px;
-  }
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 4px;
+}
 
-.gauche  {
-    float:right;
-     width:70px;
-    }
+.gauche {
+  float: right;
+  width: 70px;
+}
 
 .droite {
-    
-    margin-right:20px;
-    float:left;
-    margin-top:5px;
-    width:85px;
-  
-  }
+  margin-right: 20px;
+  float: left;
+  margin-top: 5px;
+  width: 85px;
+}
 #biom {
-    width:350px;
-      padding-top: 0px;
-    }
-#imcValue{
-     padding:7px;
-      margin-left:10px;
-      width:150px
-   }
-  
-      
+  width: 350px;
+  padding-top: 0px;
+}
+#imcValue {
+  padding: 7px;
+  margin-left: 10px;
+  width: 150px;
+}
 </style>
