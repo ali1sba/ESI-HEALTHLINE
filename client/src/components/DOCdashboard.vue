@@ -452,7 +452,67 @@
               <el-card class="box-card" id="Antécédents">
                 <h6>Antécédents</h6>
                 <div class="text item">
-                  <!-- TODO -->
+                  <el-row>
+                    <el-col  class="intox" :span="20">
+                      <h5>INTOXICATIONS : </h5>
+                      <h6>Tabacs</h6> 
+                     
+                        <el-row> 
+                                <el-col :span="3">A fumer </el-col>
+                                <el-col :span="3"><el-radio :disabled="isDisabledAnts" class="ouinon" v-model="boolFumer" label="1">Oui</el-radio></el-col>
+                                <el-col :span="3"><el-radio :disabled="isDisabledAnts" class="ouinon" v-model="boolFumer" label="2">Non</el-radio></el-col>
+                                <el-col :span="15"> <el-space wrap :size="4">Nombre cigarettes /j<el-input-number :disabled="isDisabledAnts" v-model="nbrFumer" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                        </el-row>  
+                        <el-row>      
+                      <el-col :span="3">A chiquer</el-col> 
+                      <el-col :span="3"><el-radio :disabled="isDisabledAnts" class="ouinon" v-model="boolChiquer" label="1">Oui</el-radio></el-col>
+                      <el-col :span="3"> <el-radio :disabled="isDisabledAnts" class="ouinon" v-model="boolChiquer" label="2">Non</el-radio></el-col>
+                      <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number :disabled="isDisabledAnts" v-model="nbrChiquer" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                        </el-row>
+                       <el-row>
+                       <el-col :span="3">A prise</el-col> 
+                       <el-col :span="3"><el-radio :disabled="isDisabledAnts" class="ouinon" v-model="boolPrise" label="1">Oui</el-radio></el-col>
+                       <el-col :span="3"> <el-radio :disabled="isDisabledAnts" class="ouinon" v-model="boolPrise" label="2">Non</el-radio></el-col>
+                       <el-col :span="15"> <el-space wrap :size="4">Nombre de boites /j<el-input-number :disabled="isDisabledAnts" v-model="nbrPrise" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space></el-col>
+                       </el-row>
+                    <el-row>
+                       <el-col :span="3">ancien fumeur</el-col> 
+                       <el-col :span="3"><el-radio :disabled="isDisabledAnts" class="ouinon" v-model="ancienFum" label="1">Oui</el-radio></el-col>
+                       <el-col :span="3"> <el-radio :disabled="isDisabledAnts" class="ouinon" v-model="ancienFum" label="2">Non</el-radio></el-col>
+                       <el-col :span="15"> <el-space wrap :size="4">periode d'exposition <el-input-number :disabled="isDisabledAnts" v-model="perExpo" controls-position="right"  @change="handleChange" :min="1" :max="20"></el-input-number></el-space>ans</el-col>
+                       </el-row>
+                     <el-row >
+                     <h6>Alcool              
+                     <el-space wrap :size="10"><el-input :disabled="isDisabledAnts" placeholder="..." v-model="alcool"></el-input></el-space>
+                    </h6>  
+                    <h6>Medicaments
+                     <el-space wrap :size="10"><el-input :disabled="isDisabledAnts" placeholder="..." v-model="medicat"></el-input></el-space>
+                    </h6>  </el-row>
+                    <h6>Autres
+                   <el-space wrap :size="10"><el-input :disabled="isDisabledAnts" placeholder="" v-model="autres"></el-input></el-space>
+                    </h6>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20">
+                       <h5>ANTECEDENTS MEDICO /CHIRUGICAUX : </h5>
+                        <h6>Affections congenitales</h6><el-input :disabled="isDisabledAnts" v-model="affec"  type="textarea" autosize placeholder=".."></el-input>
+                        <h6>Maladies generalees</h6><el-input :disabled="isDisabledAnts" v-model="malaGene"  type="textarea" autosize placeholder=".."></el-input>
+                        <h6>Intervention chirurgicales</h6><el-input :disabled="isDisabledAnts" v-model="intChiru"  type="textarea" autosize placeholder=".."></el-input>
+                        <h6>Reactions allergiques au medicaments</h6><el-input :disabled="isDisabledAnts" v-model="reactMed"  type="textarea" autosize placeholder=".."></el-input>
+                    </el-col>
+                  </el-row>
+                  
+
+                    <div v-if="isDisabledAnts">
+                      <el-space><el-button class="savebtnant"  @click="modifierAntecedents" round>modifier</el-button></el-space>
+                    </div>
+                    <div v-else>
+                      <el-space>
+                        <el-button class="savebtnant"  @click="saveAntecedents"  round>Sauvgarder</el-button>
+                        <el-button class="savebtnant"  @click="cancelAnts" round>annuler</el-button>
+                  </el-space>
+                </div>
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
@@ -1232,9 +1292,27 @@ export default {
         console.log(val);
       },
 
+    //  antecendents******************************************************************************
+    boolFumer:'2',
+    boolChiquer:'2',
+    boolPrise:'2',
+    ancienFum:'2',
+    nbrFumer:"",
+    nbrChiquer:"",
+    nbrPrise:"",
+    perExpo:"",
+    alcool:"",
+    medicat:"",
+    autres:"none",
+    affec:"none",
+    malaGene:"none",
+    intChiru:"none",
+    reactMed:"none",
+    isDisabledAnts:true,
+    
+    
       cachedUserdepistage: "",
       isDisabledDepiInfo: true,
-
 
     };
   },
@@ -1321,6 +1399,10 @@ export default {
         console.log(this.error);
       }
     },
+
+  //  handleChange(value) {
+  // console.log(value);}
+
     async modifierInfoPers() {
       try {
         this.cachedUser = Object.assign({}, this.userPersInfo);
@@ -1390,8 +1472,43 @@ export default {
         console.log(`something went wrong ${error}`);
       }
     },
+
   },
-};
+  //antecedents*****************************************************************************************
+  async modifierAntecedents () {
+      try {
+        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.isDisabledAnts = false
+        console.log("modifierAntecedents button was clicked !");
+      } catch (error) {
+        console.log("something went wrong");
+      }
+    },
+    async annulerAntecedents () {
+      try {
+        this.userAntInfo = Object.assign({}, this.cachedUser);
+        this.isDisabledAnts = true
+        console.log("annulerAntecedents button was clicked !");
+      } catch (error) {
+        console.log("something went wrong");
+      }
+    },
+    async saveAntecedents () {
+      try {
+        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.isDisabledAnts = true
+        console.log("saveAntcedents button was clicked !");
+        console.log(this.userAntInfo);
+        
+        const response = await DocServices.saveAntecedents({
+          antecedentsInfo: this.userAntInfo
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -1409,8 +1526,9 @@ export default {
   border-radius: 15px;
 }
 .el-row {
-  margin-bottom: 20px;
-}
+    margin-bottom: 20px;
+  }
+ 
 .el-col {
   border-radius: 4px;
 }
@@ -1433,9 +1551,15 @@ export default {
   margin-left: 10px;
   width: 150px;
 }
-
-
-
-
+ .savebtnant:hover{
+    color: #24b4ab;
+    background-color: white;
+   
+  }
+  .savebtnant{
+    color: white;
+    background-color: #24b4ab;
+    float: right;
+  }
 
 </style>

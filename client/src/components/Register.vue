@@ -330,6 +330,9 @@ export default {
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
+
 <style >
 .register{
   background-image: url("image4.jpg");

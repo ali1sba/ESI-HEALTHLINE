@@ -5,6 +5,8 @@ const { Compte } = require('../models')
 const { MedicalFile } = require('../models')
 const { PersonalInfo } = require('../models')
 const { Depistage } = require('../models')
+const { antecedentsInfo } = require('../models')
+
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -58,6 +60,26 @@ module.exports = {
       // second : create biometricInfo
 
       // third : create antecedentsInfo
+
+      const antInfo = {
+        boolFumer: null,
+        boolChiquer: null,
+        boolPrise: null,
+        ancienFum: null,
+        nbrFumer: null,
+        nbrChiquer: null,
+        nbrPrise: null,
+        perExpo: null,
+        alcool: null,
+        medicat: null,
+        autres: null,
+        affec: null,
+        malaGene: null,
+        intChiru: null,
+        reactMed: null
+      }
+      const antecedentsInfoList = await antecedentsInfo.create(antInfo)
+
 
       // fourth : create screeningInfo
       const DepistageInfo = {
@@ -128,7 +150,9 @@ module.exports = {
         idUser: userId,
         personalInfoId: userPersonalInfo.id,
         biometricInfoId: null,
-        antecedentsInfoId: null,
+
+        antecedentsInfoId: antecedentsInfoList.id,
+
         screeningInfoId: DepistageInformation.id
       }
       const userMF = await MedicalFile.create(medFile)
@@ -136,7 +160,9 @@ module.exports = {
       const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
       const biJson = ''
-      const aiJson = ''
+
+      const aiJson = antecedentsInfoList.toJSON()
+
       const siJson = DepistageInformation.toJSON()
       res.send({
         mf: mfJson,
@@ -425,8 +451,33 @@ module.exports = {
 
   async saveAntecedentsInfo (req, res) {
     try {
+      const userAI = req.body.antInfo
+      const userAntInfo = await antecedentsInfo.findOne({
+        where: {
+          id: userAI.idAI
+        }
+      })
+
+      // save changes in antecedents table
+      userAntInfo.boolFumer = userAI.boolFumer
+      userAntInfo.boolChiquer = userAI.boolChiquer
+      userAntInfo.boolPrise = userAI.boolPrise
+      userAntInfo.ancienFum = userAI.ancienFum
+      userAntInfo.nbrFumer = userAI.nbrFumer
+      userAntInfo.nbrChiquer = userAI.nbrChiquer
+      userAntInfo.nbrPrise = userAI.nbrPrise
+      userAntInfo.perExpo = userAI.perExpo
+      userAntInfo.alcool = userAI.alcool
+      userAntInfo.medicat = userAI.medicat
+      userAntInfo.autres = userAI.autres
+      userAntInfo.affec = userAI.affec
+      userAntInfo.malaGene = userAI.malaGene
+      userAntInfo.intChiru = userAI.intChiru
+      userAntInfo.reactMed = userAI.reactMed
+
+      await userAntInfo.save()
       res.send({
-        message: 'AntecedentsInfo'
+        message: `antecedents successfully updated..medicaments: ${userAI.medicat}`
       })
     } catch (err) {
       res.status(500).send({
