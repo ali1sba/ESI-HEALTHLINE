@@ -275,7 +275,6 @@ module.exports = {
             id: userMF.biometricInfoId
           }
         })
-        // here we add userBI, userAI and userDI // same thing with ExamenMedical, RDV and statistics
         // find biometricInfo record by id
 
         // find antecedentsInfo record by id
