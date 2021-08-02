@@ -6,7 +6,7 @@ const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
 
 module.exports = (app) => {
-  app.post('/', AuthController.login)
+     app.post('/', AuthController.login)
   app.post('/register', AuthControllerPolicy.register, AuthController.register)
   app.post('/forgotpw', AuthController.forgotpw)
   app.post('/resetpw', AuthController.resetpw)

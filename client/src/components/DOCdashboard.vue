@@ -255,6 +255,7 @@
                          <el-button @click="bmiCalculation(); saveBiometricInfo();" class="droite" > IMC  </el-button>
  
                     <p  class="droite" id="imcValue" > {{responseimc}}</p>
+                    
 
 
                 </div>
