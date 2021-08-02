@@ -155,7 +155,7 @@ module.exports = {
       const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
       const biJson = ''
-      const aiJson = ''
+      const aiJson = antecedentsInfoList.toJSON()
       const siJson = DepistageInformation.toJSON()
       res.send({
         mf: mfJson,
@@ -442,8 +442,33 @@ module.exports = {
 
   async saveAntecedentsInfo (req, res) {
     try {
+      const userAI = req.body.antInfo
+      const userAntInfo = await antecedentsInfo.findOne({
+        where: {
+          id: userAI.idAI
+        }
+      })
+
+      // save changes in antecedents table
+      userAntInfo.boolFumer = userAI.boolFumer
+      userAntInfo.boolChiquer = userAI.boolChiquer
+      userAntInfo.boolPrise = userAI.boolPrise
+      userAntInfo.ancienFum = userAI.ancienFum
+      userAntInfo.nbrFumer = userAI.nbrFumer
+      userAntInfo.nbrChiquer = userAI.nbrChiquer
+      userAntInfo.nbrPrise = userAI.nbrPrise
+      userAntInfo.perExpo = userAI.perExpo
+      userAntInfo.alcool = userAI.alcool
+      userAntInfo.medicat = userAI.medicat
+      userAntInfo.autres = userAI.autres
+      userAntInfo.affec = userAI.affec
+      userAntInfo.malaGene = userAI.malaGene
+      userAntInfo.intChiru = userAI.intChiru
+      userAntInfo.reactMed = userAI.reactMed
+
+      await userAntInfo.save()
       res.send({
-        message: 'AntecedentsInfo'
+        message: `antecedents successfully updated..medicaments: ${userAI.medicat}`
       })
     } catch (err) {
       res.status(500).send({
