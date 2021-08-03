@@ -6,6 +6,7 @@ import Admin from '@/components/Admin.vue'
 import DOCdashboard from '@/components/DOCdashboard.vue'
 import patientinterface from '@/components/patientinterface.vue'
 import Resetpw from '@/components/Resetpw.vue'
+import test from '@/components/test.vue'
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/DOCdashboard',
     name: 'DOCdashboard',
     component: DOCdashboard
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: test
   },
   {
     path: '/about',

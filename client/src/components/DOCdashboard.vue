@@ -656,6 +656,9 @@
                             <el-checkbox v-model="userDepiInfo.checkedDouleurs" :disabled="isDisabledDepiInfo"
                               >douleurs</el-checkbox
                             >
+                           
+                            {{userDepiInfo.checkedDouleurs}}
+                            {{userDepiInfo.checkedDouleurs}}
                           </el-col>
 
                           <el-col :span="8">
@@ -1183,6 +1186,7 @@ export default {
       haveMF:false,
       //the data for Dépistage section****************************************************************************
       userDepiInfo:{
+      idDI: "", 
       typeDeVisite: "",
       docteurName: "Merabet ",
       poids: "",
@@ -1194,7 +1198,7 @@ export default {
       AcuiteVisuelleSansCOG: "",
       AcuiteVisuelleAvecCOD: "",
       AcuiteVisuelleAvecCOG: "",
-      checkedDouleurs:1,
+      checkedDouleurs: false,
       textarea1: "",
       textarea2: "",
       textarea3: "",
@@ -1209,6 +1213,8 @@ export default {
       checkListLocomoteur: [""],
       checkListRespiratoire: [""],
       checkListCardioVasculaire: [""],
+      checkListEndocrinologie: [""],
+      checkListHematologique: [""],
       DigestifDentureCarie: "",
       DigestifGingivopatie: "",
       Digestifautres: "",
@@ -1229,7 +1235,6 @@ export default {
       checkDigestifRectorragies: false,
       checkDigestifDouleurAbdominales: false,
       checkDigestifAutres: false,
-      checkListHematologique: [""],
       HematologiquePétéchies: "",
       HematologiquePurpura: "",
       HematologiqueRate: "",
@@ -1237,13 +1242,13 @@ export default {
       HematologiqueSsAuxillaires: "",
       HematologiqueSsClaviculaires: "",
       HematologiqueIngionaux: "",
-      checkListEndocrinologie: [""],
       EndocrinologieTyroide: "",
       EndocrinologieTesticules: "",
       EndocrinologieGlandesMammaires: "",
       PsychoInterrogatoire: "",
       PsychoExamensClinique: "",
     },
+    test:[""],
       
 
       // the first selection typeDeVisite
@@ -1291,6 +1296,8 @@ export default {
       handleChange(val) {
         console.log(val);
       },
+      cachedUserdepistage: "",
+      isDisabledDepiInfo: true,
 
     //  antecendents******************************************************************************
     boolFumer:'2',
@@ -1311,9 +1318,7 @@ export default {
     isDisabledAnts:true,
     
     
-      cachedUserdepistage: "",
-      isDisabledDepiInfo: true,
-
+    
     };
   },
   mounted: function () {
@@ -1329,6 +1334,30 @@ export default {
   },
   methods: {
 
+    stringToBoolean(string){
+      
+        switch(string.toLowerCase().trim()){
+        case "true": case "yes": case "1": return true;
+        case "false": case "no": case "0": case null: return false;
+        default: return Boolean(string);}
+    },
+
+    BooleanToString(booleanVar){
+      if (booleanVar){return 'true'}else {return 'false'}
+    },
+
+    ArrayToString (array) {
+      alert (array);
+      var str = array.toString();
+      alert ('str='+str);
+      return str;
+    },
+    stringToArray(str){
+      var result = str;
+      result = [""];
+      return result;
+      
+    },
         
       openFullScreen1() {
         this.fullscreenLoading = true;
@@ -1379,8 +1408,26 @@ export default {
         this.haveMF = response.data.medFile.haveDM;
         this.userPersInfo = response.data.medFile.personalInfo;
         this.userDepiInfo = response.data.medFile.depistagelInfo;
-        console.log(response.data);
-       
+
+        
+        this.userDepiInfo.checkedDouleurs = this.stringToBoolean(this.userDepiInfo.checkedDouleurs);
+        this.userDepiInfo.DigestifPyrosis = this.stringToBoolean(this.userDepiInfo.DigestifPyrosis);
+        this.userDepiInfo.DigestifVomissements = this.stringToBoolean(this.userDepiInfo.DigestifVomissements);
+        this.userDepiInfo.checkDigestifAppétit = this.stringToBoolean(this.userDepiInfo.checkDigestifAppétit);
+        this.userDepiInfo.checkDigestifTransit = this.stringToBoolean(this.userDepiInfo.checkDigestifTransit);
+        this.userDepiInfo.checkDigestifSelles = this.stringToBoolean(this.userDepiInfo.checkDigestifSelles);
+        this.userDepiInfo.checkDigestifRectorragies = this.stringToBoolean(this.userDepiInfo.checkDigestifRectorragies);
+        this.userDepiInfo.checkDigestifDouleurAbdominales = this.stringToBoolean(this.userDepiInfo.checkDigestifDouleurAbdominales);
+        this.userDepiInfo.checkDigestifAutres = this.stringToBoolean(this.userDepiInfo.checkDigestifAutres);
+
+        console.log(response.data.medFile.depistagelInfo);
+        // this.checkListOphtalmolodique = this.stringToArray(this.checkListOphtalmolodique)
+        // this.userDepiInfo.checkListORL = this.stringToArray(this.userDepiInfo.checkListORL)
+        //  this.userDepiInfo.checkListLocomoteur = this.stringToArray(this.userDepiInfo.checkListLocomoteur)
+        //  this.userDepiInfo.checkListRespiratoire = this.stringToArray(this.userDepiInfo.checkListRespiratoire)
+        //  this.userDepiInfo.checkListCardioVasculaire = this.stringToArray(this.userDepiInfo.checkListCardioVasculaire)
+        //  this.userDepiInfo.checkListEndocrinologie = this.stringToArray(this.userDepiInfo.checkListEndocrinologie)
+        //  this.userDepiInfo.checkListHematologique = this.stringToArray(this.userDepiInfo.checkListHematologique)
       } catch (error) {
         this.error = error.response.data.error;
         console.log(this.error);
@@ -1393,6 +1440,7 @@ export default {
         });
         this.openFullScreen3();
         this.haveMF = true;
+        this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -1425,6 +1473,7 @@ export default {
       try {
         this.cachedUser = Object.assign({}, this.userPersInfo);
         this.isDisabledPersInfo = true;
+        
         console.log("savePersInfo button was clicked !");
         console.log(this.userPersInfo);
 
@@ -1443,7 +1492,7 @@ export default {
       try {
         this.cachedUserDepistage = Object.assign({}, this.userDepiInfo);
         this.isDisabledDepiInfo = false;
-        alert("modifierInfoDepi button was clicked !");
+        console.log("modifierInfoDepi button was clicked !");
       } catch (error) {
         alert("something went wrong");
       }
@@ -1452,7 +1501,7 @@ export default {
       try {
         this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
         this.isDisabledDepiInfo = true;
-        alert("cancelInfoDepi button was clicked !");
+        console.log("cancelInfoDepi button was clicked !");
       } catch (error) {
         alert("something went wrong");
       }
@@ -1461,12 +1510,30 @@ export default {
       try {
         this.cachedUserDepistage = Object.assign({}, this.userDepiInfo);
         this.isDisabledDepiInfo = true;
-        alert("saveDepiInfo button was clicked !");
+        console.log("saveDepiInfo button was clicked !");
         console.log(this.userDepiInfo);
+        // this.checkListOphtalmolodique = this.checkListOphtalmolodique.toString();
+        // this.userDepiInfo.checkListORL = this.userDepiInfo.checkListORL.toString().toString();
+        //  this.userDepiInfo.checkListLocomoteur = this.userDepiInfo.checkListLocomoteur.toString();
+        //  this.userDepiInfo.checkListRespiratoire = this.userDepiInfo.checkListRespiratoire.toString();
+        //  this.userDepiInfo.checkListCardioVasculaire = this.userDepiInfo.checkListCardioVasculaire.toString();
+        //  this.userDepiInfo.checkListEndocrinologie = this.userDepiInfo.checkListEndocrinologie.toString();
+        //  this.userDepiInfo.checkListHematologique = this.userDepiInfo.checkListHematologique.toString();
 
+         this.userDepiInfo.checkedDouleurs = this.BooleanToString(this.userDepiInfo.checkedDouleurs);
+        this.userDepiInfo.DigestifPyrosis = this.BooleanToString(this.userDepiInfo.DigestifPyrosis);
+        this.userDepiInfo.DigestifVomissements = this.BooleanToString(this.userDepiInfo.DigestifVomissements);
+        this.userDepiInfo.checkDigestifAppétit = this.BooleanToString(this.userDepiInfo.checkDigestifAppétit);
+        this.userDepiInfo.checkDigestifTransit = this.BooleanToString(this.userDepiInfo.checkDigestifTransit);
+        this.userDepiInfo.checkDigestifSelles = this.BooleanToString(this.userDepiInfo.checkDigestifSelles);
+        this.userDepiInfo.checkDigestifRectorragies = this.BooleanToString(this.userDepiInfo.checkDigestifRectorragies);
+        this.userDepiInfo.checkDigestifDouleurAbdominales = this.BooleanToString(this.userDepiInfo.checkDigestifDouleurAbdominales);
+        this.userDepiInfo.checkDigestifAutres = this.BooleanToString(this.userDepiInfo.checkDigestifAutres);
+console.log(this.userDepiInfo);
         const response = await DocServices.saveDepiInfo({
           DepistageInfo: this.userDepiInfo,
         });
+        this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
         console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -1495,6 +1562,7 @@ export default {
     },
     async saveAntecedents () {
       try {
+        
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
