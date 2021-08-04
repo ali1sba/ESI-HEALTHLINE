@@ -249,7 +249,7 @@ export default {
       password2: "",
       phoneNum: "",
       state: "etat",
-      scolarYear: "annee scolaire",
+      scolarYear: "",
       error: null,
        options: [{
           value: 'FEMME',
@@ -291,6 +291,7 @@ export default {
     async register() {
       try {
         if (this.password === this.password2){
+          if (this.state === "ATS"){this.scolarYear= "/"}
           this.error = ''
           const response = await AuthServices.register({
           firstName: this.firstName,
@@ -329,6 +330,9 @@ export default {
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
+
 <style >
 .register{
   background-image: url("image4.jpg");

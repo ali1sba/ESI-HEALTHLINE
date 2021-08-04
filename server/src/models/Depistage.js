@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.INTEGER
     },
     DépistageDate1: {
-      type: DataTypes.DATE
+      type: DataTypes.STRING
     },
     auditionOD: {
       type: DataTypes.INTEGER
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.INTEGER
     },
     checkedDouleurs: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     textarea1: {
       type: DataTypes.STRING
@@ -64,19 +64,19 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING
     },
     checkListOphtalmolodique: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkListORL: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkListLocomoteur: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkListRespiratoire: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkListCardioVasculaire: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     DigestifDentureCarie: {
       type: DataTypes.STRING
@@ -112,31 +112,31 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING
     },
     DigestifPyrosis: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     DigestifVomissements: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkDigestifAppétit: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkDigestifTransit: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkDigestifSelles: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkDigestifRectorragies: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkDigestifDouleurAbdominales: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkDigestifAutres: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     checkListHematologique: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     HematologiquePétéchies: {
       type: DataTypes.STRING
@@ -160,7 +160,7 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING
     },
     checkListEndocrinologie: {
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     EndocrinologieTyroide: {
       type: DataTypes.STRING

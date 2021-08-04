@@ -4,7 +4,9 @@ const { Compte } = require('../models')
 
 const { MedicalFile } = require('../models')
 const { PersonalInfo } = require('../models')
+const { biometricInfo } = require('../models')
 const { Depistage } = require('../models')
+const { antecedentsInfo } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -12,7 +14,7 @@ module.exports = {
       const patients = await User.findAll({
         attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
         where: {
-          [Op.or]: [{ state: 'Etudiant' }, { state: 'ATS' }]
+          [Op.or]: [{ state: 'Etudiant' }]
         }
       })
       res.send(patients)
@@ -56,8 +58,33 @@ module.exports = {
       const userPersonalInfo = await PersonalInfo.create(persInfo)
 
       // second : create biometricInfo
+      const biomInfo = {
+        taille: null,
+        poids: null,
+        imc: null
+      }
+      const userBiometricInfo = await biometricInfo.create(biomInfo)
 
       // third : create antecedentsInfo
+
+      const antInfo = {
+        boolFumer: null,
+        boolChiquer: null,
+        boolPrise: null,
+        ancienFum: null,
+        nbrFumer: null,
+        nbrChiquer: null,
+        nbrPrise: null,
+        perExpo: null,
+        alcool: null,
+        medicat: null,
+        autres: null,
+        affec: null,
+        malaGene: null,
+        intChiru: null,
+        reactMed: null
+      }
+      const antecedentsInfoList = await antecedentsInfo.create(antInfo)
 
       // fourth : create screeningInfo
       const DepistageInfo = {
@@ -72,7 +99,7 @@ module.exports = {
         AcuiteVisuelleSansCOG: null,
         AcuiteVisuelleAvecCOD: null,
         AcuiteVisuelleAvecCOG: null,
-        checkedDouleurs: true,
+        checkedDouleurs: 'false',
         textarea1: null,
         textarea2: null,
         textarea3: null,
@@ -82,11 +109,11 @@ module.exports = {
         CVPouls: null,
         CVTa: null,
         CVCyanose: null,
-        checkListOphtalmolodique: [''],
-        checkListORL: [''],
-        checkListLocomoteur: [''],
-        checkListRespiratoire: [''],
-        checkListCardioVasculaire: [''],
+        checkListOphtalmolodique: null,
+        checkListORL: null,
+        checkListLocomoteur: null,
+        checkListRespiratoire: null,
+        checkListCardioVasculaire: null,
         DigestifDentureCarie: null,
         DigestifGingivopatie: null,
         Digestifabdomens: null,
@@ -98,15 +125,15 @@ module.exports = {
         DigestifRectorragies: null,
         DigestifDouleurAbdominales: null,
         DigestifAutres: null,
-        DigestifPyrosis: false,
-        DigestifVomissements: false,
-        checkDigestifAppétit: false,
-        checkDigestifTransit: false,
-        checkDigestifSelles: false,
-        checkDigestifRectorragies: false,
-        checkDigestifDouleurAbdominales: false,
-        checkDigestifAutres: false,
-        checkListHematologique: [''],
+        DigestifPyrosis: 'false',
+        DigestifVomissements: 'false',
+        checkDigestifAppétit: 'false',
+        checkDigestifTransit: 'false',
+        checkDigestifSelles: 'false',
+        checkDigestifRectorragies: 'false',
+        checkDigestifDouleurAbdominales: 'false',
+        checkDigestifAutres: 'false',
+        checkListHematologique: null,
         HematologiquePétéchies: null,
         HematologiquePurpura: null,
         HematologiqueRate: null,
@@ -114,7 +141,7 @@ module.exports = {
         HematologiqueSsAuxillaires: null,
         HematologiqueSsClaviculaires: null,
         HematologiqueIngionaux: null,
-        checkListEndocrinologie: [''],
+        checkListEndocrinologie: null,
         EndocrinologieTyroide: null,
         EndocrinologieTesticules: null,
         EndocrinologieGlandesMammaires: null,
@@ -127,23 +154,26 @@ module.exports = {
         email: userAccount.email,
         idUser: userId,
         personalInfoId: userPersonalInfo.id,
-        biometricInfoId: null,
-        antecedentsInfoId: null,
+        biometricInfoId: userBiometricInfo.id,
+        antecedentsInfoId: antecedentsInfoList.id,
+
         screeningInfoId: DepistageInformation.id
       }
       const userMF = await MedicalFile.create(medFile)
 
-      const mfJson = userMF.toJSON()
+      // const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
-      const biJson = ''
-      const aiJson = ''
-      const siJson = DepistageInformation.toJSON()
+      const biJson = userBiometricInfo.toJSON()
+
+      const aiJson = antecedentsInfoList.toJSON()
+
+      // const siJson = DepistageInformation.toJSON()
       res.send({
-        mf: mfJson,
+        mf: userMF,
         pi: piJson,
         bi: biJson,
         ai: aiJson,
-        si: siJson
+        si: DepistageInformation.id
       })
     } catch (err) {
       res.status(500).send({
@@ -185,7 +215,13 @@ module.exports = {
             scolarYear: userUser.scolarYear,
             category: null
           },
+          biometricInfo: {
+            poids: null,
+            taille: null,
+            imc: null
+          },
           depistagelInfo: {
+            idDI: null,
             typeDeVisite: '',
             docteurName: '',
             poids: '',
@@ -197,7 +233,7 @@ module.exports = {
             AcuiteVisuelleSansCOG: '',
             AcuiteVisuelleAvecCOD: '',
             AcuiteVisuelleAvecCOG: '',
-            checkedDouleurs: true,
+            checkedDouleurs: 'false',
             textarea1: '',
             textarea2: '',
             textarea3: '',
@@ -223,14 +259,14 @@ module.exports = {
             DigestifRectorragies: '',
             DigestifDouleurAbdominales: '',
             DigestifAutres: '',
-            DigestifPyrosis: false,
-            DigestifVomissements: false,
-            checkDigestifAppétit: false,
-            checkDigestifTransit: false,
-            checkDigestifSelles: false,
-            checkDigestifRectorragies: false,
-            checkDigestifDouleurAbdominales: false,
-            checkDigestifAutres: false,
+            DigestifPyrosis: 'false',
+            DigestifVomissements: 'false',
+            checkDigestifAppétit: 'false',
+            checkDigestifTransit: 'false',
+            checkDigestifSelles: 'false',
+            checkDigestifRectorragies: 'false',
+            checkDigestifDouleurAbdominales: 'false',
+            checkDigestifAutres: 'false',
             checkListHematologique: [''],
             HematologiquePétéchies: '',
             HematologiquePurpura: '',
@@ -246,7 +282,7 @@ module.exports = {
             PsychoInterrogatoire: '',
             PsychoExamensClinique: ''
           }
-          // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
+          // here we add bioInfo, antecedentInfo  // same thing with ExamenMedical, RDV and statistics
         }
         res.send({
           medFile: medFile
@@ -259,7 +295,11 @@ module.exports = {
           }
         })
         // find biometricInfo record by id
-
+        const userBI = await biometricInfo.findOne({
+          where: {
+            id: userMF.biometricInfoId
+          }
+        })
         // find antecedentsInfo record by id
 
         // find depistage record by id
@@ -288,7 +328,15 @@ module.exports = {
             scolarYear: userPI.scolarYear,
             category: userPI.category
           },
+
+          biometricInfo: {
+            id: userBI.id,
+            poids: userBI.poids,
+            taille: userBI.taille,
+            imc: userBI.imc
+          },
           depistagelInfo: {
+            idDI: userDepInfo.id,
             typeDeVisite: userDepInfo.typeDeVisite,
             docteurName: userDepInfo.docteurName,
             poids: userDepInfo.poids,
@@ -411,8 +459,21 @@ module.exports = {
 
   async saveBiometricInfo (req, res) {
     try {
+      const userBI = req.body.biometricInfo
+
+      // update the tables with save function of sequelize
+      const userBiometricInfo = await biometricInfo.findOne({
+        where: {
+          id: userBI.id
+        }
+      })
+      // save changes in biometricinfos table
+      userBiometricInfo.poids = userBI.poids
+      userBiometricInfo.taille = userBI.taille
+      userBiometricInfo.imc = userBI.imc
+      await userBiometricInfo.save()
       res.send({
-        message: 'BiometricInfo'
+        message: ` successfully updated... : ${userBI.poids}`
       })
     } catch (err) {
       res.status(500).send({
@@ -423,8 +484,33 @@ module.exports = {
 
   async saveAntecedentsInfo (req, res) {
     try {
+      const userAI = req.body.antInfo
+      const userAntInfo = await antecedentsInfo.findOne({
+        where: {
+          id: userAI.idAI
+        }
+      })
+
+      // save changes in antecedents table
+      userAntInfo.boolFumer = userAI.boolFumer
+      userAntInfo.boolChiquer = userAI.boolChiquer
+      userAntInfo.boolPrise = userAI.boolPrise
+      userAntInfo.ancienFum = userAI.ancienFum
+      userAntInfo.nbrFumer = userAI.nbrFumer
+      userAntInfo.nbrChiquer = userAI.nbrChiquer
+      userAntInfo.nbrPrise = userAI.nbrPrise
+      userAntInfo.perExpo = userAI.perExpo
+      userAntInfo.alcool = userAI.alcool
+      userAntInfo.medicat = userAI.medicat
+      userAntInfo.autres = userAI.autres
+      userAntInfo.affec = userAI.affec
+      userAntInfo.malaGene = userAI.malaGene
+      userAntInfo.intChiru = userAI.intChiru
+      userAntInfo.reactMed = userAI.reactMed
+
+      await userAntInfo.save()
       res.send({
-        message: 'AntecedentsInfo'
+        message: `antecedents successfully updated..medicaments: ${userAI.medicat}`
       })
     } catch (err) {
       res.status(500).send({
@@ -435,7 +521,7 @@ module.exports = {
 
   async saveScreeningInfo (req, res) {
     try {
-      const userDI = req.body.depistagelInfo
+      const userDI = req.body.DepistageInfo
       const userdepistagelInfo = await Depistage.findOne({
         where: {
           id: userDI.idDI
@@ -505,7 +591,7 @@ module.exports = {
 
       await userdepistagelInfo.save()
       res.send({
-        message: `PersInfo successfully updated... typeDeVisite: ${userDI.typeDeVisite}`
+        message: `PersInfo successfully updated... typeDeVisite: ${userDI.idDI}`
       })
     } catch (err) {
       res.status(500).send({
