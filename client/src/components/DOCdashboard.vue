@@ -434,7 +434,7 @@
                   <div class="text item" id="biom">
                     <p class="droite">Poids : (kg)</p>
                     <div classe="gauche">
-                      <el-input placeholder="Entrez le poids" v-model="poids">
+                      <el-input placeholder="Entrez le poids" v-model="userBiomInfo.poids">
                       </el-input>
                     </div>
                     <p class="droite">Taille : (cm)</p>
@@ -442,11 +442,11 @@
                       <el-input
                         id="weight"
                         placeholder="Entrez la taille"
-                        v-model="taille"
+                        v-model="userBiomInfo.taille"
                       >
                       </el-input>
                     </div>
-                    <el-button @click="bmiCalculation" class="droite">
+                    <el-button @click="bmiCalculation(); saveBiometricInfo();" class="droite">
                       IMC
                     </el-button>
                     <p class="droite" id="imcValue">{{ responseimc }}</p>
@@ -1164,6 +1164,12 @@ export default {
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
       //the data for personalInfo section****************************************************************************
+       //BIOMETRIC
+      responseimc: "0",
+      userBiomInfo: {
+        poids: 0,
+        taille: 0,
+        imc: 0,},
       userPersInfo: {
         idUser: null,
         idPI: null,
@@ -1408,10 +1414,11 @@ export default {
         });
       },
 
-    bmiCalculation() {
-      var bmi = this.poids / (this.taille * (this.taille / 100));
-
-      this.responseimc = "10";
+   bmiCalculation() {
+      var bmi =
+        this.userBiomInfo.poids /
+        ((this.userBiomInfo.taille / 100) * (this.userBiomInfo.taille / 100));
+      this.userBiomInfo.imc = bmi;
       if (bmi < 25) {
         this.responseimc = "Low: " + bmi.toFixed(2) + " kg/m2";
       } else if (bmi >= 25 && bmi < 30) {
@@ -1435,7 +1442,7 @@ export default {
         this.haveMF = response.data.medFile.haveDM;
         this.userPersInfo = response.data.medFile.personalInfo;
         this.userDepiInfo = response.data.medFile.depistagelInfo;
-
+        this.userBiomInfo = response.data.medFile.biometricInfo;
         
         this.userDepiInfo.checkedDouleurs = this.stringToBoolean(this.userDepiInfo.checkedDouleurs);
         this.userDepiInfo.DigestifPyrosis = this.stringToBoolean(this.userDepiInfo.DigestifPyrosis);
@@ -1531,6 +1538,20 @@ export default {
         console.log("cancelInfoDepi button was clicked !");
       } catch (error) {
         alert("something went wrong");
+      }
+    },
+    async saveBiometricInfo() {
+      try {
+        this.cachedUser = Object.assign({}, this.userBiomInfo);
+        console.log("save biominfo button was clicked !");
+        console.log(this.userBiomInfo);
+        const response = await DocServices.saveBiometricInfo({
+          biometricInfo: this.userBiomInfo,
+        });
+        console.log(response.data);
+        console.log("biom info done");
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
       }
     },
     async saveDepiInfo() {

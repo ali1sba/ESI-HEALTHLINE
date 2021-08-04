@@ -4,6 +4,7 @@ const { Compte } = require('../models')
 
 const { MedicalFile } = require('../models')
 const { PersonalInfo } = require('../models')
+const { biometricInfo } = require('../models')
 const { Depistage } = require('../models')
 const { antecedentsInfo } = require('../models')
 
@@ -57,6 +58,12 @@ module.exports = {
       const userPersonalInfo = await PersonalInfo.create(persInfo)
 
       // second : create biometricInfo
+      const biomInfo = {
+        taille: null,
+        poids: null,
+        imc: null
+      }
+      const userBiometricInfo = await biometricInfo.create(biomInfo)
 
       // third : create antecedentsInfo
 
@@ -147,8 +154,7 @@ module.exports = {
         email: userAccount.email,
         idUser: userId,
         personalInfoId: userPersonalInfo.id,
-        biometricInfoId: null,
-
+        biometricInfoId: userBiometricInfo.id,
         antecedentsInfoId: antecedentsInfoList.id,
 
         screeningInfoId: DepistageInformation.id
@@ -157,7 +163,7 @@ module.exports = {
 
       // const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
-      const biJson = ''
+      const biJson = userBiometricInfo.toJSON()
 
       const aiJson = antecedentsInfoList.toJSON()
 
@@ -208,6 +214,11 @@ module.exports = {
             state: userUser.state,
             scolarYear: userUser.scolarYear,
             category: null
+          },
+          biometricInfo: {
+            poids: null,
+            taille: null,
+            imc: null
           },
           depistagelInfo: {
             idDI: null,
@@ -284,7 +295,11 @@ module.exports = {
           }
         })
         // find biometricInfo record by id
-
+        const userBI = await biometricInfo.findOne({
+          where: {
+            id: userMF.biometricInfoId
+          }
+        })
         // find antecedentsInfo record by id
 
         // find depistage record by id
@@ -312,6 +327,13 @@ module.exports = {
             state: userPI.state,
             scolarYear: userPI.scolarYear,
             category: userPI.category
+          },
+
+          biometricInfo: {
+            id: userBI.id,
+            poids: userBI.poids,
+            taille: userBI.taille,
+            imc: userBI.imc
           },
           depistagelInfo: {
             idDI: userDepInfo.id,
@@ -437,8 +459,21 @@ module.exports = {
 
   async saveBiometricInfo (req, res) {
     try {
+      const userBI = req.body.biometricInfo
+
+      // update the tables with save function of sequelize
+      const userBiometricInfo = await biometricInfo.findOne({
+        where: {
+          id: userBI.id
+        }
+      })
+      // save changes in biometricinfos table
+      userBiometricInfo.poids = userBI.poids
+      userBiometricInfo.taille = userBI.taille
+      userBiometricInfo.imc = userBI.imc
+      await userBiometricInfo.save()
       res.send({
-        message: 'BiometricInfo'
+        message: ` successfully updated... : ${userBI.poids}`
       })
     } catch (err) {
       res.status(500).send({
