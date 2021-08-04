@@ -13,7 +13,7 @@ module.exports = {
       const patients = await User.findAll({
         attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
         where: {
-          [Op.or]: [{ state: 'Etudiant' }, { state: 'ATS' }]
+          [Op.or]: [{ state: 'Etudiant' }]
         }
       })
       res.send(patients)
