@@ -23,7 +23,7 @@ module.exports = (app) => {
   app.post('/DOCdashboard', DocDashboardController.createMF)
   app.post('/DOCdashboard/showPatient', DocDashboardController.showPatient)
   app.post('/DOCdashboard/savePersInfo', DocDashboardController.savePersInfo)
-  // app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBioInfo)
+  app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
   // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
 }

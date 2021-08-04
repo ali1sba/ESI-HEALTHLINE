@@ -1,39 +1,39 @@
 <template>
   <div class="DOCdashboard">
     <div class="wrapper d-flex align-items-stretch">
-      <nav id="sidebar" class="active">
+     <nav id="sidebar" :class="{ active: isactive }">
         <div class="logoProject">
           <img src="assets/dashboard/logo.png" class="logo" />
         </div>
 
-        <ul class="list-unstyled components mb-5">
+        <ul class="list-unstyled components mb-5 menulist">
           <li>
-            <a>
-              <span class="fa fa-home" @click="content = 'dashboard'"></span>
+            <a  @click="content = 'dashboard'">
+              <span class="fa fa-home"></span>
               <p class="nom">Home</p></a
             >
           </li>
           <li>
-            <a>
-              <span class="fa fa-user" @click="content = 'dossier'"></span>
+             <a @click="content = 'dossier'">
+              <span class="fa fa-user" ></span>
               <p class="nom">About</p></a
             >
           </li>
           <li>
-            <a
-              ><span class="fa fa-sticky-note" @click="content = '3'"></span>
+           <a @click="content = '3'">
+              <span class="fa fa-sticky-note" ></span>
               <p class="nom">Blog</p></a
             >
           </li>
           <li>
-            <a
-              ><span class="fa fa-cogs" @click="content = '4'"></span>
+            <a  @click="content = '4'"
+              ><span class="fa fa-cogs"></span>
               <p class="nom">Services</p>
             </a>
           </li>
           <li>
-            <a
-              ><span class="fa fa-paper-plane" @click="content = '5'"></span>
+            <a  @click="content = '5'"
+              ><span class="fa fa-cogs"></span>
               <p class="nom">Contacts</p></a
             >
           </li>
@@ -48,35 +48,26 @@
       <div id="content" class="p-4 p-md-5">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
-            <button type="button" id="sidebarCollapse" class="menuicon">
-              <img src="assets/dashboard/menu1.png" class="menuicon" />
+            <button type="button" id="sidebarCollapse" class="menuicon" @click=" isactive = !isactive">
+              <img src="assets/dashboard/menu (1).png" class="menuicon" />
               <span class="sr-only">Toggle Menu</span>
             </button>
-            <h3 class="dashboard">Dashboard</h3>
-            <button
-              class="btn btn-dark d-inline-block d-lg-none ml-auto"
-              type="button"
-              data-toggle="collapse"
-              data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <i class="fa fa-bars"></i>
-            </button>
-            <el-dropdown split-button type="info" class="messageNotfis">
-                  <i class="el-icon-message-solid"></i>
+            <h3 class="dashboard" id="titledash">Dashboard</h3>
+
+            <div id="icons">
+              <el-dropdown split-button type="info" class="messageNotfis" id="btn-notifs">
+                <i class="el-icon-message-solid"></i>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>Alert 1</el-dropdown-item>
                     <el-dropdown-item>Alert 2</el-dropdown-item>
                     <el-dropdown-item>Alert 3</el-dropdown-item>
                     <el-dropdown-item>Alert 4</el-dropdown-item>
-                  </el-dropdown-menu>   
+                  </el-dropdown-menu>
                 </template>
               </el-dropdown>
-             <el-dropdown split-button type="info">
-                  <i class="el-icon-s-promotion"></i>
+              <el-dropdown split-button type="info" id="btn-decisions">
+                <i class="el-icon-s-promotion"></i>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>Action 1</el-dropdown-item>
@@ -86,6 +77,8 @@
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
+            </div>
+            
            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="nav navbar-nav ml-auto">
                 <li class="nav-item active">
@@ -139,55 +132,68 @@
                 <h3>Passez une belle journée</h3>
               </div>
             </div>
-            <div>
-              <svg class="Rectangle1">
-                <rect
-                  id="Rectangle1"
-                  rx="29"
-                  ry="29"
-                  x="0"
-                  y="0"
-                  width="109"
-                  height="140"
-                ></rect>
-              </svg>
-              <svg class="Rectangle2">
-                <rect
-                  id="Rectangle2"
-                  rx="29"
-                  ry="29"
-                  x="0"
-                  y="0"
-                  width="109"
-                  height="140"
-                ></rect>
-              </svg>
-              <svg class="Rectangle3">
-                <rect
-                  id="Rectangle3"
-                  rx="29"
-                  ry="29"
-                  x="0"
-                  y="0"
-                  width="109"
-                  height="140"
-                ></rect>
-              </svg>
-              <svg class="Rectangle4">
-                <rect
-                  id="Rectangle4"
-                  rx="29"
-                  ry="29"
-                  x="0"
-                  y="0"
-                  width="109"
-                  height="140"
-                ></rect>
-              </svg>
-            </div>
-            <div>
-              <button>+ ajouter RDV</button>
-            </div>
+            <el-card class="boxRDV">
+              <h4>RDV</h4>
+              <table class="dashboardTable">
+      <thead class="dashboardTablethead">
+        <tr>
+          <th class="dashboardTableth">Name</th>
+          <th class="dashboardTableth">Date</th>
+          <th class="dashboardTableth">Time</th>
+          <th class="dashboardTableth">Statue</th>
+        </tr>
+      </thead>
+     
+    <tr class="dashboardTabletr"> 
+    <td class="dashboardTabletd"><a href="#" class="dashboardTableA">Patient n 0</a></td>
+            <td class="dashboardTabletd">1/5/2021</td>
+            <td class="dashboardTabletd">11am</td>
+            <td class="dashboardTabletd">
+              <p class="status status-unpaid">Annuler</p>
+            </td>
+    
+          </tr>
+    
+          
+          <tr class="dashboardTabletr">
+            <td class="dashboardTabletd"><a href="#" class="dashboardTableA">Patient n 1</a></td>
+            <td class="dashboardTabletd">1/5/2021</td>
+            <td class="dashboardTabletd">11am</td>
+            <td class="dashboardTabletd">
+              <p class="status status-paid">Terminer</p>
+            </td>
+    
+          </tr>
+          <tr class="dashboardTabletr">
+            <td class="dashboardTabletd"><a href="#" class="dashboardTableA">Patient n 2</a></td>
+            <td class="dashboardTabletd">1/5/2021</td>
+            <td class="dashboardTabletd">11am</td>
+            <td class="dashboardTabletd">
+              <p class="status status-pending">Aujourd'hui</p>
+            </td>
+    
+          </tr>
+          <tr class="dashboardTabletr">
+            <td class="dashboardTabletd"><a href="#" class="dashboardTableA">Patient n 3</a></td>
+            <td class="dashboardTabletd">1/5/2021</td>
+            <td class="dashboardTabletd">11am</td>
+            <td class="dashboardTabletd">
+              <p class="status status-pending">ujourd'hui</p>
+            </td>
+    
+          </tr>
+          <tr class="dashboardTabletr">
+            <td class="dashboardTabletd"><a href="#" class="dashboardTableA">Patient n 4</a></td>
+            <td class="dashboardTabletd">1/5/2021</td>
+            <td class="dashboardTabletd">11am</td>
+            <td class="dashboardTabletd">
+              <p class="status status-paid">Paid</p>
+            </td>
+          </tr>
+    
+    
+    </table>
+            </el-card>
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -656,6 +662,7 @@
                             <el-checkbox v-model="userDepiInfo.checkedDouleurs" :disabled="isDisabledDepiInfo"
                               >douleurs</el-checkbox
                             >
+                           
                           </el-col>
 
                           <el-col :span="8">
@@ -676,16 +683,12 @@
                           <el-col :span="8"> Ophtalmolodique </el-col>
 
                           <el-col :span="8">
-                            <el-checkbox-group
-                            :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.checkListOphtalmolodique"
-                            >
-                              <el-checkbox label="Larmoiement"></el-checkbox>
-                              <el-checkbox label="Douleurs"></el-checkbox>
-                              <el-checkbox
+                            
+                              <el-checkbox  :disabled="isDisabledDepiInfo" v-model="userDepiInfo.checkLarmoiement" label="Larmoiement"></el-checkbox>
+                              <el-checkbox  :disabled="isDisabledDepiInfo" v-model="userDepiInfo.checkDouleurs" label="Douleurs"></el-checkbox>
+                              <el-checkbox  :disabled="isDisabledDepiInfo" v-model="userDepiInfo.checkTachesdevantlesyeux"
                                 label="Taches devant les yeux"
                               ></el-checkbox>
-                            </el-checkbox-group>
                           </el-col>
 
                           <el-col :span="8">
@@ -1142,6 +1145,7 @@ import DocServices from "@/services/DocServices.js";
 export default {
   data() {
     return {
+      isactive: true,
       fullscreenLoading: false,
       //************************************************************************************************************
       patients: [],
@@ -1183,6 +1187,7 @@ export default {
       haveMF:false,
       //the data for Dépistage section****************************************************************************
       userDepiInfo:{
+      idDI: "", 
       typeDeVisite: "",
       docteurName: "Merabet ",
       poids: "",
@@ -1194,7 +1199,7 @@ export default {
       AcuiteVisuelleSansCOG: "",
       AcuiteVisuelleAvecCOD: "",
       AcuiteVisuelleAvecCOG: "",
-      checkedDouleurs:1,
+      checkedDouleurs: false,
       textarea1: "",
       textarea2: "",
       textarea3: "",
@@ -1204,11 +1209,39 @@ export default {
       CVPouls: "",
       CVTa: "",
       CVCyanose: "",
-      checkListOphtalmolodique: [""],
-      checkListORL: [""],
-      checkListLocomoteur: [""],
-      checkListRespiratoire: [""],
-      checkListCardioVasculaire: [""],
+
+      checkLarmoiement: false,
+      checkDouleurs: false,
+      checkTachesdevantlesyeux: false,
+
+      checksifflements: false,
+      checkAnginesrépétées: false,
+      checkEpistaxis: false,
+      checkRhinorhée: false,
+
+      checkMusculaire: false,
+      checkArticulaire: false,
+      checkvertébraire: false,
+      checkNeurologique: false,
+
+      checkToux: false,
+      checkDyspneenacturne: false,
+      checkDyspneedlurne: false,
+      checkExpectorations: false,
+
+      checkOedémes: false,
+      checkAlamarchecv: false,
+      checkaurepos: false,
+      checkAlefforts: false,
+      checkPermanents: false,
+      checkpalpitation: false,
+
+      checkObésitéfamiliales: false,
+      checkAlamarche: false,
+
+      checkEcchymoses: false,
+      checkTendancesauxhémorragies: false,
+
       DigestifDentureCarie: "",
       DigestifGingivopatie: "",
       Digestifautres: "",
@@ -1229,7 +1262,6 @@ export default {
       checkDigestifRectorragies: false,
       checkDigestifDouleurAbdominales: false,
       checkDigestifAutres: false,
-      checkListHematologique: [""],
       HematologiquePétéchies: "",
       HematologiquePurpura: "",
       HematologiqueRate: "",
@@ -1237,13 +1269,13 @@ export default {
       HematologiqueSsAuxillaires: "",
       HematologiqueSsClaviculaires: "",
       HematologiqueIngionaux: "",
-      checkListEndocrinologie: [""],
       EndocrinologieTyroide: "",
       EndocrinologieTesticules: "",
       EndocrinologieGlandesMammaires: "",
       PsychoInterrogatoire: "",
       PsychoExamensClinique: "",
     },
+    test:[""],
       
 
       // the first selection typeDeVisite
@@ -1291,6 +1323,8 @@ export default {
       handleChange(val) {
         console.log(val);
       },
+      cachedUserdepistage: "",
+      isDisabledDepiInfo: true,
 
     //  antecendents******************************************************************************
     boolFumer:'2',
@@ -1311,9 +1345,7 @@ export default {
     isDisabledAnts:true,
     
     
-      cachedUserdepistage: "",
-      isDisabledDepiInfo: true,
-
+    
     };
   },
   mounted: function () {
@@ -1329,6 +1361,30 @@ export default {
   },
   methods: {
 
+    stringToBoolean(string){
+      
+        switch(string.toLowerCase().trim()){
+        case "true": case "yes": case "1": return true;
+        case "false": case "no": case "0": case null: return false;
+        default: return Boolean(string);}
+    },
+
+    BooleanToString(booleanVar){
+      if (booleanVar){return 'true'}else {return 'false'}
+    },
+
+    ArrayToString (array) {
+      alert (array);
+      var str = array.toString();
+      alert ('str='+str);
+      return str;
+    },
+    stringToArray(str){
+      var result = str;
+      result = [""];
+      return result;
+      
+    },
         
       openFullScreen1() {
         this.fullscreenLoading = true;
@@ -1379,8 +1435,26 @@ export default {
         this.haveMF = response.data.medFile.haveDM;
         this.userPersInfo = response.data.medFile.personalInfo;
         this.userDepiInfo = response.data.medFile.depistagelInfo;
-        console.log(response.data);
-       
+
+        
+        this.userDepiInfo.checkedDouleurs = this.stringToBoolean(this.userDepiInfo.checkedDouleurs);
+        this.userDepiInfo.DigestifPyrosis = this.stringToBoolean(this.userDepiInfo.DigestifPyrosis);
+        this.userDepiInfo.DigestifVomissements = this.stringToBoolean(this.userDepiInfo.DigestifVomissements);
+        this.userDepiInfo.checkDigestifAppétit = this.stringToBoolean(this.userDepiInfo.checkDigestifAppétit);
+        this.userDepiInfo.checkDigestifTransit = this.stringToBoolean(this.userDepiInfo.checkDigestifTransit);
+        this.userDepiInfo.checkDigestifSelles = this.stringToBoolean(this.userDepiInfo.checkDigestifSelles);
+        this.userDepiInfo.checkDigestifRectorragies = this.stringToBoolean(this.userDepiInfo.checkDigestifRectorragies);
+        this.userDepiInfo.checkDigestifDouleurAbdominales = this.stringToBoolean(this.userDepiInfo.checkDigestifDouleurAbdominales);
+        this.userDepiInfo.checkDigestifAutres = this.stringToBoolean(this.userDepiInfo.checkDigestifAutres);
+
+        console.log(response.data.medFile.depistagelInfo);
+        // this.checkListOphtalmolodique = this.stringToArray(this.checkListOphtalmolodique)
+        // this.userDepiInfo.checkListORL = this.stringToArray(this.userDepiInfo.checkListORL)
+        //  this.userDepiInfo.checkListLocomoteur = this.stringToArray(this.userDepiInfo.checkListLocomoteur)
+        //  this.userDepiInfo.checkListRespiratoire = this.stringToArray(this.userDepiInfo.checkListRespiratoire)
+        //  this.userDepiInfo.checkListCardioVasculaire = this.stringToArray(this.userDepiInfo.checkListCardioVasculaire)
+        //  this.userDepiInfo.checkListEndocrinologie = this.stringToArray(this.userDepiInfo.checkListEndocrinologie)
+        //  this.userDepiInfo.checkListHematologique = this.stringToArray(this.userDepiInfo.checkListHematologique)
       } catch (error) {
         this.error = error.response.data.error;
         console.log(this.error);
@@ -1393,6 +1467,7 @@ export default {
         });
         this.openFullScreen3();
         this.haveMF = true;
+        this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -1425,6 +1500,7 @@ export default {
       try {
         this.cachedUser = Object.assign({}, this.userPersInfo);
         this.isDisabledPersInfo = true;
+        
         console.log("savePersInfo button was clicked !");
         console.log(this.userPersInfo);
 
@@ -1443,7 +1519,7 @@ export default {
       try {
         this.cachedUserDepistage = Object.assign({}, this.userDepiInfo);
         this.isDisabledDepiInfo = false;
-        alert("modifierInfoDepi button was clicked !");
+        console.log("modifierInfoDepi button was clicked !");
       } catch (error) {
         alert("something went wrong");
       }
@@ -1452,7 +1528,7 @@ export default {
       try {
         this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
         this.isDisabledDepiInfo = true;
-        alert("cancelInfoDepi button was clicked !");
+        console.log("cancelInfoDepi button was clicked !");
       } catch (error) {
         alert("something went wrong");
       }
@@ -1461,12 +1537,30 @@ export default {
       try {
         this.cachedUserDepistage = Object.assign({}, this.userDepiInfo);
         this.isDisabledDepiInfo = true;
-        alert("saveDepiInfo button was clicked !");
+        console.log("saveDepiInfo button was clicked !");
         console.log(this.userDepiInfo);
+        // this.checkListOphtalmolodique = this.checkListOphtalmolodique.toString();
+        // this.userDepiInfo.checkListORL = this.userDepiInfo.checkListORL.toString().toString();
+        //  this.userDepiInfo.checkListLocomoteur = this.userDepiInfo.checkListLocomoteur.toString();
+        //  this.userDepiInfo.checkListRespiratoire = this.userDepiInfo.checkListRespiratoire.toString();
+        //  this.userDepiInfo.checkListCardioVasculaire = this.userDepiInfo.checkListCardioVasculaire.toString();
+        //  this.userDepiInfo.checkListEndocrinologie = this.userDepiInfo.checkListEndocrinologie.toString();
+        //  this.userDepiInfo.checkListHematologique = this.userDepiInfo.checkListHematologique.toString();
 
+         this.userDepiInfo.checkedDouleurs = this.BooleanToString(this.userDepiInfo.checkedDouleurs);
+        this.userDepiInfo.DigestifPyrosis = this.BooleanToString(this.userDepiInfo.DigestifPyrosis);
+        this.userDepiInfo.DigestifVomissements = this.BooleanToString(this.userDepiInfo.DigestifVomissements);
+        this.userDepiInfo.checkDigestifAppétit = this.BooleanToString(this.userDepiInfo.checkDigestifAppétit);
+        this.userDepiInfo.checkDigestifTransit = this.BooleanToString(this.userDepiInfo.checkDigestifTransit);
+        this.userDepiInfo.checkDigestifSelles = this.BooleanToString(this.userDepiInfo.checkDigestifSelles);
+        this.userDepiInfo.checkDigestifRectorragies = this.BooleanToString(this.userDepiInfo.checkDigestifRectorragies);
+        this.userDepiInfo.checkDigestifDouleurAbdominales = this.BooleanToString(this.userDepiInfo.checkDigestifDouleurAbdominales);
+        this.userDepiInfo.checkDigestifAutres = this.BooleanToString(this.userDepiInfo.checkDigestifAutres);
+console.log(this.userDepiInfo);
         const response = await DocServices.saveDepiInfo({
           DepistageInfo: this.userDepiInfo,
         });
+        this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
         console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -1495,6 +1589,7 @@ export default {
     },
     async saveAntecedents () {
       try {
+        
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
@@ -1513,6 +1608,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 .text {
   font-size: 14px;
 }
@@ -1523,6 +1619,13 @@ export default {
 .box-card {
   width: 97%;
   margin: 20px;
+  border-radius: 15px;
+}
+.boxRDV
+{
+  width: 97%;
+  margin: 20px;
+  padding-right: 50px;
   border-radius: 15px;
 }
 .el-row {
@@ -1562,4 +1665,63 @@ export default {
     float: right;
   }
 
+.dashboardTable {
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px #e1e5ee;
+  background-color: white;
+  text-align: left;
+  overflow: hidden;
+  width: 100%;
+}
+.dashboardTablethead {
+    box-shadow: 0 5px 10px #e1e5ee;
+  }
+
+  .dashboardTableth {
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.7rem;
+    font-weight: 900;
+  }
+
+  .dashboardtabletd {
+    padding: 1rem 2rem;
+  }
+
+  .dashboardtableA {
+    text-decoration: none;
+    color:#2962ff;
+  }
+
+  .status {
+    border-radius:  0.2rem;
+    background-color: red;
+    padding: 0.2rem 1rem;
+    text-align: center;
+}
+   .status-pending {
+      background-color: #fff0c2;
+      color: #a68b00;
+    }
+
+     .status-paid {
+      background-color: #c8e6c9;
+      color:  #388e3c;
+    }
+
+      .status-unpaid {
+      background-color: #ffcdd2;
+      color: #c62828;
+    }
+  
+
+  .amount {
+    text-align: right;
+  }
+
+ 
+  .dashboardTabletr:nth-child(even) {
+    background-color: #f4f6fb;
+  }
 </style>

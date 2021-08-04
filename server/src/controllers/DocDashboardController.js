@@ -7,14 +7,13 @@ const { PersonalInfo } = require('../models')
 const { Depistage } = require('../models')
 const { antecedentsInfo } = require('../models')
 
-
 module.exports = {
   async recoverPatients (req, res) {
     try {
       const patients = await User.findAll({
         attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
         where: {
-          [Op.or]: [{ state: 'Etudiant' }, { state: 'ATS' }]
+          [Op.or]: [{ state: 'Etudiant' }]
         }
       })
       res.send(patients)
@@ -80,7 +79,6 @@ module.exports = {
       }
       const antecedentsInfoList = await antecedentsInfo.create(antInfo)
 
-
       // fourth : create screeningInfo
       const DepistageInfo = {
         typeDeVisite: null,
@@ -94,7 +92,7 @@ module.exports = {
         AcuiteVisuelleSansCOG: null,
         AcuiteVisuelleAvecCOD: null,
         AcuiteVisuelleAvecCOG: null,
-        checkedDouleurs: true,
+        checkedDouleurs: 'false',
         textarea1: null,
         textarea2: null,
         textarea3: null,
@@ -104,11 +102,11 @@ module.exports = {
         CVPouls: null,
         CVTa: null,
         CVCyanose: null,
-        checkListOphtalmolodique: [''],
-        checkListORL: [''],
-        checkListLocomoteur: [''],
-        checkListRespiratoire: [''],
-        checkListCardioVasculaire: [''],
+        checkListOphtalmolodique: null,
+        checkListORL: null,
+        checkListLocomoteur: null,
+        checkListRespiratoire: null,
+        checkListCardioVasculaire: null,
         DigestifDentureCarie: null,
         DigestifGingivopatie: null,
         Digestifabdomens: null,
@@ -120,15 +118,15 @@ module.exports = {
         DigestifRectorragies: null,
         DigestifDouleurAbdominales: null,
         DigestifAutres: null,
-        DigestifPyrosis: false,
-        DigestifVomissements: false,
-        checkDigestifAppétit: false,
-        checkDigestifTransit: false,
-        checkDigestifSelles: false,
-        checkDigestifRectorragies: false,
-        checkDigestifDouleurAbdominales: false,
-        checkDigestifAutres: false,
-        checkListHematologique: [''],
+        DigestifPyrosis: 'false',
+        DigestifVomissements: 'false',
+        checkDigestifAppétit: 'false',
+        checkDigestifTransit: 'false',
+        checkDigestifSelles: 'false',
+        checkDigestifRectorragies: 'false',
+        checkDigestifDouleurAbdominales: 'false',
+        checkDigestifAutres: 'false',
+        checkListHematologique: null,
         HematologiquePétéchies: null,
         HematologiquePurpura: null,
         HematologiqueRate: null,
@@ -136,7 +134,7 @@ module.exports = {
         HematologiqueSsAuxillaires: null,
         HematologiqueSsClaviculaires: null,
         HematologiqueIngionaux: null,
-        checkListEndocrinologie: [''],
+        checkListEndocrinologie: null,
         EndocrinologieTyroide: null,
         EndocrinologieTesticules: null,
         EndocrinologieGlandesMammaires: null,
@@ -157,19 +155,19 @@ module.exports = {
       }
       const userMF = await MedicalFile.create(medFile)
 
-      const mfJson = userMF.toJSON()
+      // const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
       const biJson = ''
 
       const aiJson = antecedentsInfoList.toJSON()
 
-      const siJson = DepistageInformation.toJSON()
+      // const siJson = DepistageInformation.toJSON()
       res.send({
-        mf: mfJson,
+        mf: userMF,
         pi: piJson,
         bi: biJson,
         ai: aiJson,
-        si: siJson
+        si: DepistageInformation.id
       })
     } catch (err) {
       res.status(500).send({
@@ -224,7 +222,7 @@ module.exports = {
             AcuiteVisuelleSansCOG: '',
             AcuiteVisuelleAvecCOD: '',
             AcuiteVisuelleAvecCOG: '',
-            checkedDouleurs: true,
+            checkedDouleurs: 'false',
             textarea1: '',
             textarea2: '',
             textarea3: '',
@@ -250,14 +248,14 @@ module.exports = {
             DigestifRectorragies: '',
             DigestifDouleurAbdominales: '',
             DigestifAutres: '',
-            DigestifPyrosis: false,
-            DigestifVomissements: false,
-            checkDigestifAppétit: false,
-            checkDigestifTransit: false,
-            checkDigestifSelles: false,
-            checkDigestifRectorragies: false,
-            checkDigestifDouleurAbdominales: false,
-            checkDigestifAutres: false,
+            DigestifPyrosis: 'false',
+            DigestifVomissements: 'false',
+            checkDigestifAppétit: 'false',
+            checkDigestifTransit: 'false',
+            checkDigestifSelles: 'false',
+            checkDigestifRectorragies: 'false',
+            checkDigestifDouleurAbdominales: 'false',
+            checkDigestifAutres: 'false',
             checkListHematologique: [''],
             HematologiquePétéchies: '',
             HematologiquePurpura: '',
@@ -273,7 +271,7 @@ module.exports = {
             PsychoInterrogatoire: '',
             PsychoExamensClinique: ''
           }
-          // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
+          // here we add bioInfo, antecedentInfo  // same thing with ExamenMedical, RDV and statistics
         }
         res.send({
           medFile: medFile
@@ -558,7 +556,7 @@ module.exports = {
 
       await userdepistagelInfo.save()
       res.send({
-        message: `PersInfo successfully updated... typeDeVisite: ${userDI.typeDeVisite}`
+        message: `PersInfo successfully updated... typeDeVisite: ${userDI.idDI}`
       })
     } catch (err) {
       res.status(500).send({
