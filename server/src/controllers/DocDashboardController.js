@@ -365,7 +365,6 @@ module.exports = {
   async savePersInfo (req, res) {
     try {
       const userPI = req.body.personalInfo
-      // update the tables with save function of sequelize
       const userUser = await User.findOne({
         where: {
           id: userPI.idUser
@@ -376,6 +375,7 @@ module.exports = {
           id: userPI.idPI
         }
       })
+      // update the tables with save function of sequelize
       // save changes in Users table
       userUser.firstName = userPI.firstName
       userUser.lastName = userPI.lastName

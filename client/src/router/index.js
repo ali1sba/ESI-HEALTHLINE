@@ -5,6 +5,7 @@ import Forgotpw from '@/components/Forgotpw.vue'
 import Admin from '@/components/Admin.vue'
 import DOCdashboard from '@/components/DOCdashboard.vue'
 import patientinterface from '@/components/patientinterface.vue'
+import Patient from '@/components/Patient.vue'
 import Resetpw from '@/components/Resetpw.vue'
 
 const routes = [
@@ -42,6 +43,11 @@ const routes = [
     path: '/DOCdashboard',
     name: 'DOCdashboard',
     component: DOCdashboard
+  },
+  {
+    path: '/patient',
+    name: 'patient',
+    component: Patient
   },
   {
     path: '/about',
