@@ -68,9 +68,8 @@ export default {
           email: this.form.email,
           password: this.form.password,
         });
-        // alert("welecome")
+        alert("welecome")
         console.log(response.data);
-        // router.push("/patient")
       } catch (error) {
         this.error = error.response.data.error;
         this.err();

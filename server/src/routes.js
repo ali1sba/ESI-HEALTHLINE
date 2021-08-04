@@ -5,11 +5,12 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
-const { Compte } = require('./models')
-const passport = require('passport')
+// const { Compte } = require('./models')
+// const passport = require('passport')
 // getting the local authentication type
-const LocalStrategy = require('passport-local').Strategy
+// const LocalStrategy = require('passport-local').Strategy
 
+/*
 const authMiddleware = (req, res, next) => {
   if (!req.isAuthenticated()) {
     res.status(401).send('You are not authenticated')
@@ -58,10 +59,9 @@ passport.use(
     }
   )
 )
-
+*/
 module.exports = (app) => {
-  // app.post('/', AuthController.login)
-
+  /*
   app.post('/', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) {
@@ -91,8 +91,9 @@ module.exports = (app) => {
     console.log([user, req.session])
     res.send({ user: user })
   })
-
-  app.get('/logout', AuthController.logout)
+  */
+  app.post('/', AuthController.login)
+  // app.get('/logout', AuthController.logout)
   app.post('/register', AuthControllerPolicy.register, AuthController.register)
   app.post('/forgotpw', AuthController.forgotpw)
   app.post('/resetpw', AuthController.resetpw)
