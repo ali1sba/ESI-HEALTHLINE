@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) =>
-  sequelize.define('antecedentsInfo', {
+  sequelize.define('AntecedentsInfo', {
     boolFumer: {
       type: DataTypes.STRING
     },
