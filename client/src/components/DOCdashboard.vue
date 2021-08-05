@@ -110,14 +110,14 @@
                 class="leaderboard__profile"
                 v-for="patient in patients"
                 :key="patient.id"
+                @click="showPatient(patient)"
               >
                 <img
                   src="https://randomuser.me/api/portraits/men/32.jpg"
                   class="leaderboard__picture"
                 />
-                <span class="leaderboard__name" @click="showPatient(patient)" v-loading.fullscreen.lock="fullscreenLoading">
-                  {{ patient.lastName }}</span
-                >
+                <span class="leaderboard__name" v-loading.fullscreen.lock="fullscreenLoading">
+                  {{ patient.lastName }}</span>
               </article>
             </main>
           </article>
@@ -312,27 +312,53 @@
                     </el-row>
                     <el-row :gutter="20">
                       <el-col :span="8">
-                        <el-space wrap :size="10">
-                      Lieu de naissance
-                      <el-input
+                      <el-space wrap :size="10">
+                        Lieu de naissance
+                        <el-select
                         v-model="userPersInfo.placeOfBirth"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input>
-                    </el-space></el-col>
-                      <el-col :span="8"><el-space wrap :size="10">
-                      Sexe
-                      <el-input
-                        v-model="userPersInfo.sexe"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input></el-space></el-col>
+                        multiple
+                        filterable
+                        remote
+                        reserve-keyword
+                        placeholder="Lieu de naissance"
+                        :remote-method="remoteMethod"
+                        :loading="wilayaLoading"
+                        :disabled="isDisabledPersInfo">
+                          <el-option
+                            v-for="item in wilayaOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-space>
+                    </el-col>
                       <el-col :span="8">
                         <el-space wrap :size="10">
-                      Groupe sanguin
-                      <el-input
-                        v-model="userPersInfo.bloodGroup"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input
-                    ></el-space></el-col>
+                          Sexe
+                          <el-select v-model="userPersInfo.sexe" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in sexeOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-space wrap :size="10">
+                          Groupe sanguin
+                          <el-select v-model="userPersInfo.bloodGroup" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in bgOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
                     </el-row>
                     <el-row :gutter="20">
                       <el-col :span="8"> <el-space wrap :size="10">
@@ -364,22 +390,34 @@
                       <el-input
                         v-model="userPersInfo.numSS"
                         :disabled="isDisabledPersInfo"
-                      ></el-input
-                    ></el-space></el-col>
-                      <el-col :span="8"> <el-space wrap :size="10">
-                      Fonction
-                      <el-input
-                        v-model="userPersInfo.state"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input></el-space></el-col>
-                      <el-col :span="8"><el-space wrap :size="10">
-                     
-                      Année scolaire
-                      <el-input
-                        v-model="userPersInfo.scolarYear"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input>
-                    </el-space></el-col>
+                      >
+                      </el-input></el-space></el-col>
+                      <el-col :span="8">
+                        <el-space wrap :size="10">
+                          Fonction
+                          <el-select v-model="userPersInfo.state" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in stateOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-space wrap :size="10">
+                          Année scolaire
+                          <el-select v-model="userPersInfo.scolarYear" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in scolarYearOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
                     </el-row>
                   <el-space direction="vertical">
                     
@@ -1147,6 +1185,87 @@ export default {
     return {
       isactive: true,
       fullscreenLoading: false,
+      bgOptions: [{
+          value: 'O+',
+          label: 'O+'
+        }, {
+          value: 'O-',
+          label: 'O-'
+        }, {
+          value: 'A+',
+          label: 'A+'
+        }, {
+          value: 'A-',
+          label: 'A-'
+        }, {
+          value: 'B+',
+          label: 'B+'
+        }, {
+          value: 'B-',
+          label: 'B-'
+        }, {
+          value: 'AB+',
+          label: 'AB+'
+        }, {
+          value: 'AB-',
+          label: 'AB-'
+        }],
+      sexeOptions: [{
+          value: 'HOMME',
+          label: 'HOMME'
+        }, {
+          value: 'FEMME',
+          label: 'FEMME'
+        }],
+      stateOptions: [{
+          value: 'Etudiant',
+          label: 'Etudiant'
+        }, {
+          value: 'ATS',
+          label: 'ATS'
+        }],
+      scolarYearOptions: [{
+          value: '1CP',
+          label: '1CP'
+        }, {
+          value: '2CP',
+          label: '2CP'
+        }, {
+          value: '1CS',
+          label: '1CS'
+        }, {
+          value: '2CS',
+          label: '2CS'
+        }, {
+          value: '3CS',
+          label: '3CS'
+        }],
+      value: '',
+      wilayaOptions: [],
+        wilayaValue: [],
+        wilayaList: [],
+        wilayaLoading: false,
+        wilaya: [
+          "Adrar", "Aïn Defla", "Aïn Témouchent",
+          "Alger", "Annaba", "Batna", "Béchar",
+          "Béjaïa", "Béni Abbès", "Biskra",
+          "Blida", "Bouira", "Boumerdès",
+          "Bordj Badji Mokhtar", "Bordj Bou Arreridj",
+          "Chlef", "Constantine", "Djanet", "Djelfa",
+          "El Bayadh", "El Meniaa", "El M'Ghair",
+          "El Oued", "El Tarf", "Ghardaïa",
+          "Guelma", "Illizi", "In Guezzam",
+          "In Salah", "Jijel", "Khenchela",
+          "Laghouat", "Mascara", "Médéa",
+          "Mila", "Mostaganem", "M'Sila",
+          "Naâma", "Oran", "Ouargla",
+          "Ouled Djellal", "Oum El Bouaghi",
+          "Relizane", "Saïda", "Sétif",
+          "Sidi Bel Abbès", "Skikda",
+          "Souk Ahras", "Tamanrasset", "Tébessa",
+          "Tiaret", "Tizi Ouzou", "Tindouf",
+          "Tissemsilt", "Tipaza", "Timimoun",
+          "Tlemcen", "Touggourt"],
       //************************************************************************************************************
       patients: [],
       content: "dashboard",
@@ -1182,7 +1301,6 @@ export default {
         bloodGroup: null,
         addresse: null,
         phoneNum: null,
-        email: null,
         numSS: null,
         state: null,
         scolarYear: null,
@@ -1362,8 +1480,26 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+      this.wilayaList = this.wilaya.map(item => {
+        return { value: `${item}`, label: `${item}` };
+      });
   },
   methods: {
+
+    remoteMethod(query) {
+      if (query !== '') {
+        this.wilayaLoading = true;
+        setTimeout(() => {
+          this.wilayaLoading = false;
+          this.wilayaOptions = this.wilayaList.filter(item => {
+            return item.label.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.wilayaOptions = [];
+      }
+    },
 
     stringToBoolean(string){
       
@@ -1472,7 +1608,7 @@ export default {
         });
         this.openFullScreen3();
         this.haveMF = true;
-        this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
+        // this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;

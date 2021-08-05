@@ -4,9 +4,9 @@ const { Compte } = require('../models')
 
 const { MedicalFile } = require('../models')
 const { PersonalInfo } = require('../models')
-const { biometricInfo } = require('../models')
+const { BiometricInfo } = require('../models')
+const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
-const { antecedentsInfo } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -63,10 +63,9 @@ module.exports = {
         poids: null,
         imc: null
       }
-      const userBiometricInfo = await biometricInfo.create(biomInfo)
+      const userBiometricInfo = await BiometricInfo.create(biomInfo)
 
       // third : create antecedentsInfo
-
       const antInfo = {
         boolFumer: null,
         boolChiquer: null,
@@ -84,7 +83,7 @@ module.exports = {
         intChiru: null,
         reactMed: null
       }
-      const antecedentsInfoList = await antecedentsInfo.create(antInfo)
+      const antecedentsInfoList = await AntecedentsInfo.create(antInfo)
 
       // fourth : create screeningInfo
       const DepistageInfo = {
@@ -148,7 +147,7 @@ module.exports = {
         PsychoInterrogatoire: null,
         PsychoExamensClinique: null
       }
-      const DepistageInformation = await Depistage.create(DepistageInfo)
+      const depistageInformation = await Depistage.create(DepistageInfo)
       // fifth : create the medicalFile
       const medFile = {
         email: userAccount.email,
@@ -156,24 +155,21 @@ module.exports = {
         personalInfoId: userPersonalInfo.id,
         biometricInfoId: userBiometricInfo.id,
         antecedentsInfoId: antecedentsInfoList.id,
-
-        screeningInfoId: DepistageInformation.id
+        screeningInfoId: depistageInformation.id
       }
       const userMF = await MedicalFile.create(medFile)
 
       // const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
       const biJson = userBiometricInfo.toJSON()
-
       const aiJson = antecedentsInfoList.toJSON()
-
-      // const siJson = DepistageInformation.toJSON()
+      const siJson = depistageInformation.toJSON()
       res.send({
         mf: userMF,
         pi: piJson,
         bi: biJson,
         ai: aiJson,
-        si: DepistageInformation.id
+        si: siJson
       })
     } catch (err) {
       res.status(500).send({
@@ -295,7 +291,7 @@ module.exports = {
           }
         })
         // find biometricInfo record by id
-        const userBI = await biometricInfo.findOne({
+        const userBI = await BiometricInfo.findOne({
           where: {
             id: userMF.biometricInfoId
           }
@@ -462,7 +458,7 @@ module.exports = {
       const userBI = req.body.biometricInfo
 
       // update the tables with save function of sequelize
-      const userBiometricInfo = await biometricInfo.findOne({
+      const userBiometricInfo = await BiometricInfo.findOne({
         where: {
           id: userBI.id
         }
@@ -485,7 +481,7 @@ module.exports = {
   async saveAntecedentsInfo (req, res) {
     try {
       const userAI = req.body.antInfo
-      const userAntInfo = await antecedentsInfo.findOne({
+      const userAntInfo = await AntecedentsInfo.findOne({
         where: {
           id: userAI.idAI
         }

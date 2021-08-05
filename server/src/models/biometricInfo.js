@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) =>
-  sequelize.define('biometricInfo', {
+  sequelize.define('BiometricInfo', {
     taille: {
       type: DataTypes.REAL
     },

@@ -3,6 +3,8 @@
 --DROP TABLE 'Comptes';
 --DROP TABLE 'MedicalFiles';
 --DROP TABLE 'PersonalInfos';
+--DROP TABLE 'BiometricInfos';
+--DROP TABLE 'AntecedentsInfos';
 --DROP TABLE 'Depistages';
 --DROP TABLE 'UserNonValides';
 --DROP TABLE 'Users';
