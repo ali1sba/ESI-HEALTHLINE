@@ -8,7 +8,7 @@
 
         <ul class="list-unstyled components mb-5 menulist">
           <li>
-            <a  @click="content = 'dashboard'">
+            <a @click="home()">
               <span class="fa fa-home"></span>
               <p class="nom">Home</p></a
             >
@@ -1474,32 +1474,39 @@ export default {
     axios
       .get("http://localhost:8083/doc/patients")
       .then((response) => {
-        this.patients = response.data;
-        console.log(response);
+        let x = 0
+        response.data.forEach(element => {
+          if (!(x === 0)) {
+            this.patients.push(element)         
+          }
+          x = x + 1; 
+        });
+        this.userselected = this.patients[0];
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-      this.wilayaList = this.wilaya.map(item => {
-        return { value: `${item}`, label: `${item}` };
-      });
   },
   methods: {
-
-    remoteMethod(query) {
-      if (query !== '') {
-        this.wilayaLoading = true;
-        setTimeout(() => {
-          this.wilayaLoading = false;
-          this.wilayaOptions = this.wilayaList.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
-      } else {
-        this.wilayaOptions = [];
-      }
-    },
+    home(){
+      this.content = 'dashboard'
+      axios
+      .get("http://localhost:8083/doc/patients")
+      .then((response) => {
+        let x = 0
+        this.patients = [];
+        response.data.forEach(element => {
+          if (!(x === 0)) {
+            this.patients.push(element)         
+          }
+          x = x + 1; 
+        });
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });},
 
     stringToBoolean(string){
       

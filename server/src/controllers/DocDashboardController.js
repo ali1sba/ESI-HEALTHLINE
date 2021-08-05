@@ -11,12 +11,26 @@ const { Depistage } = require('../models')
 module.exports = {
   async recoverPatients (req, res) {
     try {
-      const patients = await User.findAll({
-        attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
+      const cPatients = await Compte.findAll({
         where: {
-          [Op.or]: [{ state: 'Etudiant' }]
+          [Op.or]: [{ role: 'PATIENT' }]
         }
       })
+      const x = await User.findAll({
+      })
+
+      const patients = [{}]
+      cPatients.forEach(async element => {
+        let v = element.id
+        v = v - 1
+        patients.push(x[(v)].dataValues)
+      })
+      // const patients = await User.findAll({
+      //   attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
+      //   where: {
+      //     [Op.or]: [{ state: 'Etudiant' }]
+      //   }
+      // })
       res.send(patients)
     } catch (err) {
       res.status(500).send({
