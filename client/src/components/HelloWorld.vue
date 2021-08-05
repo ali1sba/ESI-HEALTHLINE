@@ -46,6 +46,7 @@
 </template>
 
 <script>
+// import router from "../router"
 import AuthServices from "@/services/AuthentificationService";
 export default {
   data() {
@@ -63,12 +64,11 @@ export default {
   methods: {
     async login() {
       try {
-
         const response = await AuthServices.login({
           email: this.form.email,
           password: this.form.password,
         });
-        // alert("welecome")
+        alert("welecome")
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
