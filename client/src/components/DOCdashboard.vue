@@ -1452,6 +1452,7 @@ export default {
       isDisabledDepiInfo: true,
 
     //  antecendents******************************************************************************
+    userAntInfo: {
     boolFumer:'2',
     boolChiquer:'2',
     boolPrise:'2',
@@ -1467,6 +1468,8 @@ export default {
     malaGene:"none",
     intChiru:"none",
     reactMed:"none",
+    },
+    cashedUserAnt: "",
     isDisabledAnts:true,
     };
   },
@@ -1487,8 +1490,25 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+       this.wilayaList = this.wilaya.map(item => {
+        return { value: `${item}`, label: `${item}` };
+      });
   },
   methods: {
+    remoteMethod(query) {
+      if (query !== '') {
+        this.wilayaLoading = true;
+        setTimeout(() => {
+          this.wilayaLoading = false;
+          this.wilayaOptions = this.wilayaList.filter(item => {
+            return item.label.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.wilayaOptions = [];
+      }
+    },
     home(){
       this.content = 'dashboard'
       axios
@@ -1734,7 +1754,7 @@ console.log(this.userDepiInfo);
   //antecedents*****************************************************************************************
   async modifierAntecedents () {
       try {
-        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = false
         console.log("modifierAntecedents button was clicked !");
       } catch (error) {
@@ -1743,7 +1763,7 @@ console.log(this.userDepiInfo);
     },
     async annulerAntecedents () {
       try {
-        this.userAntInfo = Object.assign({}, this.cachedUser);
+        this.userAntInfo = Object.assign({}, this.cachedUserAnt);
         this.isDisabledAnts = true
         console.log("annulerAntecedents button was clicked !");
       } catch (error) {
@@ -1753,7 +1773,7 @@ console.log(this.userDepiInfo);
     async saveAntecedents () {
       try {
         
-        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
         console.log(this.userAntInfo);

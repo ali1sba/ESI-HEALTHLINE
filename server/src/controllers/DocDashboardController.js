@@ -13,7 +13,7 @@ module.exports = {
     try {
       const cPatients = await Compte.findAll({
         where: {
-          [Op.or]: [{ role: 'PATIENT' }]
+          [Op.and]: [{ role: 'PATIENT' }, { state: 'ACTIVATED' }]
         }
       })
       const x = await User.findAll({
@@ -230,6 +230,24 @@ module.exports = {
             taille: null,
             imc: null
           },
+          antecedentsInfo: {
+            idAI: null,
+            boolFumer: '',
+            boolChiquer: '',
+            boolPrise: '',
+            ancienFum: '',
+            nbrFumer: '',
+            nbrChiquer: '',
+            nbrPrise: '',
+            perExpo: '',
+            alcool: '',
+            medicat: '',
+            autres: '',
+            affec: '',
+            malaGene: '',
+            intChiru: '',
+            reactMed: ''
+          },
           depistagelInfo: {
             idDI: null,
             typeDeVisite: '',
@@ -292,7 +310,7 @@ module.exports = {
             PsychoInterrogatoire: '',
             PsychoExamensClinique: ''
           }
-          // here we add bioInfo, antecedentInfo  // same thing with ExamenMedical, RDV and statistics
+
         }
         res.send({
           medFile: medFile
@@ -311,7 +329,11 @@ module.exports = {
           }
         })
         // find antecedentsInfo record by id
-
+        const userAI = await AntecedentsInfo.findOne({
+          where: {
+            id: userMF.antecedentsInfoId
+          }
+        })
         // find depistage record by id
         const userDepInfo = await Depistage.findOne({
           where: {
@@ -344,6 +366,24 @@ module.exports = {
             poids: userBI.poids,
             taille: userBI.taille,
             imc: userBI.imc
+          },
+          antecedentsInfo: {
+            idAI: userAI.id,
+            boolFumer: userAI.boolFumer,
+            boolChiquer: userAI.boolChiquer,
+            boolPrise: userAI.boolPrise,
+            ancienFum: userAI.ancienFum,
+            nbrFumer: userAI.nbrFumer,
+            nbrChiquer: userAI.nbrChiquer,
+            nbrPrise: userAI.nbrPrise,
+            perExpo: userAI.perExpo,
+            alcool: userAI.alcool,
+            medicat: userAI.medicat,
+            autres: userAI.autres,
+            affec: userAI.affec,
+            malaGene: userAI.malaGene,
+            intChiru: userAI.intChiru,
+            reactMed: userAI.reactMed
           },
           depistagelInfo: {
             idDI: userDepInfo.id,

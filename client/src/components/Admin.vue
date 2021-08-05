@@ -137,13 +137,13 @@
               <el-button
                 size="mini"
                 type="success"
-                v-if="scope.row.compteState === 'DISACTIVATED'"
+                v-if="scope.row.compteState === 'DESACTIVATED'"
                 @click="activateUser(scope.row)">Activate</el-button>
                 <el-button
                 size="mini"
                 type="danger"
                 v-if="scope.row.compteState === 'ACTIVATED'"
-                @click="desactivateUser(scope.row)">Disactivate</el-button>
+                @click="desactivateUser(scope.row)">Desactivate</el-button>
             </template>
             
             
