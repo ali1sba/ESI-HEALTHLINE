@@ -316,7 +316,6 @@
                         Lieu de naissance
                         <el-select
                         v-model="userPersInfo.placeOfBirth"
-                        multiple
                         filterable
                         remote
                         reserve-keyword
@@ -351,6 +350,7 @@
                           Groupe sanguin
                           <el-select v-model="userPersInfo.bloodGroup" placeholder="Select" :disabled="isDisabledPersInfo">
                             <el-option
+                              placeholder="Groupe sanguin"
                               v-for="item in bgOptions"
                               :key="item.value"
                               :label="item.label"
@@ -364,6 +364,7 @@
                       <el-col :span="8"> <el-space wrap :size="10">
                       Adresse
                       <el-input
+                        placeholder="Adresse"
                         v-model="userPersInfo.addresse"
                         :disabled="isDisabledPersInfo"
                       ></el-input></el-space></el-col>
@@ -388,14 +389,15 @@
                       
                       NSS
                       <el-input
+                        placeholder="Numéro de sécurité sociale"
                         v-model="userPersInfo.numSS"
                         :disabled="isDisabledPersInfo"
                       >
                       </el-input></el-space></el-col>
                       <el-col :span="8">
                         <el-space wrap :size="10">
-                          Fonction
-                          <el-select v-model="userPersInfo.state" placeholder="Select" :disabled="isDisabledPersInfo">
+                          Catégorie
+                          <el-select v-model="userPersInfo.category" :disabled="isDisabledPersInfo">
                             <el-option
                               v-for="item in stateOptions"
                               :key="item.value"
@@ -420,16 +422,6 @@
                       </el-col>
                     </el-row>
                   <el-space direction="vertical">
-                    
-                    
-                    
-                    <el-space wrap :size="10">
-                      Catégorie
-                      <el-input
-                        v-model="userPersInfo.category"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input
-                    ></el-space>
                     <br/>
                     <el-space wrap :size="10">
                     <div v-if="isDisabledPersInfo">
@@ -1302,7 +1294,6 @@ export default {
         addresse: null,
         phoneNum: null,
         numSS: null,
-        state: null,
         scolarYear: null,
         category: null,
       },
@@ -1588,7 +1579,7 @@ export default {
         this.userDepiInfo.checkDigestifDouleurAbdominales = this.stringToBoolean(this.userDepiInfo.checkDigestifDouleurAbdominales);
         this.userDepiInfo.checkDigestifAutres = this.stringToBoolean(this.userDepiInfo.checkDigestifAutres);
 
-        console.log(response.data.medFile.depistagelInfo);
+        console.log(response.data.medFile.personalInfo);
         // this.checkListOphtalmolodique = this.stringToArray(this.checkListOphtalmolodique)
         // this.userDepiInfo.checkListORL = this.stringToArray(this.userDepiInfo.checkListORL)
         //  this.userDepiInfo.checkListLocomoteur = this.stringToArray(this.userDepiInfo.checkListLocomoteur)
