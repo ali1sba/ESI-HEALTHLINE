@@ -8,12 +8,18 @@ import patientinterface from '@/components/patientinterface.vue'
 // import Patient from '@/components/Patient.vue'
 import Resetpw from '@/components/Resetpw.vue'
 import test from '@/components/test.vue'
+import lahcen from '@/components/lahcen.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/lahcen',
+    name: 'lahcen',
+    component: lahcen
   },
   {
     path: '/register',
