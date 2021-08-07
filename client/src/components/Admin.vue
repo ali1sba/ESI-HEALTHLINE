@@ -16,10 +16,10 @@
     <nav role="navigationAdmin">
       <ul class="mainAdmin">
         <div id="dashboard_btn" @click="section = 1">
-          <li class="dashboardAdmin"><a href="#/admin">Validée</a></li>
+          <li class="dashboardAdmin"><a href="#/admin">Non-Validée</a></li>
         </div>
         <div id="edit_btn" @click="section = 2">
-          <li class="editAdmin"><a href="#/admin">Non-Validée</a></li>
+          <li class="editAdmin"><a href="#/admin">Validée</a></li>
         </div>
         <div id="message_btn" @click="section = 3">
           <li class="AddNewAdmin"><a href="#/admin">Register</a></li>
