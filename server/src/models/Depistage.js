@@ -176,5 +176,80 @@ module.exports = (sequelize, DataTypes) =>
     },
     PsychoExamensClinique: {
       type: DataTypes.STRING
+    },
+    checkLarmoiement: {
+      type: DataTypes.STRING
+    },
+    checkDouleurs: {
+      type: DataTypes.STRING
+    },
+    checkTachesdevantlesyeux: {
+      type: DataTypes.STRING
+    },
+    checksifflements: {
+      type: DataTypes.STRING
+    },
+    checkAnginesrépétées: {
+      type: DataTypes.STRING
+    },
+    checkEpistaxis: {
+      type: DataTypes.STRING
+    },
+    checkRhinorhée: {
+      type: DataTypes.STRING
+    },
+    checkMusculaire: {
+      type: DataTypes.STRING
+    },
+    checkArticulaire: {
+      type: DataTypes.STRING
+    },
+    checkvertébraire: {
+      type: DataTypes.STRING
+    },
+    checkNeurologique: {
+      type: DataTypes.STRING
+    },
+    checkToux: {
+      type: DataTypes.STRING
+    },
+    checkDyspneenacturne: {
+      type: DataTypes.STRING
+    },
+    checkDyspneedlurne: {
+      type: DataTypes.STRING
+    },
+    checkExpectorations: {
+      type: DataTypes.STRING
+    },
+    checkOedémes: {
+      type: DataTypes.STRING
+    },
+    checkAlamarchecv: {
+      type: DataTypes.STRING
+    },
+    checkaurepos: {
+      type: DataTypes.STRING
+    },
+    checkAlefforts: {
+      type: DataTypes.STRING
+    },
+    checkPermanents: {
+      type: DataTypes.STRING
+    },
+    checkpalpitation: {
+      type: DataTypes.STRING
+    },
+    checkObésitéfamiliales: {
+      type: DataTypes.STRING
+    },
+    checkAlamarche: {
+      type: DataTypes.STRING
+    },
+    checkEcchymoses: {
+      type: DataTypes.STRING
+    },
+    checkTendancesauxhémorragies: {
+      type: DataTypes.STRING
     }
   })

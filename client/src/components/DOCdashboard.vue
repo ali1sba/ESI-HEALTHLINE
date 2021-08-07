@@ -8,7 +8,7 @@
 
         <ul class="list-unstyled components mb-5 menulist">
           <li>
-            <a  @click="content = 'dashboard'">
+            <a @click="home()">
               <span class="fa fa-home"></span>
               <p class="nom">Home</p></a
             >
@@ -110,14 +110,14 @@
                 class="leaderboard__profile"
                 v-for="patient in patients"
                 :key="patient.id"
+                @click="showPatient(patient)"
               >
                 <img
                   src="https://randomuser.me/api/portraits/men/32.jpg"
                   class="leaderboard__picture"
                 />
-                <span class="leaderboard__name" @click="showPatient(patient)" v-loading.fullscreen.lock="fullscreenLoading">
-                  {{ patient.lastName }}</span
-                >
+                <span class="leaderboard__name" v-loading.fullscreen.lock="fullscreenLoading">
+                  {{ patient.lastName }}</span>
               </article>
             </main>
           </article>
@@ -312,27 +312,53 @@
                     </el-row>
                     <el-row :gutter="20">
                       <el-col :span="8">
-                        <el-space wrap :size="10">
-                      Lieu de naissance
-                      <el-input
+                      <el-space wrap :size="10">
+                        Lieu de naissance
+                        <el-select
                         v-model="userPersInfo.placeOfBirth"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input>
-                    </el-space></el-col>
-                      <el-col :span="8"><el-space wrap :size="10">
-                      Sexe
-                      <el-input
-                        v-model="userPersInfo.sexe"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input></el-space></el-col>
+                        multiple
+                        filterable
+                        remote
+                        reserve-keyword
+                        placeholder="Lieu de naissance"
+                        :remote-method="remoteMethod"
+                        :loading="wilayaLoading"
+                        :disabled="isDisabledPersInfo">
+                          <el-option
+                            v-for="item in wilayaOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-space>
+                    </el-col>
                       <el-col :span="8">
                         <el-space wrap :size="10">
-                      Groupe sanguin
-                      <el-input
-                        v-model="userPersInfo.bloodGroup"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input
-                    ></el-space></el-col>
+                          Sexe
+                          <el-select v-model="userPersInfo.sexe" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in sexeOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-space wrap :size="10">
+                          Groupe sanguin
+                          <el-select v-model="userPersInfo.bloodGroup" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in bgOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
                     </el-row>
                     <el-row :gutter="20">
                       <el-col :span="8"> <el-space wrap :size="10">
@@ -364,22 +390,34 @@
                       <el-input
                         v-model="userPersInfo.numSS"
                         :disabled="isDisabledPersInfo"
-                      ></el-input
-                    ></el-space></el-col>
-                      <el-col :span="8"> <el-space wrap :size="10">
-                      Fonction
-                      <el-input
-                        v-model="userPersInfo.state"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input></el-space></el-col>
-                      <el-col :span="8"><el-space wrap :size="10">
-                     
-                      Année scolaire
-                      <el-input
-                        v-model="userPersInfo.scolarYear"
-                        :disabled="isDisabledPersInfo"
-                      ></el-input>
-                    </el-space></el-col>
+                      >
+                      </el-input></el-space></el-col>
+                      <el-col :span="8">
+                        <el-space wrap :size="10">
+                          Fonction
+                          <el-select v-model="userPersInfo.state" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in stateOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
+                      <el-col :span="8">
+                        <el-space wrap :size="10">
+                          Année scolaire
+                          <el-select v-model="userPersInfo.scolarYear" placeholder="Select" :disabled="isDisabledPersInfo">
+                            <el-option
+                              v-for="item in scolarYearOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                      </el-col>
                     </el-row>
                   <el-space direction="vertical">
                     
@@ -563,7 +601,7 @@
                         </el-space>
                       </el-col>
                     </el-row>
-                    <el-row>
+                    <!-- <el-row>
                       <el-col :span="24">
                         <el-space wrap :size="50">
                           <el-space wrap :size="10">
@@ -582,65 +620,113 @@
                           ></el-space>
                         </el-space>
                       </el-col>
-                    </el-row>
-                    <el-divider></el-divider>
+                    </el-row> 
+                    <el-divider></el-divider>-->
 
                     <el-collapse v-model="userDepiInfo.activeNames" @change="handleChange">
                       <el-collapse-item title="Audition" name="1">
                         <el-space wrap :size="10">
                           OD
-                          <el-input
-                            placeholder="/10"
-                            :disabled="isDisabledDepiInfo"
+                          <el-select
                             v-model="userDepiInfo.auditionOD"
-                          ></el-input
-                        ></el-space>
-                        <el-space wrap :size="10"
-                          >OG
-                          <el-input
-                            placeholder="/10"
+                            placeholder="OD"
                             :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                        <el-space wrap :size="10">
+                          OG
+                          <el-select
                             v-model="userDepiInfo.auditionOG"
-                          ></el-input
-                        ></el-space>
+                            placeholder="OG"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                        </el-space>
                       </el-collapse-item>
                       <el-collapse-item title="Acuite Visuelle" name="2">
                         <el-space orientation="vertical">
                           <el-space wrap :size="10">
                             OD
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleSansCOD"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleSansCOD"
+                            placeholder="OD"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           <el-space wrap :size="10"
                             >OG
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleSansCOG"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleSansCOG"
+                            placeholder="OG"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           SANS CORRECTIONS
                         </el-space>
                         <el-space orientation="vertical">
                           <el-space wrap :size="10">
                             OD
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
+                            placeholder="OD"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           <el-space wrap :size="10"
                             >OG
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
+                            placeholder="OG"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           AVEC CORRECTIONS
                         </el-space>
                       </el-collapse-item>
@@ -705,16 +791,16 @@
                         <el-divider></el-divider>
                         <el-row :gutter="10">
                           <el-col :span="8"> O.R.L </el-col>
-
                           <el-col :span="8">
-                            <el-checkbox-group v-model="userDepiInfo.checkListORL" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="sifflements"></el-checkbox>
+                           
+                              <el-checkbox label="sifflements" v-model="userDepiInfo.checksifflements" :disabled="isDisabledDepiInfo"></el-checkbox>
                               <el-checkbox
                                 label="Angines répétées"
+                                v-model="userDepiInfo.checkAnginesrépétées" :disabled="isDisabledDepiInfo"
                               ></el-checkbox>
-                              <el-checkbox label="Epistaxis"></el-checkbox>
-                              <el-checkbox label="Rhinorhée"></el-checkbox>
-                            </el-checkbox-group>
+                              <el-checkbox label="Epistaxis" v-model="userDepiInfo.checkEpistaxis" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Rhinorhée" v-model="userDepiInfo.checkRhinorhée" :disabled="isDisabledDepiInfo"></el-checkbox>
+                     
                           </el-col>
 
                           <el-col :span="8">
@@ -733,13 +819,13 @@
                           <el-col :span="8"> Locomoteur </el-col>
 
                           <el-col :span="8">
-                            Douleurs
-                            <el-checkbox-group v-model="userDepiInfo.checkListLocomoteur" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="Musculaire"></el-checkbox>
-                              <el-checkbox label="Articulaire"></el-checkbox>
-                              <el-checkbox label="vertébraire"></el-checkbox>
-                              <el-checkbox label="Neurologique"></el-checkbox>
-                            </el-checkbox-group>
+                            Douleurs: <br/>
+                            
+                              <el-checkbox label="Musculaire" v-model="userDepiInfo.checkMusculaire" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Articulaire" v-model="userDepiInfo.checkArticulaire" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="vertébraire" v-model="userDepiInfo.checkvertébraire" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Neurologique" v-model="userDepiInfo.checkNeurologique" :disabled="isDisabledDepiInfo"></el-checkbox>
+                           
                           </el-col>
 
                           <el-col :span="8">
@@ -758,18 +844,14 @@
                           <el-col :span="8"> cardio-vasculaire </el-col>
 
                           <el-col :span="8">
-                            Douleurs
-                            <el-checkbox-group
-                              v-model="userDepiInfo.checkListCardioVasculaire"
-                              :disabled="isDisabledDepiInfo"
-                            >
-                              <el-checkbox label="Oedémes"></el-checkbox>
-                              <el-checkbox label="A la marche"></el-checkbox>
-                              <el-checkbox label="au repos"></el-checkbox>
-                              <el-checkbox label="A l'efforts"></el-checkbox>
-                              <el-checkbox label="Permanents"></el-checkbox>
-                              <el-checkbox label="palpitation"></el-checkbox>
-                            </el-checkbox-group>
+                           
+                              <el-checkbox label="Oedémes" v-model="userDepiInfo.checkOedémes" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="A la marche" v-model="userDepiInfo.checkAlamarchecv" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="au repos" v-model="userDepiInfo.checkaurepos" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="A l'efforts" v-model="userDepiInfo.checkAlefforts" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Permanents" v-model="userDepiInfo.checkPermanents" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="palpitation" v-model="userDepiInfo.checkpalpitation" :disabled="isDisabledDepiInfo"></el-checkbox>
+                            
                           </el-col>
 
                           <el-col :span="8">
@@ -786,18 +868,15 @@
                           <el-col :span="8"> Respiratoire </el-col>
 
                           <el-col :span="8">
-                            Douleurs
-                            <el-checkbox-group v-model="userDepiInfo.checkListRespiratoire" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="Toux"></el-checkbox>
+                            
+                            <el-checkbox label="Toux" v-model="userDepiInfo.checkToux" :disabled="isDisabledDepiInfo"></el-checkbox>
                               <el-checkbox
                                 label="Dyspnee nacturne"
+                                v-model="userDepiInfo.checkDyspneenacturne" :disabled="isDisabledDepiInfo"
                               ></el-checkbox>
-                              <el-checkbox label="Dyspnee dlurne"></el-checkbox>
-                              <el-checkbox label="Expectorations"></el-checkbox>
-                              <el-checkbox
-                                label="douleures toracique"
-                              ></el-checkbox>
-                            </el-checkbox-group>
+                              <el-checkbox label="Dyspnee dlurne" v-model="userDepiInfo.checkDyspneedlurne" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Expectorations" v-model="userDepiInfo.checkExpectorations" :disabled="isDisabledDepiInfo"></el-checkbox>
+                            
                           </el-col>
 
                           <el-col :span="8">
@@ -930,12 +1009,11 @@
                           </el-col>
 
                           <el-col :span="8">
-                            <el-checkbox-group v-model="userDepiInfo.checkListHematologique" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="Ecchymoses" ></el-checkbox>
+                            <el-checkbox label="Ecchymoses" v-model="userDepiInfo.checkEcchymoses" :disabled="isDisabledDepiInfo" ></el-checkbox>
                               <el-checkbox
                                 label="Tendances aux hémorragies"
+                                v-model="userDepiInfo.checkTendancesauxhémorragies" :disabled="isDisabledDepiInfo"
                               ></el-checkbox>
-                            </el-checkbox-group>
                           </el-col>
 
                           <el-col :span="8">
@@ -990,15 +1068,13 @@
 
                           <el-col :span="8">
                             Douleurs
-                            <el-checkbox-group
-                            :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.checkListEndocrinologie"
-                            >
                               <el-checkbox
                                 label="Obésité familiales"
+                                :disabled="isDisabledDepiInfo"
+                              v-model="userDepiInfo.checkObésitéfamiliales"
                               ></el-checkbox>
-                              <el-checkbox label="A la marche"></el-checkbox>
-                            </el-checkbox-group>
+                              <el-checkbox label="A la marche" :disabled="isDisabledDepiInfo"
+                              v-model="userDepiInfo.checkAlamarche"></el-checkbox>
                           </el-col>
 
                           <el-col :span="8">
@@ -1056,7 +1132,7 @@
 
                   <center>
                   <div v-if="isDisabledDepiInfo">
-                    <el-space><el-button icon="el-icon-edit" @click="modifierInfoDepi"> Modifier </el-button></el-space>
+                    <el-space><el-button icon="el-icon-edit" class="savebtnant" @click="modifierInfoDepi"> Modifier </el-button></el-space>
                   </div>
                   <div v-else>
                     <el-space><el-button type="success" icon="el-icon-check" @click="saveDepiInfo"> Enregister </el-button>
@@ -1147,6 +1223,87 @@ export default {
     return {
       isactive: true,
       fullscreenLoading: false,
+      bgOptions: [{
+          value: 'O+',
+          label: 'O+'
+        }, {
+          value: 'O-',
+          label: 'O-'
+        }, {
+          value: 'A+',
+          label: 'A+'
+        }, {
+          value: 'A-',
+          label: 'A-'
+        }, {
+          value: 'B+',
+          label: 'B+'
+        }, {
+          value: 'B-',
+          label: 'B-'
+        }, {
+          value: 'AB+',
+          label: 'AB+'
+        }, {
+          value: 'AB-',
+          label: 'AB-'
+        }],
+      sexeOptions: [{
+          value: 'HOMME',
+          label: 'HOMME'
+        }, {
+          value: 'FEMME',
+          label: 'FEMME'
+        }],
+      stateOptions: [{
+          value: 'Etudiant',
+          label: 'Etudiant'
+        }, {
+          value: 'ATS',
+          label: 'ATS'
+        }],
+      scolarYearOptions: [{
+          value: '1CP',
+          label: '1CP'
+        }, {
+          value: '2CP',
+          label: '2CP'
+        }, {
+          value: '1CS',
+          label: '1CS'
+        }, {
+          value: '2CS',
+          label: '2CS'
+        }, {
+          value: '3CS',
+          label: '3CS'
+        }],
+      value: '',
+      wilayaOptions: [],
+        wilayaValue: [],
+        wilayaList: [],
+        wilayaLoading: false,
+        wilaya: [
+          "Adrar", "Aïn Defla", "Aïn Témouchent",
+          "Alger", "Annaba", "Batna", "Béchar",
+          "Béjaïa", "Béni Abbès", "Biskra",
+          "Blida", "Bouira", "Boumerdès",
+          "Bordj Badji Mokhtar", "Bordj Bou Arreridj",
+          "Chlef", "Constantine", "Djanet", "Djelfa",
+          "El Bayadh", "El Meniaa", "El M'Ghair",
+          "El Oued", "El Tarf", "Ghardaïa",
+          "Guelma", "Illizi", "In Guezzam",
+          "In Salah", "Jijel", "Khenchela",
+          "Laghouat", "Mascara", "Médéa",
+          "Mila", "Mostaganem", "M'Sila",
+          "Naâma", "Oran", "Ouargla",
+          "Ouled Djellal", "Oum El Bouaghi",
+          "Relizane", "Saïda", "Sétif",
+          "Sidi Bel Abbès", "Skikda",
+          "Souk Ahras", "Tamanrasset", "Tébessa",
+          "Tiaret", "Tizi Ouzou", "Tindouf",
+          "Tissemsilt", "Tipaza", "Timimoun",
+          "Tlemcen", "Touggourt"],
       //************************************************************************************************************
       patients: [],
       content: "dashboard",
@@ -1163,6 +1320,7 @@ export default {
       radio1: "Dossier Médical",
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
+
       //the data for personalInfo section****************************************************************************
        //BIOMETRIC
       responseimc: "0",
@@ -1181,7 +1339,6 @@ export default {
         bloodGroup: null,
         addresse: null,
         phoneNum: null,
-        email: null,
         numSS: null,
         state: null,
         scolarYear: null,
@@ -1281,7 +1438,6 @@ export default {
       PsychoInterrogatoire: "",
       PsychoExamensClinique: "",
     },
-    test:[""],
       
 
       // the first selection typeDeVisite
@@ -1294,6 +1450,52 @@ export default {
           value: "Systimatique",
           label: "Systimatique",
         },
+      ],
+      options1To10: [
+        {
+          value: 0,
+          label: "0",
+        },
+        {
+          value: 1,
+          label: "1",
+        },
+        {
+          value: 2,
+          label: "2",
+        },
+        {
+          value: 3,
+          label: "3",
+        },
+        {
+          value: 4,
+          label: "4",
+        },
+        {
+          value: 5,
+          label: "5",
+        },
+        {
+          value: 6,
+          label: "6",
+        },
+        {
+          value: 7,
+          label: "7",
+        },
+        {
+          value: 8,
+          label: "8",
+        },
+        {
+          value: 9,
+          label: "9",
+        },
+        {
+          value: 10,
+          label: "10",
+        }
       ],
 
       // date function
@@ -1333,6 +1535,7 @@ export default {
       isDisabledDepiInfo: true,
 
     //  antecendents******************************************************************************
+    userAntInfo: {
     boolFumer:'2',
     boolChiquer:'2',
     boolPrise:'2',
@@ -1348,24 +1551,65 @@ export default {
     malaGene:"none",
     intChiru:"none",
     reactMed:"none",
+    },
+    cashedUserAnt: "",
     isDisabledAnts:true,
-    
-    
-    
     };
   },
   mounted: function () {
     axios
       .get("http://localhost:8083/doc/patients")
       .then((response) => {
-        this.patients = response.data;
-        console.log(response);
+        let x = 0
+        response.data.forEach(element => {
+          if (!(x === 0)) {
+            this.patients.push(element)         
+          }
+          x = x + 1; 
+        });
+        this.userselected = this.patients[0];
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
+       this.wilayaList = this.wilaya.map(item => {
+        return { value: `${item}`, label: `${item}` };
+      });
   },
   methods: {
+    remoteMethod(query) {
+      if (query !== '') {
+        this.wilayaLoading = true;
+        setTimeout(() => {
+          this.wilayaLoading = false;
+          this.wilayaOptions = this.wilayaList.filter(item => {
+            return item.label.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.wilayaOptions = [];
+      }
+    },
+    home(){
+      this.content = 'dashboard'
+      axios
+      .get("http://localhost:8083/doc/patients")
+      .then((response) => {
+        let x = 0
+        this.patients = [];
+        response.data.forEach(element => {
+          if (!(x === 0)) {
+            this.patients.push(element)         
+          }
+          x = x + 1; 
+        });
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });},
 
     stringToBoolean(string){
       
@@ -1413,6 +1657,14 @@ export default {
           duration: 5000
         });
       },
+      messageSaveDone() {
+        this.$message({
+          showClose: true,
+          message: 'All modification have been saved',
+          type: 'success',
+          duration: 4000
+        });
+      },
 
    bmiCalculation() {
       var bmi =
@@ -1454,6 +1706,38 @@ export default {
         this.userDepiInfo.checkDigestifDouleurAbdominales = this.stringToBoolean(this.userDepiInfo.checkDigestifDouleurAbdominales);
         this.userDepiInfo.checkDigestifAutres = this.stringToBoolean(this.userDepiInfo.checkDigestifAutres);
 
+        this.userDepiInfo.checkLarmoiement = this.stringToBoolean(this.userDepiInfo.checkLarmoiement);
+        this.userDepiInfo.checkDouleurs = this.stringToBoolean(this.userDepiInfo.checkDouleurs);
+        this.userDepiInfo.checkTachesdevantlesyeux = this.stringToBoolean(this.userDepiInfo.checkTachesdevantlesyeux);
+        
+        this.userDepiInfo.checksifflements = this.stringToBoolean(this.userDepiInfo.checksifflements);
+        this.userDepiInfo.checkAnginesrépétées = this.stringToBoolean(this.userDepiInfo.checkAnginesrépétées);
+        this.userDepiInfo.checkEpistaxis = this.stringToBoolean(this.userDepiInfo.checkEpistaxis);
+        this.userDepiInfo.checkRhinorhée = this.stringToBoolean(this.userDepiInfo.checkRhinorhée);
+        
+        this.userDepiInfo.checkMusculaire = this.stringToBoolean(this.userDepiInfo.checkMusculaire);
+        this.userDepiInfo.checkArticulaire = this.stringToBoolean(this.userDepiInfo.checkArticulaire);
+        this.userDepiInfo.checkvertébraire = this.stringToBoolean(this.userDepiInfo.checkvertébraire);
+        this.userDepiInfo.checkNeurologique = this.stringToBoolean(this.userDepiInfo.checkNeurologique);
+
+        this.userDepiInfo.checkToux = this.stringToBoolean(this.userDepiInfo.checkToux);
+        this.userDepiInfo.checkDyspneenacturne = this.stringToBoolean(this.userDepiInfo.checkDyspneenacturne);
+        this.userDepiInfo.checkDyspneedlurne = this.stringToBoolean(this.userDepiInfo.checkDyspneedlurne);
+        this.userDepiInfo.checkExpectorations = this.stringToBoolean(this.userDepiInfo.checkExpectorations);
+
+        this.userDepiInfo.checkOedémes = this.stringToBoolean(this.userDepiInfo.checkOedémes);
+        this.userDepiInfo.checkAlamarchecv = this.stringToBoolean(this.userDepiInfo.checkAlamarchecv);
+        this.userDepiInfo.checkaurepos = this.stringToBoolean(this.userDepiInfo.checkaurepos);
+        this.userDepiInfo.checkAlefforts = this.stringToBoolean(this.userDepiInfo.checkAlefforts);
+        this.userDepiInfo.checkPermanents = this.stringToBoolean(this.userDepiInfo.checkPermanents);
+        this.userDepiInfo.checkpalpitation = this.stringToBoolean(this.userDepiInfo.checkpalpitation);
+
+        this.userDepiInfo.checkObésitéfamiliales = this.stringToBoolean(this.userDepiInfo.checkObésitéfamiliales);
+        this.userDepiInfo.checkAlamarche = this.stringToBoolean(this.userDepiInfo.checkAlamarche);
+
+        this.userDepiInfo.checkEcchymoses = this.stringToBoolean(this.userDepiInfo.checkEcchymoses);
+        this.userDepiInfo.checkTendancesauxhémorragies = this.stringToBoolean(this.userDepiInfo.checkTendancesauxhémorragies);
+
         console.log(response.data.medFile.depistagelInfo);
         // this.checkListOphtalmolodique = this.stringToArray(this.checkListOphtalmolodique)
         // this.userDepiInfo.checkListORL = this.stringToArray(this.userDepiInfo.checkListORL)
@@ -1474,14 +1758,13 @@ export default {
         });
         this.openFullScreen3();
         this.haveMF = true;
-        this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
+        // this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
         console.log(this.error);
       }
     },
-
   //  handleChange(value) {
   // console.log(value);}
 
@@ -1494,6 +1777,7 @@ export default {
         console.log("something went wrong");
       }
     },
+
     async cancelInfoPers() {
       try {
         this.userPersInfo = Object.assign({}, this.cachedUser);
@@ -1503,6 +1787,7 @@ export default {
         console.log("something went wrong");
       }
     },
+
     async savePersInfo() {
       try {
         this.cachedUser = Object.assign({}, this.userPersInfo);
@@ -1577,11 +1862,45 @@ export default {
         this.userDepiInfo.checkDigestifRectorragies = this.BooleanToString(this.userDepiInfo.checkDigestifRectorragies);
         this.userDepiInfo.checkDigestifDouleurAbdominales = this.BooleanToString(this.userDepiInfo.checkDigestifDouleurAbdominales);
         this.userDepiInfo.checkDigestifAutres = this.BooleanToString(this.userDepiInfo.checkDigestifAutres);
-console.log(this.userDepiInfo);
+
+        this.userDepiInfo.checkLarmoiement = this.BooleanToString(this.userDepiInfo.checkLarmoiement);
+        this.userDepiInfo.checkDouleurs = this.BooleanToString(this.userDepiInfo.checkDouleurs);
+        this.userDepiInfo.checkTachesdevantlesyeux = this.BooleanToString(this.userDepiInfo.checkTachesdevantlesyeux);
+        
+        this.userDepiInfo.checksifflements = this.BooleanToString(this.userDepiInfo.checksifflements);
+        this.userDepiInfo.checkAnginesrépétées = this.BooleanToString(this.userDepiInfo.checkAnginesrépétées);
+        this.userDepiInfo.checkEpistaxis = this.BooleanToString(this.userDepiInfo.checkEpistaxis);
+        this.userDepiInfo.checkRhinorhée = this.BooleanToString(this.userDepiInfo.checkRhinorhée);
+        
+        this.userDepiInfo.checkMusculaire = this.BooleanToString(this.userDepiInfo.checkMusculaire);
+        this.userDepiInfo.checkArticulaire = this.BooleanToString(this.userDepiInfo.checkArticulaire);
+        this.userDepiInfo.checkvertébraire = this.BooleanToString(this.userDepiInfo.checkvertébraire);
+        this.userDepiInfo.checkNeurologique = this.BooleanToString(this.userDepiInfo.checkNeurologique);
+
+        this.userDepiInfo.checkToux = this.BooleanToString(this.userDepiInfo.checkToux);
+        this.userDepiInfo.checkDyspneenacturne = this.BooleanToString(this.userDepiInfo.checkDyspneenacturne);
+        this.userDepiInfo.checkDyspneedlurne = this.BooleanToString(this.userDepiInfo.checkDyspneedlurne);
+        this.userDepiInfo.checkExpectorations = this.BooleanToString(this.userDepiInfo.checkExpectorations);
+
+        this.userDepiInfo.checkOedémes = this.BooleanToString(this.userDepiInfo.checkOedémes);
+        this.userDepiInfo.checkAlamarchecv = this.BooleanToString(this.userDepiInfo.checkAlamarchecv);
+        this.userDepiInfo.checkaurepos = this.BooleanToString(this.userDepiInfo.checkaurepos);
+        this.userDepiInfo.checkAlefforts = this.BooleanToString(this.userDepiInfo.checkAlefforts);
+        this.userDepiInfo.checkPermanents = this.BooleanToString(this.userDepiInfo.checkPermanents);
+        this.userDepiInfo.checkpalpitation = this.BooleanToString(this.userDepiInfo.checkpalpitation);
+
+        this.userDepiInfo.checkObésitéfamiliales = this.BooleanToString(this.userDepiInfo.checkObésitéfamiliales);
+        this.userDepiInfo.checkAlamarche = this.BooleanToString(this.userDepiInfo.checkAlamarche);
+
+        this.userDepiInfo.checkEcchymoses = this.BooleanToString(this.userDepiInfo.checkEcchymoses);
+        this.userDepiInfo.checkTendancesauxhémorragies = this.BooleanToString(this.userDepiInfo.checkTendancesauxhémorragies);
+
+
         const response = await DocServices.saveDepiInfo({
           DepistageInfo: this.userDepiInfo,
         });
         this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
+        this.messageSaveDone();
         console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -1592,7 +1911,7 @@ console.log(this.userDepiInfo);
   //antecedents*****************************************************************************************
   async modifierAntecedents () {
       try {
-        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = false
         console.log("modifierAntecedents button was clicked !");
       } catch (error) {
@@ -1601,7 +1920,7 @@ console.log(this.userDepiInfo);
     },
     async annulerAntecedents () {
       try {
-        this.userAntInfo = Object.assign({}, this.cachedUser);
+        this.userAntInfo = Object.assign({}, this.cachedUserAnt);
         this.isDisabledAnts = true
         console.log("annulerAntecedents button was clicked !");
       } catch (error) {
@@ -1611,7 +1930,7 @@ console.log(this.userDepiInfo);
     async saveAntecedents () {
       try {
         
-        this.cachedUser = Object.assign({}, this.userAntInfo);
+        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
         console.log(this.userAntInfo);

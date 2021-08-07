@@ -217,7 +217,6 @@ body {
 
 /* ****************************** admin-page.css ****************************** */
 /* admin -->  lahcen */
-
 *,
 *:before,
 *:after {
@@ -225,14 +224,7 @@ body {
 }
 
 /* header */
-header[role="bannerAdminAdmin"] {
-  background: white;
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-}
-header[role="bannerAdmin"] h1 {
-  margin: 0;
-  font-weight: 300;
-}
+
 /* header */
 nav[role="navigationAdmin"] {
   background: #2a3542;
@@ -265,13 +257,13 @@ nav[role="navigationAdmin"] .dashboardAdmin a:before {
   content: "";
 }
 #section1 {
-  margin-left: 100px;
+  margin-left: 40px;
 }
 #section2 {
-  margin-left: 100px;
+  margin-left: 30px;
 }
 #section3 {
-  margin-left: 300px;
+  margin-left: 200px;
 }
 
 nav[role="navigationAdmin"] .editAdmin a:before {
@@ -338,31 +330,17 @@ td {
 }
 
 @media screen and (min-width: 600px) {
-  html,
+ /* html,
   body {
     height: 100%;
     padding: 0px;
     overflow-x: hidden;
     margin: 0px;
-  }
-
-  header[role="bannerAdmin"] {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 99;
-    height: 75px;
-  }
-
+  }*/
   main[role="mainAdmin"] {
     margin: 75px 0 40px 200px;
   }
-  main[role="mainAdmin"]:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+
 }
 @media screen and (min-width: 900px) {
 }
@@ -401,81 +379,9 @@ td {
   color: white;
   border: 1px solid #f44336;
 }
-.responsive-table {
-  width: 100%;
-  margin-bottom: 1.5em;
-}
-.responsive-table thead {
-  position: absolute;
-  clip: rect(1px 1px 1px 1px);
-  clip: rect(1px, 1px, 1px, 1px);
-  padding: 0;
-  border: 0;
-  height: 1px;
-  width: 1px;
-  overflow: scroll;
-}
-.responsive-table thead th {
-  background-color: #24b4ab;
-  border: 1px solid #24b4ab;
-  font-weight: normal;
-  text-align: center;
-  color: white;
-}
-.responsive-table thead th:first-of-type {
-  text-align: left;
-}
-.responsive-table tbody,
-.responsive-table tr,
-.responsive-table th,
-.responsive-table td {
-  display: block;
-  padding: 0;
-  text-align: left;
-  white-space: normal;
-}
-.responsive-table th,
-.responsive-table td {
-  padding: 0.5em;
-  vertical-align: middle;
-}
-.responsive-table caption {
-  margin-bottom: 1em;
-  font-size: 1em;
-  font-weight: bold;
-  text-align: center;
-}
-.responsive-table tfoot {
-  font-size: 0.8em;
-  font-style: italic;
-}
-.responsive-table tbody tr {
-  margin-bottom: 1em;
-  border: 2px solid #24b4ab;
-}
-.responsive-table tbody tr:last-of-type {
-  margin-bottom: 0;
-}
-.responsive-table tbody th[scope="row"] {
-  background-color: #24b4ab;
 
-  color: white;
-}
-.responsive-table tbody td[data-type="currency"] {
-  text-align: right;
-}
-.responsive-table tbody td[data-title]:before {
-  content: attr(data-title);
-  float: left;
-  font-size: 0.8em;
-  color: rgba(94, 93, 82, 0.75);
-}
-.responsive-table tbody td {
-  text-align: right;
-  border-bottom: 1px solid #24b4ab;
-}
 
-@media (min-width: 80em) {
+@media (min-width: 80em) {/*
   .responsive-table {
     font-size: 0.9em;
   }
@@ -518,9 +424,11 @@ td {
   }
   .responsive-table tbody td[data-title]:before {
     content: none;
-  }
+  }*/
 }
 @media (min-width: 62em) {
+  /*
+
   .responsive-table {
     font-size: 1em;
   }
@@ -530,7 +438,7 @@ td {
   }
   .responsive-table tfoot {
     font-size: 0.9em;
-  }
+  }*/
 }
 
 @media (min-width: 64em) {

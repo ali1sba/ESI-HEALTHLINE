@@ -16,13 +16,13 @@
     <nav role="navigationAdmin">
       <ul class="mainAdmin">
         <div id="dashboard_btn" @click="section = 1">
-          <li class="dashboardAdmin"><a href="#/admin">Section 1</a></li>
+          <li class="dashboardAdmin"><a href="#/admin">Validée</a></li>
         </div>
         <div id="edit_btn" @click="section = 2">
-          <li class="editAdmin"><a href="#/admin">Section 2</a></li>
+          <li class="editAdmin"><a href="#/admin">Non-Validée</a></li>
         </div>
         <div id="message_btn" @click="section = 3">
-          <li class="AddNewAdmin"><a href="#/admin">Section 3</a></li>
+          <li class="AddNewAdmin"><a href="#/admin">Register</a></li>
         </div>
       </ul>
     </nav>
@@ -36,28 +36,63 @@
               <li>Ici se retrouve tout les comptes qui attend toujours la validation de l'admin</li>
             </ul>
           </section>
+    <el-button @click="clearFilter">reset all filters</el-button>
         <el-table
-          :data="users"
-          style="width: 100%">
-          <el-table-column
-            label="name"
-            width="180">
-            <template #default="scope">
-              <span style="margin-left: 10px">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="email"
-            width="180">
-            <template #default="scope">
-                 <span style="margin-left: 10px">{{ scope.row.email }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
+              row-key="date"
+              ref="filterTable"
+              :data="users"
+              style="width: 100%">
+             <el-table-column
+                label="name"
+                width="180">
+                <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
+                </template>
+              </el-table-column>
+                  <el-table-column
+                    label="email"
+                    width="180">
+                    <template #default="scope">
+                    <span style="margin-left: 10px">{{ scope.row.email }}</span>
+                   </template>
+              </el-table-column>
+              <el-table-column
             label="numuro telephone"
             width="180">
             <template #default="scope">
                  <span style="margin-left: 10px">{{ scope.row.phoneNum }}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="sexe"
+            width="100"
+            :filters="[{ text: 'HOMME', value: 'HOMME' }, { text: 'FEMMME', value: 'FEMME'}]"
+            :filter-method="filterTag4"
+            filter-placement="bottom-end">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.sexe}}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="Annee Scolaire"
+            width="80"
+            :filters="[{ text: '1CPI', value: '1CPI' }, { text: '2CPI', value: '2CPI'},
+             { text: '1CS', value: '1CS'}, { text: '2CS', value: '2CS'}, { text: '3CS', value: '3CS'}]"
+            :filter-method="filterTag3"
+            filter-placement="bottom-end">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.scolarYear }}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+                prop="tag"
+                label="state"
+                width="100"
+                :filters="[{ text: 'Etudiant', value: 'Etudiant' }, { text: 'ATS', value: 'ATS'}]"
+                :filter-method="filterTag2"
+                filter-placement="bottom-end">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.state }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -85,8 +120,97 @@
               <li>Ici se retrouve tout les comptes qui sont deja validée</li>
             </ul>
           </section>
+        <!--<el-button @click="resetDateFilter">reset date filter</el-button>-->
+        <el-button @click="clearFilter">reset all filters</el-button>
+        <el-table
+              row-key="date"
+              ref="filterTable"
+              :data="usersvalidcomplet"
+              style="width: 100%">
+             <el-table-column
+                label="name"
+                width="180">
+                <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.firstName }} {{ scope.row.lastName }}</span>
+                </template>
+              </el-table-column>
+                  <el-table-column
+                    label="email"
+                    width="180">
+                    <template #default="scope">
+                    <span style="margin-left: 10px">{{ scope.row.email }}</span>
+                   </template>
+              </el-table-column>
+              <el-table-column
+            label="numuro telephone"
+            width="180">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.phoneNum }}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="sexe"
+            width="100"
+            :filters="[{ text: 'HOMME', value: 'HOMME' }, { text: 'FEMMME', value: 'FEMME'}]"
+            :filter-method="filterTag4"
+            filter-placement="bottom-end">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.sexe}}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="Annee Scolaire"
+            width="80"
+            :filters="[{ text: '1CPI', value: '1CPI' }, { text: '2CPI', value: '2CPI'},
+             { text: '1CS', value: '1CS'}, { text: '2CS', value: '2CS'}, { text: '3CS', value: '3CS'}]"
+            :filter-method="filterTag3"
+            filter-placement="bottom-end">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.scolarYear }}</span>
+            </template>
+          </el-table-column>
+           <el-table-column
+            label="State"
+            width="120">
+            <template #default="scope">
+                 <span style="margin-left: 10px">{{ scope.row.state }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+                prop="tag"
+                label="Role"
+                width="100"
+                :filters="[{ text: 'PATIENT', value: 'PATIENT' }, { text: 'ADMINISTRATION', value: 'ADMINISTRATION' },
+                 { text: 'MED', value: 'MED' }, { text: 'ASSIS', value: 'ASSIS' }]"
+                :filter-method="filterTag"
+                filter-placement="bottom-end">
+                <template #default="scope">
+                 <!-- <el-tag
+                    :type="scope.row.tag === 'MED' ? 'primary' : 'success'&&
+                    scope.row.tag === 'ASSIS' ? 'primary' : 'success'&&
+                    scope.row.tag === 'ADMINISTRATION' ? 'primary' : 'success'"
+                    disable-transitions>{{scope.row.role}}</el-tag> -->
+                    {{scope.row.role}}
+                </template>
+              </el-table-column>
+          <el-table-column
+            label="Operations">
+            <template #default="scope">
+              <el-button
+                size="mini"
+                type="success"
+                v-if="scope.row.compteState === 'DESACTIVATED'"
+                @click="activateUser(scope.row)">Activate</el-button>
+                <el-button
+                size="mini"
+                type="danger"
+                v-if="scope.row.compteState === 'ACTIVATED'"
+                @click="desactivateUser(scope.row)">Disactivate</el-button> 
+            </template>
+          </el-table-column>
+          </el-table>
             
-          <el-table
+         <!-- <el-table
           :data="usersvalidcomplet"
           >
           <el-table-column
@@ -143,12 +267,10 @@
                 size="mini"
                 type="danger"
                 v-if="scope.row.compteState === 'ACTIVATED'"
-                @click="desactivateUser(scope.row)">Disactivate</el-button>
+                @click="desactivateUser(scope.row)">Disactivate</el-button> 
             </template>
-            
-            
           </el-table-column>
-        </el-table>
+        </el-table>-->
        
 
 
@@ -499,6 +621,24 @@ export default {
           this.scolarYear = '/'
         }
     },
+      resetDateFilter() {
+        this.$refs.filterTable.clearFilter('date');
+      },
+      clearFilter() {
+        this.$refs.filterTable.clearFilter();
+      },
+      filterTag(value, row) {
+        return row.role === value;
+      },
+      filterTag2(value, row) {
+        return row.state === value;
+      },
+      filterTag3(value, row) {
+        return row.scolarYear === value;
+      },
+      filterTag4(value, row) {
+        return row.sexe === value;
+      },
   },
 };
 </script>
