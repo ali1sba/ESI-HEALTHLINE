@@ -371,11 +371,8 @@ module.exports = {
             intChiru: '',
             reactMed: ''
           }
-<<<<<<< HEAD
           // here we add bioInfo  // same thing with ExamenMedical, RDV and statistics
-=======
 
->>>>>>> 3649c364e3b415fbd947f2ed004b66bb29c0bd11
         }
         res.send({
           medFile: medFile
@@ -394,11 +391,7 @@ module.exports = {
           }
         })
         // find antecedentsInfo record by id
-<<<<<<< HEAD
         const userAI = await antecedentsInfo.findOne({
-=======
-        const userAI = await AntecedentsInfo.findOne({
->>>>>>> 3649c364e3b415fbd947f2ed004b66bb29c0bd11
           where: {
             id: userMF.antecedentsInfoId
           }
