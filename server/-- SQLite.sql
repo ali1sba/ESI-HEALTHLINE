@@ -3,8 +3,11 @@
 --DROP TABLE 'Comptes';
 --DROP TABLE 'MedicalFiles';
 --DROP TABLE 'PersonalInfos';
+--DROP TABLE 'BiometricInfos';
+--DROP TABLE 'AntecedentsInfos';
 --DROP TABLE 'Depistages';
 --DROP TABLE 'UserNonValides';
 --DROP TABLE 'Users';
+-- DROP TABLE 'biometricInfos';
 --DROP TABLE 'ResetPasswordRequests';
 --INSERT INTO 'Comptes' VALUES ('4', 't@gmail.com', '$2a$08$3mgIiNdSCgygh5qD5x1iLON41pLQppSv0H6fy7562znfZWgEyr34y', 'ADMIN', 'V', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00')

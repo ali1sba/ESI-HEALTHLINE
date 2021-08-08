@@ -4,19 +4,33 @@ const { Compte } = require('../models')
 
 const { MedicalFile } = require('../models')
 const { PersonalInfo } = require('../models')
+const { BiometricInfo } = require('../models')
+const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
-const { antecedentsInfo } = require('../models')
-
 
 module.exports = {
   async recoverPatients (req, res) {
     try {
-      const patients = await User.findAll({
-        attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
+      const cPatients = await Compte.findAll({
         where: {
-          [Op.or]: [{ state: 'Etudiant' }, { state: 'ATS' }]
+          [Op.and]: [{ role: 'PATIENT' }, { state: 'ACTIVATED' }]
         }
       })
+      const x = await User.findAll({
+      })
+
+      const patients = [{}]
+      cPatients.forEach(async element => {
+        let v = element.id
+        v = v - 1
+        patients.push(x[(v)].dataValues)
+      })
+      // const patients = await User.findAll({
+      //   attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
+      //   where: {
+      //     [Op.or]: [{ state: 'Etudiant' }]
+      //   }
+      // })
       res.send(patients)
     } catch (err) {
       res.status(500).send({
@@ -58,9 +72,14 @@ module.exports = {
       const userPersonalInfo = await PersonalInfo.create(persInfo)
 
       // second : create biometricInfo
+      const biomInfo = {
+        taille: null,
+        poids: null,
+        imc: null
+      }
+      const userBiometricInfo = await BiometricInfo.create(biomInfo)
 
       // third : create antecedentsInfo
-
       const antInfo = {
         boolFumer: null,
         boolChiquer: null,
@@ -78,8 +97,7 @@ module.exports = {
         intChiru: null,
         reactMed: null
       }
-      const antecedentsInfoList = await antecedentsInfo.create(antInfo)
-
+      const antecedentsInfoList = await AntecedentsInfo.create(antInfo)
 
       // fourth : create screeningInfo
       const DepistageInfo = {
@@ -94,7 +112,7 @@ module.exports = {
         AcuiteVisuelleSansCOG: null,
         AcuiteVisuelleAvecCOD: null,
         AcuiteVisuelleAvecCOG: null,
-        checkedDouleurs: true,
+        checkedDouleurs: 'false',
         textarea1: null,
         textarea2: null,
         textarea3: null,
@@ -104,11 +122,6 @@ module.exports = {
         CVPouls: null,
         CVTa: null,
         CVCyanose: null,
-        checkListOphtalmolodique: [''],
-        checkListORL: [''],
-        checkListLocomoteur: [''],
-        checkListRespiratoire: [''],
-        checkListCardioVasculaire: [''],
         DigestifDentureCarie: null,
         DigestifGingivopatie: null,
         Digestifabdomens: null,
@@ -119,16 +132,40 @@ module.exports = {
         DigestifSelles: null,
         DigestifRectorragies: null,
         DigestifDouleurAbdominales: null,
+        checkLarmoiement: 'false',
+        checkDouleurs: 'false',
+        checkTachesdevantlesyeux: 'false',
+        checksifflements: 'false',
+        checkAnginesrépétées: 'false',
+        checkEpistaxis: 'false',
+        checkRhinorhée: 'false',
+        checkMusculaire: 'false',
+        checkArticulaire: 'false',
+        checkvertébraire: 'false',
+        checkNeurologique: 'false',
+        checkToux: 'false',
+        checkDyspneenacturne: 'false',
+        checkDyspneedlurne: 'false',
+        checkExpectorations: 'false',
+        checkOedémes: 'false',
+        checkAlamarchecv: 'false',
+        checkaurepos: 'false',
+        checkAlefforts: 'false',
+        checkPermanents: 'false',
+        checkpalpitation: 'false',
+        checkObésitéfamiliales: 'false',
+        checkAlamarche: 'false',
+        checkEcchymoses: 'false',
+        checkTendancesauxhémorragies: 'false',
         DigestifAutres: null,
-        DigestifPyrosis: false,
-        DigestifVomissements: false,
-        checkDigestifAppétit: false,
-        checkDigestifTransit: false,
-        checkDigestifSelles: false,
-        checkDigestifRectorragies: false,
-        checkDigestifDouleurAbdominales: false,
-        checkDigestifAutres: false,
-        checkListHematologique: [''],
+        DigestifPyrosis: 'false',
+        DigestifVomissements: 'false',
+        checkDigestifAppétit: 'false',
+        checkDigestifTransit: 'false',
+        checkDigestifSelles: 'false',
+        checkDigestifRectorragies: 'false',
+        checkDigestifDouleurAbdominales: 'false',
+        checkDigestifAutres: 'false',
         HematologiquePétéchies: null,
         HematologiquePurpura: null,
         HematologiqueRate: null,
@@ -136,36 +173,31 @@ module.exports = {
         HematologiqueSsAuxillaires: null,
         HematologiqueSsClaviculaires: null,
         HematologiqueIngionaux: null,
-        checkListEndocrinologie: [''],
         EndocrinologieTyroide: null,
         EndocrinologieTesticules: null,
         EndocrinologieGlandesMammaires: null,
         PsychoInterrogatoire: null,
         PsychoExamensClinique: null
       }
-      const DepistageInformation = await Depistage.create(DepistageInfo)
+      const depistageInformation = await Depistage.create(DepistageInfo)
       // fifth : create the medicalFile
       const medFile = {
         email: userAccount.email,
         idUser: userId,
         personalInfoId: userPersonalInfo.id,
-        biometricInfoId: null,
-
+        biometricInfoId: userBiometricInfo.id,
         antecedentsInfoId: antecedentsInfoList.id,
-
-        screeningInfoId: DepistageInformation.id
+        screeningInfoId: depistageInformation.id
       }
       const userMF = await MedicalFile.create(medFile)
 
-      const mfJson = userMF.toJSON()
+      // const mfJson = userMF.toJSON()
       const piJson = userPersonalInfo.toJSON()
-      const biJson = ''
-
+      const biJson = userBiometricInfo.toJSON()
       const aiJson = antecedentsInfoList.toJSON()
-
-      const siJson = DepistageInformation.toJSON()
+      const siJson = depistageInformation.toJSON()
       res.send({
-        mf: mfJson,
+        mf: userMF,
         pi: piJson,
         bi: biJson,
         ai: aiJson,
@@ -211,6 +243,29 @@ module.exports = {
             scolarYear: userUser.scolarYear,
             category: null
           },
+          biometricInfo: {
+            poids: null,
+            taille: null,
+            imc: null
+          },
+          antecedentsInfo: {
+            idAI: null,
+            boolFumer: '',
+            boolChiquer: '',
+            boolPrise: '',
+            ancienFum: '',
+            nbrFumer: '',
+            nbrChiquer: '',
+            nbrPrise: '',
+            perExpo: '',
+            alcool: '',
+            medicat: '',
+            autres: '',
+            affec: '',
+            malaGene: '',
+            intChiru: '',
+            reactMed: ''
+          },
           depistagelInfo: {
             idDI: null,
             typeDeVisite: '',
@@ -224,7 +279,7 @@ module.exports = {
             AcuiteVisuelleSansCOG: '',
             AcuiteVisuelleAvecCOD: '',
             AcuiteVisuelleAvecCOG: '',
-            checkedDouleurs: true,
+            checkedDouleurs: 'false',
             textarea1: '',
             textarea2: '',
             textarea3: '',
@@ -249,15 +304,40 @@ module.exports = {
             DigestifSelles: '',
             DigestifRectorragies: '',
             DigestifDouleurAbdominales: '',
+            checkLarmoiement: 'false',
+            checkDouleurs: 'false',
+            checkTachesdevantlesyeux: 'false',
+            checksifflements: 'false',
+            checkAnginesrépétées: 'false',
+            checkEpistaxis: 'false',
+            checkRhinorhée: 'false',
+            checkMusculaire: 'false',
+            checkArticulaire: 'false',
+            checkvertébraire: 'false',
+            checkNeurologique: 'false',
+            checkToux: 'false',
+            checkDyspneenacturne: 'false',
+            checkDyspneedlurne: 'false',
+            checkExpectorations: 'false',
+            checkOedémes: 'false',
+            checkAlamarchecv: 'false',
+            checkaurepos: 'false',
+            checkAlefforts: 'false',
+            checkPermanents: 'false',
+            checkpalpitation: 'false',
+            checkObésitéfamiliales: 'false',
+            checkAlamarche: 'false',
+            checkEcchymoses: 'false',
+            checkTendancesauxhémorragies: 'false',
             DigestifAutres: '',
-            DigestifPyrosis: false,
-            DigestifVomissements: false,
-            checkDigestifAppétit: false,
-            checkDigestifTransit: false,
-            checkDigestifSelles: false,
-            checkDigestifRectorragies: false,
-            checkDigestifDouleurAbdominales: false,
-            checkDigestifAutres: false,
+            DigestifPyrosis: 'false',
+            DigestifVomissements: 'false',
+            checkDigestifAppétit: 'false',
+            checkDigestifTransit: 'false',
+            checkDigestifSelles: 'false',
+            checkDigestifRectorragies: 'false',
+            checkDigestifDouleurAbdominales: 'false',
+            checkDigestifAutres: 'false',
             checkListHematologique: [''],
             HematologiquePétéchies: '',
             HematologiquePurpura: '',
@@ -291,22 +371,34 @@ module.exports = {
             intChiru: '',
             reactMed: ''
           }
+<<<<<<< HEAD
           // here we add bioInfo  // same thing with ExamenMedical, RDV and statistics
+=======
+
+>>>>>>> 3649c364e3b415fbd947f2ed004b66bb29c0bd11
         }
         res.send({
           medFile: medFile
         })
       } else {
-        // find depistage record by id
+        // find PersonalInfo record by id
         const userPI = await PersonalInfo.findOne({
           where: {
             id: userMF.personalInfoId
           }
         })
         // find biometricInfo record by id
-
+        const userBI = await BiometricInfo.findOne({
+          where: {
+            id: userMF.biometricInfoId
+          }
+        })
         // find antecedentsInfo record by id
+<<<<<<< HEAD
         const userAI = await antecedentsInfo.findOne({
+=======
+        const userAI = await AntecedentsInfo.findOne({
+>>>>>>> 3649c364e3b415fbd947f2ed004b66bb29c0bd11
           where: {
             id: userMF.antecedentsInfoId
           }
@@ -336,6 +428,31 @@ module.exports = {
             state: userPI.state,
             scolarYear: userPI.scolarYear,
             category: userPI.category
+          },
+
+          biometricInfo: {
+            id: userBI.id,
+            poids: userBI.poids,
+            taille: userBI.taille,
+            imc: userBI.imc
+          },
+          antecedentsInfo: {
+            idAI: userAI.id,
+            boolFumer: userAI.boolFumer,
+            boolChiquer: userAI.boolChiquer,
+            boolPrise: userAI.boolPrise,
+            ancienFum: userAI.ancienFum,
+            nbrFumer: userAI.nbrFumer,
+            nbrChiquer: userAI.nbrChiquer,
+            nbrPrise: userAI.nbrPrise,
+            perExpo: userAI.perExpo,
+            alcool: userAI.alcool,
+            medicat: userAI.medicat,
+            autres: userAI.autres,
+            affec: userAI.affec,
+            malaGene: userAI.malaGene,
+            intChiru: userAI.intChiru,
+            reactMed: userAI.reactMed
           },
           depistagelInfo: {
             idDI: userDepInfo.id,
@@ -376,6 +493,31 @@ module.exports = {
             DigestifRectorragies: userDepInfo.DigestifRectorragies,
             DigestifDouleurAbdominales: userDepInfo.DigestifDouleurAbdominales,
             DigestifAutres: userDepInfo.DigestifAutres,
+            checkLarmoiement: userDepInfo.checkLarmoiement,
+            checkDouleurs: userDepInfo.checkDouleurs,
+            checkTachesdevantlesyeux: userDepInfo.checkTachesdevantlesyeux,
+            checksifflements: userDepInfo.checksifflements,
+            checkAnginesrépétées: userDepInfo.checkAnginesrépétées,
+            checkEpistaxis: userDepInfo.checkEpistaxis,
+            checkRhinorhée: userDepInfo.checkRhinorhée,
+            checkMusculaire: userDepInfo.checkMusculaire,
+            checkArticulaire: userDepInfo.checkArticulaire,
+            checkvertébraire: userDepInfo.checkvertébraire,
+            checkNeurologique: userDepInfo.checkNeurologique,
+            checkToux: userDepInfo.checkToux,
+            checkDyspneenacturne: userDepInfo.checkDyspneenacturne,
+            checkDyspneedlurne: userDepInfo.checkDyspneedlurne,
+            checkExpectorations: userDepInfo.checkExpectorations,
+            checkOedémes: userDepInfo.checkOedémes,
+            checkAlamarchecv: userDepInfo.checkAlamarchecv,
+            checkaurepos: userDepInfo.checkaurepos,
+            checkAlefforts: userDepInfo.checkAlefforts,
+            checkPermanents: userDepInfo.checkPermanents,
+            checkpalpitation: userDepInfo.checkpalpitation,
+            checkObésitéfamiliales: userDepInfo.checkObésitéfamiliales,
+            checkAlamarche: userDepInfo.checkAlamarche,
+            checkEcchymoses: userDepInfo.checkEcchymoses,
+            checkTendancesauxhémorragies: userDepInfo.checkTendancesauxhémorragies,
             DigestifPyrosis: userDepInfo.DigestifPyrosis,
             DigestifVomissements: userDepInfo.DigestifVomissements,
             checkDigestifAppétit: userDepInfo.checkDigestifAppétit,
@@ -433,7 +575,6 @@ module.exports = {
   async savePersInfo (req, res) {
     try {
       const userPI = req.body.personalInfo
-      // update the tables with save function of sequelize
       const userUser = await User.findOne({
         where: {
           id: userPI.idUser
@@ -444,6 +585,7 @@ module.exports = {
           id: userPI.idPI
         }
       })
+      // update the tables with save function of sequelize
       // save changes in Users table
       userUser.firstName = userPI.firstName
       userUser.lastName = userPI.lastName
@@ -479,8 +621,21 @@ module.exports = {
 
   async saveBiometricInfo (req, res) {
     try {
+      const userBI = req.body.biometricInfo
+
+      // update the tables with save function of sequelize
+      const userBiometricInfo = await BiometricInfo.findOne({
+        where: {
+          id: userBI.id
+        }
+      })
+      // save changes in biometricinfos table
+      userBiometricInfo.poids = userBI.poids
+      userBiometricInfo.taille = userBI.taille
+      userBiometricInfo.imc = userBI.imc
+      await userBiometricInfo.save()
       res.send({
-        message: 'BiometricInfo'
+        message: ` successfully updated... : ${userBI.poids}`
       })
     } catch (err) {
       res.status(500).send({
@@ -492,7 +647,7 @@ module.exports = {
   async saveAntecedentsInfo (req, res) {
     try {
       const userAI = req.body.antInfo
-      const userAntInfo = await antecedentsInfo.findOne({
+      const userAntInfo = await AntecedentsInfo.findOne({
         where: {
           id: userAI.idAI
         }
@@ -572,6 +727,31 @@ module.exports = {
       userdepistagelInfo.DigestifSelles = userDI.DigestifSelles
       userdepistagelInfo.DigestifRectorragies = userDI.DigestifRectorragies
       userdepistagelInfo.DigestifDouleurAbdominales = userDI.DigestifDouleurAbdominales
+      userdepistagelInfo.checkLarmoiement = userDI.checkLarmoiement
+      userdepistagelInfo.checkDouleurs = userDI.checkDouleurs
+      userdepistagelInfo.checkTachesdevantlesyeux = userDI.checkTachesdevantlesyeux
+      userdepistagelInfo.checksifflements = userDI.checksifflements
+      userdepistagelInfo.checkAnginesrépétées = userDI.checkAnginesrépétées
+      userdepistagelInfo.checkEpistaxis = userDI.checkEpistaxis
+      userdepistagelInfo.checkRhinorhée = userDI.checkRhinorhée
+      userdepistagelInfo.checkMusculaire = userDI.checkMusculaire
+      userdepistagelInfo.checkArticulaire = userDI.checkArticulaire
+      userdepistagelInfo.checkvertébraire = userDI.checkvertébraire
+      userdepistagelInfo.checkNeurologique = userDI.checkNeurologique
+      userdepistagelInfo.checkToux = userDI.checkToux
+      userdepistagelInfo.checkDyspneenacturne = userDI.checkDyspneenacturne
+      userdepistagelInfo.checkDyspneedlurne = userDI.checkDyspneedlurne
+      userdepistagelInfo.checkExpectorations = userDI.checkExpectorations
+      userdepistagelInfo.checkOedémes = userDI.checkOedémes
+      userdepistagelInfo.checkAlamarchecv = userDI.checkAlamarchecv
+      userdepistagelInfo.checkaurepos = userDI.checkaurepos
+      userdepistagelInfo.checkAlefforts = userDI.checkAlefforts
+      userdepistagelInfo.checkPermanents = userDI.checkPermanents
+      userdepistagelInfo.checkpalpitation = userDI.checkpalpitation
+      userdepistagelInfo.checkObésitéfamiliales = userDI.checkObésitéfamiliales
+      userdepistagelInfo.checkAlamarche = userDI.checkAlamarche
+      userdepistagelInfo.checkEcchymoses = userDI.checkEcchymoses
+      userdepistagelInfo.checkTendancesauxhémorragies = userDI.checkTendancesauxhémorragies
       userdepistagelInfo.DigestifAutres = userDI.DigestifAutres
       userdepistagelInfo.DigestifPyrosis = userDI.DigestifPyrosis
       userdepistagelInfo.DigestifVomissements = userDI.DigestifVomissements
@@ -598,7 +778,7 @@ module.exports = {
 
       await userdepistagelInfo.save()
       res.send({
-        message: `PersInfo successfully updated... typeDeVisite: ${userDI.typeDeVisite}`
+        message: `PersInfo successfully updated... typeDeVisite: ${userDI.idDI}`
       })
     } catch (err) {
       res.status(500).send({

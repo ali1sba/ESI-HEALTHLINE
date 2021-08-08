@@ -16,12 +16,22 @@ function jwtSignUser (user) {
 module.exports = {
   async register (req, res) {
     try {
-      const user = await UserNonValide.create(req.body)
-      const userJson = user.toJSON()
-      res.send({
-        user: userJson,
-        token: jwtSignUser(userJson)
+      const email = req.body.email
+      const userExist = await Compte.findOne({
+        where: {
+          email: email
+        }
       })
+      if (!userExist) {
+        const user = await UserNonValide.create(req.body)
+        const userJson = user.toJSON()
+        res.send({
+          user: userJson,
+          token: jwtSignUser(userJson)
+        })
+      } else {
+        res.status(400).send({ error: 'This email account is already in use.' })
+      }
     } catch (err) {
       res.status(400).send({ error: `This email account is already in use. ${err}` })
     }
@@ -64,7 +74,18 @@ module.exports = {
       res.status(500).send({ error: `An error occured trying to login ${err}` })
     }
   },
-
+  /*
+  async logout (req, res) {
+    try {
+      req.logout()
+      res.send({
+        message: 'You are logged out'
+      })
+    } catch (err) {
+      res.status(400).send({ error: `logout error: ${err}` })
+    }
+  },
+  */
   async forgotpw (req, res, next) {
     try {
       const email = req.body.email
