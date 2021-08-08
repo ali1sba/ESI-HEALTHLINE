@@ -220,6 +220,11 @@
                   <el-radio-button label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
                   <el-radio-button label="RDV"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="examen clinique"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="bilan paraclinique"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="rapport medical"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="ordonnances"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="orientations"></el-radio-button>
                 </el-radio-group>
               </div>
             </center>
@@ -547,8 +552,39 @@
                     </el-col>
                   </el-row>
                   
-
+                   <el-row>
+                    <el-space wrap :size="10">
                     <div v-if="isDisabledAnts">
+                      <el-space
+                        ><el-button
+                          icon="el-icon-edit"
+                          @click="modifierAntecedents"
+                        >
+                          Modifier
+                        </el-button></el-space
+                      >
+                    </div>
+                    <div v-else>
+                      <el-space
+                        ><el-button
+                          type="success"
+                          icon="el-icon-check"
+                          @click="saveAntecedents"
+                        >
+                          Enregister </el-button
+                        ><el-button
+                          type="danger"
+                          icon="el-icon-delete"
+                          @click="annulerAntecedents"
+                        >
+                          Annuler
+                        </el-button></el-space
+                      >
+                      
+                    </div>
+                    </el-space>
+                  </el-row>
+                  <!-- <div v-if="isDisabledAnts">
                       <el-space><el-button class="savebtnant"  @click="modifierAntecedents" round>modifier</el-button></el-space>
                     </div>
                     <div v-else>
@@ -556,7 +592,7 @@
                         <el-button class="savebtnant"  @click="saveAntecedents"  round>Sauvgarder</el-button>
                         <el-button class="savebtnant"  @click="cancelAnts" round>annuler</el-button>
                   </el-space>
-                </div>
+                </div> -->
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
@@ -1150,8 +1186,89 @@
             <!-- ********************************************Examen Médical******************************************** -->
             <el-scrollbar  v-show="radio1==='Examen Médical'">
                 <el-card class="box-card">
-                  <el-empty  :image-size="300">
-              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer Examen Médical</el-button>
+                  <el-space >
+              <el-row>
+                <el-col :span="12">
+                  <el-card  @click="radio1 = 'examen clinique'" class="examcard examcli" >
+                   <i class="fa fa-stethoscope"> </i>
+                   <h3>Examen clinique</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+                <el-col :span="12">
+                  <el-card @click="radio1 = 'bilan paraclinique'" class="examcard bilanpara">
+                   <i class="fa fa-heartbeat"> </i>
+                   <h3>Bilan paraclinique</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+
+               <el-col :span="12">
+                  <el-card @click="radio1 = 'rapport medical'" class="examcard rapmed">
+                   <i class="fa fa-folder-open"> </i>
+                   <h3>Rapport medical</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+                <el-col :span="12">
+                  <el-card @click="radio1 = 'ordonnances'" class="examcard ord">
+                   <i class="fa fa-medkit"> </i>
+                   <h3>Ordonnances</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+
+
+               <el-col :span="12">
+                  <el-card @click="radio1 = 'orientations'" class="examcard orient">
+                   <i class="fa fa-user-md"> </i>
+                   <h3>Orientations/ evaluations</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+
+              </el-row>
+
+              </el-space>
+                </el-card>
+            </el-scrollbar>
+                          <!-- ****************************examen clinique: ilhem******************************* -->
+             <el-scrollbar v-show="radio1==='examen clinique'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer examen clinique</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                           <!-- ****************************bilan paraclinique: mahdi + rania******************************* -->
+             <el-scrollbar v-show="radio1==='bilan paraclinique'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer bilan paraclinique</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                           <!-- ****************************rapport medical: ali******************************* -->
+             <el-scrollbar v-show="radio1==='rapport medical'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer rapport medical</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                           <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
+             <el-scrollbar v-show="radio1==='ordonnances'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer ordonnances</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                          <!-- ****************************orientations: lahcen ******************************* -->
+             <el-scrollbar v-show="radio1==='orientations'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer orientations</el-button>
               </el-empty>
                 </el-card>
             </el-scrollbar>
@@ -1533,6 +1650,7 @@ export default {
       },
       cachedUserdepistage: "",
       isDisabledDepiInfo: true,
+      
 
     //  antecendents******************************************************************************
     userAntInfo: {
@@ -1911,7 +2029,7 @@ export default {
   //antecedents*****************************************************************************************
   async modifierAntecedents () {
       try {
-        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
+        this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = false
         console.log("modifierAntecedents button was clicked !");
       } catch (error) {
@@ -1920,7 +2038,7 @@ export default {
     },
     async annulerAntecedents () {
       try {
-        this.userAntInfo = Object.assign({}, this.cachedUserAnt);
+        this.userAntInfo = Object.assign({}, this.cachedUser);
         this.isDisabledAnts = true
         console.log("annulerAntecedents button was clicked !");
       } catch (error) {
@@ -1929,8 +2047,7 @@ export default {
     },
     async saveAntecedents () {
       try {
-        
-        this.cachedUserAnt = Object.assign({}, this.userAntInfo);
+        this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
         console.log(this.userAntInfo);
@@ -2064,4 +2181,34 @@ export default {
   .dashboardTabletr:nth-child(even) {
     background-color: #f4f6fb;
   }
+  .examcard{
+     align-items: center ;
+    text-align: center;
+    margin: 1%;
+    background-size: cover;
+    border: none;
+  }
+  .examcli{
+    background-image: url('https://images.unsplash.com/photo-1557825835-a526494be845?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80'); 
+  }
+  .bilanpara{
+    background-image: url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGRvY3RvcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  }
+  .rapmed{
+    background-image: url('https://images.unsplash.com/photo-1554224155-1696413565d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmlsZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  }
+  .ord{
+    background-image: url('https://images.unsplash.com/photo-1622227922682-56c92e523e58?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aG9zcGl0YWwlMjBzaWdufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  }
+  .orient{
+    background-image: url('https://images.unsplash.com/photo-1485848395967-65dff62dc35b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80');
+  }
+.examcard i{
+  font-size: 5rem;
+  color: white;
+}
+.examcard h3, .examcard p{
+  color: white;
+  text-shadow: 2px 2px 8px grey;
+}
 </style>
