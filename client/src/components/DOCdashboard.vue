@@ -8,7 +8,7 @@
 
         <ul class="list-unstyled components mb-5 menulist">
           <li>
-            <a  @click="content = 'dashboard'">
+            <a @click="home()">
               <span class="fa fa-home"></span>
               <p class="nom">Home</p></a
             >
@@ -220,6 +220,11 @@
                   <el-radio-button label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
                   <el-radio-button label="RDV"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="examen clinique"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="bilan paraclinique"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="rapport medical"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="ordonnances"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="orientations"></el-radio-button>
                 </el-radio-group>
               </div>
             </center>
@@ -397,7 +402,7 @@
                       <el-col :span="8">
                         <el-space wrap :size="10">
                           Catégorie
-                          <el-select v-model="userPersInfo.category" :disabled="isDisabledPersInfo">
+                          <el-select v-model="userPersInfo.category" placeholder="Select" :disabled="isDisabledPersInfo">
                             <el-option
                               v-for="item in stateOptions"
                               :key="item.value"
@@ -539,8 +544,39 @@
                     </el-col>
                   </el-row>
                   
-
+                   <el-row>
+                    <el-space wrap :size="10">
                     <div v-if="isDisabledAnts">
+                      <el-space
+                        ><el-button
+                          icon="el-icon-edit"
+                          @click="modifierAntecedents"
+                        >
+                          Modifier
+                        </el-button></el-space
+                      >
+                    </div>
+                    <div v-else>
+                      <el-space
+                        ><el-button
+                          type="success"
+                          icon="el-icon-check"
+                          @click="saveAntecedents"
+                        >
+                          Enregister </el-button
+                        ><el-button
+                          type="danger"
+                          icon="el-icon-delete"
+                          @click="annulerAntecedents"
+                        >
+                          Annuler
+                        </el-button></el-space
+                      >
+                      
+                    </div>
+                    </el-space>
+                  </el-row>
+                  <!-- <div v-if="isDisabledAnts">
                       <el-space><el-button class="savebtnant"  @click="modifierAntecedents" round>modifier</el-button></el-space>
                     </div>
                     <div v-else>
@@ -548,7 +584,7 @@
                         <el-button class="savebtnant"  @click="saveAntecedents"  round>Sauvgarder</el-button>
                         <el-button class="savebtnant"  @click="cancelAnts" round>annuler</el-button>
                   </el-space>
-                </div>
+                </div> -->
                 </div>
               </el-card>
               <!-- **********************ali********************** -->
@@ -593,7 +629,7 @@
                         </el-space>
                       </el-col>
                     </el-row>
-                    <el-row>
+                    <!-- <el-row>
                       <el-col :span="24">
                         <el-space wrap :size="50">
                           <el-space wrap :size="10">
@@ -612,65 +648,113 @@
                           ></el-space>
                         </el-space>
                       </el-col>
-                    </el-row>
-                    <el-divider></el-divider>
+                    </el-row> 
+                    <el-divider></el-divider>-->
 
                     <el-collapse v-model="userDepiInfo.activeNames" @change="handleChange">
                       <el-collapse-item title="Audition" name="1">
                         <el-space wrap :size="10">
                           OD
-                          <el-input
-                            placeholder="/10"
-                            :disabled="isDisabledDepiInfo"
+                          <el-select
                             v-model="userDepiInfo.auditionOD"
-                          ></el-input
-                        ></el-space>
-                        <el-space wrap :size="10"
-                          >OG
-                          <el-input
-                            placeholder="/10"
+                            placeholder="OD"
                             :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                        <el-space wrap :size="10">
+                          OG
+                          <el-select
                             v-model="userDepiInfo.auditionOG"
-                          ></el-input
-                        ></el-space>
+                            placeholder="OG"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                        </el-space>
                       </el-collapse-item>
                       <el-collapse-item title="Acuite Visuelle" name="2">
                         <el-space orientation="vertical">
                           <el-space wrap :size="10">
                             OD
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleSansCOD"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleSansCOD"
+                            placeholder="OD"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           <el-space wrap :size="10"
                             >OG
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleSansCOG"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleSansCOG"
+                            placeholder="OG"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           SANS CORRECTIONS
                         </el-space>
                         <el-space orientation="vertical">
                           <el-space wrap :size="10">
                             OD
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
+                            placeholder="OD"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           <el-space wrap :size="10"
                             >OG
-                            <el-input
-                              placeholder="/10"
-                              :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
-                            ></el-input
-                          ></el-space>
+                            <el-select
+                            v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
+                            placeholder="OG"
+                            :disabled="isDisabledDepiInfo"
+                          >
+                            <el-option
+                              v-for="item in options1To10"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value"
+                            >
+                            </el-option>
+                          </el-select>
+                          </el-space>
                           AVEC CORRECTIONS
                         </el-space>
                       </el-collapse-item>
@@ -735,16 +819,16 @@
                         <el-divider></el-divider>
                         <el-row :gutter="10">
                           <el-col :span="8"> O.R.L </el-col>
-
                           <el-col :span="8">
-                            <el-checkbox-group v-model="userDepiInfo.checkListORL" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="sifflements"></el-checkbox>
+                           
+                              <el-checkbox label="sifflements" v-model="userDepiInfo.checksifflements" :disabled="isDisabledDepiInfo"></el-checkbox>
                               <el-checkbox
                                 label="Angines répétées"
+                                v-model="userDepiInfo.checkAnginesrépétées" :disabled="isDisabledDepiInfo"
                               ></el-checkbox>
-                              <el-checkbox label="Epistaxis"></el-checkbox>
-                              <el-checkbox label="Rhinorhée"></el-checkbox>
-                            </el-checkbox-group>
+                              <el-checkbox label="Epistaxis" v-model="userDepiInfo.checkEpistaxis" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Rhinorhée" v-model="userDepiInfo.checkRhinorhée" :disabled="isDisabledDepiInfo"></el-checkbox>
+                     
                           </el-col>
 
                           <el-col :span="8">
@@ -763,13 +847,13 @@
                           <el-col :span="8"> Locomoteur </el-col>
 
                           <el-col :span="8">
-                            Douleurs
-                            <el-checkbox-group v-model="userDepiInfo.checkListLocomoteur" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="Musculaire"></el-checkbox>
-                              <el-checkbox label="Articulaire"></el-checkbox>
-                              <el-checkbox label="vertébraire"></el-checkbox>
-                              <el-checkbox label="Neurologique"></el-checkbox>
-                            </el-checkbox-group>
+                            Douleurs: <br/>
+                            
+                              <el-checkbox label="Musculaire" v-model="userDepiInfo.checkMusculaire" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Articulaire" v-model="userDepiInfo.checkArticulaire" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="vertébraire" v-model="userDepiInfo.checkvertébraire" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Neurologique" v-model="userDepiInfo.checkNeurologique" :disabled="isDisabledDepiInfo"></el-checkbox>
+                           
                           </el-col>
 
                           <el-col :span="8">
@@ -788,18 +872,14 @@
                           <el-col :span="8"> cardio-vasculaire </el-col>
 
                           <el-col :span="8">
-                            Douleurs
-                            <el-checkbox-group
-                              v-model="userDepiInfo.checkListCardioVasculaire"
-                              :disabled="isDisabledDepiInfo"
-                            >
-                              <el-checkbox label="Oedémes"></el-checkbox>
-                              <el-checkbox label="A la marche"></el-checkbox>
-                              <el-checkbox label="au repos"></el-checkbox>
-                              <el-checkbox label="A l'efforts"></el-checkbox>
-                              <el-checkbox label="Permanents"></el-checkbox>
-                              <el-checkbox label="palpitation"></el-checkbox>
-                            </el-checkbox-group>
+                           
+                              <el-checkbox label="Oedémes" v-model="userDepiInfo.checkOedémes" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="A la marche" v-model="userDepiInfo.checkAlamarchecv" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="au repos" v-model="userDepiInfo.checkaurepos" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="A l'efforts" v-model="userDepiInfo.checkAlefforts" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Permanents" v-model="userDepiInfo.checkPermanents" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="palpitation" v-model="userDepiInfo.checkpalpitation" :disabled="isDisabledDepiInfo"></el-checkbox>
+                            
                           </el-col>
 
                           <el-col :span="8">
@@ -816,18 +896,15 @@
                           <el-col :span="8"> Respiratoire </el-col>
 
                           <el-col :span="8">
-                            Douleurs
-                            <el-checkbox-group v-model="userDepiInfo.checkListRespiratoire" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="Toux"></el-checkbox>
+                            
+                            <el-checkbox label="Toux" v-model="userDepiInfo.checkToux" :disabled="isDisabledDepiInfo"></el-checkbox>
                               <el-checkbox
                                 label="Dyspnee nacturne"
+                                v-model="userDepiInfo.checkDyspneenacturne" :disabled="isDisabledDepiInfo"
                               ></el-checkbox>
-                              <el-checkbox label="Dyspnee dlurne"></el-checkbox>
-                              <el-checkbox label="Expectorations"></el-checkbox>
-                              <el-checkbox
-                                label="douleures toracique"
-                              ></el-checkbox>
-                            </el-checkbox-group>
+                              <el-checkbox label="Dyspnee dlurne" v-model="userDepiInfo.checkDyspneedlurne" :disabled="isDisabledDepiInfo"></el-checkbox>
+                              <el-checkbox label="Expectorations" v-model="userDepiInfo.checkExpectorations" :disabled="isDisabledDepiInfo"></el-checkbox>
+                            
                           </el-col>
 
                           <el-col :span="8">
@@ -960,12 +1037,11 @@
                           </el-col>
 
                           <el-col :span="8">
-                            <el-checkbox-group v-model="userDepiInfo.checkListHematologique" :disabled="isDisabledDepiInfo">
-                              <el-checkbox label="Ecchymoses" ></el-checkbox>
+                            <el-checkbox label="Ecchymoses" v-model="userDepiInfo.checkEcchymoses" :disabled="isDisabledDepiInfo" ></el-checkbox>
                               <el-checkbox
                                 label="Tendances aux hémorragies"
+                                v-model="userDepiInfo.checkTendancesauxhémorragies" :disabled="isDisabledDepiInfo"
                               ></el-checkbox>
-                            </el-checkbox-group>
                           </el-col>
 
                           <el-col :span="8">
@@ -1020,15 +1096,13 @@
 
                           <el-col :span="8">
                             Douleurs
-                            <el-checkbox-group
-                            :disabled="isDisabledDepiInfo"
-                              v-model="userDepiInfo.checkListEndocrinologie"
-                            >
                               <el-checkbox
                                 label="Obésité familiales"
+                                :disabled="isDisabledDepiInfo"
+                              v-model="userDepiInfo.checkObésitéfamiliales"
                               ></el-checkbox>
-                              <el-checkbox label="A la marche"></el-checkbox>
-                            </el-checkbox-group>
+                              <el-checkbox label="A la marche" :disabled="isDisabledDepiInfo"
+                              v-model="userDepiInfo.checkAlamarche"></el-checkbox>
                           </el-col>
 
                           <el-col :span="8">
@@ -1086,7 +1160,7 @@
 
                   <center>
                   <div v-if="isDisabledDepiInfo">
-                    <el-space><el-button icon="el-icon-edit" @click="modifierInfoDepi"> Modifier </el-button></el-space>
+                    <el-space><el-button icon="el-icon-edit" class="savebtnant" @click="modifierInfoDepi"> Modifier </el-button></el-space>
                   </div>
                   <div v-else>
                     <el-space><el-button type="success" icon="el-icon-check" @click="saveDepiInfo"> Enregister </el-button>
@@ -1104,8 +1178,89 @@
             <!-- ********************************************Examen Médical******************************************** -->
             <el-scrollbar  v-show="radio1==='Examen Médical'">
                 <el-card class="box-card">
-                  <el-empty  :image-size="300">
-              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer Examen Médical</el-button>
+                  <el-space >
+              <el-row>
+                <el-col :span="12">
+                  <el-card  @click="radio1 = 'examen clinique'" class="examcard examcli" >
+                   <i class="fa fa-stethoscope"> </i>
+                   <h3>Examen clinique</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+                <el-col :span="12">
+                  <el-card @click="radio1 = 'bilan paraclinique'" class="examcard bilanpara">
+                   <i class="fa fa-heartbeat"> </i>
+                   <h3>Bilan paraclinique</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+
+               <el-col :span="12">
+                  <el-card @click="radio1 = 'rapport medical'" class="examcard rapmed">
+                   <i class="fa fa-folder-open"> </i>
+                   <h3>Rapport medical</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+                <el-col :span="12">
+                  <el-card @click="radio1 = 'ordonnances'" class="examcard ord">
+                   <i class="fa fa-medkit"> </i>
+                   <h3>Ordonnances</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+
+
+               <el-col :span="12">
+                  <el-card @click="radio1 = 'orientations'" class="examcard orient">
+                   <i class="fa fa-user-md"> </i>
+                   <h3>Orientations/ evaluations</h3>
+                   <p>Nombre d'elements :20</p>
+                  </el-card>
+                </el-col>
+
+              </el-row>
+
+              </el-space>
+                </el-card>
+            </el-scrollbar>
+                          <!-- ****************************examen clinique: ilhem******************************* -->
+             <el-scrollbar v-show="radio1==='examen clinique'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer examen clinique</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                           <!-- ****************************bilan paraclinique: mahdi + rania******************************* -->
+             <el-scrollbar v-show="radio1==='bilan paraclinique'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer bilan paraclinique</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                           <!-- ****************************rapport medical: ali******************************* -->
+             <el-scrollbar v-show="radio1==='rapport medical'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer rapport medical</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                           <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
+             <el-scrollbar v-show="radio1==='ordonnances'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer ordonnances</el-button>
+              </el-empty>
+                </el-card>
+            </el-scrollbar>
+                          <!-- ****************************orientations: lahcen ******************************* -->
+             <el-scrollbar v-show="radio1==='orientations'">
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer orientations</el-button>
               </el-empty>
                 </el-card>
             </el-scrollbar>
@@ -1391,7 +1546,6 @@ export default {
       PsychoInterrogatoire: "",
       PsychoExamensClinique: "",
     },
-    test:[""],
       
 
       // the first selection typeDeVisite
@@ -1404,6 +1558,52 @@ export default {
           value: "Systimatique",
           label: "Systimatique",
         },
+      ],
+      options1To10: [
+        {
+          value: 0,
+          label: "0",
+        },
+        {
+          value: 1,
+          label: "1",
+        },
+        {
+          value: 2,
+          label: "2",
+        },
+        {
+          value: 3,
+          label: "3",
+        },
+        {
+          value: 4,
+          label: "4",
+        },
+        {
+          value: 5,
+          label: "5",
+        },
+        {
+          value: 6,
+          label: "6",
+        },
+        {
+          value: 7,
+          label: "7",
+        },
+        {
+          value: 8,
+          label: "8",
+        },
+        {
+          value: 9,
+          label: "9",
+        },
+        {
+          value: 10,
+          label: "10",
+        }
       ],
 
       // date function
@@ -1441,8 +1641,10 @@ export default {
       },
       cachedUserdepistage: "",
       isDisabledDepiInfo: true,
+      
 
     //  antecendents******************************************************************************
+    userAntInfo: {
     boolFumer:'2',
     boolChiquer:'2',
     boolPrise:'2',
@@ -1458,6 +1660,8 @@ export default {
     malaGene:"none",
     intChiru:"none",
     reactMed:"none",
+    },
+    cashedUserAnt: "",
     isDisabledAnts:true,
     };
   },
@@ -1465,18 +1669,24 @@ export default {
     axios
       .get("http://localhost:8083/doc/patients")
       .then((response) => {
-        this.patients = response.data;
-        console.log(response);
+        let x = 0
+        response.data.forEach(element => {
+          if (!(x === 0)) {
+            this.patients.push(element)         
+          }
+          x = x + 1; 
+        });
+        this.userselected = this.patients[0];
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-      this.wilayaList = this.wilaya.map(item => {
+       this.wilayaList = this.wilaya.map(item => {
         return { value: `${item}`, label: `${item}` };
       });
   },
   methods: {
-
     remoteMethod(query) {
       if (query !== '') {
         this.wilayaLoading = true;
@@ -1491,6 +1701,24 @@ export default {
         this.wilayaOptions = [];
       }
     },
+    home(){
+      this.content = 'dashboard'
+      axios
+      .get("http://localhost:8083/doc/patients")
+      .then((response) => {
+        let x = 0
+        this.patients = [];
+        response.data.forEach(element => {
+          if (!(x === 0)) {
+            this.patients.push(element)         
+          }
+          x = x + 1; 
+        });
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });},
 
     stringToBoolean(string){
       
@@ -1538,6 +1766,14 @@ export default {
           duration: 5000
         });
       },
+      messageSaveDone() {
+        this.$message({
+          showClose: true,
+          message: 'All modification have been saved',
+          type: 'success',
+          duration: 4000
+        });
+      },
 
    bmiCalculation() {
       var bmi =
@@ -1578,8 +1814,39 @@ export default {
         this.userDepiInfo.checkDigestifRectorragies = this.stringToBoolean(this.userDepiInfo.checkDigestifRectorragies);
         this.userDepiInfo.checkDigestifDouleurAbdominales = this.stringToBoolean(this.userDepiInfo.checkDigestifDouleurAbdominales);
         this.userDepiInfo.checkDigestifAutres = this.stringToBoolean(this.userDepiInfo.checkDigestifAutres);
+        this.userDepiInfo.checkLarmoiement = this.stringToBoolean(this.userDepiInfo.checkLarmoiement);
+        this.userDepiInfo.checkDouleurs = this.stringToBoolean(this.userDepiInfo.checkDouleurs);
+        this.userDepiInfo.checkTachesdevantlesyeux = this.stringToBoolean(this.userDepiInfo.checkTachesdevantlesyeux);
+        
+        this.userDepiInfo.checksifflements = this.stringToBoolean(this.userDepiInfo.checksifflements);
+        this.userDepiInfo.checkAnginesrépétées = this.stringToBoolean(this.userDepiInfo.checkAnginesrépétées);
+        this.userDepiInfo.checkEpistaxis = this.stringToBoolean(this.userDepiInfo.checkEpistaxis);
+        this.userDepiInfo.checkRhinorhée = this.stringToBoolean(this.userDepiInfo.checkRhinorhée);
+        
+        this.userDepiInfo.checkMusculaire = this.stringToBoolean(this.userDepiInfo.checkMusculaire);
+        this.userDepiInfo.checkArticulaire = this.stringToBoolean(this.userDepiInfo.checkArticulaire);
+        this.userDepiInfo.checkvertébraire = this.stringToBoolean(this.userDepiInfo.checkvertébraire);
+        this.userDepiInfo.checkNeurologique = this.stringToBoolean(this.userDepiInfo.checkNeurologique);
 
-        console.log(response.data.medFile.personalInfo);
+        this.userDepiInfo.checkToux = this.stringToBoolean(this.userDepiInfo.checkToux);
+        this.userDepiInfo.checkDyspneenacturne = this.stringToBoolean(this.userDepiInfo.checkDyspneenacturne);
+        this.userDepiInfo.checkDyspneedlurne = this.stringToBoolean(this.userDepiInfo.checkDyspneedlurne);
+        this.userDepiInfo.checkExpectorations = this.stringToBoolean(this.userDepiInfo.checkExpectorations);
+
+        this.userDepiInfo.checkOedémes = this.stringToBoolean(this.userDepiInfo.checkOedémes);
+        this.userDepiInfo.checkAlamarchecv = this.stringToBoolean(this.userDepiInfo.checkAlamarchecv);
+        this.userDepiInfo.checkaurepos = this.stringToBoolean(this.userDepiInfo.checkaurepos);
+        this.userDepiInfo.checkAlefforts = this.stringToBoolean(this.userDepiInfo.checkAlefforts);
+        this.userDepiInfo.checkPermanents = this.stringToBoolean(this.userDepiInfo.checkPermanents);
+        this.userDepiInfo.checkpalpitation = this.stringToBoolean(this.userDepiInfo.checkpalpitation);
+
+        this.userDepiInfo.checkObésitéfamiliales = this.stringToBoolean(this.userDepiInfo.checkObésitéfamiliales);
+        this.userDepiInfo.checkAlamarche = this.stringToBoolean(this.userDepiInfo.checkAlamarche);
+
+        this.userDepiInfo.checkEcchymoses = this.stringToBoolean(this.userDepiInfo.checkEcchymoses);
+        this.userDepiInfo.checkTendancesauxhémorragies = this.stringToBoolean(this.userDepiInfo.checkTendancesauxhémorragies);
+
+        console.log(response.data.medFile.depistagelInfo);
         // this.checkListOphtalmolodique = this.stringToArray(this.checkListOphtalmolodique)
         // this.userDepiInfo.checkListORL = this.stringToArray(this.userDepiInfo.checkListORL)
         //  this.userDepiInfo.checkListLocomoteur = this.stringToArray(this.userDepiInfo.checkListLocomoteur)
@@ -1703,11 +1970,45 @@ export default {
         this.userDepiInfo.checkDigestifRectorragies = this.BooleanToString(this.userDepiInfo.checkDigestifRectorragies);
         this.userDepiInfo.checkDigestifDouleurAbdominales = this.BooleanToString(this.userDepiInfo.checkDigestifDouleurAbdominales);
         this.userDepiInfo.checkDigestifAutres = this.BooleanToString(this.userDepiInfo.checkDigestifAutres);
-console.log(this.userDepiInfo);
+
+        this.userDepiInfo.checkLarmoiement = this.BooleanToString(this.userDepiInfo.checkLarmoiement);
+        this.userDepiInfo.checkDouleurs = this.BooleanToString(this.userDepiInfo.checkDouleurs);
+        this.userDepiInfo.checkTachesdevantlesyeux = this.BooleanToString(this.userDepiInfo.checkTachesdevantlesyeux);
+        
+        this.userDepiInfo.checksifflements = this.BooleanToString(this.userDepiInfo.checksifflements);
+        this.userDepiInfo.checkAnginesrépétées = this.BooleanToString(this.userDepiInfo.checkAnginesrépétées);
+        this.userDepiInfo.checkEpistaxis = this.BooleanToString(this.userDepiInfo.checkEpistaxis);
+        this.userDepiInfo.checkRhinorhée = this.BooleanToString(this.userDepiInfo.checkRhinorhée);
+        
+        this.userDepiInfo.checkMusculaire = this.BooleanToString(this.userDepiInfo.checkMusculaire);
+        this.userDepiInfo.checkArticulaire = this.BooleanToString(this.userDepiInfo.checkArticulaire);
+        this.userDepiInfo.checkvertébraire = this.BooleanToString(this.userDepiInfo.checkvertébraire);
+        this.userDepiInfo.checkNeurologique = this.BooleanToString(this.userDepiInfo.checkNeurologique);
+
+        this.userDepiInfo.checkToux = this.BooleanToString(this.userDepiInfo.checkToux);
+        this.userDepiInfo.checkDyspneenacturne = this.BooleanToString(this.userDepiInfo.checkDyspneenacturne);
+        this.userDepiInfo.checkDyspneedlurne = this.BooleanToString(this.userDepiInfo.checkDyspneedlurne);
+        this.userDepiInfo.checkExpectorations = this.BooleanToString(this.userDepiInfo.checkExpectorations);
+
+        this.userDepiInfo.checkOedémes = this.BooleanToString(this.userDepiInfo.checkOedémes);
+        this.userDepiInfo.checkAlamarchecv = this.BooleanToString(this.userDepiInfo.checkAlamarchecv);
+        this.userDepiInfo.checkaurepos = this.BooleanToString(this.userDepiInfo.checkaurepos);
+        this.userDepiInfo.checkAlefforts = this.BooleanToString(this.userDepiInfo.checkAlefforts);
+        this.userDepiInfo.checkPermanents = this.BooleanToString(this.userDepiInfo.checkPermanents);
+        this.userDepiInfo.checkpalpitation = this.BooleanToString(this.userDepiInfo.checkpalpitation);
+
+        this.userDepiInfo.checkObésitéfamiliales = this.BooleanToString(this.userDepiInfo.checkObésitéfamiliales);
+        this.userDepiInfo.checkAlamarche = this.BooleanToString(this.userDepiInfo.checkAlamarche);
+
+        this.userDepiInfo.checkEcchymoses = this.BooleanToString(this.userDepiInfo.checkEcchymoses);
+        this.userDepiInfo.checkTendancesauxhémorragies = this.BooleanToString(this.userDepiInfo.checkTendancesauxhémorragies);
+
+
         const response = await DocServices.saveDepiInfo({
           DepistageInfo: this.userDepiInfo,
         });
         this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
+        this.messageSaveDone();
         console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -1736,7 +2037,6 @@ console.log(this.userDepiInfo);
     },
     async saveAntecedents () {
       try {
-        
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true
         console.log("saveAntcedents button was clicked !");
@@ -1871,4 +2171,34 @@ console.log(this.userDepiInfo);
   .dashboardTabletr:nth-child(even) {
     background-color: #f4f6fb;
   }
+  .examcard{
+     align-items: center ;
+    text-align: center;
+    margin: 1%;
+    background-size: cover;
+    border: none;
+  }
+  .examcli{
+    background-image: url('https://images.unsplash.com/photo-1557825835-a526494be845?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80'); 
+  }
+  .bilanpara{
+    background-image: url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGRvY3RvcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  }
+  .rapmed{
+    background-image: url('https://images.unsplash.com/photo-1554224155-1696413565d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmlsZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  }
+  .ord{
+    background-image: url('https://images.unsplash.com/photo-1622227922682-56c92e523e58?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aG9zcGl0YWwlMjBzaWdufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+  }
+  .orient{
+    background-image: url('https://images.unsplash.com/photo-1485848395967-65dff62dc35b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80');
+  }
+.examcard i{
+  font-size: 5rem;
+  color: white;
+}
+.examcard h3, .examcard p{
+  color: white;
+  text-shadow: 2px 2px 8px grey;
+}
 </style>

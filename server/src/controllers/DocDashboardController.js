@@ -11,12 +11,26 @@ const { Depistage } = require('../models')
 module.exports = {
   async recoverPatients (req, res) {
     try {
-      const patients = await User.findAll({
-        attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
+      const cPatients = await Compte.findAll({
         where: {
-          [Op.or]: [{ state: 'Etudiant' }]
+          [Op.and]: [{ role: 'PATIENT' }, { state: 'ACTIVATED' }]
         }
       })
+      const x = await User.findAll({
+      })
+
+      const patients = [{}]
+      cPatients.forEach(async element => {
+        let v = element.id
+        v = v - 1
+        patients.push(x[(v)].dataValues)
+      })
+      // const patients = await User.findAll({
+      //   attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
+      //   where: {
+      //     [Op.or]: [{ state: 'Etudiant' }]
+      //   }
+      // })
       res.send(patients)
     } catch (err) {
       res.status(500).send({
@@ -107,11 +121,6 @@ module.exports = {
         CVPouls: null,
         CVTa: null,
         CVCyanose: null,
-        checkListOphtalmolodique: null,
-        checkListORL: null,
-        checkListLocomoteur: null,
-        checkListRespiratoire: null,
-        checkListCardioVasculaire: null,
         DigestifDentureCarie: null,
         DigestifGingivopatie: null,
         Digestifabdomens: null,
@@ -122,6 +131,31 @@ module.exports = {
         DigestifSelles: null,
         DigestifRectorragies: null,
         DigestifDouleurAbdominales: null,
+        checkLarmoiement: 'false',
+        checkDouleurs: 'false',
+        checkTachesdevantlesyeux: 'false',
+        checksifflements: 'false',
+        checkAnginesrépétées: 'false',
+        checkEpistaxis: 'false',
+        checkRhinorhée: 'false',
+        checkMusculaire: 'false',
+        checkArticulaire: 'false',
+        checkvertébraire: 'false',
+        checkNeurologique: 'false',
+        checkToux: 'false',
+        checkDyspneenacturne: 'false',
+        checkDyspneedlurne: 'false',
+        checkExpectorations: 'false',
+        checkOedémes: 'false',
+        checkAlamarchecv: 'false',
+        checkaurepos: 'false',
+        checkAlefforts: 'false',
+        checkPermanents: 'false',
+        checkpalpitation: 'false',
+        checkObésitéfamiliales: 'false',
+        checkAlamarche: 'false',
+        checkEcchymoses: 'false',
+        checkTendancesauxhémorragies: 'false',
         DigestifAutres: null,
         DigestifPyrosis: 'false',
         DigestifVomissements: 'false',
@@ -131,7 +165,6 @@ module.exports = {
         checkDigestifRectorragies: 'false',
         checkDigestifDouleurAbdominales: 'false',
         checkDigestifAutres: 'false',
-        checkListHematologique: null,
         HematologiquePétéchies: null,
         HematologiquePurpura: null,
         HematologiqueRate: null,
@@ -139,7 +172,6 @@ module.exports = {
         HematologiqueSsAuxillaires: null,
         HematologiqueSsClaviculaires: null,
         HematologiqueIngionaux: null,
-        checkListEndocrinologie: null,
         EndocrinologieTyroide: null,
         EndocrinologieTesticules: null,
         EndocrinologieGlandesMammaires: null,
@@ -214,6 +246,24 @@ module.exports = {
             taille: null,
             imc: null
           },
+          antecedentsInfo: {
+            idAI: null,
+            boolFumer: '',
+            boolChiquer: '',
+            boolPrise: '',
+            ancienFum: '',
+            nbrFumer: '',
+            nbrChiquer: '',
+            nbrPrise: '',
+            perExpo: '',
+            alcool: '',
+            medicat: '',
+            autres: '',
+            affec: '',
+            malaGene: '',
+            intChiru: '',
+            reactMed: ''
+          },
           depistagelInfo: {
             idDI: null,
             typeDeVisite: '',
@@ -252,6 +302,31 @@ module.exports = {
             DigestifSelles: '',
             DigestifRectorragies: '',
             DigestifDouleurAbdominales: '',
+            checkLarmoiement: 'false',
+            checkDouleurs: 'false',
+            checkTachesdevantlesyeux: 'false',
+            checksifflements: 'false',
+            checkAnginesrépétées: 'false',
+            checkEpistaxis: 'false',
+            checkRhinorhée: 'false',
+            checkMusculaire: 'false',
+            checkArticulaire: 'false',
+            checkvertébraire: 'false',
+            checkNeurologique: 'false',
+            checkToux: 'false',
+            checkDyspneenacturne: 'false',
+            checkDyspneedlurne: 'false',
+            checkExpectorations: 'false',
+            checkOedémes: 'false',
+            checkAlamarchecv: 'false',
+            checkaurepos: 'false',
+            checkAlefforts: 'false',
+            checkPermanents: 'false',
+            checkpalpitation: 'false',
+            checkObésitéfamiliales: 'false',
+            checkAlamarche: 'false',
+            checkEcchymoses: 'false',
+            checkTendancesauxhémorragies: 'false',
             DigestifAutres: '',
             DigestifPyrosis: 'false',
             DigestifVomissements: 'false',
@@ -276,7 +351,7 @@ module.exports = {
             PsychoInterrogatoire: '',
             PsychoExamensClinique: ''
           }
-          // here we add bioInfo, antecedentInfo  // same thing with ExamenMedical, RDV and statistics
+
         }
         res.send({
           medFile: medFile
@@ -295,7 +370,11 @@ module.exports = {
           }
         })
         // find antecedentsInfo record by id
-
+        const userAI = await AntecedentsInfo.findOne({
+          where: {
+            id: userMF.antecedentsInfoId
+          }
+        })
         // find depistage record by id
         const userDepInfo = await Depistage.findOne({
           where: {
@@ -327,6 +406,24 @@ module.exports = {
             poids: userBI.poids,
             taille: userBI.taille,
             imc: userBI.imc
+          },
+          antecedentsInfo: {
+            idAI: userAI.id,
+            boolFumer: userAI.boolFumer,
+            boolChiquer: userAI.boolChiquer,
+            boolPrise: userAI.boolPrise,
+            ancienFum: userAI.ancienFum,
+            nbrFumer: userAI.nbrFumer,
+            nbrChiquer: userAI.nbrChiquer,
+            nbrPrise: userAI.nbrPrise,
+            perExpo: userAI.perExpo,
+            alcool: userAI.alcool,
+            medicat: userAI.medicat,
+            autres: userAI.autres,
+            affec: userAI.affec,
+            malaGene: userAI.malaGene,
+            intChiru: userAI.intChiru,
+            reactMed: userAI.reactMed
           },
           depistagelInfo: {
             idDI: userDepInfo.id,
@@ -367,6 +464,31 @@ module.exports = {
             DigestifRectorragies: userDepInfo.DigestifRectorragies,
             DigestifDouleurAbdominales: userDepInfo.DigestifDouleurAbdominales,
             DigestifAutres: userDepInfo.DigestifAutres,
+            checkLarmoiement: userDepInfo.checkLarmoiement,
+            checkDouleurs: userDepInfo.checkDouleurs,
+            checkTachesdevantlesyeux: userDepInfo.checkTachesdevantlesyeux,
+            checksifflements: userDepInfo.checksifflements,
+            checkAnginesrépétées: userDepInfo.checkAnginesrépétées,
+            checkEpistaxis: userDepInfo.checkEpistaxis,
+            checkRhinorhée: userDepInfo.checkRhinorhée,
+            checkMusculaire: userDepInfo.checkMusculaire,
+            checkArticulaire: userDepInfo.checkArticulaire,
+            checkvertébraire: userDepInfo.checkvertébraire,
+            checkNeurologique: userDepInfo.checkNeurologique,
+            checkToux: userDepInfo.checkToux,
+            checkDyspneenacturne: userDepInfo.checkDyspneenacturne,
+            checkDyspneedlurne: userDepInfo.checkDyspneedlurne,
+            checkExpectorations: userDepInfo.checkExpectorations,
+            checkOedémes: userDepInfo.checkOedémes,
+            checkAlamarchecv: userDepInfo.checkAlamarchecv,
+            checkaurepos: userDepInfo.checkaurepos,
+            checkAlefforts: userDepInfo.checkAlefforts,
+            checkPermanents: userDepInfo.checkPermanents,
+            checkpalpitation: userDepInfo.checkpalpitation,
+            checkObésitéfamiliales: userDepInfo.checkObésitéfamiliales,
+            checkAlamarche: userDepInfo.checkAlamarche,
+            checkEcchymoses: userDepInfo.checkEcchymoses,
+            checkTendancesauxhémorragies: userDepInfo.checkTendancesauxhémorragies,
             DigestifPyrosis: userDepInfo.DigestifPyrosis,
             DigestifVomissements: userDepInfo.DigestifVomissements,
             checkDigestifAppétit: userDepInfo.checkDigestifAppétit,
@@ -557,6 +679,31 @@ module.exports = {
       userdepistagelInfo.DigestifSelles = userDI.DigestifSelles
       userdepistagelInfo.DigestifRectorragies = userDI.DigestifRectorragies
       userdepistagelInfo.DigestifDouleurAbdominales = userDI.DigestifDouleurAbdominales
+      userdepistagelInfo.checkLarmoiement = userDI.checkLarmoiement
+      userdepistagelInfo.checkDouleurs = userDI.checkDouleurs
+      userdepistagelInfo.checkTachesdevantlesyeux = userDI.checkTachesdevantlesyeux
+      userdepistagelInfo.checksifflements = userDI.checksifflements
+      userdepistagelInfo.checkAnginesrépétées = userDI.checkAnginesrépétées
+      userdepistagelInfo.checkEpistaxis = userDI.checkEpistaxis
+      userdepistagelInfo.checkRhinorhée = userDI.checkRhinorhée
+      userdepistagelInfo.checkMusculaire = userDI.checkMusculaire
+      userdepistagelInfo.checkArticulaire = userDI.checkArticulaire
+      userdepistagelInfo.checkvertébraire = userDI.checkvertébraire
+      userdepistagelInfo.checkNeurologique = userDI.checkNeurologique
+      userdepistagelInfo.checkToux = userDI.checkToux
+      userdepistagelInfo.checkDyspneenacturne = userDI.checkDyspneenacturne
+      userdepistagelInfo.checkDyspneedlurne = userDI.checkDyspneedlurne
+      userdepistagelInfo.checkExpectorations = userDI.checkExpectorations
+      userdepistagelInfo.checkOedémes = userDI.checkOedémes
+      userdepistagelInfo.checkAlamarchecv = userDI.checkAlamarchecv
+      userdepistagelInfo.checkaurepos = userDI.checkaurepos
+      userdepistagelInfo.checkAlefforts = userDI.checkAlefforts
+      userdepistagelInfo.checkPermanents = userDI.checkPermanents
+      userdepistagelInfo.checkpalpitation = userDI.checkpalpitation
+      userdepistagelInfo.checkObésitéfamiliales = userDI.checkObésitéfamiliales
+      userdepistagelInfo.checkAlamarche = userDI.checkAlamarche
+      userdepistagelInfo.checkEcchymoses = userDI.checkEcchymoses
+      userdepistagelInfo.checkTendancesauxhémorragies = userDI.checkTendancesauxhémorragies
       userdepistagelInfo.DigestifAutres = userDI.DigestifAutres
       userdepistagelInfo.DigestifPyrosis = userDI.DigestifPyrosis
       userdepistagelInfo.DigestifVomissements = userDI.DigestifVomissements
