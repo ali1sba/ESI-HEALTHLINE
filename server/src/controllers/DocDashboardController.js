@@ -65,9 +65,8 @@ module.exports = {
         phoneNum: userUser.phoneNum,
         email: userAccount.email,
         numSS: null,
-        state: userUser.state,
         scolarYear: userUser.scolarYear,
-        category: null
+        category: userUser.state
       }
       const userPersonalInfo = await PersonalInfo.create(persInfo)
 
@@ -239,9 +238,8 @@ module.exports = {
             phoneNum: userUser.phoneNum,
             email: null,
             numSS: null,
-            state: userUser.state,
             scolarYear: userUser.scolarYear,
-            category: null
+            category: userUser.state
           },
           biometricInfo: {
             poids: null,
@@ -399,7 +397,6 @@ module.exports = {
             phoneNum: userPI.phoneNum,
             email: userPI.email,
             numSS: userPI.numSS,
-            state: userPI.state,
             scolarYear: userPI.scolarYear,
             category: userPI.category
           },
@@ -548,7 +545,7 @@ module.exports = {
       userUser.birthday = userPI.dateOfBirth
       userUser.sexe = userPI.sexe
       userUser.phoneNum = userPI.phoneNum
-      userUser.state = userPI.state
+      userUser.state = userPI.category
       userUser.scolarYear = userPI.scolarYear
       await userUser.save()
       // save changes in PersonalInfos table
@@ -561,7 +558,6 @@ module.exports = {
       userPersonalInfo.addresse = userPI.addresse
       userPersonalInfo.phoneNum = userPI.phoneNum
       userPersonalInfo.numSS = userPI.numSS
-      userPersonalInfo.state = userPI.state
       userPersonalInfo.scolarYear = userPI.scolarYear
       userPersonalInfo.category = userPI.category
       await userPersonalInfo.save()
