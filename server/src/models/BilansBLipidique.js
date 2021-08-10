@@ -1,18 +1,18 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansBLipidique', {
     cholesterol: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     triglycerides: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     ldl: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING
     },
     hdl: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     autre: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })

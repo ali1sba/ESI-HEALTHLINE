@@ -2,30 +2,30 @@ module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansBNFS', {
     // globules rouges
     gr: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
-    // globules blanches-PNN
+    // globules blancs-PNN
     gbPNN: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
-    // globules blanches-PNEo
+    // globules blancs-PNEo
     gbPNEo: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING
     },
-    // globules blanches-PNB
+    // globules blancs-PNB
     gbPNB: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
-    // globules blanches-Lymphocytes
+    // globules blancs-Lymphocytes
     gbLymphocytes: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
-    // globules blanches-Monocytes
+    // globules blancs-Monocytes
     gbMonocytes: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     // plaquettes
     plaquettes: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })

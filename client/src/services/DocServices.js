@@ -23,4 +23,8 @@ export default {
     saveDepiInfo (credantials){
         return Api().post('/DOCdashboard/saveDepiInfo',credantials)
     },
+
+    showBB (credantials){
+        return Api().post('/DOCdashboard/showBB',credantials)
+    }
 }

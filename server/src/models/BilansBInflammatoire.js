@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansBInflammatoire', {
     vs: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     crp: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })

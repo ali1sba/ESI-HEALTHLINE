@@ -10,59 +10,60 @@ module.exports = (sequelize, DataTypes) =>
     // Bilan NFS
     idNFS: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Inflammatoire
     idBI: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Rénale
     idBR: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Hépathique
     idBH: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Cardiaque
     idBC: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Ionogramme sanguin et urinaire
     idIo: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Glycémique
     idBG: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Lipidique
     idBL: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Urinaire
     idBU: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Hormonal
     idBHor: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     // Bilan Sérologie
     idBS: {
       type: DataTypes.INTEGER,
-      unique: true
+      allowNull: true
     },
     autre: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: true
     }
   })

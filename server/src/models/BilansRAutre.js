@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansRAutre', {
     localisation: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING
     },
     type: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })

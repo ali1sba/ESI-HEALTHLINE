@@ -10,4 +10,7 @@
 --DROP TABLE 'Users';
 -- DROP TABLE 'biometricInfos';
 --DROP TABLE 'ResetPasswordRequests';
---INSERT INTO 'Comptes' VALUES ('4', 't@gmail.com', '$2a$08$3mgIiNdSCgygh5qD5x1iLON41pLQppSv0H6fy7562znfZWgEyr34y', 'ADMIN', 'V', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00')
+--DROP TABLE 'BilansBiologiques';
+---INSERT INTO 'BilansBGlycemiques' VALUES ('2', 'Testgly-2', 'Testhb1C-2', 'Testautre-2', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');
+---INSERT INTO 'BilansBiologiques' VALUES ('2', 'TestMotif', '9', 'NULL', 'NULL','NULL', 'NULL','NULL', 'NULL', '2', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');
+---INSERT INTO 'Comptes' VALUES ('4', 't@gmail.com', '$2a$08$3mgIiNdSCgygh5qD5x1iLON41pLQppSv0H6fy7562znfZWgEyr34y', 'ADMIN', 'V', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00')

@@ -1,18 +1,18 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansBCardiaque', {
     ckmb: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     myoglobine: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     troponine: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING
     },
     bnp: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     autre: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })

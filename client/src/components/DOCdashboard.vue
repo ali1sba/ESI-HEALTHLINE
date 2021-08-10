@@ -222,6 +222,9 @@
                   <el-radio-button label="RDV"></el-radio-button>
                   <el-radio-button v-show="hidden" label="examen clinique"></el-radio-button>
                   <el-radio-button v-show="hidden" label="bilan paraclinique"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="Bilans Biologiques"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="Bilans Radiologiques"></el-radio-button>
+                  <el-radio-button v-show="hidden" label="Bilans électriques"></el-radio-button>
                   <el-radio-button v-show="hidden" label="rapport medical"></el-radio-button>
                   <el-radio-button v-show="hidden" label="ordonnances"></el-radio-button>
                   <el-radio-button v-show="hidden" label="orientations"></el-radio-button>
@@ -321,6 +324,7 @@
                         Lieu de naissance
                         <el-select
                         v-model="userPersInfo.placeOfBirth"
+                        multiple
                         filterable
                         remote
                         reserve-keyword
@@ -355,7 +359,6 @@
                           Groupe sanguin
                           <el-select v-model="userPersInfo.bloodGroup" placeholder="Select" :disabled="isDisabledPersInfo">
                             <el-option
-                              placeholder="Groupe sanguin"
                               v-for="item in bgOptions"
                               :key="item.value"
                               :label="item.label"
@@ -369,7 +372,6 @@
                       <el-col :span="8"> <el-space wrap :size="10">
                       Adresse
                       <el-input
-                        placeholder="Adresse"
                         v-model="userPersInfo.addresse"
                         :disabled="isDisabledPersInfo"
                       ></el-input></el-space></el-col>
@@ -394,15 +396,14 @@
                       
                       NSS
                       <el-input
-                        placeholder="Numéro de sécurité sociale"
                         v-model="userPersInfo.numSS"
                         :disabled="isDisabledPersInfo"
                       >
                       </el-input></el-space></el-col>
                       <el-col :span="8">
                         <el-space wrap :size="10">
-                          Catégorie
-                          <el-select v-model="userPersInfo.category" placeholder="Select" :disabled="isDisabledPersInfo">
+                          Fonction
+                          <el-select v-model="userPersInfo.state" placeholder="Select" :disabled="isDisabledPersInfo">
                             <el-option
                               v-for="item in stateOptions"
                               :key="item.value"
@@ -427,6 +428,16 @@
                       </el-col>
                     </el-row>
                   <el-space direction="vertical">
+                    
+                    
+                    
+                    <el-space wrap :size="10">
+                      Catégorie
+                      <el-input
+                        v-model="userPersInfo.category"
+                        :disabled="isDisabledPersInfo"
+                      ></el-input
+                    ></el-space>
                     <br/>
                     <el-space wrap :size="10">
                     <div v-if="isDisabledPersInfo">
@@ -1232,7 +1243,7 @@
               </el-empty>
                 </el-card>
             </el-scrollbar>
-                           <!-- ****************************bilan paraclinique: mahdi + rania******************************* -->
+                           <!-- ****************************bilan paraclinique: mahdi + rania******************************* 
              <el-scrollbar v-show="radio1==='bilan paraclinique'">
                 <el-card class="box-card">
                    <el-empty  :image-size="300">
@@ -1240,6 +1251,520 @@
               </el-empty>
                 </el-card>
             </el-scrollbar>
+            ***************************cards bilan paraclinique******************************************-->
+            <el-scrollbar  v-show="radio1==='bilan paraclinique'">
+              <el-card class="box-card">
+                <h6>Bilans para-cliniques</h6>
+                <el-space >
+                  <el-row>
+                    <el-col :span="8">
+                      <el-card  @click="showBB(userselected)" class="bilancard bio" >
+                        <i class="fa fa-heartbeat"> </i>
+                        <h3>Bilans Biologiques</h3>
+                        <p>Nombre de bilans  :</p>
+                      </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-card @click="radio1 = 'Bilans Radiologiques'" class="bilancard radio">
+                        <i class="fa fa-heartbeat"> </i>
+                        <h3>Bilans Radiologiques</h3>
+                        <p>Nombre de bilans :</p>
+                      </el-card>
+                    </el-col>
+                    <el-col :span="8">
+                      <el-card @click="radio1 = 'Bilans électriques'" class="bilancard électri">
+                        <i class="fa fa-heartbeat"> </i>
+                        <h3>Bilans électriques</h3>
+                        <p>Nombre de bilans :</p>
+                      </el-card>
+                    </el-col>
+                  </el-row>
+                </el-space>
+              </el-card>
+            </el-scrollbar>
+            <!-- *********************************** Bilans biologiques***************************** -->
+            <el-scrollbar  v-show="radio1==='Bilans Biologiques'">
+              <el-button icon="el-icon-arrow-left" @click="goBack()">Bilans para-cliniques</el-button>
+              <el-card class="box-card">
+                <h6>Bilans Biologiques</h6>
+                <center>
+                  <div>
+                    <el-radio-group v-model="radio2">
+                      <el-radio-button label="Historique"></el-radio-button>
+                      <el-radio-button v-show="hidden" label="Historique2"></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                </center>
+                
+                <el-scrollbar  v-show="radio2==='Historique'">
+                  <el-card>
+                  <el-table
+                    :data="tableDataBB"
+                    style="width: 100%"
+                    height="250">
+
+                    <el-table-column
+                      label="N"
+                      width="50">
+                      <template #default="scope">
+                        <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column
+                        label="Motif"
+                        width="150">
+                        <template #default="scope">
+                          <span style="margin-left: 10px">{{ scope.row.motif }}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                      label="Date"
+                      width="150">
+                      <template #default="scope">
+                          <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column
+                        label="Bilans présents"
+                        width="300">
+                      Texte
+                    </el-table-column>
+
+                    <el-table-column
+                      label="Opérations"
+                      width="150">
+                      <template #default>
+                        <el-button
+                          size="mini"
+                          @click="showBilanBiologique()">Consulter</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                  </el-card>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Historique2'">
+                  <el-collapse>
+
+                    <el-collapse-item title="NFS" name="1">
+                      <el-space orientation="vertical">
+                        <div>
+                          Globules rouges 
+                          <el-input placeholder="GR" v-model="input" :disabled="true"></el-input>
+                        </div>
+                      </el-space>
+                      <el-space wrap>
+                        Globules blancs
+                          <el-space wrap :size="7">
+                            PNN
+                            <el-input placeholder="PNN" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            PNEo
+                            <el-input placeholder="PNEo" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            PNB
+                            <el-input placeholder="PNB" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Lymphocytes
+                            <el-input placeholder="Lymphocytes" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Monocytes
+                            <el-input placeholder="Monocytes" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                      </el-space>
+                      <el-space orientation="vertical">
+                        Plaquettes
+                        <el-space wrap :size="10">
+                          <el-input placeholder="Plaquettes" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan inflammatoire" name="2">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          VS
+                          <el-input placeholder="VS" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          CRP
+                          <el-input placeholder="CRP" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan rénale" name="3">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Urée
+                          <el-input placeholder="Urée" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Créatinine
+                          <el-input placeholder="Créatinine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Clairance de la créatinine
+                          <el-input placeholder="Clairance de la créatinine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan hépathique" name="4">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          TGO/ASAT
+                          <el-input placeholder="TGO/ASAT" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          TGP/ALAT
+                          <el-input placeholder="TGP/ALAT" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Phosphatase alcanine
+                          <el-input placeholder="Phosphatase alcanine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Bilan d'hémostase
+                          <el-space wrap :size="7">
+                            TS
+                            <el-input placeholder="TS" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            TP
+                            <el-input placeholder="TP" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            TCA
+                            <el-input placeholder="TCA" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Bilirubine
+                          <el-input placeholder="Bilirubine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          LDH
+                          <el-input placeholder="LDH" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Albumine
+                          <el-input placeholder="Albumine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Gamma GT
+                          <el-input placeholder="Gamma GT" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan cardiaque" name="5">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          CK-MB
+                          <el-input placeholder="CK-MB" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Myoglobine
+                          <el-input placeholder="Myoglobine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Troponine
+                          <el-input placeholder="Troponine" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          BNP
+                          <el-input placeholder="BNP" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Ionogramme sanguin et urinaire" name="6">
+                      <el-space orientation="vertical"> 
+                        <el-space>
+                          Sanguin
+                          <el-space wrap :size="7">
+                            Na+
+                            <el-input placeholder="Bilirubine" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            K+
+                            <el-input placeholder="LDH" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Ca2+
+                            <el-input placeholder="Albumine" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Cl-
+                            <el-input placeholder="Gamma GT" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                        </el-space>
+                        
+                        <el-space>
+                          Urinaire
+                          <el-space wrap :size="7">
+                            Na+
+                            <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            K+
+                            <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          </el-space>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan glycémique" name="7">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Glycémie à jeun
+                          <el-input placeholder="Gly" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Hb1c
+                          <el-input placeholder="Hb1c" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan lipidique" name="8">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Cholesterol
+                          <el-input placeholder="Cholesterol" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Triglycérides
+                          <el-input placeholder="Triglycérides" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          LDL
+                          <el-input placeholder="LDL" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          HDL
+                          <el-input placeholder="HDL" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan urinaire" name="9">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          BU (Bandelette Urinaire)
+                          <el-input placeholder="BU" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          ECBU (Germe)
+                          <el-input placeholder="ECBU" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan hormonal" name="10">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          TSH
+                          <el-input placeholder="TSH" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          T3
+                          <el-input placeholder="T3" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          T4
+                          <el-input placeholder="T4" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Sérologie" name="11">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          HIV
+                          <el-input placeholder="HIV" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Hbs
+                          <el-input placeholder="Hbs" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Hcv
+                          <el-input placeholder="Hcv" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Siphilis
+                          <el-input placeholder="Siphilis" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Autres" name="12">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="10">
+                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                  </el-collapse>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Créer'">
+                  <p>Créer</p>
+                </el-scrollbar>
+              </el-card>
+            </el-scrollbar>
+
+            <!--******************* Bilans Radiologiques *******************************-->
+            <el-scrollbar  v-show="radio1==='Bilans Radiologiques'">
+              <el-button icon="el-icon-arrow-left" @click="goBack()">Bilans para-cliniques</el-button>
+              <el-card class="box-card">
+                <h6>Bilans Radiologiques</h6>
+                <center>
+                  <div>
+                    <el-radio-group v-model="radio2">
+                      <el-radio-button label="Historique"></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                </center>
+                
+                <el-scrollbar  v-show="radio2==='Historique'">
+                  <el-table
+                    :data="tableDataBR"
+                    style="width: 100%"
+                    height="250">
+                    <el-table-column
+                      fixed
+                      prop="numero"
+                      label="N"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      prop="motif"
+                      label="Motif"
+                      width="200">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      label="Date"
+                      width="150">
+                    </el-table-column>
+                    <el-table-column
+                      prop="bilans"
+                      label="Bilans présents"
+                      width="400">
+                    </el-table-column>
+                    <el-table-column
+                      fixed="right"
+                      label="Opérations"
+                      width="120">
+                      <template #default="">
+                        <el-button
+                          @click="showBilanBiologique()"
+                          type="text"
+                          size="small">
+                          Consulter
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-scrollbar>
+              </el-card>
+            </el-scrollbar>
+
+            <!--********************************* Bilans Electriques ********************************-->
+            <el-scrollbar  v-show="radio1==='Bilans électriques'">
+              <el-button icon="el-icon-arrow-left" @click="goBack()">Bilans para-cliniques</el-button>
+              <el-card class="box-card">
+                <h6>Bilans Electriques</h6>
+                <center>
+                  <div>
+                    <el-radio-group v-model="radio2">
+                      <el-radio-button label="Historique"></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                </center>
+                
+                <el-scrollbar  v-show="radio2==='Historique'">
+                  <el-table
+                    :data="tableDataBE"
+                    style="width: 100%"
+                    height="250">
+                    <el-table-column
+                      fixed
+                      prop="numero"
+                      label="N"
+                      width="50">
+                    </el-table-column>
+                    <el-table-column
+                      prop="motif"
+                      label="Motif"
+                      width="200">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      label="Date"
+                      width="150">
+                    </el-table-column>
+                    <el-table-column
+                      prop="bilans"
+                      label="Bilans présents"
+                      width="400">
+                    </el-table-column>
+                    <el-table-column
+                      fixed="right"
+                      label="Opérations"
+                      width="120">
+                      <template #default="">
+                        <el-button
+                          @click="showBilanBiologique"
+                          type="text"
+                          size="small">
+                          Consulter
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-scrollbar>
+              </el-card>
+            </el-scrollbar>
+
                            <!-- ****************************rapport medical: ali******************************* -->
              <el-scrollbar v-show="radio1==='rapport medical'">
                 <el-card class="box-card">
@@ -1332,6 +1857,12 @@ export default {
     return {
       isactive: true,
       fullscreenLoading: false,
+
+      // Bilans paracliniques: BB-BR-BE
+      tableDataBB: [],
+      tableDataBR: [],
+      tableDataBE: [],
+
       bgOptions: [{
           value: 'O+',
           label: 'O+'
@@ -1417,6 +1948,7 @@ export default {
       patients: [],
       content: "dashboard",
       userselected: {
+        id: null,
         firstName: "none",
         lastName: "none",
         state: "none",
@@ -1427,6 +1959,7 @@ export default {
       email: "",
       // navigation bar*******************************************************************************************
       radio1: "Dossier Médical",
+      radio2: "Historique",
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
 
@@ -1449,6 +1982,7 @@ export default {
         addresse: null,
         phoneNum: null,
         numSS: null,
+        state: null,
         scolarYear: null,
         category: null,
       },
@@ -1687,6 +2221,34 @@ export default {
       });
   },
   methods: {
+    goBack() {
+      this.radio1 = 'bilan paraclinique';
+    },
+
+    // Bilans paracliniques -> showBB from Bilans Biologiques table
+    async showBB (user) {
+      try {
+        this.radio1 = 'Bilans Biologiques'
+        const response = await DocServices.showBB({
+          id: user.id,
+        });
+        this.tableDataBB = response.data.bb
+        console.log(this.tableDataBB)
+      } catch (error) {
+        console.log(`something went wrong in showBilanBiologique ${error}`);
+      }
+    },
+
+    // Bilans paracliniques -> showBB from ALL Bilans Biologiques tables
+    showBilanBiologique () {
+      try {
+        this.radio2 = 'Historique2'
+        console.log("showBilanBiologique clicked")
+      } catch (error) {
+        console.log(`something went wrong in showBilanBiologique ${error}`);
+      }
+    },
+
     remoteMethod(query) {
       if (query !== '') {
         this.wilayaLoading = true;
@@ -1814,6 +2376,7 @@ export default {
         this.userDepiInfo.checkDigestifRectorragies = this.stringToBoolean(this.userDepiInfo.checkDigestifRectorragies);
         this.userDepiInfo.checkDigestifDouleurAbdominales = this.stringToBoolean(this.userDepiInfo.checkDigestifDouleurAbdominales);
         this.userDepiInfo.checkDigestifAutres = this.stringToBoolean(this.userDepiInfo.checkDigestifAutres);
+
         this.userDepiInfo.checkLarmoiement = this.stringToBoolean(this.userDepiInfo.checkLarmoiement);
         this.userDepiInfo.checkDouleurs = this.stringToBoolean(this.userDepiInfo.checkDouleurs);
         this.userDepiInfo.checkTachesdevantlesyeux = this.stringToBoolean(this.userDepiInfo.checkTachesdevantlesyeux);
@@ -2049,7 +2612,7 @@ export default {
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
-    },
+    }
   };
 </script>
 
@@ -2172,7 +2735,7 @@ export default {
     background-color: #f4f6fb;
   }
   .examcard{
-     align-items: center ;
+    align-items: center ;
     text-align: center;
     margin: 1%;
     background-size: cover;
@@ -2200,5 +2763,29 @@ export default {
 .examcard h3, .examcard p{
   color: white;
   text-shadow: 2px 2px 8px grey;
+}
+/* css bilans paraclinique */
+.bio 
+{ background-image: url('https://images.pexels.com/photos/4230620/pexels-photo-4230620.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');}
+.radio
+{background-image: url('https://images.pexels.com/photos/4225923/pexels-photo-4225923.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');}
+.électri
+{image-resolution: 20;
+  background-image: url('https://file1.topsante.com/var/topsante/storage/images/1/3/1/2/1312129/comment-deroule-electromyogramme.jpg?alias=exact540x405_l&size=x100&format=jpeg');}
+.bilancard h3, .bilancard p{
+  color: white;
+  text-shadow: 2px 2px 8px grey;
+}
+.bilancard { 
+  align-items: center ;
+  text-align: center;
+  margin: 5%;
+  background-size: cover;
+  border: none;
+}
+
+.bilancard i {
+  font-size: 5rem;
+  color: white;
 }
 </style>

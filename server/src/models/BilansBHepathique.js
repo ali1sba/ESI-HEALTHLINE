@@ -2,38 +2,38 @@ module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansBHepathique', {
     // TGO or ASAT
     tgo: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     // TGP or ALAT
     tgp: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     phosphataseAlcaline: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING
     },
     // Bilan d'hémostase -> TS-TP-TCA
     ts: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     tp: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     tca: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     bilirubine: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     ldh: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     albumine: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     gammeGT: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     autre: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })

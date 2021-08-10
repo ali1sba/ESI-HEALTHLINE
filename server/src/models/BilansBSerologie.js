@@ -1,18 +1,18 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansBSerologie', {
     hiv: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     hbs: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     hcv: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING
     },
     siphilis: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     },
     autre: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING
     }
   })
