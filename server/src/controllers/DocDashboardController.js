@@ -7,6 +7,8 @@ const { PersonalInfo } = require('../models')
 const { BiometricInfo } = require('../models')
 const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
+const { Medicament } = require('../models')
+const { Ordonnance } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -209,7 +211,32 @@ module.exports = {
       })
     }
   },
+  async createOrdonnance (req, res) {
+    try {
+      const userId = req.body.id
+      const userUser = await User.findOne({
+        where: {
+          id: userId
+        }
+      })
+      const OrdInfo = {
+        patientId: userUser.id,
+        nombreMed: 0
+      }
+      console.log('hiiii')
 
+      const OrdonnaceCreated = await Ordonnance.create(OrdInfo)
+      console.log('helllooooo')
+      const Ord = OrdonnaceCreated.toJSON()
+      res.send({
+        ord: Ord
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create ordonnance ${err}`
+      })
+    }
+  },
   async showPatient (req, res) {
     try {
       const userId = req.body.id
@@ -739,6 +766,21 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to fetch the users ${err}`
+      })
+    }
+  },
+
+  async recoverMedicaments  (req, res) {
+    try {
+      const medicaments = await Medicament.findAll({
+        attributes: ['nom'],
+        raw: true
+      })
+      res.send({ medicaments: medicaments })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
       })
     }
   }

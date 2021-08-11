@@ -23,4 +23,10 @@ export default {
     saveDepiInfo (credantials){
         return Api().post('/DOCdashboard/saveDepiInfo',credantials)
     },
+    recoverMedicaments (credantials){
+        return Api().post('/DOCdashboard/recoverMedicaments',credantials)
+    },
+    createOrdonnance (credantials){
+        return Api().post('/DOCdashboard',credantials)
+    },
 }
