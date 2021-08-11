@@ -1662,11 +1662,12 @@
                 <div ref="contentord">
                 <p style="font-size:40px; text-align:center; font-weight:500">Ordonnance</p>
                 <hr />
-                <p>nom : &nbsp; {{ userselected.firstName }}</p>
-                <p>prenom : &nbsp; {{ userselected.lastName }}</p>
-                <p>age : &nbsp; {{ userselected.age}}</p>
+                <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
 
                 <div style="margin-bottom: 20px">
+                  
                 <el-select v-model="value1" filterable placeholder="nom de médicament">
                <el-option
                 v-for="item in Medoptions"
@@ -1694,7 +1695,7 @@
                 style="width : 200px; margin-right:20px">
 
                 </el-input>
-                <button @click="addpresc(); " type="primary" style="background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
+                <button type="primary" style="padding:7px;background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
 
                 </div>
 
@@ -1798,6 +1799,7 @@ import DocServices from "@/services/DocServices.js";
 export default {
   data() {
     return {
+      items : [],
       isactive: true,
       fullscreenLoading: false,
       bgOptions: [
@@ -2541,15 +2543,8 @@ doc.output('dataurlnewwindow');
         console.log(this.error);
       }
     },
-    async addpresc() {
-      try {
-        const response = await DocServices.addpresc();
-        
-        console.log(response.data);
-      } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
-      }
+    async addItem() {
+     this.items.push({message: 'new message'})
     },
     //  handleChange(value) {
     // console.log(value);}
