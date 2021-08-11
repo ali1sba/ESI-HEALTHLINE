@@ -1240,13 +1240,73 @@
               </el-empty>
                 </el-card>
             </el-scrollbar>
-                           <!-- ****************************bilan paraclinique: mahdi + rania******************************* -->
+                           <!-- ****************************bilan paraclinique: mahdi + rania******************************* 
+
+                                     
+                            
              <el-scrollbar v-show="radio1==='bilan paraclinique'">
                 <el-card class="box-card">
                    <el-empty  :image-size="300">
               <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer bilan paraclinique</el-button>
               </el-empty>
                 </el-card>
+            </el-scrollbar>
+            ***************************cards bilan paraclinique : rania******************************************-->
+            <el-scrollbar  v-show="radio1==='bilan paraclinique'">
+                <el-card class="box-card">
+                  <h5>Bilans para-clinique</h5>
+                  <el-space >
+              <el-row>
+                <el-col :span="8">
+                  <el-card  @click="radio1 = 'Bilans Biologiques'" class="bilancard bio" >
+                   <h3>Bilans Biologiques</h3>
+                   <p>Nombre de bilans  :</p>
+                  </el-card>
+                </el-col>
+                <el-col :span="8">
+                  <el-card @click="radio1 = 'Bilans Radiologiques'" class="bilancard radio">
+                   <h3>Bilans Radiologiques</h3>
+                   <p>Nombre de bilans :</p>
+                  </el-card>
+                </el-col>
+
+               <el-col :span="8">
+                  <el-card @click="radio1 = 'Bilans électriques'" class="bilancard électri">
+                   <h3>Bilans électriques</h3>
+                   <p>Nombre de bilans :</p>
+                  </el-card>
+                </el-col>
+              </el-row>
+              </el-space>
+                </el-card>
+            </el-scrollbar>-->
+            <!-- *****************************************bilan biomedicale :rania ***************************************-->
+            <el-scrollbar  v-show="radio1==='Bilans Biologiques'">
+               <el-card class="box-card" >
+                  <el-main>
+                    <el-table :data="tableData" class="biologique">
+                        <el-table-column prop="patient id" label="Patient ID" width="120" ></el-table-column>
+                        <el-table-column prop="motifs" label="Motifs" width="120"  ></el-table-column>
+                        <el-table-column prop="date" label="Date"  width="120"> </el-table-column>
+
+                        <el-table-column prop="NFS" label="NFS"  width="120"></el-table-column>
+                        <el-table-column prop="inflammatoire" label="Inflammatoire"  width="120"></el-table-column>
+                        <el-table-column prop="rénal" label="Rénal"  width="120"></el-table-column>
+                        <el-table-column prop="Hépatique" label="Hépatique"  width="120"></el-table-column>
+                        <el-table-column prop="Cardiaque" label="Cardiaque"  width="120"></el-table-column>
+                        <el-table-column prop="Ionogramme " label="Ionogramme "  width="120"></el-table-column>
+                        <el-table-column prop=" Glycémie" label=" Glycémie"  width="120"></el-table-column>
+                        <el-table-column prop=" Lipidique " label=" Lipidique "  width="120"></el-table-column>
+                        <el-table-column prop="Urinaire" label="Urinaire"  width="120"></el-table-column>
+                        <el-table-column prop="Hormonal " label="Hormonal "  width="120"></el-table-column>
+                        <el-table-column prop=" Sérologie " label=" Sérologie "  width="120"></el-table-column>
+                        <el-table-column prop="Autres" label="Autres"  width="120"></el-table-column>
+
+                  
+        
+      </el-table>
+    </el-main>
+               </el-card>
             </el-scrollbar>
                            <!-- ****************************rapport medical: ali******************************* -->
              <el-scrollbar v-show="radio1==='rapport medical'">
@@ -2061,6 +2121,8 @@ export default {
       }
     },
   };
+  /* **bilan biologique rania */
+  
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -2211,4 +2273,30 @@ export default {
   color: white;
   text-shadow: 2px 2px 8px grey;
 }
+/* **************************************css bilans paraclinique : rania************************************ */
+.bio 
+{ background-image: url('https://images.pexels.com/photos/4230620/pexels-photo-4230620.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');}
+.radio
+{background-image: url('https://images.pexels.com/photos/4225923/pexels-photo-4225923.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940');}
+.électri
+{image-resolution: 20;
+  background-image: url('https://file1.topsante.com/var/topsante/storage/images/1/3/1/2/1312129/comment-deroule-electromyogramme.jpg?alias=exact540x405_l&size=x100&format=jpeg');}
+.bilancard h3, .bilancard p{
+  color: white;
+  text-shadow: 2px 2px 8px grey;
+}
+.bilancard{ align-items: center ;
+    text-align: center;
+    margin: 5%;
+    background-size: cover;
+    border: none;}
+    /**********************************************************css bilan biologique :rania********************************************************************* *
+    .biologique {
+    background-color: white;
+    line-height: 50px;
+    column-rule-color: #24b4ab;
+    ;
+  }
+*/
+  
 </style>
