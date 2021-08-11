@@ -8,6 +8,9 @@ const { BiometricInfo } = require('../models')
 const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
 
+// Bilans paracliniques
+const { BilansBiologique } = require('../models')
+
 module.exports = {
   async recoverPatients (req, res) {
     try {
@@ -735,6 +738,29 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to fetch the users ${err}`
+      })
+    }
+  },
+
+  // ********************* Bilans paracliniques *******************
+
+  // Bilans Biologiques
+  async showBB (req, res) {
+    try {
+      const id = req.body.id
+      const bb = await BilansBiologique.findAll({
+        where: {
+          idPatient: id
+        }
+      })
+      // const userJson = bb.toJSON()
+      res.send({
+        message: `response from the server to showBB function with id user : ${id}`,
+        bb: bb
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBB: ${err}`
       })
     }
   }
