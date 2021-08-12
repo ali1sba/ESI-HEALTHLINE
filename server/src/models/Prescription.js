@@ -1,13 +1,16 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('Prescription', {
-    medicament: {
+    nom: {
       type: DataTypes.STRING
     },
-    quantité: {
+    forme: {
+      type: DataTypes.STRING
+    },
+    posologie: {
+      type: DataTypes.STRING
+    },
+    ordonnanceId: {
       type: DataTypes.INTEGER
-    },
-    type: {
-      type: DataTypes.STRING
     }
 
   })

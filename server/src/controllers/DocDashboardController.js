@@ -9,6 +9,7 @@ const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
 const { Medicament } = require('../models')
 const { Ordonnance } = require('../models')
+const { Prescription } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -208,32 +209,6 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to create the users MF ${err}`
-      })
-    }
-  },
-  async createOrdonnance (req, res) {
-    try {
-      const userId = req.body.id
-      const userUser = await User.findOne({
-        where: {
-          id: userId
-        }
-      })
-      const OrdInfo = {
-        patientId: userUser.id,
-        nombreMed: 0
-      }
-      console.log('hiiii')
-
-      const OrdonnaceCreated = await Ordonnance.create(OrdInfo)
-      console.log('helllooooo')
-      const Ord = OrdonnaceCreated.toJSON()
-      res.send({
-        ord: Ord
-      })
-    } catch (err) {
-      res.status(500).send({
-        error: `an error has occured trying to create ordonnance ${err}`
       })
     }
   },
@@ -769,7 +744,53 @@ module.exports = {
       })
     }
   },
+  async createOrdonnance (req, res) {
+    try {
+      const userId = req.body.id
+      const OrdInfo = {
+        patientId: userId,
+        nombreMed: 0
+      }
+      console.log('hiiii')
 
+      const OrdonnaceCreated = await Ordonnance.create(OrdInfo)
+      console.log('helllooooo')
+      const Ord = OrdonnaceCreated.toJSON()
+      res.send({
+        ord: Ord
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create ordonnance ${err}`
+      })
+    }
+  },
+  async addpresc (req, res) {
+    try {
+      const prescription = req.body.presc
+      const prescCreated = await Prescription.create(prescription)
+
+      const prsc = prescCreated.toJSON()
+      const currentOrd = await Ordonnance.findOne({
+        where: {
+          id: prescription.ordonnanceId
+        }
+      })
+      // save changes in Ordonnance table
+      currentOrd.increment('nombreMed')
+
+      await currentOrd.save()
+
+      res.send({
+        prsc: prsc,
+        Ord: currentOrd
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: `an error has occured trying to create prescriptions ${error}`
+      })
+    }
+  },
   async recoverMedicaments  (req, res) {
     try {
       const medicaments = await Medicament.findAll({

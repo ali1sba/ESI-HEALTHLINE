@@ -1668,37 +1668,32 @@
 
                 <div style="margin-bottom: 20px">
                   
-                <el-select v-model="value1" filterable placeholder="nom de médicament">
-               <el-option
-                v-for="item in Medoptions"
-                :key="item.value"
-                :label="item.label"
-                 :value1 ="item.value"
-                 style="margin-right:20px">
+                   <el-select v-model="prescription.nom" filterable placeholder="nom de médicament">
+                   <el-option
+                      v-for="item in Medoptions"
+                      :key="item.value"
+                       :label="item.label"
+                     :value ="item.value"
+                     style="margin-right:20px">
                 </el-option>
                 </el-select>
 
-                <el-select v-model="value2" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-select v-model="prescription.forme" filterable placeholder="forme pharmaceutique et dosage ">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
                  :label="item.label"
-                :value2 ="item.value"
+                :value ="item.value"
                 style="margin-right:20px"
                 >
                  </el-option>
                 </el-select>
-
-               
-
-                <el-input v-model="posologie"
+                <el-input v-model="prescription.posologie"
                 style="width : 200px; margin-right:20px">
 
                 </el-input>
-                <button type="primary" style="padding:7px;background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
-
+                <button @click="addpresc(ordselected)" type="primary" style="padding:7px;background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
                 </div>
-
                 <el-button
                     @click="createpdf();  "
                     type="primary"
@@ -2195,35 +2190,43 @@ export default {
       isDisabledAnts: true,
       
       //medicaments
-      value1:"",
-      value2:"",
-      posologie:"",
+       ordselected :"none",
+
+      prescription : {
+      
+      nom: "",
+      forme: "",
+      posologie: "",
+      ordonnanceId: "",
+      },
+      
+      
       Medoptions: [
          {
-          value: 0,
+          value: "0",
           label: "0",
         },
          {
-          value: 1,
+          value: "1",
           label: "1",
         },
          {
-          value: 2,
+          value: "2",
           label: "2",
         },
       ],
       fpoptions:[
         {
-          value: 0,
-          label: "0",
+          value: "123",
+          label: "123",
         },
          {
-          value: 1,
-          label: "1",
+          value: "122",
+          label: "122",
         },
          {
-          value: 2,
-          label: "2",
+          value:"222",
+          label: "222",
         },
 
       ]
@@ -2374,7 +2377,7 @@ export default {
     doc.save(pdfName + '.pdf');
  },
  viewpdf(){
-   let pdfName = 'test'; 
+   
     var doc = new jsPDF();
     doc.text("Hello World", 10, 10);
 doc.output('dataurlnewwindow');          
@@ -2505,6 +2508,9 @@ doc.output('dataurlnewwindow');
         this.userDepiInfo.checkTendancesauxhémorragies = this.stringToBoolean(
           this.userDepiInfo.checkTendancesauxhémorragies
         );
+        
+        
+
 
         console.log(response.data.medFile.depistagelInfo);
         // this.checkListOphtalmolodique = this.stringToArray(this.checkListOphtalmolodique)
@@ -2533,19 +2539,7 @@ doc.output('dataurlnewwindow');
         console.log(this.error);
       }
     },
-     async createOrdonnance(user) {
-      try {
-        const response = await DocServices.createOrdonnance(user);
-        
-        console.log(response.data);
-      } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
-      }
-    },
-    async addItem() {
-     this.items.push({message: 'new message'})
-    },
+     
     //  handleChange(value) {
     // console.log(value);}
 
@@ -2758,10 +2752,10 @@ doc.output('dataurlnewwindow');
     try {
       const response = await DocServices.recoverMedicaments()
       let list=[];
-response.data.medicaments.map(function(value) {
+    response.data.medicaments.map(function(value) {
      list.push(value.nom);
      
-   });
+     });
         // response.data.forEach((element) => {
         //    let allm = []
 
@@ -2778,7 +2772,38 @@ response.data.medicaments.map(function(value) {
       console.log(`something went wrong ${error}`);
     }
    },
-   
+    async createOrdonnance(user) {
+      try {
+        const response = await DocServices.createOrdonnance({
+          id: user.id,
+        });
+        this.ordselected=response.data.ord.id;
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+    async addItem() {
+     this.items.push({message: 'new message'})
+    },
+
+     async addpresc(OrdonnanceId){
+       try {
+         this.prescription.ordonnanceId = OrdonnanceId;
+         
+        const response = await DocServices.addpresc({
+         
+          presc :this.prescription
+        });
+        console.log(this.prescription);
+        
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+     }
   },
   //antecedents*****************************************************************************************
   async modifierAntecedents() {
@@ -2814,7 +2839,7 @@ response.data.medicaments.map(function(value) {
       console.log(`something went wrong ${error}`);
     }
   },
- 
+   
    async saveOrdonnance() {
     try {
 

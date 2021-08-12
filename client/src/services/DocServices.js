@@ -27,6 +27,9 @@ export default {
         return Api().post('/DOCdashboard/recoverMedicaments',credantials)
     },
     createOrdonnance (credantials){
-        return Api().post('/DOCdashboard',credantials)
+        return Api().post('/DOCdashboard/createOrdonnance',credantials)
+    },
+    addpresc (credantials){
+        return Api().post('/DOCdashboard/addpresc',credantials)
     },
 }

@@ -114,4 +114,5 @@ module.exports = (app) => {
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
   app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
   app.post('/DOCdashboard/createOrdonnance', DocDashboardController.createOrdonnance)
+  app.post('/DOCdashboard/addpresc', DocDashboardController.addpresc)
 }
