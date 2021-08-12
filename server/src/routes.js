@@ -5,6 +5,7 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const RapportMedicalController = require('./controllers/RapportMedicalController')
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -112,7 +113,7 @@ module.exports = (app) => {
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
   // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
-
+  app.post('/RapportMedical', RapportMedicalController.createRM)
   // ************************ Bilans paracliniques **********************
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
