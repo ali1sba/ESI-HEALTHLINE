@@ -5,5 +5,8 @@ import Api from '@/services/api'
 export default {
     creeRM (credantials){
         return Api().post('/RapportMedical',credantials)
+    },
+    getAllRepports (credantials){
+        return Api().post('/getRapportMedical',credantials)
     }
 }

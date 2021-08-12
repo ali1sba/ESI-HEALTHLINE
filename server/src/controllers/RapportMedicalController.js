@@ -23,5 +23,23 @@ module.exports = {
         error: `an error has occured trying to create the users MF ${err}`
       })
     }
+  },
+  async getRepports (req, res) {
+    try {
+      console.log(req.body)
+      const repports = await RapportMedical.findAll({
+        where: {
+          idUser: req.body.id
+        }
+      })
+      console.log(repports)
+      res.send({
+        repports: repports
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create the users MF ${err}`
+      })
+    }
   }
 }

@@ -1579,7 +1579,7 @@
 
                     <el-col :span="12">
                       <el-card
-                        @click="radio1 = 'rapport medical'"
+                        @click="radio1 = 'rapport medical'; getRepports();"
                         class="examcard rapmed"
                       >
                         <i class="fa fa-folder-open"> </i>
@@ -2380,15 +2380,27 @@
               <el-card class="box-card">
                 <center>
                   <div>
-                    <el-radio-group v-model="radioRM">
-                      <el-radio-button label="Historique"></el-radio-button>
+                    <el-radio-group v-model="radioRM" >
+                      <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
                   <br />
                   <h4>Rapport Médical</h4>
                 </center>
-                <div v-if="radioRM === 'Historique'"></div>
+                <div v-if="radioRM === 'Historique'">
+                  
+                  
+                  <el-card shadow="hover" v-for="Rapp in reporrts" :key="Rapp.id" style="margin:1em 0em;" class="cardGris">
+                    <el-row>
+                      <el-col :span="6"> {{Rapp.Motif}} </el-col>
+                      <el-col :span="6"> {{Rapp.Conclusion}} </el-col>
+                      <el-col :span="6"> {{Rapp.createdAt}} </el-col>
+                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
+                    </el-row>
+                    
+                  </el-card>
+                </div>
                 <div v-else>
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
@@ -2958,6 +2970,7 @@ export default {
         Autre: "",
         Conclusion: "",
       },
+      reporrts: [''],
     };
   },
   mounted: function () {
@@ -3498,6 +3511,19 @@ export default {
         console.log(`something went wrong ${error}`);
       }
     },
+    async getRepports() {
+      try {console.log(this.userselected.id);
+         const response = await RapportMedicalServices.getAllRepports({
+          id: this.userselected.id
+          
+        });
+        console.log(response.data);
+        this.reporrts = response.data.repports;
+        console.log(this.reporrts);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
 
     async creepdf() {
       try {
@@ -3738,6 +3764,10 @@ export default {
   width: 97%;
   margin: 20px;
   border-radius: 15px;
+}
+.cardGris{
+  background-color: #f1f1f1;
+  border-radius: 10px;
 }
 .boxRDV {
   width: 97%;

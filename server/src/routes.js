@@ -114,6 +114,7 @@ module.exports = (app) => {
   // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
   app.post('/RapportMedical', RapportMedicalController.createRM)
+  app.post('/getRapportMedical', RapportMedicalController.getRepports)
   // ************************ Bilans paracliniques **********************
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
