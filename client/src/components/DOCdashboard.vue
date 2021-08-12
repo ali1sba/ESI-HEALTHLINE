@@ -1337,10 +1337,10 @@
                     <el-table-column
                       label="Opérations"
                       width="150">
-                      <template #default>
+                      <template #default="scope">
                         <el-button
                           size="mini"
-                          @click="showBilanBiologique()">Consulter</el-button>
+                          @click="showBilanBiologique(scope.row.id)">Consulter</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -1354,36 +1354,44 @@
                       <el-space orientation="vertical">
                         <div>
                           Globules rouges 
-                          <el-input placeholder="GR" v-model="input" :disabled="true"></el-input>
+                          <el-tag>Test</el-tag>
+                          homme: 4.4 – 6.2 millions/mm3
+                          femme: 4 - 5.4 millions/mm3
                         </div>
                       </el-space>
                       <el-space wrap>
                         Globules blancs
                           <el-space wrap :size="7">
                             PNN
-                            <el-input placeholder="PNN" v-model="input" :disabled="true"></el-input>
+                            <el-tag>Test</el-tag>
+                            45 - 70 %
                           </el-space>
                           <el-space wrap :size="7">
                             PNEo
-                            <el-input placeholder="PNEo" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
+                            1 - 5 %
                           </el-space>
                           <el-space wrap :size="7">
                             PNB
-                            <el-input placeholder="PNB" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
+                            0 - 0.5 %
                           </el-space>
                           <el-space wrap :size="7">
                             Lymphocytes
-                            <el-input placeholder="Lymphocytes" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
+                            20 - 40 %
                           </el-space>
                           <el-space wrap :size="7">
                             Monocytes
-                            <el-input placeholder="Monocytes" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
+                            3 - 10 %
                           </el-space>
                       </el-space>
                       <el-space orientation="vertical">
                         Plaquettes
                         <el-space wrap :size="10">
-                          <el-input placeholder="Plaquettes" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          0.15 - 0.4 millions/mm3
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1392,11 +1400,13 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           VS
-                          <el-input placeholder="VS" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          mm/h
                         </el-space>
                         <el-space wrap :size="7">
                           CRP
-                          <el-input placeholder="CRP" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          mmg/l
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1405,15 +1415,15 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           Urée
-                          <el-input placeholder="Urée" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Créatinine
-                          <el-input placeholder="Créatinine" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
-                          Clairance de la créatinine
-                          <el-input placeholder="Clairance de la créatinine" v-model="input" :disabled="true"></el-input>
+                          Clairance de la créatinine (Formule MDRD)
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1422,50 +1432,50 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           TGO/ASAT
-                          <el-input placeholder="TGO/ASAT" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           TGP/ALAT
-                          <el-input placeholder="TGP/ALAT" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Phosphatase alcanine
-                          <el-input placeholder="Phosphatase alcanine" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Bilan d'hémostase
                           <el-space wrap :size="7">
                             TS
-                            <el-input placeholder="TS" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             TP
-                            <el-input placeholder="TP" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             TCA
-                            <el-input placeholder="TCA" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                         </el-space>
                         <el-space wrap :size="7">
                           Bilirubine
-                          <el-input placeholder="Bilirubine" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           LDH
-                          <el-input placeholder="LDH" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Albumine
-                          <el-input placeholder="Albumine" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Gamma GT
-                          <el-input placeholder="Gamma GT" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1474,23 +1484,23 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           CK-MB
-                          <el-input placeholder="CK-MB" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Myoglobine
-                          <el-input placeholder="Myoglobine" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Troponine
-                          <el-input placeholder="Troponine" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           BNP
-                          <el-input placeholder="BNP" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1501,19 +1511,19 @@
                           Sanguin
                           <el-space wrap :size="7">
                             Na+
-                            <el-input placeholder="Bilirubine" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             K+
-                            <el-input placeholder="LDH" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Ca2+
-                            <el-input placeholder="Albumine" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Cl-
-                            <el-input placeholder="Gamma GT" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                         </el-space>
                         
@@ -1521,11 +1531,11 @@
                           Urinaire
                           <el-space wrap :size="7">
                             Na+
-                            <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             K+
-                            <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                            <el-tag></el-tag>
                           </el-space>
                         </el-space>
                       </el-space>
@@ -1535,15 +1545,17 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           Glycémie à jeun
-                          <el-input placeholder="Gly" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          g/l
                         </el-space>
                         <el-space wrap :size="7">
-                          Hb1c
-                          <el-input placeholder="Hb1c" v-model="input" :disabled="true"></el-input>
+                          HbA1c
+                          <el-tag></el-tag>
+                          %
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1552,23 +1564,24 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           Cholesterol
-                          <el-input placeholder="Cholesterol" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          
                         </el-space>
                         <el-space wrap :size="7">
                           Triglycérides
-                          <el-input placeholder="Triglycérides" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           LDL
-                          <el-input placeholder="LDL" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           HDL
-                          <el-input placeholder="HDL" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1577,11 +1590,26 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           BU (Bandelette Urinaire)
-                          <el-input placeholder="BU" v-model="input" :disabled="true"></el-input>
+                          <el-space wrap :size="7">
+                            Proterinurie
+                            <el-tag></el-tag>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Glycosurie
+                            <el-tag></el-tag>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Cétonurie
+                            <el-tag></el-tag>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Leucocyturie
+                            <el-tag></el-tag>
+                          </el-space>
                         </el-space>
                         <el-space wrap :size="7">
                           ECBU (Germe)
-                          <el-input placeholder="ECBU" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1590,19 +1618,22 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           TSH
-                          <el-input placeholder="TSH" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          mUI/l
                         </el-space>
                         <el-space wrap :size="7">
                           T3
-                          <el-input placeholder="T3" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>^
+                          µmol/l
                         </el-space>
                         <el-space wrap :size="7">
                           T4
-                          <el-input placeholder="T4" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
+                          pmol/l
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1611,23 +1642,23 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           HIV
-                          <el-input placeholder="HIV" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Hbs
-                          <el-input placeholder="Hbs" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Hcv
-                          <el-input placeholder="Hcv" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
-                          Siphilis
-                          <el-input placeholder="Siphilis" v-model="input" :disabled="true"></el-input>
+                          Syphilis
+                          <el-tag></el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1635,7 +1666,7 @@
                     <el-collapse-item title="Autres" name="12">
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="10">
-                          <el-input placeholder="Autres" v-model="input" :disabled="true"></el-input>
+                          <el-tag></el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1860,6 +1891,7 @@ export default {
 
       // Bilans paracliniques: BB-BR-BE
       tableDataBB: [],
+      BBHis: [],
       tableDataBR: [],
       tableDataBE: [],
 
@@ -2229,21 +2261,26 @@ export default {
     async showBB (user) {
       try {
         this.radio1 = 'Bilans Biologiques'
+        this.radio2 = 'Historique'
         const response = await DocServices.showBB({
           id: user.id,
         });
         this.tableDataBB = response.data.bb
         console.log(this.tableDataBB)
       } catch (error) {
-        console.log(`something went wrong in showBilanBiologique ${error}`);
+        console.log(`something went wrong in showBB ${error}`);
       }
     },
 
     // Bilans paracliniques -> showBB from ALL Bilans Biologiques tables
-    showBilanBiologique () {
+    async showBilanBiologique (id) {
       try {
         this.radio2 = 'Historique2'
         console.log("showBilanBiologique clicked")
+        const response = await DocServices.showBilanBiologique({
+          id: id,
+        });
+        console.log(response.data)
       } catch (error) {
         console.log(`something went wrong in showBilanBiologique ${error}`);
       }

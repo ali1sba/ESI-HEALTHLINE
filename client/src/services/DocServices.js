@@ -26,5 +26,9 @@ export default {
 
     showBB (credantials){
         return Api().post('/DOCdashboard/showBB',credantials)
+    },
+
+    showBilanBiologique (credantials){
+        return Api().post('/DOCdashboard/showBilanBiologique',credantials)
     }
 }
