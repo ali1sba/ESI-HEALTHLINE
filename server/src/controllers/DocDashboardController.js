@@ -9,7 +9,19 @@ const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
 
 // Bilans paracliniques
+// Bilans Biologiques
 const { BilansBiologique } = require('../models')
+const { BilansBCardiaque } = require('../models')
+const { BilansBGlycemique } = require('../models')
+const { BilansBHepathique } = require('../models')
+const { BilansBHormonal } = require('../models')
+const { BilansBInflammatoire } = require('../models')
+const { BilansBIonogramme } = require('../models')
+const { BilansBLipidique } = require('../models')
+const { BilansBNFS } = require('../models')
+const { BilansBRenale } = require('../models')
+const { BilansBSerologie } = require('../models')
+const { BilansBUrinaire } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -757,6 +769,291 @@ module.exports = {
       res.send({
         message: `response from the server to showBB function with id user : ${id}`,
         bb: bb
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBB: ${err}`
+      })
+    }
+  },
+
+  async showBilanBiologique (req, res) {
+    try {
+      const id = req.body.id
+      const bb = await BilansBiologique.findOne({
+        where: {
+          id: id
+        }
+      })
+      // NFS
+      var bbNFS
+      if (!bb.idNFS) {
+        bbNFS = {
+          gr: 'null',
+          gbPNN: 'null',
+          gbPNEo: 'null',
+          gbPNB: 'null',
+          gbLymphocytes: 'null',
+          gbMonocytes: 'null',
+          plaquettes: 'null'
+        }
+        console.log('null')
+      } else {
+        bbNFS = await BilansBNFS.findOne({
+          where: {
+            id: bb.idNFS
+          }
+        })
+        console.log('not null')
+      }
+      // BI
+      var bbBI
+      if (!bb.idBI) {
+        bbBI = {
+          vs: 'null',
+          crp: 'null'
+        }
+      } else {
+        bbBI = await BilansBInflammatoire.findOne({
+          where: {
+            id: bb.idBI
+          }
+        })
+      }
+      // BR
+      var bbBR
+      if (!bb.idBR) {
+        bbBR = {
+          urée: 'null',
+          creatinine: 'null',
+          clairanceDeLaCreatinine: 'null'
+        }
+      } else {
+        bbBR = await BilansBRenale.findOne({
+          where: {
+            id: bb.idBR
+          }
+        })
+      }
+      // BH
+      var bbBH
+      if (!bb.idBH) {
+        bbBH = {
+          tgo: 'null',
+          tgp: 'null',
+          phosphataseAlcaline: 'null',
+          ts: 'null',
+          tp: 'null',
+          tca: 'null',
+          bilirubine: 'null',
+          ldh: 'null',
+          albumine: 'null',
+          gammeGT: 'null',
+          autre: 'null'
+        }
+      } else {
+        bbBH = await BilansBHepathique.findOne({
+          where: {
+            id: bb.idBH
+          }
+        })
+      }
+      // BC
+      var bbBC
+      if (!bb.idBC) {
+        bbBC = {
+          ckmb: 'null',
+          myoglobine: 'null',
+          troponine: 'null',
+          bnp: 'null',
+          autre: 'null'
+        }
+      } else {
+        bbBC = await BilansBCardiaque.findOne({
+          where: {
+            id: bb.idBC
+          }
+        })
+      }
+      // Io
+      var bbIo
+      if (!bb.idIo) {
+        bbIo = {
+          naS: 'null',
+          kS: 'null',
+          caS: 'null',
+          clS: 'null',
+          naU: 'null',
+          kU: 'null'
+        }
+      } else {
+        bbIo = await BilansBIonogramme.findOne({
+          where: {
+            id: bb.idIo
+          }
+        })
+      }
+      // BG
+      var bbBG
+      if (!bb.idBG) {
+        bbBG = {
+          glyJ: 'null',
+          hb1c: 'null',
+          autre: 'null'
+        }
+      } else {
+        bbBG = await BilansBGlycemique.findOne({
+          where: {
+            id: bb.idBG
+          }
+        })
+      }
+      // BL
+      var bbBL
+      if (!bb.idBL) {
+        bbBL = {
+          cholesterol: 'null',
+          triglycerides: 'null',
+          ldl: 'null',
+          hdl: 'null',
+          autre: 'null'
+        }
+      } else {
+        bbBL = await BilansBLipidique.findOne({
+          where: {
+            id: bb.idBL
+          }
+        })
+      }
+      // BU
+      var bbBU
+      if (!bb.idBU) {
+        bbBU = {
+          bu: 'null',
+          ecbu: 'null'
+        }
+      } else {
+        bbBU = await BilansBUrinaire.findOne({
+          where: {
+            id: bb.idBU
+          }
+        })
+      }
+      // BHor
+      var bbBHor
+      if (!bb.idBHor) {
+        bbBHor = {
+          tsh: 'null',
+          t3: 'null',
+          t4: 'null',
+          autre: 'null'
+        }
+      } else {
+        bbBHor = await BilansBHormonal.findOne({
+          where: {
+            id: bb.idBHor
+          }
+        })
+      }
+      // BS
+      var bbBS
+      if (!bb.idBS) {
+        bbBS = {
+          hiv: 'null',
+          hbs: 'null',
+          hcv: 'null',
+          siphilis: 'null',
+          autre: 'null'
+        }
+      } else {
+        bbBS = await BilansBSerologie.findOne({
+          where: {
+            id: bb.idBS
+          }
+        })
+      }
+
+      // autre
+      var bbautre
+      if (!bb.autre) {
+        bbautre = 'null'
+      } else {
+        bbautre = bb.autre
+      }
+      // BilanBiologique object
+      const BilanBiologique = {
+        NFS: bbNFS,
+        BI: bbBI,
+        BR: bbBR,
+        BH: bbBH,
+        BC: bbBC,
+        Io: bbIo,
+        BG: bbBG,
+        BL: bbBL,
+        BU: bbBU,
+        BHor: bbBHor,
+        BS: bbBS,
+        autre: bbautre,
+        Date: bb.createdAt,
+        Motif: bb.motif
+      }
+      res.send({
+        message: `response from the server to showBB function with id user : ${id}`,
+        BilanBiologique: BilanBiologique
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBB: ${err}`
+      })
+    }
+  },
+
+  async createBilanBiologique (req, res) {
+    try {
+      const bbReq = req.body.bb
+
+      const bbBC = req.body.bb.BC
+      const BC = await BilansBCardiaque.create(bbBC)
+      const bbBG = req.body.bb.BG
+      const BG = await BilansBGlycemique.create(bbBG)
+      const bbBH = req.body.bb.BH
+      const BH = await BilansBHepathique.create(bbBH)
+      const bbBHor = req.body.bb.BHor
+      const BHor = await BilansBHormonal.create(bbBHor)
+      const bbBI = req.body.bb.BI
+      const BI = await BilansBInflammatoire.create(bbBI)
+      const bbBL = req.body.bb.BL
+      const BL = await BilansBLipidique.create(bbBL)
+      const bbBR = req.body.bb.BR
+      const BR = await BilansBRenale.create(bbBR)
+      const bbBS = req.body.bb.BS
+      const BS = await BilansBSerologie.create(bbBS)
+      const bbBU = req.body.bb.BU
+      const BU = await BilansBUrinaire.create(bbBU)
+      const bbIo = req.body.bb.Io
+      const Io = await BilansBIonogramme.create(bbIo)
+      const bbNFS = req.body.bb.NFS
+      const NFS = await BilansBNFS.create(bbNFS)
+
+      const bbCr = {
+        motif: bbReq.Motif,
+        idPatient: bbReq.idP,
+        idBC: BC.id,
+        idBG: BG.id,
+        idBH: BH.id,
+        idBHor: BHor.id,
+        idBI: BI.id,
+        idBL: BL.id,
+        idBR: BR.id,
+        idBS: BS.id,
+        idBU: BU.id,
+        idNFS: NFS.id,
+        idIo: Io.id
+      }
+      const bb = await BilansBiologique.create(bbCr)
+      res.send({
+        message: 'response from the server to createBilanBiologique function',
+        idP: bb.idPatient
       })
     } catch (err) {
       res.status(500).send({
