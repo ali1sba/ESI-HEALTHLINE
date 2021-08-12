@@ -1666,9 +1666,9 @@
                 <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
                 <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
 
-                <div style="margin-bottom: 20px">
+                <div style="margin-bottom: 20px" v-for="(pr,index) in prescs" :key= index>
                   
-                   <el-select v-model="prescription.nom" filterable placeholder="nom de médicament">
+                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
@@ -1678,7 +1678,7 @@
                 </el-option>
                 </el-select>
 
-                <el-select v-model="prescription.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
@@ -1688,19 +1688,20 @@
                 >
                  </el-option>
                 </el-select>
-                <el-input v-model="prescription.posologie"
+                <el-input v-model="pr.posologie"
                 style="width : 200px; margin-right:20px">
 
                 </el-input>
-                <button @click="addpresc(ordselected)" type="primary" style="padding:7px;background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
                 </div>
+                <button @click="addprescinput(); " type="primary" style="padding:7px;background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
+                
                 <el-button
                     @click="createpdf();  "
                     type="primary"
                      style="background-color: #24b4ab;width:40%;"
                     >Créer </el-button > 
                        <el-button
-                    @click="viewpdf();  "
+                    @click="viewpdf(); addpresc() "
                     type="primary"
                      style="background-color: #24b4ab;width:40%;"
                     >view pdf </el-button > 
@@ -2192,13 +2193,14 @@ export default {
       //medicaments
        ordselected :"none",
 
-      prescription : {
+      // prescription : {
       
-      nom: "",
-      forme: "",
-      posologie: "",
-      ordonnanceId: "",
-      },
+      // nom: "",
+      // forme: "",
+      // posologie: "",
+      // ordonnanceId: "",
+      // },
+      prescs :[],
       
       
       Medoptions: [
@@ -2784,19 +2786,27 @@ doc.output('dataurlnewwindow');
         console.log(this.error);
       }
     },
-    async addItem() {
-     this.items.push({message: 'new message'})
+    async addprescinput() {
+      
+     await this.prescs.push({
+      
+      nom: "",
+      forme: "",
+      posologie: "",
+      ordonnanceId: this.ordselected,
+      })
     },
 
-     async addpresc(OrdonnanceId){
+     async addpresc(){
        try {
-         this.prescription.ordonnanceId = OrdonnanceId;
+         
+        //  this.prescription.ordonnanceId = OrdonnanceId;
          
         const response = await DocServices.addpresc({
          
-          presc :this.prescription
+          presc :this.prescs
         });
-        console.log(this.prescription);
+        console.log(this.prescs);
         
         console.log(response.data);
       } catch (error) {

@@ -768,16 +768,18 @@ module.exports = {
   async addpresc (req, res) {
     try {
       const prescription = req.body.presc
-      const prescCreated = await Prescription.create(prescription)
+      const prescCreated = await Prescription.bulkCreate(prescription)
 
-      const prsc = prescCreated.toJSON()
+      const prsc = prescCreated
+      console.log('hey')
+      console.log('hey')
       const currentOrd = await Ordonnance.findOne({
         where: {
-          id: prescription.ordonnanceId
+          id: prescription[0].ordonnanceId
         }
       })
       // save changes in Ordonnance table
-      currentOrd.increment('nombreMed')
+      currentOrd.increment('nombreMed', { by: prescription.length })
 
       await currentOrd.save()
 
