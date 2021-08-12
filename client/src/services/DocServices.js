@@ -30,5 +30,9 @@ export default {
 
     showBilanBiologique (credantials){
         return Api().post('/DOCdashboard/showBilanBiologique',credantials)
+    },
+
+    createBilanBiologique (credantials){
+        return Api().post('/DOCdashboard/createBilanBiologique',credantials)
     }
 }

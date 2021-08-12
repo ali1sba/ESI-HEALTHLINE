@@ -117,4 +117,5 @@ module.exports = (app) => {
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
+  app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
 }

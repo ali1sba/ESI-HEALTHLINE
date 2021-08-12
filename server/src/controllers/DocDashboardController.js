@@ -993,14 +993,70 @@ module.exports = {
         BU: bbBU,
         BHor: bbBHor,
         BS: bbBS,
-        autre: bbautre
+        autre: bbautre,
+        Date: bb.createdAt,
+        Motif: bb.motif
       }
       res.send({
         message: `response from the server to showBB function with id user : ${id}`,
         BilanBiologique: BilanBiologique
       })
     } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBB: ${err}`
+      })
+    }
+  },
+
+  async createBilanBiologique (req, res) {
+    try {
+      const bbReq = req.body.bb
+
+      const bbBC = req.body.bb.BC
+      const BC = await BilansBCardiaque.create(bbBC)
+      const bbBG = req.body.bb.BG
+      const BG = await BilansBGlycemique.create(bbBG)
+      const bbBH = req.body.bb.BH
+      const BH = await BilansBHepathique.create(bbBH)
+      const bbBHor = req.body.bb.BHor
+      const BHor = await BilansBHormonal.create(bbBHor)
+      const bbBI = req.body.bb.BI
+      const BI = await BilansBInflammatoire.create(bbBI)
+      const bbBL = req.body.bb.BL
+      const BL = await BilansBLipidique.create(bbBL)
+      const bbBR = req.body.bb.BR
+      const BR = await BilansBRenale.create(bbBR)
+      const bbBS = req.body.bb.BS
+      const BS = await BilansBSerologie.create(bbBS)
+      const bbBU = req.body.bb.BU
+      const BU = await BilansBUrinaire.create(bbBU)
+      const bbIo = req.body.bb.Io
+      const Io = await BilansBIonogramme.create(bbIo)
+      const bbNFS = req.body.bb.NFS
+      const NFS = await BilansBNFS.create(bbNFS)
+
+      const bbCr = {
+        motif: bbReq.Motif,
+        idPatient: bbReq.idP,
+        idBC: BC.id,
+        idBG: BG.id,
+        idBH: BH.id,
+        idBHor: BHor.id,
+        idBI: BI.id,
+        idBL: BL.id,
+        idBR: BR.id,
+        idBS: BS.id,
+        idBU: BU.id,
+        idNFS: NFS.id,
+        idIo: Io.id
+      }
+      const bb = await BilansBiologique.create(bbCr)
       res.send({
+        message: 'response from the server to createBilanBiologique function',
+        idP: bb.idPatient
+      })
+    } catch (err) {
+      res.status(500).send({
         error: `an error has occured trying to shoBB: ${err}`
       })
     }

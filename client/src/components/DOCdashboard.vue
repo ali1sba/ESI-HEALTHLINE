@@ -1292,7 +1292,7 @@
                     <el-radio-group v-model="radio2">
                       <el-radio-button label="Historique"></el-radio-button>
                       <el-radio-button v-show="hidden" label="Historique2"></el-radio-button>
-                      <el-radio-button label="Créer"></el-radio-button>
+                      <el-radio-button label="Créer" @click="intializeBBCr"></el-radio-button>
                     </el-radio-group>
                   </div>
                 </center>
@@ -1348,8 +1348,15 @@
                 </el-scrollbar>
 
                 <el-scrollbar  v-show="radio2==='Historique2'">
+                  <el-space>
+                    Motif
+                    <el-tag>{{ BBHis.Motif }}</el-tag>
+                  </el-space>
+                  <el-space>
+                    Date de création
+                    <el-tag>{{ BBHis.Date }}</el-tag>
+                  </el-space>
                   <el-collapse>
-
                     <el-collapse-item title="NFS" name="1">
                       <el-space orientation="vertical">
                         <div>
@@ -1589,22 +1596,7 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           BU (Bandelette Urinaire)
-                          <el-space wrap :size="7">
-                            Proterinurie
-                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
-                          </el-space>
-                          <el-space wrap :size="7">
-                            Glycosurie
-                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
-                          </el-space>
-                          <el-space wrap :size="7">
-                            Cétonurie
-                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
-                          </el-space>
-                          <el-space wrap :size="7">
-                            Leucocyturie
-                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
-                          </el-space>
+                          <el-tag>{{ BBHis.BU.bu }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           ECBU (Germe)
@@ -1674,7 +1666,344 @@
                 </el-scrollbar>
 
                 <el-scrollbar  v-show="radio2==='Créer'">
-                  <p>Créer</p>
+                  <el-space>
+                    Motif
+                    <el-input v-model="BBCr.Motif" placeholder="Entrez le motif de la demande"></el-input>
+                  </el-space>
+                  <el-collapse>
+                    <el-collapse-item title="NFS" name="1">
+                      <el-space orientation="vertical">
+                        <div>
+                          Globules rouges 
+                          <el-input v-model="BBCr.NFS.gr" placeHolder=""></el-input>
+                        </div>
+                      </el-space>
+                      <el-space wrap>
+                        Globules blancs
+                          <el-space wrap :size="7">
+                            PNN
+                            <el-input v-model="BBCr.NFS.gbPNN"></el-input>
+                            45 - 70 %
+                          </el-space>
+                          <el-space wrap :size="7">
+                            PNEo
+                            <el-input v-model="BBCr.NFS.gbPNEo"></el-input>
+                            1 - 5 %
+                          </el-space>
+                          <el-space wrap :size="7">
+                            PNB
+                            <el-input v-model="BBCr.NFS.gbPNB"></el-input>
+                            0 - 0.5 %
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Lymphocytes
+                            <el-input v-model="BBCr.NFS.gbLymphocytes"></el-input>
+                            20 - 40 %
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Monocytes
+                            <el-input v-model="BBCr.NFS.gbMonocytes"></el-input>
+                            3 - 10 %
+                          </el-space>
+                      </el-space>
+                      <el-space orientation="vertical">
+                        Plaquettes
+                        <el-space wrap :size="10">
+                          <el-input v-model="BBCr.NFS.plaquettes"></el-input>
+                          0.15 - 0.4 millions/mm3
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan inflammatoire" name="2">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          VS
+                          <el-input v-model="BBCr.BI.vs"></el-input>
+                          mm/h
+                        </el-space>
+                        <el-space wrap :size="7">
+                          CRP
+                          <el-input v-model="BBCr.BI.crp"></el-input>
+                          mmg/l
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan rénale" name="3">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Urée
+                          <el-input v-model="BBCr.BR.urée"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Créatinine
+                          <el-input v-model="BBCr.BR.creatinine"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Clairance de la créatinine (Formule MDRD)
+                          <el-input v-model="BBCr.BR.clairanceDeLaCreatinine"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan hépathique" name="4">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          TGO/ASAT
+                          <el-input v-model="BBCr.BH.tgo"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          TGP/ALAT
+                          <el-input v-model="BBCr.BH.tgp"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Phosphatase alcanine
+                          <el-input v-model="BBCr.BH.phosphataseAlcaline"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Bilan d'hémostase
+                          <el-space wrap :size="7">
+                            TS
+                            <el-input v-model="BBCr.BH.ts"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            TP
+                            <el-input v-model="BBCr.BH.tp"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            TCA
+                            <el-input v-model="BBCr.BH.tca"></el-input>
+                          </el-space>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Bilirubine
+                          <el-input v-model="BBCr.BH.bilirubine"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          LDH
+                          <el-input v-model="BBCr.BH.ldh"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Albumine
+                          <el-input v-model="BBCr.BH.albumine"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Gamma GT
+                          <el-input v-model="BBCr.BH.gammeGT"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input v-model="BBCr.BH.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan cardiaque" name="5">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          CK-MB
+                          <el-input v-model="BBCr.BC.ckmb"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Myoglobine
+                          <el-input v-model="BBCr.BC.myoglobine"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Troponine
+                          <el-input v-model="BBCr.BC.troponine"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          BNP
+                          <el-input v-model="BBCr.BC.bnp"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input v-model="BBCr.BC.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Ionogramme sanguin et urinaire" name="6">
+                      <el-space orientation="vertical"> 
+                        <el-space>
+                          Sanguin
+                          <el-space wrap :size="7">
+                            Na+
+                            <el-input v-model="BBCr.Io.naS"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            K+
+                            <el-input v-model="BBCr.Io.kS"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Ca2+
+                            <el-input v-model="BBCr.Io.caS"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Cl-
+                            <el-input v-model="BBCr.Io.clS"></el-input>
+                          </el-space>
+                        </el-space>
+                        
+                        <el-space>
+                          Urinaire
+                          <el-space wrap :size="7">
+                            Na+
+                            <el-input v-model="BBCr.Io.naU"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            K+
+                            <el-input v-model="BBCr.Io.kU"></el-input>
+                          </el-space>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan glycémique" name="7">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Glycémie à jeun
+                          <el-input v-model="BBCr.BG.glyJ"></el-input>
+                          g/l
+                        </el-space>
+                        <el-space wrap :size="7">
+                          HbA1c
+                          <el-input v-model="BBCr.BG.hb1c"></el-input>
+                          %
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input v-model="BBCr.BG.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan lipidique" name="8">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Cholesterol
+                          <el-input v-model="BBCr.BL.cholesterol"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Triglycérides
+                          <el-input v-model="BBCr.BL.triglycerides"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          LDL
+                          <el-input v-model="BBCr.BL.ldl"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          HDL
+                          <el-input v-model="BBCr.BL.hdl"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input v-model="BBCr.BL.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan urinaire" name="9">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          BU (Bandelette Urinaire)
+                          <el-input v-model="BBCr.BU.bu"></el-input>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          ECBU (Germe)
+                          <el-input v-model="BBCr.BU.ecbu"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Bilan hormonal" name="10">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          TSH
+                          <el-input v-model="BBCr.BHor.tsh"></el-input>
+                          mUI/l
+                        </el-space>
+                        <el-space wrap :size="7">
+                          T3
+                          <el-input v-model="BBCr.BHor.t3"></el-input>
+                          µmol/l
+                        </el-space>
+                        <el-space wrap :size="7">
+                          T4
+                          <el-input v-model="BBCr.BHor.t4"></el-input>
+                          pmol/l
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input v-model="BBCr.BHor.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Sérologie" name="11">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          HIV
+                          <el-select v-model="BBCr.BS.hiv" placeholder="Select">
+                            <el-option
+                              v-for="item in hivOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Hbs
+                          <el-select v-model="BBCr.BS.hbs" placeholder="Select">
+                            <el-option
+                              v-for="item in hbsOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Hcv
+                          <el-select v-model="BBCr.BS.hcv" placeholder="Select">
+                            <el-option
+                              v-for="item in hbsOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Syphilis
+                          <el-select v-model="BBCr.BS.siphilis" placeholder="Select">
+                            <el-option
+                              v-for="item in hbsOptions"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Autres
+                          <el-input v-model="BBCr.BS.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+
+                    <el-collapse-item title="Autres" name="12">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="10">
+                          <el-input v-model="BBCr.autre"></el-input>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                  </el-collapse>
+                  <br>
+                  <el-button type="success" @click="createBilanBiologique(BBCr)">Enregistrer</el-button>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -1887,10 +2216,41 @@ export default {
     return {
       isactive: true,
       fullscreenLoading: false,
+      input: '',
 
       // Bilans paracliniques: BB-BR-BE
       tableDataBB: [],
+      hivOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
+      hbsOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
+      hcvOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
+      siphilisOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
       BBHis: {
+        Motif: '',
+        Date: '',
         NFS: {
           gr: 'null',
           gbPNN: 'null',
@@ -1967,6 +2327,86 @@ export default {
           autre: 'null'
         },
         autre: 'null'
+      },
+      BBCr: {
+        Motif: null,
+        idP: null,
+        NFS: {
+          gr: null,
+          gbPNN: null,
+          gbPNEo: null,
+          gbPNB: null,
+          gbLymphocytes: null,
+          gbMonocytes: null,
+          plaquettes: null
+        },
+        BI: {
+          vs: null,
+          crp: null
+        },
+        BR: {
+          urée: null,
+          creatinine: null,
+          clairanceDeLaCreatinine: null
+        },
+        BH: {
+          tgo: null,
+          tgp: null,
+          phosphataseAlcaline: null,
+          ts: null,
+          tp: null,
+          tca: null,
+          bilirubine: null,
+          ldh: null,
+          albumine: null,
+          gammeGT: null,
+          autre: null
+        },
+        BC: {
+          ckmb: null,
+          myoglobine: null,
+          troponine: null,
+          bnp: null,
+          autre: null
+        },
+        Io: {
+          naS: null,
+          kS: null,
+          caS: null,
+          clS: null,
+          naU: null,
+          kU: null
+        },
+        BG: {
+          glyJ: null,
+          hb1c: null,
+          autre: null
+        },
+        BL: {
+          cholesterol: null,
+          triglycerides: null,
+          ldl: null,
+          hdl: null,
+          autre: null
+        },
+        BU: {
+          bu: null,
+          ecbu: null
+        },
+        BHor: {
+          tsh: null,
+          t3: null,
+          t4: null,
+          autre: null
+        },
+        BS: {
+          hiv: null,
+          hbs: null,
+          hcv: null,
+          siphilis: null,
+          autre: null
+        },
+        autre: null
       },
       tableDataBR: [],
       tableDataBE: [],
@@ -2338,6 +2778,7 @@ export default {
       try {
         this.radio1 = 'Bilans Biologiques'
         this.radio2 = 'Historique'
+        this.BBCr.idP = user.id
         const response = await DocServices.showBB({
           id: user.id,
         });
@@ -2357,9 +2798,22 @@ export default {
           id: id,
         });
         this.BBHis = response.data.BilanBiologique
-        console.log(this.BBHis.NFS.gr)
+        console.log(this.BBHis)
       } catch (error) {
         console.log(`something went wrong in showBilanBiologique ${error}`);
+      }
+    },
+
+    async createBilanBiologique (bbcr) {
+      try {
+        console.log("createBilanBiologique clicked")
+        console.log(bbcr)
+        const response = await DocServices.createBilanBiologique({
+          bb: bbcr
+        })
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in createBilanBiologique ${error}`);
       }
     },
 
