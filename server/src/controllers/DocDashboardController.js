@@ -809,7 +809,10 @@ module.exports = {
       // BI
       var bbBI
       if (!bb.idBI) {
-        bbBI = null
+        bbBI = {
+          vs: 'null',
+          crp: 'null'
+        }
       } else {
         bbBI = await BilansBInflammatoire.findOne({
           where: {
@@ -820,7 +823,11 @@ module.exports = {
       // BR
       var bbBR
       if (!bb.idBR) {
-        bbBR = null
+        bbBR = {
+          urée: 'null',
+          creatinine: 'null',
+          clairanceDeLaCreatinine: 'null'
+        }
       } else {
         bbBR = await BilansBRenale.findOne({
           where: {
@@ -831,7 +838,19 @@ module.exports = {
       // BH
       var bbBH
       if (!bb.idBH) {
-        bbBH = null
+        bbBH = {
+          tgo: 'null',
+          tgp: 'null',
+          phosphataseAlcaline: 'null',
+          ts: 'null',
+          tp: 'null',
+          tca: 'null',
+          bilirubine: 'null',
+          ldh: 'null',
+          albumine: 'null',
+          gammeGT: 'null',
+          autre: 'null'
+        }
       } else {
         bbBH = await BilansBHepathique.findOne({
           where: {
@@ -842,7 +861,13 @@ module.exports = {
       // BC
       var bbBC
       if (!bb.idBC) {
-        bbBC = null
+        bbBC = {
+          ckmb: 'null',
+          myoglobine: 'null',
+          troponine: 'null',
+          bnp: 'null',
+          autre: 'null'
+        }
       } else {
         bbBC = await BilansBCardiaque.findOne({
           where: {
@@ -853,7 +878,14 @@ module.exports = {
       // Io
       var bbIo
       if (!bb.idIo) {
-        bbIo = null
+        bbIo = {
+          naS: 'null',
+          kS: 'null',
+          caS: 'null',
+          clS: 'null',
+          naU: 'null',
+          kU: 'null'
+        }
       } else {
         bbIo = await BilansBIonogramme.findOne({
           where: {
@@ -864,7 +896,11 @@ module.exports = {
       // BG
       var bbBG
       if (!bb.idBG) {
-        bbBG = null
+        bbBG = {
+          glyJ: 'null',
+          hb1c: 'null',
+          autre: 'null'
+        }
       } else {
         bbBG = await BilansBGlycemique.findOne({
           where: {
@@ -875,7 +911,13 @@ module.exports = {
       // BL
       var bbBL
       if (!bb.idBL) {
-        bbBL = null
+        bbBL = {
+          cholesterol: 'null',
+          triglycerides: 'null',
+          ldl: 'null',
+          hdl: 'null',
+          autre: 'null'
+        }
       } else {
         bbBL = await BilansBLipidique.findOne({
           where: {
@@ -886,7 +928,10 @@ module.exports = {
       // BU
       var bbBU
       if (!bb.idBU) {
-        bbBU = null
+        bbBU = {
+          bu: 'null',
+          ecbu: 'null'
+        }
       } else {
         bbBU = await BilansBUrinaire.findOne({
           where: {
@@ -897,7 +942,12 @@ module.exports = {
       // BHor
       var bbBHor
       if (!bb.idBHor) {
-        bbBHor = null
+        bbBHor = {
+          tsh: 'null',
+          t3: 'null',
+          t4: 'null',
+          autre: 'null'
+        }
       } else {
         bbBHor = await BilansBHormonal.findOne({
           where: {
@@ -908,7 +958,13 @@ module.exports = {
       // BS
       var bbBS
       if (!bb.idBS) {
-        bbBS = null
+        bbBS = {
+          hiv: 'null',
+          hbs: 'null',
+          hcv: 'null',
+          siphilis: 'null',
+          autre: 'null'
+        }
       } else {
         bbBS = await BilansBSerologie.findOne({
           where: {
@@ -917,6 +973,13 @@ module.exports = {
         })
       }
 
+      // autre
+      var bbautre
+      if (!bb.autre) {
+        bbautre = 'null'
+      } else {
+        bbautre = bb.autre
+      }
       // BilanBiologique object
       const BilanBiologique = {
         NFS: bbNFS,
@@ -930,7 +993,7 @@ module.exports = {
         BU: bbBU,
         BHor: bbBHor,
         BS: bbBS,
-        autre: bb.autre
+        autre: bbautre
       }
       res.send({
         message: `response from the server to showBB function with id user : ${id}`,

@@ -1354,7 +1354,7 @@
                       <el-space orientation="vertical">
                         <div>
                           Globules rouges 
-                          <el-tag>Test</el-tag>
+                          <el-tag>{{ BBHis.NFS.gr }}</el-tag>
                           homme: 4.4 – 6.2 millions/mm3
                           femme: 4 - 5.4 millions/mm3
                         </div>
@@ -1363,34 +1363,34 @@
                         Globules blancs
                           <el-space wrap :size="7">
                             PNN
-                            <el-tag>Test</el-tag>
+                            <el-tag>{{ BBHis.NFS.gbPNN }}</el-tag>
                             45 - 70 %
                           </el-space>
                           <el-space wrap :size="7">
                             PNEo
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.NFS.gbPNEo }}</el-tag>
                             1 - 5 %
                           </el-space>
                           <el-space wrap :size="7">
                             PNB
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.NFS.gbPNB }}</el-tag>
                             0 - 0.5 %
                           </el-space>
                           <el-space wrap :size="7">
                             Lymphocytes
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.NFS.gbLymphocytes }}</el-tag>
                             20 - 40 %
                           </el-space>
                           <el-space wrap :size="7">
                             Monocytes
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.NFS.gbMonocytes }}</el-tag>
                             3 - 10 %
                           </el-space>
                       </el-space>
                       <el-space orientation="vertical">
                         Plaquettes
                         <el-space wrap :size="10">
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.NFS.plaquettes }}</el-tag>
                           0.15 - 0.4 millions/mm3
                         </el-space>
                       </el-space>
@@ -1400,12 +1400,12 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           VS
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BI.vs }}</el-tag>
                           mm/h
                         </el-space>
                         <el-space wrap :size="7">
                           CRP
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BI.crp }}</el-tag>
                           mmg/l
                         </el-space>
                       </el-space>
@@ -1415,15 +1415,15 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           Urée
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BR.urée }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Créatinine
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BR.creatinine }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Clairance de la créatinine (Formule MDRD)
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BR.clairanceDeLaCreatinine }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1432,50 +1432,50 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           TGO/ASAT
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.tgo }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           TGP/ALAT
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.tgp }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Phosphatase alcanine
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.phosphataseAlcaline }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Bilan d'hémostase
                           <el-space wrap :size="7">
                             TS
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BH.ts }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             TP
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BH.tp }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             TCA
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BH.tca }}</el-tag>
                           </el-space>
                         </el-space>
                         <el-space wrap :size="7">
                           Bilirubine
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.bilirubine }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           LDH
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.ldh }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Albumine
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.albumine }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Gamma GT
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.gammeGT }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BH.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1484,23 +1484,23 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           CK-MB
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BC.ckmb }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Myoglobine
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BC.myoglobine }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Troponine
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BC.troponine }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           BNP
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BC.bnp }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BC.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1511,19 +1511,19 @@
                           Sanguin
                           <el-space wrap :size="7">
                             Na+
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.Io.naS }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             K+
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.Io.kS }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Ca2+
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.Io.caS }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Cl-
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.Io.clS }}</el-tag>
                           </el-space>
                         </el-space>
                         
@@ -1531,11 +1531,11 @@
                           Urinaire
                           <el-space wrap :size="7">
                             Na+
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.Io.naU }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             K+
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.Io.kU }}</el-tag>
                           </el-space>
                         </el-space>
                       </el-space>
@@ -1545,17 +1545,17 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           Glycémie à jeun
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BG.glyJ }}</el-tag>
                           g/l
                         </el-space>
                         <el-space wrap :size="7">
                           HbA1c
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BG.hb1c }}</el-tag>
                           %
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BG.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1564,24 +1564,23 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           Cholesterol
-                          <el-tag></el-tag>
-                          
+                          <el-tag>{{ BBHis.BL.cholesterol }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Triglycérides
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BL.triglycerides }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           LDL
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BL.ldl }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           HDL
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BL.hdl }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BL.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1592,24 +1591,24 @@
                           BU (Bandelette Urinaire)
                           <el-space wrap :size="7">
                             Proterinurie
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Glycosurie
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Cétonurie
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
                           </el-space>
                           <el-space wrap :size="7">
                             Leucocyturie
-                            <el-tag></el-tag>
+                            <el-tag>{{ BBHis.BU.bu }}</el-tag>
                           </el-space>
                         </el-space>
                         <el-space wrap :size="7">
                           ECBU (Germe)
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BU.ecbu }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1618,22 +1617,22 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           TSH
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BHor.tsh }}</el-tag>
                           mUI/l
                         </el-space>
                         <el-space wrap :size="7">
                           T3
-                          <el-tag></el-tag>^
+                          <el-tag>{{ BBHis.BHor.t3 }}</el-tag>
                           µmol/l
                         </el-space>
                         <el-space wrap :size="7">
                           T4
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BHor.t4 }}</el-tag>
                           pmol/l
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BHor.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1642,23 +1641,23 @@
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="7">
                           HIV
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BS.hiv }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Hbs
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BS.hbs }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Hcv
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BS.hcv }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Syphilis
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BS.siphilis }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
                           Autres
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.BS.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1666,7 +1665,7 @@
                     <el-collapse-item title="Autres" name="12">
                       <el-space orientation="vertical"> 
                         <el-space wrap :size="10">
-                          <el-tag></el-tag>
+                          <el-tag>{{ BBHis.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -1891,7 +1890,84 @@ export default {
 
       // Bilans paracliniques: BB-BR-BE
       tableDataBB: [],
-      BBHis: [],
+      BBHis: {
+        NFS: {
+          gr: 'null',
+          gbPNN: 'null',
+          gbPNEo: 'null',
+          gbPNB: 'null',
+          gbLymphocytes: 'null',
+          gbMonocytes: 'null',
+          plaquettes: 'null'
+        },
+        BI: {
+          vs: 'null',
+          crp: 'null'
+        },
+        BR: {
+          urée: 'null',
+          creatinine: 'null',
+          clairanceDeLaCreatinine: 'null'
+        },
+        BH: {
+          tgo: 'null',
+          tgp: 'null',
+          phosphataseAlcaline: 'null',
+          ts: 'null',
+          tp: 'null',
+          tca: 'null',
+          bilirubine: 'null',
+          ldh: 'null',
+          albumine: 'null',
+          gammeGT: 'null',
+          autre: 'null'
+        },
+        BC: {
+          ckmb: 'null',
+          myoglobine: 'null',
+          troponine: 'null',
+          bnp: 'null',
+          autre: 'null'
+        },
+        Io: {
+          naS: 'null',
+          kS: 'null',
+          caS: 'null',
+          clS: 'null',
+          naU: 'null',
+          kU: 'null'
+        },
+        BG: {
+          glyJ: 'null',
+          hb1c: 'null',
+          autre: 'null'
+        },
+        BL: {
+          cholesterol: 'null',
+          triglycerides: 'null',
+          ldl: 'null',
+          hdl: 'null',
+          autre: 'null'
+        },
+        BU: {
+          bu: 'null',
+          ecbu: 'null'
+        },
+        BHor: {
+          tsh: 'null',
+          t3: 'null',
+          t4: 'null',
+          autre: 'null'
+        },
+        BS: {
+          hiv: 'null',
+          hbs: 'null',
+          hcv: 'null',
+          siphilis: 'null',
+          autre: 'null'
+        },
+        autre: 'null'
+      },
       tableDataBR: [],
       tableDataBE: [],
 
@@ -2280,7 +2356,8 @@ export default {
         const response = await DocServices.showBilanBiologique({
           id: id,
         });
-        console.log(response.data)
+        this.BBHis = response.data.BilanBiologique
+        console.log(this.BBHis.NFS.gr)
       } catch (error) {
         console.log(`something went wrong in showBilanBiologique ${error}`);
       }
