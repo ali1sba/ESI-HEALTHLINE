@@ -1664,12 +1664,15 @@
               <el-card class="box-card">
                 <button style="background:none; float:right; border:none;font-size:25px" @click="radio1='ordonnances'">&#x2715;</button>
                 <div ref="contentord" style="padding: 0px 80px">
-                  <p style="font-size:19px; text-align:center;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
-                  <hr  style="width:50%; margin:auto; margin-bottom:5px">
-                  <p style="font-size:17px; text-align:center; margin-bottom :0px">Dr Merabet </p>
-                  <p style="font-size:17px;text-align:center;">Médecin Géneraliste </p>
-                 <hr style="width:30%; margin:auto; margin-bottom:5px">
-                <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
                 
                 &nbsp; &nbsp;
                
@@ -1677,11 +1680,12 @@
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                   <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                 
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
                 </div>
                 <div style="flex:50%">
                   <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
-                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                  <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
 
                 </div>
                 
@@ -1722,6 +1726,8 @@
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
                 <br>
+                <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
                 <div style="display:flex; ">
                   <el-button 
                     @click=" addpresc(); "
@@ -1729,9 +1735,9 @@
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
                     >Créer </el-button > 
                        <el-button
-                    @click="viewpdf();  "
+                   
                     type="primary"
-                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf()"
                     >view pdf </el-button > 
                 </div>
 
@@ -1776,15 +1782,17 @@
             <!-- consulter ordonnance -->
             <el-scrollbar v-show="radio1 === 'consulterord'">
               <el-card class="box-card">
-                <button style="background:none; float:right; border:none;font-size:25px" @click="radio1='ordonnances'">&#x2715;</button>
+                <button style="background:none; float:right; border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
                 <div ref="contentord" style="padding: 0px 80px">
                                       <p># {{ordselected}}</p>
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
 
-                  <p style="font-size:19px; text-align:center;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
-                  <hr  style="width:50%; margin:auto; margin-bottom:5px">
-                  <p style="font-size:17px; text-align:center; margin-bottom :0px">Dr Merabet </p>
-                  <p style="font-size:17px;text-align:center;">Médecin Géneraliste </p>
-                 <hr style="width:30%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
                 <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
                 
                 &nbsp; &nbsp;
@@ -1793,11 +1801,13 @@
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                   <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
                  
                 </div>
                 <div style="flex:50%">
                   <p style="font-size:17px;">Le :&nbsp; {{}}</p>
-                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                  <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+                  
 
                 </div>
                 
@@ -1838,6 +1848,8 @@
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
                 <br>
+                <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
                 </div>   
                 
               </el-card>
@@ -1922,7 +1934,10 @@
 </template>
 
 <script>
-import jsPDF from 'jspdf';
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 export default {
@@ -2497,17 +2512,16 @@ export default {
         this.responseimc = "High: " + bmi.toFixed(2) + " kg/m2";
       }
     },
-    createpdf() {
-  let pdfName = 'test'; 
-    var doc = new jsPDF();
-    doc.text("Hello World", 10, 10);
-    doc.save(pdfName + '.pdf');
- },
+//     createpdf() {
+//   let pdfName = 'test'; 
+//     var doc = new jsPDF();
+//     doc.text("Hello World", 10, 10);
+//     doc.save(pdfName + '.pdf');
+//  },
  viewpdf(){
    
-    var doc = new jsPDF();
-    doc.text("Hello World", 10, 10);
-doc.output('dataurlnewwindow');          
+    var doc = {}
+    pdfMake.createPdf(doc).download();        
  },
     async showPatient(user) {
       this.openFullScreen1();
