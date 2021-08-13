@@ -113,6 +113,11 @@ module.exports = (app) => {
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
   // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
+  app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
+  app.post('/DOCdashboard/createOrdonnance', DocDashboardController.createOrdonnance)
+  app.post('/DOCdashboard/addpresc', DocDashboardController.addpresc)
+  app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
+  app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
   // ************************ Bilans paracliniques **********************
