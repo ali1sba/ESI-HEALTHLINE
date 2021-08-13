@@ -1664,7 +1664,7 @@
                   <hr  style="width:50%; margin:auto; margin-bottom:5px">
                   <p style="font-size:17px; text-align:center; margin-bottom :0px">Dr Merabet </p>
                   <p style="font-size:17px;text-align:center;">Médecin Géneraliste </p>
-<hr style="width:30%; margin:auto; margin-bottom:5px">
+                 <hr style="width:30%; margin:auto; margin-bottom:5px">
                 <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
                 
                 &nbsp; &nbsp;
@@ -1685,7 +1685,7 @@
                 <hr>
                 <ol id="prescs">
 
-                <li class="prescselement" style="margin: 1px 0px 20px 0px; float:left" v-for="(pr,index) in prescs" :key= index>
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index === (prescs.length-1)}" >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
                    <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
                    <el-option
@@ -1717,7 +1717,7 @@
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
                 <br>
-                <div style="display:flex">
+                <div style="display:flex; ">
                   <el-button 
                     @click="createpdf();  "
                     type="primary"
@@ -3030,5 +3030,8 @@ doc.output('dataurlnewwindow');
 }
 #prescs, .prescselement{
   list-style-type: decimal;
+}
+.floating{
+  float:left;
 }
 </style>
