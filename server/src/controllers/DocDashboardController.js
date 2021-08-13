@@ -765,6 +765,17 @@ module.exports = {
   async addpresc (req, res) {
     try {
       const prescription = req.body.presc
+
+      const oldprescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: prescription[0].ordonnanceId
+        }
+      })
+      if (oldprescs != null) {
+        for (let i = 0; i < oldprescs.length; i++) {
+          await oldprescs[i].destroy()
+        }
+      }
       const prescCreated = await Prescription.bulkCreate(prescription)
 
       const prsc = prescCreated
@@ -774,9 +785,11 @@ module.exports = {
         }
       })
       // save changes in Ordonnance table
-      currentOrd.increment('nombreMed', { by: prescription.length })
+      if (currentOrd != null) {
+        currentOrd.nombreMed = prescription.length
 
-      await currentOrd.save()
+        await currentOrd.save()
+      }
 
       res.send({
         prsc: prsc,
@@ -795,6 +808,41 @@ module.exports = {
         raw: true
       })
       res.send({ medicaments: medicaments })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async recoverOrdonnances  (req, res) {
+    try {
+      const userId = req.body.id
+      const ords = await Ordonnance.findAll({
+        attributes: ['id', 'nombreMed', 'createdAt'],
+        where: {
+          patientId: userId
+        },
+        raw: true
+      })
+      res.send({ ords: ords })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async showOrdonnance  (req, res) {
+    try {
+      const ordId = req.body.id
+      const prescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: ordId
+        },
+        raw: true
+      })
+      res.send({ prescs: prescs })
       res.send('hello')
     } catch (err) {
       res.status(500).send({

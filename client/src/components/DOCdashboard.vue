@@ -1645,20 +1645,24 @@
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
             <el-scrollbar v-show="radio1 === 'ordonnances'">
               <el-card class="box-card">
-                <el-empty :image-size="300">
                   <el-button
-                    @click="createOrdonnance(userselected); recoverMedicaments(); radio1 = 'nouvOrd';"
+                    @click="  createOrdonnance(userselected); recoverMedicaments(); radio1 = 'nouvOrd';"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:100%;"
-                    >Créer ordonnances</el-button                  >
-                </el-empty>
+                    style="background-color: #24b4ab;width:40%;"
+                    >Créer ordonnances</el-button>
+                     <el-button  type="primary"
+                    v-loading.fullscreen.lock="fullscreenLoading"
+                    style="background-color: #24b4ab;width:40%;" @click="recoverOrdonnances(userselected); radio1='ordhistory'">Historique</el-button>
+
+                
               </el-card>
             </el-scrollbar>
             <!-- creer ordonnance -->
             <el-scrollbar v-show="radio1 === 'nouvOrd'">
               
               <el-card class="box-card">
+                <button style="background:none; float:right; border:none;font-size:25px" @click="radio1='ordonnances'">&#x2715;</button>
                 <div ref="contentord" style="padding: 0px 80px">
                   <p style="font-size:19px; text-align:center;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
                   <hr  style="width:50%; margin:auto; margin-bottom:5px">
@@ -1668,6 +1672,7 @@
                 <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
                 
                 &nbsp; &nbsp;
+               
                 <div style="display:flex">
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
@@ -1719,12 +1724,12 @@
                 <br>
                 <div style="display:flex; ">
                   <el-button 
-                    @click="createpdf();  "
+                    @click=" addpresc(); "
                     type="primary"
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
                     >Créer </el-button > 
                        <el-button
-                    @click="viewpdf(); addpresc() "
+                    @click="viewpdf();  "
                     type="primary"
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
                     >view pdf </el-button > 
@@ -1736,6 +1741,108 @@
               </el-card>
               
             </el-scrollbar>
+            <!-- historique des ordonnance -->
+            <el-scrollbar v-show="radio1 === 'ordhistory'">
+              <el-card class="box-card">
+               
+                 <tr style="display:flex">
+                   <th style="flex:25%">
+                     ID
+                   </th>
+                  
+                   <th style="flex:25%">
+                     DATE
+                   </th>
+                   <th style="flex:25%">
+                     Nombre de médicaments
+                   </th>
+                    <th style="flex:25%">
+                   </th>
+                 </tr>
+                 <tr v-for="ord in ords" :key="ord.id" style="display:flex">
+                   
+                    <td style="flex:25%">{{ord.id}}</td>
+                   <td style="flex:25%">{{ord.createdAt}}</td>
+                   <td style="flex:25%">{{ord.nombreMed}}</td>
+                   <td style="flex:25%">
+                    <el-button
+                    type="primary"
+                    style="background-color: #24b4ab;" @click="showOrdonnance(ord); radio1='consulterord'"
+                    >consulter</el-button></td>
+   
+                 </tr>
+             </el-card>
+            </el-scrollbar>
+            <!-- consulter ordonnance -->
+            <el-scrollbar v-show="radio1 === 'consulterord'">
+              <el-card class="box-card">
+                <button style="background:none; float:right; border:none;font-size:25px" @click="radio1='ordonnances'">&#x2715;</button>
+                <div ref="contentord" style="padding: 0px 80px">
+                                      <p># {{ordselected}}</p>
+
+                  <p style="font-size:19px; text-align:center;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:50%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:17px; text-align:center; margin-bottom :0px">Dr Merabet </p>
+                  <p style="font-size:17px;text-align:center;">Médecin Géneraliste </p>
+                 <hr style="width:30%; margin:auto; margin-bottom:5px">
+                <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                
+                &nbsp; &nbsp;
+               
+                <div style="display:flex">
+                  <div style="flex:50%">
+                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                 
+                </div>
+                <div style="flex:50%">
+                  <p style="font-size:17px;">Le :&nbsp; {{}}</p>
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+
+                </div>
+                
+                  </div>
+                               
+                <hr>
+                <ol id="prescs">
+
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in currentprescs" :key= index  >
+                  <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
+                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
+                   <el-option
+                      v-for="item in Medoptions"
+                      :key="item.value"
+                       :label="item.label"
+                     :value ="item.value"
+                     style="margin-right:20px">
+                </el-option>
+                </el-select>
+
+                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-option
+                 v-for="item in fpoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:20px"
+                >
+                 </el-option>
+                </el-select>
+                <el-input v-model="pr.posologie"
+                style="width : 200px; margin-right:20px">
+
+                </el-input>
+                </li>
+                </ol>
+                <button  type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500; display:none" > + </button>
+                <hr>
+                <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
+                <br>
+                </div>   
+                
+              </el-card>
+            </el-scrollbar>
+
             <!-- ****************************orientations: lahcen ******************************* -->
             <el-scrollbar v-show="radio1 === 'orientations'">
               <el-card class="box-card">
@@ -2218,6 +2325,7 @@ export default {
       
       //Ordonnance
        ordselected :"none",
+       ords:[],
 
   
       prescs :[],
@@ -2238,7 +2346,12 @@ export default {
           label: "222",
         },
 
-      ]
+      ],
+      currentord: "",
+ 
+        currentprescs:[]
+        
+      ,
 
       
     };
@@ -2770,15 +2883,7 @@ doc.output('dataurlnewwindow');
      list.push({value: value.nom, label : value.nom });
      
      });
-        // response.data.forEach((element) => {
-        //    let allm = []
-
-        //    for (f in response.data) {
-        //    allm.push({
-        //     fieldName: f,
-        //       message: formerList[f]
-        //    })
-        // }})
+        
         this.Medoptions=list;
       console.log(list);
        
@@ -2786,20 +2891,7 @@ doc.output('dataurlnewwindow');
       console.log(`something went wrong ${error}`);
     }
    },
-    async createOrdonnance(user) {
-      try {
-        const response = await DocServices.createOrdonnance({
-          id: user.id,
-        });
-        this.ordselected=response.data.ord.id;
-        this.addprescinput();
-
-        console.log(response.data);
-      } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
-      }
-    },
+    
     async addprescinput() {
       
      await this.prescs.push({
@@ -2827,8 +2919,66 @@ doc.output('dataurlnewwindow');
         this.error = error.response.data.error;
         console.log(this.error);
       }
-     }
+     },
+     async createOrdonnance(user) {
+      try {
+        const response = await DocServices.createOrdonnance({
+          id: user.id,
+        });
+        this.ordselected=response.data.ord.id;
+        this.addprescinput();
+       
+
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+        // recover ordonnances 
+        async recoverOrdonnances(user) {
+    try {
+      const response = await DocServices.recoverOrdonnances({
+        id: user.id
+      })
+      let list=[];
+    response.data.ords.map(function(value) {
+       
+     list.push({id: value.id, date:value.createdAt ,nombreMed:value.nombreMed });
+     
+     });
+        
+        this.ords=list;
+      console.log(list);
+       
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+   },
+
+    async showOrdonnance(ordonnance) {
+    try {
+      this.ordselected=ordonnance.id;
+      const response = await DocServices.showOrdonnance({
+        id: ordonnance.id
+      })
+      let list=[];
+
+      response.data.prescs.map(function(value) {
+       
+     list.push({nom: value.nom, forme:value.forme ,posologie:value.posologie });
+     
+     
+     });
+
+     this.currentprescs=list;
+      console.log(response.data);
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
   },
+  },
+  
   //antecedents*****************************************************************************************
   async modifierAntecedents() {
     try {

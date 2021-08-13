@@ -32,4 +32,10 @@ export default {
     addpresc (credantials){
         return Api().post('/DOCdashboard/addpresc',credantials)
     },
+    recoverOrdonnances (credantials){
+        return Api().post('/DOCdashboard/recoverOrdonnances',credantials)
+    },
+    showOrdonnance (credantials){
+        return Api().post('/DOCdashboard/showOrdonnance',credantials)
+    },
 }
