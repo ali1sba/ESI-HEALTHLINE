@@ -751,10 +751,7 @@ module.exports = {
         patientId: userId,
         nombreMed: 0
       }
-      console.log('hiiii')
-
       const OrdonnaceCreated = await Ordonnance.create(OrdInfo)
-      console.log('helllooooo')
       const Ord = OrdonnaceCreated.toJSON()
       res.send({
         ord: Ord
@@ -771,8 +768,6 @@ module.exports = {
       const prescCreated = await Prescription.bulkCreate(prescription)
 
       const prsc = prescCreated
-      console.log('hey')
-      console.log('hey')
       const currentOrd = await Ordonnance.findOne({
         where: {
           id: prescription[0].ordonnanceId

@@ -1656,18 +1656,37 @@
               </el-card>
             </el-scrollbar>
             <!-- creer ordonnance -->
-            <el-scrollbar>
+            <el-scrollbar v-show="radio1 === 'nouvOrd'">
               
               <el-card class="box-card">
-                <div ref="contentord">
-                <p style="font-size:40px; text-align:center; font-weight:500">Ordonnance</p>
-                <hr />
-                <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                <div ref="contentord" style="padding: 0px 80px">
+                  <p style="font-size:19px; text-align:center;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:50%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:17px; text-align:center; margin-bottom :0px">Dr Merabet </p>
+                  <p style="font-size:17px;text-align:center;">Médecin Géneraliste </p>
+<hr style="width:30%; margin:auto; margin-bottom:5px">
+                <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                
+                &nbsp; &nbsp;
+                <div style="display:flex">
+                  <div style="flex:50%">
+                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                 
+                </div>
+                <div style="flex:50%">
+                  <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
 
-                <div style="margin-bottom: 20px" v-for="(pr,index) in prescs" :key= index>
-                  
+                </div>
+                
+                  </div>
+                               
+                <hr>
+                <ol id="prescs">
+
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; float:left" v-for="(pr,index) in prescs" :key= index>
+                  <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
                    <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
                    <el-option
                       v-for="item in Medoptions"
@@ -1692,20 +1711,27 @@
                 style="width : 200px; margin-right:20px">
 
                 </el-input>
-                </div>
-                <button @click="addprescinput(); " type="primary" style="padding:7px;background-color: #24b4ab;border-radius:40%; border:none; color:white">add </button>
-                
-                <el-button
+                </li>
+                </ol>
+                <button @click="addprescinput(); " type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <hr>
+                <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
+                <br>
+                <div style="display:flex">
+                  <el-button 
                     @click="createpdf();  "
                     type="primary"
-                     style="background-color: #24b4ab;width:40%;"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
                     >Créer </el-button > 
                        <el-button
                     @click="viewpdf(); addpresc() "
                     type="primary"
-                     style="background-color: #24b4ab;width:40%;"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
                     >view pdf </el-button > 
-                <hr />
+                </div>
+
+                
+                
                 </div>
               </el-card>
               
@@ -2190,33 +2216,14 @@ export default {
       cashedUserAnt: "",
       isDisabledAnts: true,
       
-      //medicaments
+      //Ordonnance
        ordselected :"none",
 
-      // prescription : {
-      
-      // nom: "",
-      // forme: "",
-      // posologie: "",
-      // ordonnanceId: "",
-      // },
+  
       prescs :[],
       
       
-      Medoptions: [
-         {
-          value: "0",
-          label: "0",
-        },
-         {
-          value: "1",
-          label: "1",
-        },
-         {
-          value: "2",
-          label: "2",
-        },
-      ],
+      Medoptions: [],
       fpoptions:[
         {
           value: "123",
@@ -2259,7 +2266,12 @@ export default {
     });
   },
   methods: {
-    
+     currentDate() {
+      const current = new Date();
+      const date = `${current.getDate()}-${current.getMonth()+1}-${current.getFullYear()}`;
+      return date;
+    },
+  
     remoteMethod(query) {
       if (query !== "") {
         this.wilayaLoading = true;
@@ -2755,7 +2767,7 @@ doc.output('dataurlnewwindow');
       const response = await DocServices.recoverMedicaments()
       let list=[];
     response.data.medicaments.map(function(value) {
-     list.push(value.nom);
+     list.push({value: value.nom, label : value.nom });
      
      });
         // response.data.forEach((element) => {
@@ -2767,7 +2779,7 @@ doc.output('dataurlnewwindow');
         //       message: formerList[f]
         //    })
         // }})
-        this.options=list;
+        this.Medoptions=list;
       console.log(list);
        
     } catch (error) {
@@ -2780,6 +2792,8 @@ doc.output('dataurlnewwindow');
           id: user.id,
         });
         this.ordselected=response.data.ord.id;
+        this.addprescinput();
+
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -3013,5 +3027,8 @@ doc.output('dataurlnewwindow');
 .examcard p {
   color: white;
   text-shadow: 2px 2px 8px grey;
+}
+#prescs, .prescselement{
+  list-style-type: decimal;
 }
 </style>
