@@ -11,19 +11,19 @@ module.exports = (sequelize, DataTypes) =>
       allowNull: false
     },
     personalInfoId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       unique: true
     },
     biometricInfoId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       unique: true
     },
     antecedentsInfoId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       unique: true
     },
     screeningInfoId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       unique: true
     }
   })
