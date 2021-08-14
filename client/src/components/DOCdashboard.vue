@@ -1683,7 +1683,7 @@
                 <center>
                   <div>
                     <el-radio-group v-model="radio2">
-                      <el-radio-button label="Historique"></el-radio-button>
+                      <el-radio-button label="Historique" ></el-radio-button>
                       <el-radio-button v-show="hidden" label="Historique2"></el-radio-button>
                       <el-radio-button label="Créer" @click="intializeBBCr"></el-radio-button>
                     </el-radio-group>
@@ -2602,16 +2602,16 @@
 
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
             <el-scrollbar v-show="radio1 === 'ordonnances'">
-              <el-card class="box-card">
+              <el-card class="box-card" style="padding:40px">
                   <el-button
-                    @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd';"
+                    @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd';" class="hovereffect"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:40%;" 
+                    style="background-color: #24b4ab;width:20%;" 
                     >Créer ordonnances</el-button>
                      <el-button  type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:40%;" @click="recoverOrdonnances(userselected); radio1='ordhistory'">Historique</el-button>
+                    style="background-color: #24b4ab;width:20%;" @click="recoverOrdonnances(userselected); radio1='ordhistory'" class="hovereffect">Historique</el-button>
 
                 
               </el-card>
@@ -2681,7 +2681,7 @@
                 </li>
                 </ol>
                 <button @click="addprescinput(); " type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
-                <p v-if="champsvides">invaliiid input</p>
+               
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
                 <br>
@@ -2692,7 +2692,10 @@ EMAIL: contact@esi-sba.dz</p>
                     @click=" addpresc(userselected); "
                     type="primary"
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                    >Créer </el-button > 
+                    v-if="!ordcreated">Créer </el-button >
+                    <el-button 
+                    v-else>
+                    Modifier</el-button> 
                        <el-button
                    
                     type="primary"
@@ -2708,7 +2711,7 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
             <!-- historique des ordonnance -->
             <el-scrollbar v-show="radio1 === 'ordhistory'">
-              <el-card class="box-card">
+              <el-card class="box-card" style="padding-left:90px;padding-right:90px;" >
                
                  <tr style="display:flex">
                    <th style="flex:25%">
@@ -2724,7 +2727,7 @@ EMAIL: contact@esi-sba.dz</p>
                     <th style="flex:25%">
                    </th>
                  </tr>
-                 <tr v-for="ord in ords" :key="ord.id" style="display:flex">
+                 <tr v-for="ord in ords" :key="ord.id" style="display:flex;padding:4px; border-radius:10px" >
                    
                     <td style="flex:25%">{{ord.id}}</td>
                    <td style="flex:25%">{{ord.createdAt}}</td>
@@ -2732,8 +2735,8 @@ EMAIL: contact@esi-sba.dz</p>
                    <td style="flex:25%">
                     <el-button
                     type="primary"
-                    style="background-color: #24b4ab;" @click="showOrdonnance(ord); radio1='consulterord'"
-                    >consulter</el-button></td>
+                    style="background-color: #24b4ab; "  @click="showOrdonnance(ord); radio1='consulterord'"
+                    class="hovereffect">consulter</el-button></td>
    
                  </tr>
              </el-card>
@@ -2743,7 +2746,7 @@ EMAIL: contact@esi-sba.dz</p>
               <el-card class="box-card">
                 <button style="background:none; float:right; border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
                 <div ref="contentord" style="padding: 0px 80px">
-                                      <p># {{ordselected}}</p>
+                                      <p>N°: {{ordselected}}</p>
                   <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
 
                   <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
@@ -2903,6 +2906,7 @@ window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
+      ordcreated:false,
       items : [],
       isactive: true,
       fullscreenLoading: false,
@@ -4026,7 +4030,7 @@ export default {
 	pageMargins: [30,30,30,90]
       /* eslint-disable no-mixed-spaces-and-tabs */
     }
-    pdfMake.createPdf(doc).download();        
+    pdfMake.createPdf(doc).open();        
  },
     async showPatient(user) {
       this.openFullScreen1();
@@ -4398,11 +4402,19 @@ export default {
          
          for (let i = 0; i < this.prescs.length; i++) {
           //  this.prescs[i].nom == "" || 
-          if (this.prescs[i].forme == ""||this.prescs[i].dosage == ""){
+          if (this.prescs[i].forme == ""||this.prescs[i].posologie == ""){
             this.champsvides=true
+          }else{
+            this.champsvides=false
           }
         }
         if(!this.champsvides){
+          this.ordcreated=true 
+          this.$notify.success({
+          title: 'Succeès',
+          message: 'Ordonnance créée avec succes ',
+          offset: 100
+        });
 const response1 = await DocServices.createOrdonnance({
           id: user.id,
         });
@@ -4414,7 +4426,16 @@ const response1 = await DocServices.createOrdonnance({
         console.log(this.prescs);
         
         console.log(response2.data);
+        
          
+        }else{
+         this.ordcreated=false; 
+
+          this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        });
         }
          } catch (error) {
         this.error = error.response.data.error;
@@ -4461,6 +4482,7 @@ const response1 = await DocServices.createOrdonnance({
         //   id: ord,
         // });
         this.prescs=[];
+        this.ordcreated=false;
         
            console.log("done");
       } catch (error) {
@@ -5007,5 +5029,9 @@ const response1 = await DocServices.createOrdonnance({
 }
 .floating {
   float: left;
+}
+.hovereffect:hover {
+  transform: scale(1.1);
+  box-shadow: 0 9px 7px 11px rgba(4, 255, 221, 0.18);
 }
 </style>
