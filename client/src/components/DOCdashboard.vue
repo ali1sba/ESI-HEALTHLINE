@@ -2603,15 +2603,22 @@
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
             <el-scrollbar v-show="radio1 === 'ordonnances'">
               <el-card class="box-card" style="padding:40px">
+                <el-card style="width:70%;margin:auto;background: linear-gradient(337deg, rgba(29,99,95,1) 0%, rgba(36,180,171,0.8323704481792717) 46%, rgba(36,180,171,0.23573179271708689) 100%);  box-shadow: 0 4px 5px 3px rgba(230, 230, 230, 0.9);font
+" >
+                  <p style=" vertical-align: middle; text-align:center; margin:0px;font-size:30px;font-family: sans-serif; font-weigjt: bold;color:white"> Total Des Ordonnances </p>
+                <p style="text-align:center ; margin:0px;font-size:30px ;color:white;font-family: sans-serif; font-weigjt: bold;">50</p></el-card>
+                <div style="padding:15px; width:70%; margin: auto" >
                   <el-button
                     @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd';" class="hovereffect"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:20%;" 
-                    >Créer ordonnances</el-button>
+                    style="background-color: #24b4ab;width:45%;margin:10px" 
+                    >Créer ordonnance</el-button>
                      <el-button  type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:20%;" @click="recoverOrdonnances(userselected); radio1='ordhistory'" class="hovereffect">Historique</el-button>
+                    style="background-color: #24b4ab;width:45%;margin:10px" @click="recoverOrdonnances(userselected); radio1='ordhistory'" class="hovereffect">Historique</el-button>
+                </div>
+                  
 
                 
               </el-card>
@@ -2712,7 +2719,7 @@ EMAIL: contact@esi-sba.dz</p>
             <!-- historique des ordonnance -->
             <el-scrollbar v-show="radio1 === 'ordhistory'">
               <el-card class="box-card" style="padding-left:90px;padding-right:90px;" >
-               
+               <button style="background:none; float:right; border:none;font-size:22px;padding-right:-40px;" @click="annulerOrdonnance(); radio1='ordonnances'">&#x2715;</button>
                  <tr style="display:flex">
                    <th style="flex:25%">
                      ID
