@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 const { Op } = require('sequelize')
 const { User } = require('../models')
 const { Compte } = require('../models')
@@ -7,6 +8,9 @@ const { PersonalInfo } = require('../models')
 const { BiometricInfo } = require('../models')
 const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
+const { Medicament } = require('../models')
+const { Ordonnance } = require('../models')
+const { Prescription } = require('../models')
 
 // Bilans paracliniques
 // Bilans Biologiques
@@ -223,7 +227,6 @@ module.exports = {
       })
     }
   },
-
   async showPatient (req, res) {
     try {
       const userId = req.body.id
@@ -751,6 +754,110 @@ module.exports = {
       res.status(500).send({
         error: `an error has occured trying to fetch the users ${err}`
       })
+    }
+  },
+  async createOrdonnance (req, res) {
+    try {
+      const userId = req.body.id
+      const OrdInfo = {
+        patientId: userId,
+        nombreMed: 0
+      }
+      const OrdonnaceCreated = await Ordonnance.create(OrdInfo)
+      const Ord = OrdonnaceCreated.toJSON()
+      res.send({
+        ord: Ord
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create ordonnance ${err}`
+      })
+    }
+  },
+  async addpresc (req, res) {
+    try {
+      const prescription = req.body.presc
+
+      const oldprescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: prescription[0].ordonnanceId
+        }
+      })
+      if (oldprescs != null) {
+        for (let i = 0; i < oldprescs.length; i++) {
+          await oldprescs[i].destroy()
+        }
+      }
+      const prescCreated = await Prescription.bulkCreate(prescription)
+
+      const prsc = prescCreated
+      const currentOrd = await Ordonnance.findOne({
+        where: {
+          id: prescription[0].ordonnanceId
+        }
+      })
+      // save changes in Ordonnance table
+      if (currentOrd != null) {
+        currentOrd.nombreMed = prescription.length
+
+        await currentOrd.save()
+      }
+
+      res.send({
+        prsc: prsc,
+        Ord: currentOrd
+      })
+    } catch (error) {
+      res.status(500).send({
+        error: `an error has occured trying to create prescriptions ${error}`
+      })
+    }
+  },
+  async recoverMedicaments  (req, res) {
+    try {
+      const medicaments = await Medicament.findAll({
+        attributes: ['nom'],
+        raw: true
+      })
+      res.send({ medicaments: medicaments })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async recoverOrdonnances  (req, res) {
+    try {
+      const userId = req.body.id
+      const ords = await Ordonnance.findAll({
+        attributes: ['id', 'nombreMed', 'createdAt'],
+        where: {
+          patientId: userId
+        },
+        raw: true
+      })
+      res.send({ ords: ords })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async showOrdonnance  (req, res) {
+    try {
+      const ordId = req.body.id
+      const prescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: ordId
+        },
+        raw: true
+      })
+      res.send({ prescs: prescs })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({ error: `an error has occured trying to fetch medicaments ${err}` })
     }
   },
 

@@ -2625,14 +2625,213 @@
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
             <el-scrollbar v-show="radio1 === 'ordonnances'">
               <el-card class="box-card">
-                <el-empty :image-size="300">
                   <el-button
+                    @click="  createOrdonnance(userselected); recoverMedicaments(); radio1 = 'nouvOrd';"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab; width: 100%"
-                    >Créer ordonnances</el-button
-                  >
-                </el-empty>
+                    style="background-color: #24b4ab;width:40%;"
+                    >Créer ordonnances</el-button>
+                     <el-button  type="primary"
+                    v-loading.fullscreen.lock="fullscreenLoading"
+                    style="background-color: #24b4ab;width:40%;" @click="recoverOrdonnances(userselected); radio1='ordhistory'">Historique</el-button>
+
+                
+              </el-card>
+            </el-scrollbar>
+            <!-- creer ordonnance -->
+            <el-scrollbar v-show="radio1 === 'nouvOrd'">
+              
+              <el-card class="box-card">
+                <button style="background:none; float:right; border:none;font-size:25px" @click="radio1='ordonnances'">&#x2715;</button>
+                <div ref="contentord" style="padding: 0px 80px">
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                
+                &nbsp; &nbsp;
+               
+                <div style="display:flex">
+                  <div style="flex:50%">
+                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
+                </div>
+                <div style="flex:50%">
+                  <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                  <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+
+                </div>
+                
+                  </div>
+                               
+                <hr>
+                <ol id="prescs">
+
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index === (prescs.length-1)}" >
+                  <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
+                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
+                   <el-option
+                      v-for="item in Medoptions"
+                      :key="item.value"
+                       :label="item.label"
+                     :value ="item.value"
+                     style="margin-right:20px">
+                </el-option>
+                </el-select>
+
+                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-option
+                 v-for="item in fpoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:20px"
+                >
+                 </el-option>
+                </el-select>
+                <el-input v-model="pr.posologie"
+                style="width : 200px; margin-right:20px">
+
+                </el-input>
+                </li>
+                </ol>
+                <button @click="addprescinput(); " type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <hr>
+                <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
+                <br>
+                <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
+                <div style="display:flex; ">
+                  <el-button 
+                    @click=" addpresc(); "
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                    >Créer </el-button > 
+                       <el-button
+                   
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf()"
+                    >view pdf </el-button > 
+                </div>
+
+                
+                
+                </div>
+              </el-card>
+              
+            </el-scrollbar>
+            <!-- historique des ordonnance -->
+            <el-scrollbar v-show="radio1 === 'ordhistory'">
+              <el-card class="box-card">
+               
+                 <tr style="display:flex">
+                   <th style="flex:25%">
+                     ID
+                   </th>
+                  
+                   <th style="flex:25%">
+                     DATE
+                   </th>
+                   <th style="flex:25%">
+                     Nombre de médicaments
+                   </th>
+                    <th style="flex:25%">
+                   </th>
+                 </tr>
+                 <tr v-for="ord in ords" :key="ord.id" style="display:flex">
+                   
+                    <td style="flex:25%">{{ord.id}}</td>
+                   <td style="flex:25%">{{ord.createdAt}}</td>
+                   <td style="flex:25%">{{ord.nombreMed}}</td>
+                   <td style="flex:25%">
+                    <el-button
+                    type="primary"
+                    style="background-color: #24b4ab;" @click="showOrdonnance(ord); radio1='consulterord'"
+                    >consulter</el-button></td>
+   
+                 </tr>
+             </el-card>
+            </el-scrollbar>
+            <!-- consulter ordonnance -->
+            <el-scrollbar v-show="radio1 === 'consulterord'">
+              <el-card class="box-card">
+                <button style="background:none; float:right; border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
+                <div ref="contentord" style="padding: 0px 80px">
+                                      <p># {{ordselected}}</p>
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                <p style="font-size:27px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                
+                &nbsp; &nbsp;
+               
+                <div style="display:flex">
+                  <div style="flex:50%">
+                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                 
+                </div>
+                <div style="flex:50%">
+                  <p style="font-size:17px;">Le :&nbsp; {{}}</p>
+                  <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+                  
+
+                </div>
+                
+                  </div>
+                               
+                <hr>
+                <ol id="prescs">
+
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in currentprescs" :key= index  >
+                  <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
+                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
+                   <el-option
+                      v-for="item in Medoptions"
+                      :key="item.value"
+                       :label="item.label"
+                     :value ="item.value"
+                     style="margin-right:20px">
+                </el-option>
+                </el-select>
+
+                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-option
+                 v-for="item in fpoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:20px"
+                >
+                 </el-option>
+                </el-select>
+                <el-input v-model="pr.posologie"
+                style="width : 200px; margin-right:20px">
+
+                </el-input>
+                </li>
+                </ol>
+                <button  type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500; display:none" > + </button>
+                <hr>
+                <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
+                <br>
+                <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
+                </div>   
+                
               </el-card>
             </el-scrollbar>
             <!-- ****************************orientations: lahcen ******************************* -->
@@ -2714,15 +2913,18 @@
 </template>
 
 <script>
+
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 import RapportMedicalServices from "@/services/RapportMedicalServices.js";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
+      items : [],
       isactive: true,
       fullscreenLoading: false,
       input: '',
@@ -3314,6 +3516,38 @@ export default {
       },
       cashedUserAnt: "",
       isDisabledAnts: true,
+      
+      //Ordonnance
+       ordselected :"none",
+       ords:[],
+
+  
+      prescs :[],
+      
+      
+      Medoptions: [],
+      fpoptions:[
+        {
+          value: "123",
+          label: "123",
+        },
+         {
+          value: "122",
+          label: "122",
+        },
+         {
+          value:"222",
+          label: "222",
+        },
+
+      ],
+      currentord: "",
+ 
+        currentprescs:[]
+        
+      ,
+
+      
 
       // Rapport Medical data****************************************************************************
       RapportMedical: {
@@ -3328,8 +3562,9 @@ export default {
       dialogConsulterRapportMedical: false,
       rapp:[""],
     };
+
   },
-  mounted: function () {
+  mounted: function() {
     axios
       .get("http://localhost:8083/doc/patients")
       .then((response) => {
@@ -3519,6 +3754,17 @@ export default {
         this.responseimc = "High: " + bmi.toFixed(2) + " kg/m2";
       }
     },
+//     createpdf() {
+//   let pdfName = 'test'; 
+//     var doc = new jsPDF();
+//     doc.text("Hello World", 10, 10);
+//     doc.save(pdfName + '.pdf');
+//  },
+ viewpdf(){
+   
+    var doc = {}
+    pdfMake.createPdf(doc).download();        
+ },
     async showPatient(user) {
       this.openFullScreen1();
       this.content = "dossier";
@@ -3853,6 +4099,53 @@ export default {
         console.log(`something went wrong ${error}`);
       }
     },
+    // recover medicaments
+
+   async recoverMedicaments() {
+    try {
+      const response = await DocServices.recoverMedicaments()
+      let list=[];
+    response.data.medicaments.map(function(value) {
+     list.push({value: value.nom, label : value.nom });
+     
+     });
+        
+        this.Medoptions=list;
+      console.log(list);
+       
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+   },
+    
+    async addprescinput() {
+      
+     await this.prescs.push({
+      
+      nom: "",
+      forme: "",
+      posologie: "",
+      ordonnanceId: this.ordselected,
+      })
+    },
+
+     async addpresc(){
+       try {
+         
+        //  this.prescription.ordonnanceId = OrdonnanceId;
+         
+        const response = await DocServices.addpresc({
+         
+          presc :this.prescs
+        });
+        console.log(this.prescs);
+        
+        console.log(response.data);
+         } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+         }
+      },
     //antecedents*****************************************************************************************
     async modifierAntecedents() {
       try {
@@ -3868,10 +4161,27 @@ export default {
         this.userAntInfo = Object.assign({}, this.cachedUser);
         this.isDisabledAnts = true;
         console.log("annulerAntecedents button was clicked !");
+        } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+         }
+     
+     },
+     async createOrdonnance(user) {
+      try {
+        const response = await DocServices.createOrdonnance({
+          id: user.id,
+        });
+        this.ordselected=response.data.ord.id;
+        this.addprescinput();
+           console.log(response.data);
       } catch (error) {
-        console.log("something went wrong");
+        this.error = error.response.data.error;
+        console.log(this.error);
       }
     },
+       
+    
     async saveAntecedents() {
       try {
         this.cachedUser = Object.assign({}, this.userAntInfo);
@@ -4122,13 +4432,109 @@ export default {
 
         console.log(response.data);
       } catch (error) {
-        console.log(`something went wrong ${error}`);
+        this.error = error.response.data.error;
+        console.log(this.error);
       }
     },
+        // recover ordonnances 
+        async recoverOrdonnances(user) {
+    try {
+      const response = await DocServices.recoverOrdonnances({
+        id: user.id
+      })
+      let list=[];
+    response.data.ords.map(function(value) {
+       
+     list.push({id: value.id, date:value.createdAt ,nombreMed:value.nombreMed });
+     
+     });
+        
+        this.ords=list;
+      console.log(list);
+       
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+   },
 
-    //end of methods section
+    async showOrdonnance(ordonnance) {
+    try {
+      this.ordselected=ordonnance.id;
+      const response = await DocServices.showOrdonnance({
+        id: ordonnance.id
+      })
+      let list=[];
+
+      response.data.prescs.map(function(value) {
+       
+     list.push({nom: value.nom, forme:value.forme ,posologie:value.posologie });
+     
+     
+     });
+
+     this.currentprescs=list;
+      console.log(response.data);
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
   },
+  },
+  
+  //antecedents*****************************************************************************************
+  async modifierAntecedents() {
+    try {
+      this.cachedUser = Object.assign({}, this.userAntInfo);
+      this.isDisabledAnts = false;
+      console.log("modifierAntecedents button was clicked !");
+    } catch (error) {
+      console.log("something went wrong");
+    }
+  },
+  async annulerAntecedents() {
+    try {
+      this.userAntInfo = Object.assign({}, this.cachedUser);
+      this.isDisabledAnts = true;
+      console.log("annulerAntecedents button was clicked !");
+    } catch (error) {
+      console.log("something went wrong");
+    }
+  },
+  async saveAntecedents() {
+    try {
+      this.cachedUser = Object.assign({}, this.userAntInfo);
+      this.isDisabledAnts = true;
+      console.log("saveAntcedents button was clicked !");
+      console.log(this.userAntInfo);
+
+      const response = await DocServices.saveAntecedents({
+        antecedentsInfo: this.userAntInfo,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+  },
+   
+   async saveOrdonnance() {
+    try {
+
+      this.cachedUser = Object.assign({}, this.userAntInfo);
+      console.log("saveOrd button was clicked !");
+      console.log(this.userAntInfo);
+
+      const response = await DocServices.saveAntecedents({
+        antecedentsInfo: this.userAntInfo,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+  },
+  
 };
+
+
+ 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -4315,5 +4721,8 @@ export default {
 .bilancard i {
   font-size: 5rem;
   color: white;
+}
+.floating {
+  float: left;
 }
 </style>
