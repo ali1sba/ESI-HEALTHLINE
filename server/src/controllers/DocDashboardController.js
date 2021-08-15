@@ -865,7 +865,7 @@ module.exports = {
         }
       })
 
-      ord.nombreMed = prescription.length
+      ord.nombreMed = req.body.prescs.length
 
       await ord.save()
 
@@ -891,24 +891,6 @@ module.exports = {
       })
       res.send({ ords: ords })
       res.send('hello')
-    } catch (err) {
-      res.status(500).send({
-        error: `an error has occured trying to fetch medicaments ${err}`
-      })
-    }
-  },
-  async annulerModificationOrd (req, res) {
-    try {
-      const ordId = req.body.id
-      const prescs = await Prescription.findAll({
-        attributes: ['nom', 'forme', 'posologie'],
-        where: {
-          odonnanceId: ordId
-        },
-        raw: true
-      })
-      console.log(prescs)
-      res.send({ prescs: prescs })
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to fetch medicaments ${err}`

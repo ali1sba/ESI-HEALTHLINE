@@ -119,7 +119,6 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
-  app.post('/DOCdashboard/annulerModificationOrd', DocDashboardController.annulerModificationOrd)
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
   // ************************ Bilans paracliniques **********************

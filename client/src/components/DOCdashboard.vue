@@ -2610,7 +2610,7 @@
                 <p style="text-align:center ; margin:0px;font-size:30px ;color:white;font-family: sans-serif; font-weigjt: bold;">50</p></el-card>
                 <div style="padding:15px; width:70%; margin: auto" >
                   <el-button
-                    @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd';" class="hovereffect"
+                    @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd'; isOrdDisabled=false " class="hovereffect"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab;width:45%;margin:10px" 
@@ -4481,19 +4481,7 @@ const response1 = await DocServices.createOrdonnance({
          }
      
      },
-     async createOrdonnance(user) {
-      try {
-        const response = await DocServices.createOrdonnance({
-          id: user.id,
-        });
-        this.ordselected=response.data.ord.id;
-        this.addprescinput();
-           console.log(response.data);
-      } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
-      }
-    },
+    
     async annulerOrdonnance() {
       try {
         // const response = await DocServices.annulerOrdonnance({
@@ -4803,20 +4791,22 @@ const response1 = await DocServices.createOrdonnance({
   },//annuler modification d'ordonnance
 async annulerModificationOrd(ord) {
     try {
-      const response = await DocServices.annulerModificationOrd({
+     
+      const response = await DocServices.showOrdonnance({
         id: ord
       })
       let list=[];
-    // response.data.prescs.map(function(value) {
 
-    //  list.push({nom: value.nom, forme:value.forme,posologie:value.posologie});
+      response.data.prescs.map(function(value) {
+       
+     list.push({nom: value.nom, forme:value.forme ,posologie:value.posologie });
      
-    //  });
-        
+     
+     });
         this.prescs=list;
         this.isOrdDisabled= true
       console.log(list);
-      console.log(response.data);
+      
        
     } catch (error) {
       console.log(`something wenttt wrong ${error}`);

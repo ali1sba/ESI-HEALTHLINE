@@ -41,9 +41,6 @@ export default {
     showOrdonnance (credantials){
         return Api().post('/DOCdashboard/showOrdonnance',credantials)
     },
-    annulerModificationOrd (credantials){
-        return Api().post('/DOCdashboard/annulerModificationOrd',credantials)
-    },
     showBB (credantials){
         return Api().post('/DOCdashboard/showBB',credantials)
     },
