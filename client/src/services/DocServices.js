@@ -35,10 +35,15 @@ export default {
     recoverOrdonnances (credantials){
         return Api().post('/DOCdashboard/recoverOrdonnances',credantials)
     },
+    saveOrdonnance (credantials){
+        return Api().post('/DOCdashboard/saveOrdonnance',credantials)
+    },
     showOrdonnance (credantials){
         return Api().post('/DOCdashboard/showOrdonnance',credantials)
     },
-
+    annulerModificationOrd (credantials){
+        return Api().post('/DOCdashboard/annulerModificationOrd',credantials)
+    },
     showBB (credantials){
         return Api().post('/DOCdashboard/showBB',credantials)
     },

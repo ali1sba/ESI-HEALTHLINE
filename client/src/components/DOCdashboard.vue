@@ -2603,6 +2603,7 @@
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
             <el-scrollbar v-show="radio1 === 'ordonnances'">
               <el-card class="box-card" style="padding:40px">
+                <button style="background:none;margin:-40px; float:right; border:none;font-size:25px" @click=" radio1='Examen Médical'">&#x2715;</button>
                 <el-card style="width:70%;margin:auto;background: linear-gradient(337deg, rgba(29,99,95,1) 0%, rgba(36,180,171,0.8323704481792717) 46%, rgba(36,180,171,0.23573179271708689) 100%);  box-shadow: 0 4px 5px 3px rgba(230, 230, 230, 0.9);font
 " >
                   <p style=" vertical-align: middle; text-align:center; margin:0px;font-size:30px;font-family: sans-serif; font-weigjt: bold;color:white"> Total Des Ordonnances </p>
@@ -2661,7 +2662,7 @@
 
                 <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index === (prescs.length-1)}" >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
+                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
@@ -2671,7 +2672,7 @@
                 </el-option>
                 </el-select>
 
-                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique et dosage ">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
@@ -2681,7 +2682,7 @@
                 >
                  </el-option>
                 </el-select>
-                <el-input v-model="pr.posologie"
+                <el-input v-model="pr.posologie" :disabled="isOrdDisabled"
                 style="width : 200px; margin-right:20px">
 
                 </el-input>
@@ -2699,10 +2700,17 @@ EMAIL: contact@esi-sba.dz</p>
                     @click=" addpresc(userselected); "
                     type="primary"
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                    v-if="!ordcreated">Créer </el-button >
-                    <el-button 
-                    v-else>
+                    v-show="ordcreated === 'not created'">Créer </el-button >
+                    <el-button @click="isOrdDisabled=false ;ordcreated='modify' "
+                    v-show="ordcreated ==='created'">
                     Modifier</el-button> 
+                    <el-button
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                    v-show="ordcreated ==='modify'" @click="saveOrdonnance(ordselected); " >Enregistrer  </el-button >
+                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected) "
+                    v-show="ordcreated ==='modify'">
+                    Annuler</el-button> 
                        <el-button
                    
                     type="primary"
@@ -2913,7 +2921,7 @@ window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
-      ordcreated:false,
+      ordcreated:"not created",
       items : [],
       isactive: true,
       fullscreenLoading: false,
@@ -3537,6 +3545,7 @@ export default {
         currentprescs:[]
         
       ,
+      isOrdDisabled: false,
 
       
 
@@ -4416,7 +4425,7 @@ export default {
           }
         }
         if(!this.champsvides){
-          this.ordcreated=true 
+          this.ordcreated="created" 
           this.$notify.success({
           title: 'Succeès',
           message: 'Ordonnance créée avec succes ',
@@ -4425,18 +4434,20 @@ export default {
 const response1 = await DocServices.createOrdonnance({
           id: user.id,
         });
+        this.ordselected=response1.data.ord.id
          console.log(response1.data);
         const response2 = await DocServices.addpresc({
           ordid: response1.data.ord.id,
           presc :this.prescs
         });
+        this.isOrdDisabled=true
         console.log(this.prescs);
         
         console.log(response2.data);
         
          
         }else{
-         this.ordcreated=false; 
+         this.ordcreated="not created"; 
 
           this.$notify.error({
           title: 'ERREUR',
@@ -4489,7 +4500,7 @@ const response1 = await DocServices.createOrdonnance({
         //   id: ord,
         // });
         this.prescs=[];
-        this.ordcreated=false;
+        this.ordcreated="not created";
         
            console.log("done");
       } catch (error) {
@@ -4749,8 +4760,70 @@ const response1 = await DocServices.createOrdonnance({
         console.log(this.error);
       }
     },
+     async saveOrdonnance(ord) {
+    try {
+      for (let i = 0; i < this.prescs.length; i++) {
+          //  this.prescs[i].nom == "" || 
+          if (this.prescs[i].forme == ""||this.prescs[i].posologie == ""){
+            this.champsvides=true
+          }else{
+            this.champsvides=false
+          }
+        }
+        if(!this.champsvides){
+          this.ordcreated="created" 
+          this.isOrdDisabled=true
+          this.$notify.success({
+          title: 'Succeès',
+          message: 'Ordonnance modifiée avec succes ',
+          offset: 100
+        });
+        
+        const response = await DocServices.saveOrdonnance({
+        id: ord,
+        prescs: this.prescs,
+      });
+      console.log('befire bulk')
+      console.log(response.data);
+
+         
+        }else{
+          
+
+          this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        });
+        }
+    
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+  },//annuler modification d'ordonnance
+async annulerModificationOrd(ord) {
+    try {
+      const response = await DocServices.annulerModificationOrd({
+        id: ord
+      })
+      let list=[];
+    // response.data.prescs.map(function(value) {
+
+    //  list.push({nom: value.nom, forme:value.forme,posologie:value.posologie});
+     
+    //  });
+        
+        this.prescs=list;
+        this.isOrdDisabled= true
+      console.log(list);
+      console.log(response.data);
+       
+    } catch (error) {
+      console.log(`something wenttt wrong ${error}`);
+    }
+   },
         // recover ordonnances 
-        async recoverOrdonnances(user) {
+   async recoverOrdonnances(user) {
     try {
       const response = await DocServices.recoverOrdonnances({
         id: user.id
@@ -4769,6 +4842,7 @@ const response1 = await DocServices.createOrdonnance({
       console.log(`something went wrong ${error}`);
     }
    },
+  
 
     async showOrdonnance(ordonnance) {
     try {
@@ -4828,21 +4902,7 @@ const response1 = await DocServices.createOrdonnance({
     }
   },
    
-   async saveOrdonnance() {
-    try {
-
-      this.cachedUser = Object.assign({}, this.userAntInfo);
-      console.log("saveOrd button was clicked !");
-      console.log(this.userAntInfo);
-
-      const response = await DocServices.saveAntecedents({
-        antecedentsInfo: this.userAntInfo,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(`something went wrong ${error}`);
-    }
-  },
+   
   
 };
 

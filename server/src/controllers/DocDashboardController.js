@@ -831,6 +831,54 @@ module.exports = {
       })
     }
   },
+  async saveOrdonnance (req, res) {
+    try {
+      const currentOrd = req.body.id
+      const prescription = req.body.prescs
+      for (let i = 0; i < prescription.length; i++) {
+        prescription[i].ordonnanceId = currentOrd
+      }
+
+      const oldprescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: currentOrd
+        }
+      })
+      if (oldprescs != null) {
+        for (let i = 0; i < oldprescs.length; i++) {
+          oldprescs[i].nom = prescription[i].nom
+          oldprescs[i].forme = prescription[i].forme
+          oldprescs[i].posologie = prescription[i].posologie
+          prescription.shift()
+          oldprescs[i].save()
+          // await oldprescs[i].destroy()
+        }
+      }
+      const prescCreated = await Prescription.bulkCreate(prescription)
+
+      const prsc = prescCreated
+
+      // save changes in Ordonnance table
+      const ord = await Ordonnance.findOne({
+        where: {
+          id: currentOrd
+        }
+      })
+
+      ord.nombreMed = prescription.length
+
+      await ord.save()
+
+      res.send({
+        prsc: prsc,
+        Ord: currentOrd
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to save ordonnance ${err}`
+      })
+    }
+  },
   async recoverOrdonnances  (req, res) {
     try {
       const userId = req.body.id
@@ -843,6 +891,24 @@ module.exports = {
       })
       res.send({ ords: ords })
       res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async annulerModificationOrd (req, res) {
+    try {
+      const ordId = req.body.id
+      const prescs = await Prescription.findAll({
+        attributes: ['nom', 'forme', 'posologie'],
+        where: {
+          odonnanceId: ordId
+        },
+        raw: true
+      })
+      console.log(prescs)
+      res.send({ prescs: prescs })
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to fetch medicaments ${err}`
