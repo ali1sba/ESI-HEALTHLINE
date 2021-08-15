@@ -2519,20 +2519,20 @@
               </el-empty>
                 </el-card>
                 -->
-
-              <el-card class="box-card">
-                <center>
+<center>
                   <div>
                     <el-radio-group v-model="radioRM" >
                       <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
-                  <br />
-                  <h4>Rapport Médical</h4>
-                </center>
-                <div v-if="radioRM === 'Historique'">
                   
+                  
+                </center>
+              <el-card class="box-card">
+                
+                <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
                       <el-card   class="cardGris">
@@ -2566,7 +2566,36 @@
                   </el-dialog>
                   
                 </div>
-                <div v-else>
+                <div v-else ref="contentord" style="padding: 0px 80px">
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                
+                  &nbsp; &nbsp;
+               
+                  <div style="display:flex">
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
+                    </div>
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                      <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+
+                    </div>
+                
+                  </div>
+                               
+                <hr>
+                
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -2617,6 +2646,9 @@
                       round
                       >Crée un pdf</el-button
                     >
+                    <hr>
+                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
                   </center>
                 </div>
               </el-card>
@@ -2652,22 +2684,22 @@
                   <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
                  <hr style="width:26%; margin:auto; margin-bottom:5px">
                  <br>
-                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
                 
-                &nbsp; &nbsp;
+                  &nbsp; &nbsp;
                
-                <div style="display:flex">
-                  <div style="flex:50%">
-                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                  <div style="display:flex">
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
                 
-                </div>
-                <div style="flex:50%">
-                  <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
-                  <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+                    </div>
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                      <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
 
-                </div>
+                    </div>
                 
                   </div>
                                
