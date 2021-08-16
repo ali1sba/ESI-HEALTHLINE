@@ -38,9 +38,6 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
       unique: true
     },
-    state: {
-      type: DataTypes.STRING
-    },
     scolarYear: {
       type: DataTypes.STRING
     },

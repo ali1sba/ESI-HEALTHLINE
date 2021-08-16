@@ -5,6 +5,11 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const RapportMedicalController = require('./controllers/RapportMedicalController')
+const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
+const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
+const CertificatMedicalController = require('./controllers/CertificatMedicalController')
+
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -112,4 +117,25 @@ module.exports = (app) => {
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
   // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
+  app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
+  app.post('/DOCdashboard/createOrdonnance', DocDashboardController.createOrdonnance)
+  app.post('/DOCdashboard/addpresc', DocDashboardController.addpresc)
+  app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
+  app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  app.post('/RapportMedical', RapportMedicalController.createRM)
+  app.post('/getRapportMedical', RapportMedicalController.getRepports)
+  // ************************ Orientation medicalll **********************
+  app.post('/OrientationMedical', OrientationtMedicalController.createOM)
+  app.post('/getOrientationMedical', OrientationtMedicalController.getOrientations)
+  // ************************ Evacuation medicalll **********************
+  app.post('/EvacuationMedical', EvacuationMedicalController.createEM)
+  app.post('/getEvacuationMedical', EvacuationMedicalController.getEvacuations)
+  // ************************ Certificat medicalll **********************
+  app.post('/CertificatMedical', CertificatMedicalController.createCM)
+  app.post('/getCertificatMedical', CertificatMedicalController.getCertificats)
+  // ************************ Bilans paracliniques **********************
+  // Bilans Biologiques
+  app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
+  app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
+  app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
 }
