@@ -5,6 +5,7 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const RapportMedicalController = require('./controllers/RapportMedicalController')
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -112,8 +113,17 @@ module.exports = (app) => {
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
   // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
-
+  app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
+  app.post('/DOCdashboard/createOrdonnance', DocDashboardController.createOrdonnance)
+  app.post('/DOCdashboard/addpresc', DocDashboardController.addpresc)
+  app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
+  app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
+  app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  app.post('/RapportMedical', RapportMedicalController.createRM)
+  app.post('/getRapportMedical', RapportMedicalController.getRepports)
   // ************************ Bilans paracliniques **********************
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
+  app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
+  app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
 }
