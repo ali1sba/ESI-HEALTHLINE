@@ -776,11 +776,15 @@ module.exports = {
   },
   async addpresc (req, res) {
     try {
+      const currentOrd = req.body.ordid
       const prescription = req.body.presc
+      for (let i = 0; i < prescription.length; i++) {
+        prescription[i].ordonnanceId = currentOrd
+      }
 
       const oldprescs = await Prescription.findAll({
         where: {
-          ordonnanceId: prescription[0].ordonnanceId
+          ordonnanceId: currentOrd
         }
       })
       if (oldprescs != null) {
@@ -791,17 +795,17 @@ module.exports = {
       const prescCreated = await Prescription.bulkCreate(prescription)
 
       const prsc = prescCreated
-      const currentOrd = await Ordonnance.findOne({
+
+      // save changes in Ordonnance table
+      const ord = await Ordonnance.findOne({
         where: {
-          id: prescription[0].ordonnanceId
+          id: currentOrd
         }
       })
-      // save changes in Ordonnance table
-      if (currentOrd != null) {
-        currentOrd.nombreMed = prescription.length
 
-        await currentOrd.save()
-      }
+      ord.nombreMed = prescription.length
+
+      await ord.save()
 
       res.send({
         prsc: prsc,
@@ -824,6 +828,54 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async saveOrdonnance (req, res) {
+    try {
+      const currentOrd = req.body.id
+      const prescription = req.body.prescs
+      for (let i = 0; i < prescription.length; i++) {
+        prescription[i].ordonnanceId = currentOrd
+      }
+
+      const oldprescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: currentOrd
+        }
+      })
+      if (oldprescs != null) {
+        for (let i = 0; i < oldprescs.length; i++) {
+          oldprescs[i].nom = prescription[i].nom
+          oldprescs[i].forme = prescription[i].forme
+          oldprescs[i].posologie = prescription[i].posologie
+          prescription.shift()
+          oldprescs[i].save()
+          // await oldprescs[i].destroy()
+        }
+      }
+      const prescCreated = await Prescription.bulkCreate(prescription)
+
+      const prsc = prescCreated
+
+      // save changes in Ordonnance table
+      const ord = await Ordonnance.findOne({
+        where: {
+          id: currentOrd
+        }
+      })
+
+      ord.nombreMed = req.body.prescs.length
+
+      await ord.save()
+
+      res.send({
+        prsc: prsc,
+        Ord: currentOrd
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to save ordonnance ${err}`
       })
     }
   },
