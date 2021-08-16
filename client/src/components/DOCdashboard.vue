@@ -5286,6 +5286,8 @@ export default {
         pdfMake.createPdf(docDefinition).open();
 
         console.log(response.data);
+        this.reporrts = response.data.repports;
+        console.log(this.reporrts);
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
