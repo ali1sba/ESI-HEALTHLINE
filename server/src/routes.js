@@ -5,6 +5,26 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+
+const { uuid } = require('uuidv4')
+const path = require('path')
+
+// Upload files
+const multer = require('multer')
+const storageBE = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads')
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname)
+    const id = uuid()
+    const filePath = `BilansElec/${id}${ext}`
+    cb(null, filePath)
+  }
+})
+
+const uploadBE = multer({ storage: storageBE })
+
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -118,4 +138,10 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
   app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
+  // Bilans Electriques
+  app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
+  app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
+  app.post('/DOCdashboard/createBilanElectrique', uploadBE.array('BE', 3), (req, res) => {
+    res.send({ file: req.files })
+  })
 }

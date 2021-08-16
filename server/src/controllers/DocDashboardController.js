@@ -8,7 +8,7 @@ const { BiometricInfo } = require('../models')
 const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
 
-// Bilans paracliniques
+// *************** Bilans paracliniques ***************
 // Bilans Biologiques
 const { BilansBiologique } = require('../models')
 const { BilansBCardiaque } = require('../models')
@@ -22,6 +22,8 @@ const { BilansBNFS } = require('../models')
 const { BilansBRenale } = require('../models')
 const { BilansBSerologie } = require('../models')
 const { BilansBUrinaire } = require('../models')
+// Bilans Electriques
+const { BilansElectrique } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -998,12 +1000,12 @@ module.exports = {
         Motif: bb.motif
       }
       res.send({
-        message: `response from the server to showBB function with id user : ${id}`,
+        message: `response from the server to showBilanBiologique function with id user : ${id}`,
         BilanBiologique: BilanBiologique
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to shoBB: ${err}`
+        error: `an error has occured trying to showBilanBiologique: ${err}`
       })
     }
   },
@@ -1057,7 +1059,53 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to shoBB: ${err}`
+        error: `an error has occured trying to createBilanBiologique: ${err}`
+      })
+    }
+  },
+
+  // Bilans Electrique
+  async showBE (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findAll({
+        where: {
+          idPatient: id
+        }
+      })
+      // const userJson = bb.toJSON()
+      res.send({
+        message: `response from the server to showBE function with id user : ${id}`,
+        be: be
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBE: ${err}`
+      })
+    }
+  },
+
+  async showBilanElectrique (req, res) {
+    try {
+      const id = req.body.id
+      res.send({
+        message: `response from the server to showBilanElectrique function with id user : ${id}`
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to showBilanElectrique: ${err}`
+      })
+    }
+  },
+
+  async createBilanElectrique (req, res) {
+    try {
+      res.send({
+        message: 'response from the server to createBilanElectrique'
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to createBilanElectrique: ${err}`
       })
     }
   }

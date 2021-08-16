@@ -1272,7 +1272,7 @@
                       </el-card>
                     </el-col>
                     <el-col :span="8">
-                      <el-card @click="radio1 = 'Bilans électriques'" class="bilancard électri">
+                      <el-card @click="showBE(userselected)" class="bilancard électri">
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans électriques</h3>
                         <p>Nombre de bilans :</p>
@@ -2081,45 +2081,163 @@
                 </center>
                 
                 <el-scrollbar  v-show="radio2==='Historique'">
-                  <el-table
-                    :data="tableDataBE"
-                    style="width: 100%"
-                    height="250">
-                    <el-table-column
-                      fixed
-                      prop="numero"
-                      label="N"
-                      width="50">
-                    </el-table-column>
-                    <el-table-column
-                      prop="motif"
-                      label="Motif"
-                      width="200">
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      label="Date"
-                      width="150">
-                    </el-table-column>
-                    <el-table-column
-                      prop="bilans"
-                      label="Bilans présents"
-                      width="400">
-                    </el-table-column>
-                    <el-table-column
-                      fixed="right"
-                      label="Opérations"
-                      width="120">
-                      <template #default="">
-                        <el-button
-                          @click="showBilanBiologique"
-                          type="text"
-                          size="small">
-                          Consulter
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                  <el-card>
+                    <el-table
+                      :data="tableDataBE"
+                      style="width: 100%"
+                      height="250">
+
+                      <el-table-column
+                        label="N"
+                        width="50">
+                        <template #default="scope">
+                          <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                          label="Motif"
+                          width="150">
+                          <template #default="scope">
+                            <span style="margin-left: 10px">{{ scope.row.motif }}</span>
+                          </template>
+                      </el-table-column>
+
+                      <el-table-column
+                        label="Date"
+                        width="150">
+                        <template #default="scope">
+                            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                          label="Bilans présents"
+                          width="300">
+                        Texte
+                      </el-table-column>
+
+                      <el-table-column
+                        label="Opérations"
+                        width="150">
+                        <template #default="scope">
+                          <el-button
+                            size="mini"
+                            @click="showBilanElectrique(scope.row.id)">Consulter</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </el-card>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Historique2'">
+                  <el-space>
+                    Motif
+                    <el-tag>{{ BEHis.Motif }}</el-tag>
+                  </el-space>
+                  <el-space>
+                    Date de création
+                    <el-tag>{{ BEHis.Date }}</el-tag>
+                  </el-space>
+                  <el-collapse>
+                    <el-collapse-item title="ECG" name="1">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.ECG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Fichier
+                          <el-tag>{{ BEHis.ECG.file }}</el-tag>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EEG" name="2">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EEG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Fichier
+                          <el-tag>{{ BEHis.EEG.file }}</el-tag>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EMG" name="3">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EMG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          Fichier
+                          <el-tag>{{ BEHis.EMG.file }}</el-tag>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                  </el-collapse>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Créer'">
+                  <form @submit.prevent="createBilanElectrique" enctype="multipart/form-data">
+                    <el-space>
+                      Motif
+                      <el-input type="textarea"></el-input>
+                    </el-space>
+                    <el-collapse>
+                      <el-collapse-item title="ECG" name="1">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.inter.ECGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
+                              <el-button @click="clearECGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier, et de taille inférieur à 500kb</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EEG" name="2">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.inter.EEGinter">></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
+                              <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier, et de taille inférieur à 500kb</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EMG" name="3">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.inter.EMGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
+                              <el-button @click="clearEMGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier, et de taille inférieur à 500kb</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                    </el-collapse>
+                    <br>
+                    <button class="btn btn-danger btn-block">Enregistrer</button>
+                  </form>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -2220,6 +2338,8 @@ export default {
 
       // Bilans paracliniques: BB-BR-BE
       tableDataBB: [],
+      tableDataBR: [],
+      tableDataBE: [],
       hivOptions: [{
           value: 'Positif',
           label: 'Positif'
@@ -2408,8 +2528,44 @@ export default {
         },
         autre: null
       },
-      tableDataBR: [],
-      tableDataBE: [],
+
+      BEHis: {
+        Motif: null,
+        Date: null,
+        ECG: {
+          inter: null,
+          ECGfile: null
+        },
+        EEG: {
+          inter: null,
+          EEGfile: null
+        },
+        EMG: {
+          inter: null,
+          EMGfile: null
+        }
+      },
+
+      // file: '',
+      isECGUploadDisabled: false,
+      isEEGUploadDisabled: false,
+      isEMGUploadDisabled: false,
+
+      BECr: {
+        Motif: null,
+        inter: {
+          ECGinter: null,
+          EEGinter: null,
+          EMGinter: null,
+        },
+        BEfile: {
+          ECGfile: null,
+          EEGfile: null,
+          EMGfile: null
+        }
+      },
+
+      fileListTest: [],
 
       bgOptions: [{
           value: 'O+',
@@ -2814,6 +2970,84 @@ export default {
         console.log(response.data)
       } catch (error) {
         console.log(`something went wrong in createBilanBiologique ${error}`);
+      }
+    },
+
+    // Bilans paracliniques -> showBE from Bilans Electriques table
+    async showBE (user) {
+      try {
+        this.radio1 = 'Bilans électriques'
+        this.radio2 = 'Historique'
+        const response = await DocServices.showBE({
+          id: user.id,
+        });
+        this.tableDataBE = response.data.be
+      } catch (error) {
+        console.log(`something went wrong in showBB ${error}`);
+      }
+    },
+
+    // Bilans paracliniques -> showBE from ALL Bilans Biologiques tables
+    async showBilanElectrique (id) {
+      try {
+        this.radio2 = 'Historique2'
+        console.log("showBilanElectrique clicked")
+        const response = await DocServices.showBilanElectrique({
+          id: id,
+        });
+        // this.BEHis = response.data.BilanElec
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in showBilanElectrique ${error}`);
+      }
+    },
+
+    onFileChangeECG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.ECGfile = selectedFile;
+      console.log(this.BECr.BEfile.ECGfile)
+    },
+    clearECGFile() {
+      this.$refs.ECGfile.value = null
+      this.BECr.BEfile.ECGfile = null
+    },
+
+    onFileChangeEEG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.EEGfile = selectedFile;
+      console.log(this.BECr.BEfile.EEGfile)
+    },
+    clearEEGFile() {
+      this.$refs.EEGfile.value = null
+      this.BECr.BEfile.EEGfile = null
+    },
+
+    onFileChangeEMG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.EMGfile = selectedFile;
+      console.log(this.BECr.BEfile.EMGfile)
+    },
+    clearEMGFile() {
+      this.$refs.EMGfile.value = null
+      this.BECr.BEfile.EMGfile = null
+    },
+
+    async createBilanElectrique () {
+      try {
+        const formData = new FormData()
+        formData.append('BE', this.BECr.BEfile.ECGfile)
+        formData.append('BE', this.BECr.BEfile.EEGfile)
+        formData.append('BE', this.BECr.BEfile.EMGfile)
+        console.log("createBilanElectrique clicked")
+
+        const response = await DocServices.createBilanElectrique(formData)
+        // this.messageBECr = "Bilans électrique enregistré"
+        // clearECGFile()
+        // clearEEGFile()
+        // clearEMGFile()
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in createBilanElectrique ${error}`);
       }
     },
 
