@@ -4383,7 +4383,7 @@ export default {
       }
     },
     // recover medicaments
-
+ 
    async recoverMedicaments() {
     try {
       const response = await DocServices.recoverMedicaments()
@@ -4393,8 +4393,19 @@ export default {
      
      });
         
-        this.Medoptions=list;
-      console.log(list);
+      //   supprimer les doublons 
+
+      let obj = {};
+
+       for ( var i=0, len=list.length; i < len; i++ )
+      obj[list[i]['value']] = list[i];
+
+      let listnew =[]
+      for ( var key in obj )
+      listnew.push(obj[key]);
+
+      console.log(listnew);
+      this.Medoptions=listnew;
        
     } catch (error) {
       console.log(`something went wrong ${error}`);
