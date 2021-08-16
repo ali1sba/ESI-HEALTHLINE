@@ -2519,32 +2519,83 @@
               </el-empty>
                 </el-card>
                 -->
-
-              <el-card class="box-card">
-                <center>
+<center>
                   <div>
                     <el-radio-group v-model="radioRM" >
                       <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
-                  <br />
-                  <h4>Rapport Médical</h4>
+                  
+                  
                 </center>
+              <el-card class="box-card">
+                
                 <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
+                      <el-card   class="cardGris">
+                                    
+                                      <h4> {{Rapp.Motif}} </h4>
+                                      
+                                      <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
+                                      <p>{{Rapp.createdAt}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
+                                  
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+
+                  <el-dialog title="Rapport Medical" v-model="dialogConsulterRapportMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{rapp.Motif}}</p>
+                    <b>Histoire de la Maladie :</b>
+                    <p>{{rapp.HistoireDeLaMaladie}}</p>
+                    <b>Etat Général :</b>
+                    <p>{{rapp.EtatGeneral}}</p>
+                    <b>Autre :</b>
+                    <p>{{rapp.autre}}</p>
+                    <b>Conclusion :</b>
+                    <p>{{rapp.Conclusion}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterRapportMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
                   
-                  
-                  <el-card shadow="hover" v-for="Rapp in reporrts" :key="Rapp.id" style="margin:1em 0em;" class="cardGris">
-                    <el-row>
-                      <el-col :span="6"> {{Rapp.Motif}} </el-col>
-                      <el-col :span="6"> {{Rapp.Conclusion}} </el-col>
-                      <el-col :span="6"> {{Rapp.createdAt}} </el-col>
-                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
-                    </el-row>
-                    
-                  </el-card>
                 </div>
-                <div v-else>
+                <div v-else ref="contentord" style="padding: 0px 80px">
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                
+                  &nbsp; &nbsp;
+               
+                  <div style="display:flex">
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
+                    </div>
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                      <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+
+                    </div>
+                
+                  </div>
+                               
+                <hr>
+                
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -2595,6 +2646,9 @@
                       round
                       >Crée un pdf</el-button
                     >
+                    <hr>
+                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
                   </center>
                 </div>
               </el-card>
@@ -2638,22 +2692,22 @@
                   <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
                  <hr style="width:26%; margin:auto; margin-bottom:5px">
                  <br>
-                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
                 
-                &nbsp; &nbsp;
+                  &nbsp; &nbsp;
                
-                <div style="display:flex">
-                  <div style="flex:50%">
-                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                  <div style="display:flex">
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
                 
                 </div>
                 <div style="flex:50%">
                   <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
                   <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes </p>
 
-                </div>
+                    </div>
                 
                   </div>
                                
@@ -3559,6 +3613,8 @@ export default {
         Conclusion: "",
       },
       reporrts: [''],
+      dialogConsulterRapportMedical: false,
+      rapp:[""],
     };
 
   },
@@ -4537,7 +4593,11 @@ const response1 = await DocServices.createOrdonnance({
         console.log(`something went wrong ${error}`);
       }
     },
-
+ async ConsulterRapportMedical(rapp) {
+      this.dialogConsulterRapportMedical = true;
+      this.rapp = rapp;
+      
+    },
     async creepdf() {
       try {
         console.log("creepdf button was clicked !");
@@ -4681,7 +4741,7 @@ const response1 = await DocServices.createOrdonnance({
               margin: [0, 0, 0, 20],
             },
             {
-              text: " Motif Médical",
+              text: " Motif Médical:\n",
               style: "mainTitle",
             },
             {
@@ -4689,7 +4749,7 @@ const response1 = await DocServices.createOrdonnance({
               style: "main",
             },
             {
-              text: " Histoire de la Maladie :",
+              text: " Histoire de la Maladie:\n",
               style: "mainTitle",
             },
             {
@@ -4697,7 +4757,7 @@ const response1 = await DocServices.createOrdonnance({
               style: "main",
             },
              {
-              text: " Etat Général :",
+              text: " Etat Général:\n",
               style: "mainTitle",
             },
             {
@@ -4705,7 +4765,7 @@ const response1 = await DocServices.createOrdonnance({
               style: "main",
             },
             {
-              text: " Autre :",
+              text: " Autre: \n",
               style: "mainTitle",
             },
             {
@@ -4713,7 +4773,7 @@ const response1 = await DocServices.createOrdonnance({
               style: "main",
             },
              {
-              text: " Conclusion :",
+              text: " Conclusion:\n",
               style: "mainTitle",
             },
             {
@@ -4926,8 +4986,9 @@ async annulerModificationOrd(ord) {
   border-radius: 15px;
 }
 .cardGris{
-  background-color: #f1f1f1;
+
   border-radius: 10px;
+  border: 10px;
 }
 .boxRDV {
   width: 97%;
