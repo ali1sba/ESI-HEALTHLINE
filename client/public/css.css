@@ -2343,6 +2343,52 @@ padding-top: 15px;
   margin-top: -1px;
   margin-left: -1px;
 }
+
+/* HOME DASHBOARD */
+.cardDash-body{
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  background:#00C292;
+  margin: 39px;
+  padding: 20px;
+  width: 250px;
+  height: 150px;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.color1{
+  background:#00C292
+}
+.color2{
+  background:#ff9ba8
+}
+.color3{
+  background:#8b89ff
+}
+.floatDash-left{
+  float: left;
+}
+.floatDash-right{
+  float: right;
+}
+.cardDash-body h3{
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+.countDash{
+  font-size: 30px;
+  font-weight: 500;
+}
+.cardDash-body p{
+  font-size: 16px;
+  margin-top: 0;
+}
+.floatDash-right i{
+font-size: 95px;
+opacity: 0.5;
+}
+
 /* 
 #Rectangle1 {
   opacity: 0.27;
