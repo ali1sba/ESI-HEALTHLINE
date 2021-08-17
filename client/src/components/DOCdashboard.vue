@@ -2593,7 +2593,31 @@
                   <br />
                   <h4>Orientation Medical</h4>
                 </center>
-                <div v-if="radioRM === 'Historique'">
+                                <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Orientations Medical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Orr in orientations.slice().reverse()" :key="Orr.id" >
+                      <el-card   class="cardGris">
+                                      <h4> {{Orr.Motif}} </h4>                    
+                                      <h6> Orienté vers: </h6><p> {{Orr.OrientVers}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterOrientationMedical(Orr)">consulter</el-button>
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-dialog title="Certificat Medical" v-model="dialogConsulterOrientationMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{Orr.Motif}}</p>
+                    <b>Orienté vers :</b>
+                    <p>{{Cert.OrientVers}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterOrientationMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
+                  
+                </div>
+              <!--  <div v-if="radioRM === 'Historique'">
                   <el-card shadow="hover" v-for="Orr in orientations" :key="Orr.id" style="margin:1em 0em;" class="cardGris">
                     <el-row>
                       <el-col :span="6"> {{Orr.Motif}} </el-col>
@@ -2602,7 +2626,7 @@
                     </el-row>
                     
                   </el-card>
-                </div>
+                </div>-->
                 <div v-else>
                   <el-row>
                     <el-col :span="3"> Motif </el-col
@@ -2700,6 +2724,35 @@
                   <h4>Certificat Médical</h4>
                 </center>
                 <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Cert in certificats.slice().reverse()" :key="Cert.id" >
+                      <el-card   class="cardGris">
+                                      <h4> {{Cert.Motif}} </h4>
+                                      <h6> Date de debut: </h6><p> {{Cert.EtatGeneral}} </p>
+                                      <h6> Date de fin: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterCertificatMedical(Cert)">consulter</el-button>
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-dialog title="Certificat Medical" v-model="dialogConsulterCertificatMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{Cert.Motif}}</p>
+                    <b>Date de debut :</b>
+                    <p>{{Cert.EtatGeneral}}</p>
+                    <b>Date de fin</b>
+                    <p>{{Cert.HistoireDeLaMaladie}}</p>
+                    <b>Autre :</b>
+                    <p>{{Cert.Autre}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterCertificatMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
+                  
+                </div>
+             <!--   <div v-if="radioRM === 'Historique'">
                   <el-card shadow="hover" v-for="Cert in certificats" :key="Cert.id" style="margin:1em 0em;" class="cardGris">
                     <el-row>
                       <el-col :span="6"> {{Cert.Motif}} </el-col>
@@ -2708,7 +2761,7 @@
                       <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
                     </el-row>
                   </el-card>
-                </div>
+                </div> -->
                 <div v-else>
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
@@ -3899,7 +3952,11 @@ export default {
       certificats: [''],
       reporrts: [''],
       dialogConsulterRapportMedical: false,
+      dialogConsulterCertificatMedical: false,
+      dialogConsulterOrientationMedical: false,
       rapp:[""],
+      Cert:[""],
+      Orr:[""],
     };
 
   },
@@ -4923,6 +4980,16 @@ const response1 = await DocServices.createOrdonnance({
  async ConsulterRapportMedical(rapp) {
       this.dialogConsulterRapportMedical = true;
       this.rapp = rapp;
+      
+    },
+async ConsulterCertificatMedical(Cert) {
+      this.dialogConsulterCertificatMedical = true;
+      this.Cert = Cert;
+      
+    },
+async ConsulterOrientationMedical(Orr) {
+      this.dialogConsulterOrientationMedical = true;
+      this.Orr = Orr;
       
     },
     async creepdf() {
