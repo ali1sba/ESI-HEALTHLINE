@@ -23,4 +23,7 @@ export default {
     saveDepiInfo (credantials){
         return Api().post('/DOCdashboard/saveDepiInfo',credantials)
     },
+    saveExamenClinique (credantials){
+        return Api().post('/DOCdashboard/saveExamenClinique',credantials)
+    }
 }

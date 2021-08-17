@@ -7,6 +7,7 @@ const { PersonalInfo } = require('../models')
 const { BiometricInfo } = require('../models')
 const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
+const { ExamenClinique } = require('../models')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -352,24 +353,6 @@ module.exports = {
             EndocrinologieGlandesMammaires: '',
             PsychoInterrogatoire: '',
             PsychoExamensClinique: ''
-          },
-          antecedentsInfo: {
-            idAI:null,
-            boolFumer: '',
-            boolChiquer: '',
-            boolPrise: '',
-            ancienFum: '',
-            nbrFumer: '',
-            nbrChiquer: '',
-            nbrPrise: '',
-            perExpo: '',
-            alcool: '',
-            medicat: '',
-            autres: '',
-            affec: '',
-            malaGene: '',
-            intChiru: '',
-            reactMed: ''
           }
           // here we add bioInfo  // same thing with ExamenMedical, RDV and statistics
 
@@ -391,7 +374,7 @@ module.exports = {
           }
         })
         // find antecedentsInfo record by id
-        const userAI = await antecedentsInfo.findOne({
+        const userAI = await AntecedentsInfo.findOne({
           where: {
             id: userMF.antecedentsInfoId
           }
@@ -533,24 +516,6 @@ module.exports = {
             EndocrinologieGlandesMammaires: userDepInfo.EndocrinologieGlandesMammaires,
             PsychoInterrogatoire: userDepInfo.PsychoInterrogatoire,
             PsychoExamensClinique: userDepInfo.PsychoExamensClinique
-          },
-          antecedentsInfo:{
-            idAI:userAI.id,
-            boolFumer: userAI.boolFumer,
-            boolChiquer: userAI.boolChiquer,
-            boolPrise: userAI.boolPrise,
-            ancienFum: userAI.ancienFum,
-            nbrFumer: userAI.nbrFumer,
-            nbrChiquer: userAI.nbrChiquer,
-            nbrPrise: userAI.nbrPrise,
-            perExpo: userAI.perExpo,
-            alcool: userAI.alcool,
-            medicat: userAI.medicat,
-            autres: userAI.autres,
-            affec: userAI.affec,
-            malaGene: userAI.malaGene,
-            intChiru: userAI.intChiru,
-            reactMed: userAI.reactMed
           }
           // here we add bioInfo, antecedentInfo and depistageInfo // same thing with ExamenMedical, RDV and statistics
         }
@@ -772,6 +737,111 @@ module.exports = {
       await userdepistagelInfo.save()
       res.send({
         message: `PersInfo successfully updated... typeDeVisite: ${userDI.idDI}`
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch the users ${err}`
+      })
+    }
+  },
+  // examen clinique save function *********************************************************************
+  async saveExamenClinique (req, res) {
+    try {
+      const UserId = req.body.id
+      const ExmCli = {
+        patientId: UserId,
+        temp: null,
+        peau: null,
+        anomaliePeau: null,
+        inspCardio: null,
+        auscuCardio: null,
+        anomalieSouffle: null,
+        anomalieType: null,
+        anomalieBruits: null,
+        poulsPeri: null,
+        anomaliePoulsPeri: null,
+        tensionArt: null,
+        freqCard: null,
+        inspPulmo: null,
+        freqPulmo: null,
+        palpPulmo: null,
+        anomaliePalpPulmo: null,
+        percuPulmo: null,
+        anomaliePercuPulmo: null,
+        auscuPulmo: null,
+        murmurViscu: null,
+        checkedRales: null,
+        locaRales: null,
+        inspAbdo: null,
+        anomalieAbdo: null,
+        pulpAbdo: null,
+        pulpMasse: null,
+        localiMasse: null,
+        ralesMasse: null,
+        autreMasse: null,
+        percuAbdo: null,
+        sensiNeuro: null,
+        anomalieSensiNeuro: null,
+        matriNeuro: null,
+        anomalieMatriNeuro: null,
+        troublesNeuro: null,
+        anomalieTroublesNeuro: null,
+        orientNeuro: null,
+        anomalieOrientNeuro: null,
+        gorgeORL: null,
+        auricuORL: null,
+        examenUrogeni: null,
+        remarqueCli: null
+      }
+      const examenCliniqueCreation = await ExamenClinique.create(ExmCli)
+      const EC = examenCliniqueCreation.toJSON()
+      const exmCliInfo = await ExamenClinique.findOne({
+        where: {
+          id: UserId
+        }
+      })
+      exmCliInfo.temp = UserId.temp
+      exmCliInfo.peau = UserId.peau
+      exmCliInfo.anomaliePeau = UserId.anomaliePeau
+      exmCliInfo.inspCardio = UserId.inspCardio
+      exmCliInfo.auscuCardio = UserId.auscuCardio
+      exmCliInfo.anomalieSouffle = UserId.anomalieSouffle
+      exmCliInfo.anomalieType = UserId.anomalieType
+      exmCliInfo.anomalieBruits = UserId.anomalieBruits
+      exmCliInfo.poulsPeri = UserId.poulsPeri
+      exmCliInfo.anomaliePoulsPeri = UserId.anomaliePoulsPeri
+      exmCliInfo.tensionArt = UserId.tensionArt
+      exmCliInfo.freqCard = UserId.freqCard
+      exmCliInfo.inspPulmo = UserId.inspPulmo
+      exmCliInfo.palpPulmo = UserId.palpPulmo
+      exmCliInfo.anomaliePalpPulmo = UserId.anomaliePalpPulmo
+      exmCliInfo.percuPulmo = UserId.percuPulmo
+      exmCliInfo.anomaliePercuPulmo = UserId.anomaliePercuPulmo
+      exmCliInfo.auscuPulmo = UserId.auscuPulmo
+      exmCliInfo.murmurViscu = UserId.murmurViscu
+      exmCliInfo.checkedRales = UserId.checkedRales
+      exmCliInfo.locaRales = UserId.locaRales
+      exmCliInfo.inspAbdo = UserId.inspAbdo
+      exmCliInfo.anomalieAbdo = UserId.anomalieAbdo
+      exmCliInfo.pulpAbdo = UserId.pulpAbdo
+      exmCliInfo.pulpMasse = UserId.pulpMasse
+      exmCliInfo.localiMasse = UserId.localiMasse
+      exmCliInfo.percuAbdo = UserId.percuAbdo
+      exmCliInfo.sensiNeuro = UserId.sensiNeuro
+      exmCliInfo.anomalieSensiNeuro = UserId.anomalieSensiNeuro
+      exmCliInfo.matriNeuro = UserId.matriNeuro
+      exmCliInfo.anomalieMatriNeuro = UserId.anomalieMatriNeuro
+      exmCliInfo.troublesNeuro = UserId.troublesNeuro
+      exmCliInfo.anomalieTroublesNeuro = UserId.anomalieTroublesNeuro
+      exmCliInfo.orientNeuro = UserId.orientNeuro
+      exmCliInfo.anomalieOrientNeuro = UserId.anomalieOrientNeuro
+      exmCliInfo.gorgeORL = UserId.gorgeORL
+      exmCliInfo.auricuORL = UserId.auricuORL
+      exmCliInfo.examenUrogeni = UserId.examenUrogeni
+      exmCliInfo.remarqueCli = UserId.remarqueCli
+      await exmCliInfo.save()
+      res.send({
+        ec: EC
       })
     } catch (err) {
       res.status(500).send({
