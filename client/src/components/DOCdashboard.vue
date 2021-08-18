@@ -275,7 +275,7 @@
                   <el-radio-button label="Dossier Médical"></el-radio-button>
                   <el-radio-button label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
-                  <el-radio-button label="RDV"></el-radio-button>
+                  <el-radio-button label="RDV" @click="showRDVSelectedPatient()"></el-radio-button>
                   <el-radio-button
                     v-show="hidden"
                     label="examen clinique"
@@ -3224,15 +3224,50 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio1 === 'RDV'">
-              <el-card class="box-card">
-                <el-empty :image-size="300">
+              <div v-if="haveRDV">
+                  <!-- show the RDV that the patient have -->
+              </div>
+
+              <el-card class="box-card"  v-else>
+                <el-empty :image-size="300" >
                   <el-button
                     type="primary"
+                    
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab; width: 100%"
-                    >Créer RDV</el-button
+                    @click="dialogRDVFormVisible = true"
+                    >programmer un RDV</el-button
                   >
+                  <!-- Form -->
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVFormVisible">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible = false">Annuler</el-button>
+                        <el-button type="primary" @click="progRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
                 </el-empty>
+                
               </el-card>
             </el-scrollbar>
             <!-- ********************************************end******************************************** -->
@@ -3285,6 +3320,7 @@ import RapportMedicalServices from "@/services/RapportMedicalServices.js";
 import OrientationMedicalService from "@/services/OrientationMedicalService.js";
 import EvacuationMedicalService from "@/services/EvacuationMedicalService.js";
 import CertificatMedicalService from "@/services/CertificatMedicalService.js";
+import RDVServices from "@/services/RDVServices.js";
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
@@ -3957,6 +3993,17 @@ export default {
       rapp:[""],
       Cert:[""],
       Orr:[""],
+       //RDV**************************************************************************************************
+      dialogRDVFormVisible:false,
+      formLabelWidth:'120px',
+      haveRDV: false,
+      RDVform: {
+        idUser:'',
+        typeDeRDV:'',
+        dateAndTime:'',
+        note:'',
+      },
+      RDVList:[''],
     };
 
   },
@@ -3982,6 +4029,39 @@ export default {
     });
   },
   methods: {
+
+
+
+    //RDV**********************************************************************************************
+    async progRDVPatient(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        console.log(this.userselected.id)
+        this.dialogRDVFormVisible = false;
+        this.RDVform.idUser = this.userselected.id;
+        const response = await RDVServices.progRDVPatient({
+          form:this.RDVform,
+        })
+        console.log(response.data);
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in programation de RDV patient ${error}`);
+      }
+    }, 
+    async  showRDVSelectedPatient(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        const response = await RDVServices.showRDVSelectedPatient({
+          id:this.userselected.id,
+        })
+        this.RDVList = response.data;
+        console.log(this.RDVList);
+      } catch (error) {
+        console.log(`something went wrong in showRDVSelectedPatient ${error}`);
+      }
+    },
+    //*************************************************************************************************
     async printPresc(prescs) {
       let x="";
        for (let i = 0; i < prescs.length; i++) {
