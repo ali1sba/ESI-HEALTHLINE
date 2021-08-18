@@ -2183,14 +2183,14 @@
                   <form @submit.prevent="createBilanElectrique" enctype="multipart/form-data">
                     <el-space>
                       Motif
-                      <el-input type="textarea"></el-input>
+                      <el-input type="textarea" v-model="BECr.BEtext.Motif"></el-input>
                     </el-space>
                     <el-collapse>
                       <el-collapse-item title="ECG" name="1">
                         <el-space orientation="vertical"> 
                           <el-space wrap :size="7">
                             Interprétation
-                            <el-input type="textarea" v-model="BECr.inter.ECGinter"></el-input>
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.ECGinter"></el-input>
                           </el-space>
                           <el-space wrap :size="7">
                             Fichier
@@ -2198,7 +2198,7 @@
                               <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
                               <el-button @click="clearECGFile">Supprimer le fichier</el-button>
                             </div>
-                            <div class="el-upload__tip">Vous devez choisir un seul fichier, et de taille inférieur à 500kb</div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
                           </el-space>
                         </el-space>
                       </el-collapse-item>
@@ -2206,7 +2206,7 @@
                         <el-space orientation="vertical"> 
                           <el-space wrap :size="7">
                             Interprétation
-                            <el-input type="textarea" v-model="BECr.inter.EEGinter">></el-input>
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EEGinter">></el-input>
                           </el-space>
                           <el-space wrap :size="7">
                             Fichier
@@ -2214,7 +2214,7 @@
                               <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
                               <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
                             </div>
-                            <div class="el-upload__tip">Vous devez choisir un seul fichier, et de taille inférieur à 500kb</div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
                           </el-space>
                         </el-space>
                       </el-collapse-item>
@@ -2222,7 +2222,7 @@
                         <el-space orientation="vertical"> 
                           <el-space wrap :size="7">
                             Interprétation
-                            <el-input type="textarea" v-model="BECr.inter.EMGinter"></el-input>
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EMGinter"></el-input>
                           </el-space>
                           <el-space wrap :size="7">
                             Fichier
@@ -2230,7 +2230,7 @@
                               <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
                               <el-button @click="clearEMGFile">Supprimer le fichier</el-button>
                             </div>
-                            <div class="el-upload__tip">Vous devez choisir un seul fichier, et de taille inférieur à 500kb</div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
                           </el-space>
                         </el-space>
                       </el-collapse-item>
@@ -2546,17 +2546,15 @@ export default {
         }
       },
 
-      // file: '',
-      isECGUploadDisabled: false,
-      isEEGUploadDisabled: false,
-      isEMGUploadDisabled: false,
-
       BECr: {
-        Motif: null,
-        inter: {
-          ECGinter: null,
-          EEGinter: null,
-          EMGinter: null,
+        BEtext: {
+          Motif: null,
+          idP: null,
+          inter: {
+            ECGinter: null,
+            EEGinter: null,
+            EMGinter: null,
+          }
         },
         BEfile: {
           ECGfile: null,
@@ -2978,6 +2976,7 @@ export default {
       try {
         this.radio1 = 'Bilans électriques'
         this.radio2 = 'Historique'
+        this.BECr.BEtext.idP = user.id
         const response = await DocServices.showBE({
           id: user.id,
         });
@@ -3035,10 +3034,18 @@ export default {
     async createBilanElectrique () {
       try {
         const formData = new FormData()
-        formData.append('BE', this.BECr.BEfile.ECGfile)
-        formData.append('BE', this.BECr.BEfile.EEGfile)
-        formData.append('BE', this.BECr.BEfile.EMGfile)
+        formData.append('BEMotif', this.BECr.BEtext.Motif)
+        formData.append('idPatient', this.BECr.BEtext.idP)
+        formData.append('BEinterECG', this.BECr.BEtext.inter.ECGinter)
+        formData.append('BEinterEEG', this.BECr.BEtext.inter.EEGinter)
+        formData.append('BEinterEMG', this.BECr.BEtext.inter.EMGinter)
+        formData.append('ECG', this.BECr.BEfile.ECGfile)
+        formData.append('EEG', this.BECr.BEfile.EEGfile)
+        formData.append('EMG', this.BECr.BEfile.EMGfile)
         console.log("createBilanElectrique clicked")
+  
+        // const BEtext = this.BECr.BEtext.Motif
+        // console.log(BEtext)
 
         const response = await DocServices.createBilanElectrique(formData)
         // this.messageBECr = "Bilans électrique enregistré"

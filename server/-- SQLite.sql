@@ -14,6 +14,7 @@
 --DROP TABLE 'BilansECGs';
 --DROP TABLE 'BilansEMGs';
 --DROP TABLE 'BilansEEGs';
+--DROP TABLE 'BilansElectriques';
 ---DELETE FROM 'BilansBiologiques' WHERE id='1';
 ---INSERT INTO 'BilansBGlycemiques' VALUES ('3', 'Testgly-3', 'Testhb1C-3', 'Testautre-"3', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');
 ---INSERT INTO 'BilansBiologiques' VALUES ('3', 'TestMotif3', '9', NULL, NULL, NULL, NULL, NULL, NULL, '3', NULL, NULL, NULL, NULL, NULL, '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');

@@ -7,22 +7,57 @@ const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
 
 const { uuid } = require('uuidv4')
-const path = require('path')
+const { BilansECG } = require('./models')
+const { BilansEEG } = require('./models')
+const { BilansEMG } = require('./models')
+const { BilansElectrique } = require('./models')
+var idECG = ''
+var idEEG = ''
+var idEMG = ''
 
 // Upload files
 const multer = require('multer')
 const storageBE = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './uploads')
+    if (file.fieldname === 'ECG') {
+      cb(null, './uploads/BilansElec/ECG')
+    } else if (file.fieldname === 'EEG') {
+      cb(null, './uploads/BilansElec/EEG')
+    } else if (file.fieldname === 'EMG') {
+      cb(null, './uploads/BilansElec/EMG')
+    }
   },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname)
-    const id = uuid()
-    const filePath = `BilansElec/${id}${ext}`
-    cb(null, filePath)
+  filename: async (req, file, cb) => {
+    if (file.fieldname === 'ECG') {
+      const filePath = `${uuid()}-${file.originalname}`
+      cb(null, filePath)
+      const ECG = {
+        inter: req.body.BEinterECG,
+        path: `uploads/BilansElec/ECG/${filePath}`
+      }
+      const BEecg = await BilansECG.create(ECG)
+      idECG = BEecg.id
+    } else if (file.fieldname === 'EEG') {
+      const filePath = `${uuid()}-${file.originalname}`
+      cb(null, filePath)
+      const EEG = {
+        inter: req.body.BEinterEEG,
+        path: `uploads/BilansElec/EEG/${filePath}`
+      }
+      const BEeeg = await BilansEEG.create(EEG)
+      idEEG = BEeeg.id
+    } else if (file.fieldname === 'EMG') {
+      const filePath = `${uuid()}-${file.originalname}`
+      cb(null, filePath)
+      const EMG = {
+        inter: req.body.BEinterEMG,
+        path: `uploads/BilansElec/EMG/${filePath}`
+      }
+      const BEemg = await BilansEMG.create(EMG)
+      idEMG = BEemg.id
+    }
   }
 })
-
 const uploadBE = multer({ storage: storageBE })
 
 // const { Compte } = require('./models')
@@ -141,7 +176,19 @@ module.exports = (app) => {
   // Bilans Electriques
   app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
-  app.post('/DOCdashboard/createBilanElectrique', uploadBE.array('BE', 3), (req, res) => {
-    res.send({ file: req.files })
+  app.post('/DOCdashboard/createBilanElectrique', uploadBE.any(), async (req, res) => {
+    const BE = {
+      motif: req.body.BEMotif,
+      idPatient: req.body.idPatient
+    }
+    const BECr = await BilansElectrique.create(BE)
+    BECr.idECG = idECG
+    BECr.idEEG = idEEG
+    BECr.idEMG = idEMG
+    await BECr.save()
+    res.send({
+      file: req.files,
+      body: req.body
+    })
   })
 }

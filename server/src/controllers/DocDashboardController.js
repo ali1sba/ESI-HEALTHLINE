@@ -23,7 +23,12 @@ const { BilansBRenale } = require('../models')
 const { BilansBSerologie } = require('../models')
 const { BilansBUrinaire } = require('../models')
 // Bilans Electriques
+const { BilansECG } = require('../models')
+// const { BilansEEG } = require('../models')
+// const { BilansEMG } = require('../models')
 const { BilansElectrique } = require('../models')
+const fs = require('fs')
+const path = require('path')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -1000,7 +1005,7 @@ module.exports = {
         Motif: bb.motif
       }
       res.send({
-        message: `response from the server to showBilanBiologique function with id user : ${id}`,
+        message: `response from the server to showBilanBiologique function with id BilansBio : ${id}`,
         BilanBiologique: BilanBiologique
       })
     } catch (err) {
@@ -1088,24 +1093,41 @@ module.exports = {
   async showBilanElectrique (req, res) {
     try {
       const id = req.body.id
+      const be = await BilansElectrique.findOne({
+        where: {
+          id: id
+        }
+      })
+      const ecg = await BilansECG.findOne({
+        where: {
+          id: be.idECG
+        }
+      })
+      /*
+      const eeg = await BilansEEG.findOne({
+        where: {
+          id: be.idEEG
+        }
+      })
+      const emg = await BilansEMG.findOne({
+        where: {
+          id: be.idEMG
+        }
+      })
+      const EEGfile = fs.readFile(`../../${eeg.path}`, 'utf8')
+      const EMGfile = fs.readFile(`../../${emg.path}`, 'utf8')
+      */
+      const filePath = path.join(__dirname, `../../${ecg.path}`)
+      const ECGfile = fs.readFileSync(filePath)
+      res.contentType('application/pdf')
+      console.log(ECGfile)
       res.send({
-        message: `response from the server to showBilanElectrique function with id user : ${id}`
+        message: `response from the server to showBilanElectrique function with id BilansElec : ${id}`,
+        be: ECGfile
       })
     } catch (err) {
-      res.status(500).send({
+      res.send({
         error: `an error has occured trying to showBilanElectrique: ${err}`
-      })
-    }
-  },
-
-  async createBilanElectrique (req, res) {
-    try {
-      res.send({
-        message: 'response from the server to createBilanElectrique'
-      })
-    } catch (err) {
-      res.send({
-        error: `an error has occured trying to createBilanElectrique: ${err}`
       })
     }
   }
