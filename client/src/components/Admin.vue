@@ -205,7 +205,11 @@
                 size="mini"
                 type="danger"
                 v-if="scope.row.compteState === 'ACTIVATED'"
+<<<<<<< HEAD
                 @click="desactivateUser(scope.row)">Disactivate</el-button> 
+=======
+                @click="desactivateUser(scope.row)">Desactivate</el-button> 
+>>>>>>> ccb38cc9ccf0d5d24f3c973a68595d725fd1de95
             </template>
           </el-table-column>
           </el-table>
