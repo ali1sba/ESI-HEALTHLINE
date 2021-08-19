@@ -9,5 +9,11 @@ export default {
     showRDVSelectedPatient (credantials){
         return Api().post('/showRDVSelectedPatient',credantials)
     },
+    annulerRDV (credantials){
+        return Api().post('/annulerRDV',credantials)
+    },
+    saveChangRDVPatient (credantials){
+        return Api().post('/saveChangRDVPatient',credantials)
+    },
     
 }
