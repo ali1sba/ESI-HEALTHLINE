@@ -131,7 +131,7 @@ module.exports = (app) => {
   app.post('/OrientationMedical', OrientationtMedicalController.createOM)
   app.post('/getOrientationMedical', OrientationtMedicalController.getOrientations)
   // ************************ Evacuation medicalll **********************
-  app.post('/EvacuationMedical', EvacuationMedicalController.createEM)
+  app.post('/EvacuationMedical', EvacuationMedicalController.createEvM)
   app.post('/getEvacuationMedical', EvacuationMedicalController.getEvacuations)
   // ************************ Certificat medicalll **********************
   app.post('/CertificatMedical', CertificatMedicalController.createCM)

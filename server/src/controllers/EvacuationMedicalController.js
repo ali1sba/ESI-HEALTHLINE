@@ -1,7 +1,7 @@
 const { EvacuationMedicalBDD } = require('../models')
 
 module.exports = {
-  async createEM (req, res) {
+  async createEvM (req, res) {
     try {
       const EvacuationMedicalreceived = req.body
       console.log(EvacuationMedicalreceived)
@@ -19,21 +19,21 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to create the users MF ${err}`
+        error: `an error has occured trying to create the users MF Evacuations ${err}`
       })
     }
   },
   async getEvacuations (req, res) {
     try {
       console.log(req.body)
-      const evacuation = await EvacuationMedicalBDD.findAll({
+      const evacuations = await EvacuationMedicalBDD.findAll({
         where: {
           idUser: req.body.id
         }
       })
-      console.log(evacuation)
+      console.log(evacuations)
       res.send({
-        evacuation: evacuation
+        evacuations: evacuations
       })
     } catch (err) {
       res.status(500).send({
