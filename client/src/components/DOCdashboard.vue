@@ -2147,8 +2147,7 @@
                           <el-tag>{{ BEHis.ECG.inter }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
-                          Fichier
-                          <el-tag>{{ BEHis.ECG.file }}</el-tag>
+                          <el-button @click="downloadBeFile(idBE, 'ECG')">Télécharger le fichier: {{ BEHis.ECG.ECGfile }}</el-button>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -2159,8 +2158,7 @@
                           <el-tag>{{ BEHis.EEG.inter }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
-                          Fichier
-                          <el-tag>{{ BEHis.EEG.file }}</el-tag>
+                          <el-button @click="downloadBeFile(idBE, 'EEG')">Télécharger le fichier: {{ BEHis.EEG.EEGfile }}</el-button>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -2171,8 +2169,7 @@
                           <el-tag>{{ BEHis.EMG.inter }}</el-tag>
                         </el-space>
                         <el-space wrap :size="7">
-                          Fichier
-                          <el-tag>{{ BEHis.EMG.file }}</el-tag>
+                          <el-button @click="downloadBeFile(idBE, 'EMG')">Télécharger le fichier: {{ BEHis.EMG.EMGfile }}</el-button>
                         </el-space>
                       </el-space>
                     </el-collapse-item>
@@ -2545,6 +2542,8 @@ export default {
           EMGfile: null
         }
       },
+
+      idBE: null,
 
       BECr: {
         BEtext: {
@@ -2990,14 +2989,26 @@ export default {
     async showBilanElectrique (id) {
       try {
         this.radio2 = 'Historique2'
+        this.idBE = id
         console.log("showBilanElectrique clicked")
         const response = await DocServices.showBilanElectrique({
           id: id,
         });
-        // this.BEHis = response.data.BilanElec
+        this.BEHis = response.data.be
         console.log(response.data)
       } catch (error) {
-        console.log(`something went wrong in showBilanElectrique ${error}`);
+        console.log(`something went wrong in showBilanElectrique ${error}`)
+      }
+    },
+
+    async downloadBeFile (id, str) {
+      try {
+        DocServices.downloadBeFile({
+          id: id,
+          fileCateg: str
+        })
+      } catch (error) {
+        console.log(`something went wrong in downloadBeFile ${str} with error: ${error}`)
       }
     },
 

@@ -48,6 +48,10 @@ export default {
         return Api().post('/DOCdashboard/showBilanElectrique',credantials)
     },
 
+    downloadBeFile (credantials){
+        return Api().post('/DOCdashboard/downloadBeFile',credantials)
+    },
+
     createBilanElectrique (credantials){
         return Api().post('/DOCdashboard/createBilanElectrique',credantials)
     },

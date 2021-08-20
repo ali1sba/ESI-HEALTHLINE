@@ -176,6 +176,7 @@ module.exports = (app) => {
   // Bilans Electriques
   app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
+  app.post('/DOCdashboard/downloadBeFile', DocDashboardController.downloadBeFile)
   app.post('/DOCdashboard/createBilanElectrique', uploadBE.any(), async (req, res) => {
     const BE = {
       motif: req.body.BEMotif,
