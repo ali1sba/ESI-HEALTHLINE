@@ -23,9 +23,25 @@ export default {
     saveDepiInfo (credantials){
         return Api().post('/DOCdashboard/saveDepiInfo',credantials)
     },
-
+    recoverMedicaments (credantials){
+        return Api().post('/DOCdashboard/recoverMedicaments',credantials)
+    },
+    createOrdonnance (credantials){
+        return Api().post('/DOCdashboard/createOrdonnance',credantials)
+    },
+    addpresc (credantials){
+        return Api().post('/DOCdashboard/addpresc',credantials)
+    },
+    recoverOrdonnances (credantials){
+        return Api().post('/DOCdashboard/recoverOrdonnances',credantials)
+    },
+    saveOrdonnance (credantials){
+        return Api().post('/DOCdashboard/saveOrdonnance',credantials)
+    },
+    showOrdonnance (credantials){
+        return Api().post('/DOCdashboard/showOrdonnance',credantials)
+    },
     // ********************* Bilans paraclinique **************************
-
     // BB: Bilans Biologiques
     showBB (credantials){
         return Api().post('/DOCdashboard/showBB',credantials)

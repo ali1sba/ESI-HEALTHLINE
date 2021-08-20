@@ -9,6 +9,7 @@
 --DROP TABLE 'UserNonValides';
 --DROP TABLE 'Users';
 -- DROP TABLE 'biometricInfos';
+ --DROP TABLE 'EvacuationMedicalBDDs';
 --DROP TABLE 'ResetPasswordRequests';
 --DROP TABLE 'BilansBiologiques';
 --DROP TABLE 'BilansECGs';
@@ -20,3 +21,5 @@
 ---INSERT INTO 'BilansBiologiques' VALUES ('3', 'TestMotif3', '9', NULL, NULL, NULL, NULL, NULL, NULL, '3', NULL, NULL, NULL, NULL, NULL, '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');
 ---INSERT INTO 'BilansElectriques' VALUES ('2', 'TestMotifElec2', '9', NULL, NULL, NULL, '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');
 ---INSERT INTO 'Comptes' VALUES ('4', 't@gmail.com', '$2a$08$3mgIiNdSCgygh5qD5x1iLON41pLQppSv0H6fy7562znfZWgEyr34y', 'ADMIN', 'V', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00')
+---INSERT INTO 'Comptes' VALUES ('4', 't@gmail.com', '$2a$08$3mgIiNdSCgygh5qD5x1iLON41pLQppSv0H6fy7562znfZWgEyr34y', 'ADMIN', 'V', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00')
+--DROP TABLE 'Medicaments';
