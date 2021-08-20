@@ -9,6 +9,8 @@ const RapportMedicalController = require('./controllers/RapportMedicalController
 const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
 const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
 const CertificatMedicalController = require('./controllers/CertificatMedicalController')
+const RDVController = require('./controllers/RDVController')
+
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -122,6 +124,7 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  // ************************ rapport medical ***************************
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
   // ************************ Orientation medicalll **********************
@@ -138,4 +141,9 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
   app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
+  // ************************ RDV medical ***************************
+  app.post('/progRDVPatient', RDVController.progRDVPatient)
+  app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
+  app.post('/annulerRDV', RDVController.annulerRDV)
+  app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
 }
