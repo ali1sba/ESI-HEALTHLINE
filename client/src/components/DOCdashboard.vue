@@ -275,7 +275,7 @@
                   <el-radio-button label="Dossier Médical"></el-radio-button>
                   <el-radio-button label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
-                  <el-radio-button label="RDV"></el-radio-button>
+                  <el-radio-button label="RDV" @click="showRDVSelectedPatient"></el-radio-button>
                   <el-radio-button
                     v-show="hidden"
                     label="examen clinique"
@@ -3249,16 +3249,112 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio1 === 'RDV'">
-              <el-card class="box-card">
-                <el-empty :image-size="300">
+              <div v-if="haveRDV">
+                <el-card>
+                   <el-card   class="cardGris">
+                        <el-row>
+                          <el-col :span="7">Type de RDV</el-col>
+                          <el-col :span="10">Date And Time</el-col>
+                          <el-col :span="7">Note</el-col>
+                        </el-row>
+                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button> -->
+                    
+                      </el-card>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Rdv in RDVList" :key="Rdv.id" >
+                      <el-card   class="cardGris">
+                        <el-row>
+                          <el-col :span="7">{{Rdv.Type}}</el-col>
+                          <el-col :span="10">{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="7">{{Rdv.Note}}</el-col>
+                        </el-row>
+                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
+                        <el-button type="" style="align-items: right;" @click="modifRDV(Rdv)">Modifier</el-button>
+                        <el-button type="" style="align-items: right;" @click="annulerRDV(Rdv)">Annuler</el-button>
+                    
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-button
+                  type="primary"
+                    @click="dialogRDVFormVisible = true"
+                    style="background-color: #24b4ab; width: 50%">
+                    programmer un RDV
+                    </el-button>
+                  </el-card>
+                                                <!--form-->
+                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVFormVisible2">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="Note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible2 = false">Annuler</el-button>
+                        <el-button type="primary" @click="saveChangRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
+                  
+              </div>
+
+              <el-card class="box-card"  v-else>
+                <el-empty :image-size="300" >
                   <el-button
                     type="primary"
+                    
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab; width: 100%"
-                    >Créer RDV</el-button
+                    @click="dialogRDVFormVisible = true"
+                    >programmer un RDV</el-button
                   >
+                 
                 </el-empty>
+                
               </el-card>
+               <!-- Form -->
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVFormVisible">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible = false">Annuler</el-button>
+                        <el-button type="primary" @click="progRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
             </el-scrollbar>
             <!-- ********************************************end******************************************** -->
             <center>
@@ -3309,6 +3405,7 @@ import DocServices from "@/services/DocServices.js";
 import RapportMedicalServices from "@/services/RapportMedicalServices.js";
 import OrientationMedicalService from "@/services/OrientationMedicalService.js";
 import CertificatMedicalService from "@/services/CertificatMedicalService.js";
+import RDVServices from "@/services/RDVServices.js";
 import EvacuationMedicalService from "@/services/EvacuationMedicalService.js"
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
@@ -3983,6 +4080,19 @@ export default {
       rapp:[""],
       Cert:[""],
       Orr:[""],
+       //RDV**************************************************************************************************
+      dialogRDVFormVisible:false,
+      dialogRDVFormVisible2:false,
+      formLabelWidth:'120px',
+      haveRDV: false,
+      RDVform: {
+        id:'',
+        idUser:'',
+        typeDeRDV:'',
+        dateAndTime:'',
+        note:'',
+      },
+      RDVList:[],
       Evac:[""],
     };
 
@@ -4009,6 +4119,107 @@ export default {
     });
   },
   methods: {
+
+
+
+    //RDV**********************************************************************************************
+    async progRDVPatient(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        console.log(this.userselected.id)
+        this.dialogRDVFormVisible = false;
+        this.RDVform.idUser = this.userselected.id;
+        const response = await RDVServices.progRDVPatient({
+          form:this.RDVform,
+        })
+        console.log(response.data);
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in programation de RDV patient ${error}`);
+      }
+    }, 
+    async  showRDVSelectedPatient(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        const response = await RDVServices.showRDVSelectedPatient({
+          id:this.userselected.id,
+        })
+        //this.RDVList = response.data.RDVList;
+        //console.log(response.data[0]);
+        //console.log(response.data.RDVList[1]);
+        // response.data.RDVList.forEach(function(element) {
+        //   console.log(element)
+        //   this.RDVList.push(element);
+        // });
+        //this.RDVList=[''];
+        this.RDVList=response.data;
+        console.log(Object.keys(response.data).length);
+        if(!(Object.keys(response.data).length === 0) ){
+          this.haveRDV = true;
+        }else{
+          this.haveRDV = false;
+        }
+        // Object.keys(response.data).forEach(function (key){
+           
+        //  // console.log(key);
+        //   console.log(response.data);
+        //   // this.RDVform.idUser = response.data[key].id;
+        //   // this.RDVform.typeDeVisite = response.data[key].Type;
+        //   // this.RDVform.dateAndTime = response.data[key].DateAndTime;
+        //   // this.RDVform.note = response.data[key].Note;
+        //   // //let y = response.data[key];
+        //   // console.log(this.RDVform.idUser);
+        //  console.log(response.data[key]);
+           
+        
+        // });
+        console.log(this.RDVList);
+      } catch (error) {
+        console.log(`something went wrong in showRDVSelectedPatient ${error}`);
+      }
+    },
+    async saveChangRDVPatient(){
+      try {
+        const response = await RDVServices.saveChangRDVPatient({
+          rdv:this.RDVform,
+        })
+        console.log(response.data);
+        this.dialogRDVFormVisible2=false;
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in supp de RDV patient ${error}`);
+      }
+    }, 
+    async modifRDV(rdv){
+      
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        //this.dialogRDVFormVisible = false;
+        //this.RDVform.idUser = this.userselected.id;
+        this.RDVform.id  = rdv.id;
+        this.RDVform.typeDeRDV = rdv.Type;
+        this.RDVform.dateAndTime = rdv.DateAndTime;
+        this.RDVform.note = rdv.Note;
+        this.dialogRDVFormVisible2 = true;
+        
+    }, 
+    async annulerRDV(rdv){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        //this.dialogRDVFormVisible = false;
+        //this.RDVform.idUser = this.userselected.id;
+        const response = await RDVServices.annulerRDV({
+          id:rdv.id,
+        })
+        console.log(response.data);
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in supp de RDV patient ${error}`);
+      }
+    }, 
+    //*************************************************************************************************
     async printPresc(prescs) {
       let x="";
        for (let i = 0; i < prescs.length; i++) {
