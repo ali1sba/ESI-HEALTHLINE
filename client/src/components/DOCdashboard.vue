@@ -203,7 +203,7 @@
                 </div>
              </div>
             <el-card class="boxRDV">
-              <h4>RDV</h4>
+              <h4>Les rendez-vous d'aujourd'hui :</h4>
               <!--<table class="dashboardTable">
                 <thead class="dashboardTablethead">
                   <tr>
@@ -223,28 +223,55 @@
                   <td class="dashboardTabletd">
                     <p class="status status-unpaid">Annuler</p>
                   </td>
+
+                  id:'',
+        idUser:'',
+        typeDeRDV:'',
+        dateAndTime:'',
+        note:'',
                 </tr> -->
                   <el-table
                   :data="RDVListDash"
                   height="250"
-                  style="width: 70%">
+                  style="width: 96%"
+                  class="dashboardTable">
                   <el-table-column
                     prop="date"
                     label="Date"
-                    width="180">
-                    {{RDVListDash.Type}}
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    </template>
                   </el-table-column>
                   <el-table-column
                     prop="name"
                     label="Name"
-                    width="180">
-                    {{RDVListDash.Note}}
+                    width="180"
+                    >
+                      <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    </template>
                   </el-table-column>
-                  <el-table-column
-                    prop="Situation"
-                    label="Situation">
+                   <el-table-column
+                    prop="Type"
+                    label="Type"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                    </template>
                   </el-table-column>
-                </el-table>
+                   <el-table-column
+                    prop="Note"
+                    label="Note"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table> 
 
                 
              <!-- </table> -->
