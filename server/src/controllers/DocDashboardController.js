@@ -283,29 +283,6 @@ module.exports = {
             intChiru: '',
             reactMed: ''
           },
-          biometricInfo: {
-            poids: null,
-            taille: null,
-            imc: null
-          },
-          antecedentsInfo: {
-            idAI: null,
-            boolFumer: '',
-            boolChiquer: '',
-            boolPrise: '',
-            ancienFum: '',
-            nbrFumer: '',
-            nbrChiquer: '',
-            nbrPrise: '',
-            perExpo: '',
-            alcool: '',
-            medicat: '',
-            autres: '',
-            affec: '',
-            malaGene: '',
-            intChiru: '',
-            reactMed: ''
-          },
           depistagelInfo: {
             idDI: null,
             typeDeVisite: '',
