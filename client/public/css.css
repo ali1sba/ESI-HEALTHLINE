@@ -2501,18 +2501,67 @@ background-color: rgba(36, 180, 171, 0.7);}
   }
   
   /*Resize the wrap to see the search bar change!*/
+  button {
+    font-family: inherit;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .cardDash {
+    background: #fff;
+    width: 400px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    padding: 32px;
+    margin-left: 570px;
+    margin-top: -80px;
+  }
+    .cardInfoPlace{
+      font-size: 14px;
+      color: #2f2f31;
+    }
+    .cardInfoTime{
+      font-size: 30px;
+      color: #22215b;
+    }
+    .cardInfoDate{
+      font-size: 14px;
+      color: #2f2f31;
+    }
+    .cardWeather{
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cardWeatherTemp{
+      font-size: 30px;
+    }
+    .cardWeatherIcon{
+      animation: move 2s infinite alternate ease-in-out;
+    }
+
+  @keyframes move {
+    to {
+      transform: translateY(-10px);
+    }
+  }
+  
   .wrapsearch{
     width: 30%;
     position: absolute;
-    top: 28%;
-    left: 80%;
+    margin-left: 760px;
+    margin-top: -20px;
     transform: translate(-50%, -50%);
   }
   .Datedashboard{
     width: 30%;
     position: absolute;
-    top: 20%;
-    left: 78%;
+    margin-left: 730px;
+    margin-top: -70px;
   }
   
 .cardDash-body{

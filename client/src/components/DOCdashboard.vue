@@ -143,7 +143,24 @@
             <h3 class="WelcomeDoc"> Welcome to healthline! </h3>
             <p class="WelcomeDesc">Have a great day Docteur Merabet</p>
           </div>
-          <h4 style="font-size:17px;" class="Datedashboard">Aujourd'hui est:&nbsp; {{currentDate()}}</h4>
+          <div class="cardDash">
+              <div class="cardInfo">
+               <!-- <p>Sidi Belabes</p>-->
+                <p class="cardInfoTime">Le : {{currentDate()}}</p>
+            <!--    <p>Le: {{currentDate()}}</p>-->
+              </div>
+              <div class="cardWeather">
+                <svg width="34" class="cardWeatherIcon" height="24" viewBox="0 0 34 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M31.7764 13.3718C30.8073 12.1841 29.5779 11.4201 28.0897 11.0793C28.5632 10.3633 28.7992 9.57921 28.7992 8.72709C28.7992 7.52249 28.3664 6.49418 27.5014 5.64182C26.6361 4.78976 25.592 4.36354 24.3688 4.36354C23.2612 4.36354 22.3034 4.71584 21.496 5.42044C20.8155 3.80682 19.7334 2.50001 18.251 1.50001C16.7682 0.500241 15.1152 0 13.2921 0C10.8461 0 8.75757 0.852482 7.02679 2.55703C5.29589 4.26116 4.43071 6.31818 4.43071 8.72727C4.43071 8.89777 4.44229 9.1419 4.46532 9.46011C3.12694 10.0738 2.04801 11.0027 1.22884 12.2473C0.409735 13.4913 0 14.8637 0 16.3637C0 18.4659 0.758789 20.2642 2.27594 21.7583C3.79316 23.2528 5.61918 24 7.75375 24H26.5847C28.4191 24 29.9853 23.3603 31.2836 22.0823C32.5816 20.804 33.2308 19.2615 33.2308 17.4545C33.2306 15.9206 32.7457 14.5591 31.7764 13.3718Z"
+                    fill="#567DF4" />
+                </svg>
+
+                <p class="cardWeatherTemp">18° C</p>
+              </div>
+           </div>
+          <!--<h4 style="font-size:17px;" class="Datedashboard">Aujourd'hui est:&nbsp; {{currentDate()}}</h4>
           <div class="wrapsearch">
             <div class="search">
                 <input type="text" class="searchTerm" placeholder="Yadra ?">
@@ -151,11 +168,11 @@
                   <i class="fa fa-search"></i>
               </button>
             </div>
-         </div>
+         </div> -->
             <div class="cardDash-body color1">
              <div class="floatDash-left">
                 <h3>
-                  <span class="countDash">120</span>
+                  <span class="countDash">219</span>
                 </h3>
                   <p>Patients</p>
                </div>
@@ -187,7 +204,7 @@
              </div>
             <el-card class="boxRDV">
               <h4>RDV</h4>
-              <table class="dashboardTable">
+              <!--<table class="dashboardTable">
                 <thead class="dashboardTablethead">
                   <tr>
                     <th class="dashboardTableth">Name</th>
@@ -197,58 +214,40 @@
                   </tr>
                 </thead>
 
-                <tr class="dashboardTabletr">
+                <tr class="dashboardTabletr" > v-for="Rdv in RDVList" :key="Rdv.id"
                   <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 0</a>
+                    <a href="#" class="dashboardTableA"></a>
                   </td>
                   <td class="dashboardTabletd">1/5/2021</td>
                   <td class="dashboardTabletd">11am</td>
                   <td class="dashboardTabletd">
                     <p class="status status-unpaid">Annuler</p>
                   </td>
-                </tr>
+                </tr> -->
+                  <el-table
+                  :data="RDVListDash"
+                  height="250"
+                  style="width: 70%">
+                  <el-table-column
+                    prop="date"
+                    label="Date"
+                    width="180">
+                    {{RDVListDash.Type}}
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="Name"
+                    width="180">
+                    {{RDVListDash.Note}}
+                  </el-table-column>
+                  <el-table-column
+                    prop="Situation"
+                    label="Situation">
+                  </el-table-column>
+                </el-table>
 
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 1</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-paid">Terminer</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 2</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-pending">Aujourd'hui</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 3</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-pending">Aujourd'hui</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 4</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-paid">Terminer</p>
-                  </td>
-                </tr>
-              </table>
+                
+             <!-- </table> -->
             </el-card> 
           </div>
 
@@ -4085,6 +4084,7 @@ export default {
       dialogRDVFormVisible2:false,
       formLabelWidth:'120px',
       haveRDV: false,
+      haveRDVDash: false,
       RDVform: {
         id:'',
         idUser:'',
@@ -4093,6 +4093,7 @@ export default {
         note:'',
       },
       RDVList:[],
+      RDVListDash:[],
       Evac:[""],
     };
 
@@ -4160,7 +4161,47 @@ export default {
         }else{
           this.haveRDV = false;
         }
-        // Object.keys(response.data).forEach(function (key){
+        // Object.keys(response.data).forEach(function (key){showRDVDashboard
+           
+        //  // console.log(key);
+        //   console.log(response.data);
+        //   // this.RDVform.idUser = response.data[key].id;
+        //   // this.RDVform.typeDeVisite = response.data[key].Type;
+        //   // this.RDVform.dateAndTime = response.data[key].DateAndTime;
+        //   // this.RDVform.note = response.data[key].Note;
+        //   // //let y = response.data[key];
+        //   // console.log(this.RDVform.idUser);
+        //  console.log(response.data[key]);
+           
+        
+        // });
+        console.log(this.RDVList);
+      } catch (error) {
+        console.log(`something went wrong in showRDVSelectedPatient ${error}`);
+      }
+    },
+    async  showRDVDashboard(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        const response = await RDVServices.showRDVDashboard({
+        })
+        //this.RDVList = response.data.RDVList;
+        //console.log(response.data[0]);
+        //console.log(response.data.RDVList[1]);
+        // response.data.RDVList.forEach(function(element) {
+        //   console.log(element)
+        //   this.RDVList.push(element);
+        // });
+        //this.RDVList=[''];
+        this.RDVListDash=response.data;
+        console.log(Object.keys(response.data).length);
+        if(!(Object.keys(response.data).length === 0) ){
+          this.haveRDVDash = true;
+        }else{
+          this.haveRDVDash = false;
+        }
+        // Object.keys(response.data).forEach(function (key){showRDVDashboard
            
         //  // console.log(key);
         //   console.log(response.data);
@@ -4328,6 +4369,7 @@ export default {
             x = x + 1;
           });
           console.log(response.data);
+          this.showRDVDashboard();
         })
         .catch((error) => {
           console.log(error);
