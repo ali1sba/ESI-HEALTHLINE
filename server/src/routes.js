@@ -61,6 +61,7 @@ const storageBE = multer.diskStorage({
 const uploadBE = multer({ storage: storageBE })
 
 const RapportMedicalController = require('./controllers/RapportMedicalController')
+const RDVController = require('./controllers/RDVController')
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -202,8 +203,10 @@ module.exports = (app) => {
     })
   })
   // ************************ RDV medical ***************************
-  // app.post('/progRDVPatient', RDVController.progRDVPatient)
-  // app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
-  // app.post('/annulerRDV', RDVController.annulerRDV)
-  // app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
+  app.post('/progRDVPatient', RDVController.progRDVPatient)
+  app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
+  app.post('/annulerRDV', RDVController.annulerRDV)
+  app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
+  // ******show rdv in dashboard*****
+  app.post('/showRDVDashboard', RDVController.showRDVDashboard)
 }
