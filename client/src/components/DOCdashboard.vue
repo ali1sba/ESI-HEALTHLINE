@@ -2688,7 +2688,8 @@
                 </el-input>
                 </li>
                 </ol>
-                <button @click="addprescinput(); " type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <button @click="addprescinput(); " :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <button @click="removeprescinput();" v-show="prescs.length !=1" type="primary" style="padding:0px 18px 7px ;margin-left:10px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> - </button>
                
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
@@ -2702,20 +2703,22 @@ EMAIL: contact@esi-sba.dz</p>
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
                     v-show="ordcreated === 'not created'">Créer </el-button >
                     <el-button @click="isOrdDisabled=false ;ordcreated='modify' "
-                    v-show="ordcreated ==='created'">
+                    v-show="ordcreated ==='created'" style="flex:50%;">
                     Modifier</el-button> 
                     <el-button
                     type="primary"
                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                    v-show="ordcreated ==='modify'" @click="saveOrdonnance(ordselected); " >Enregistrer  </el-button >
-                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected) "
+                    v-show="ordcreated ==='modify'" @click="saveOrdonnance(ordselected); " 
+                    >Enregistrer  </el-button >
+                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
                     v-show="ordcreated ==='modify'">
                     Annuler</el-button> 
                        <el-button
                    
                     type="primary"
+                    v-show="ordcreated ==='created'"
                      style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
-                    >view pdf </el-button > 
+                    >Voir en format Pdf </el-button > 
                 </div>
 
                 
@@ -4422,6 +4425,10 @@ export default {
       ordonnanceId: "",
       })
     },
+    async removeprescinput() {
+      
+     await this.prescs.pop()
+    },
     
 
      async addpresc(user){
@@ -5096,6 +5103,9 @@ async annulerModificationOrd(ord) {
   color: white;
 }
 .floating {
+  float: left;
+}
+.floatingplus {
   float: left;
 }
 .hovereffect:hover {
