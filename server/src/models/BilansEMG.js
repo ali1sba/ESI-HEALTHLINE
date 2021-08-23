@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('BilansEMG', {
-    localisation: {
+    path: {
       type: DataTypes.STRING
     },
-    type: {
+    inter: {
       type: DataTypes.STRING
     }
   })
