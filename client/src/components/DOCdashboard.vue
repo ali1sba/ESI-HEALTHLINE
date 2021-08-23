@@ -1613,17 +1613,266 @@
               </el-card>
             </el-scrollbar>
             <!-- ****************************examen clinique: ilhem******************************* -->
-            <el-scrollbar v-show="radio1 === 'examen clinique'">
-              <el-card class="box-card">
-                <el-empty :image-size="300">
-                  <el-button
-                    type="primary"
-                    v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab; width: 100%"
-                    >Créer examen clinique</el-button
-                  >
-                </el-empty>
-              </el-card>
+            <el-scrollbar v-show="radio1==='examen clinique'">
+                <el-card class="box-card">
+                  <h6>Examen clinique</h6><br>
+                  <center>
+                     <div>
+                      <el-radio-group v-model="radio3">
+                        <el-radio-button label="Créer"></el-radio-button>
+                        <el-radio-button label="Historique"></el-radio-button>
+                      </el-radio-group>
+                     </div>
+                    </center>
+                  <el-scrollbar v-show="radio3 === 'Créer'" >  
+                  <el-card class="box-card">
+                    <h6>Inspection generale</h6><br>
+                    <el-row>
+                      <el-col :span="6">Temperature</el-col>
+                      <el-col :span="4"><el-input v-model="temp" placeholder="temp"></el-input></el-col> 
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">Peau et teguments</el-col>
+                      <el-col :span="6">
+                         <el-select v-model="peau" placeholder="Selectionner">
+                         <el-option label="normo coloree" value="1"></el-option>
+                         <el-option label="Anormale" value="2"></el-option>
+                      </el-select>
+                      </el-col>
+                      <el-col v-if="isEnabledPT" :span="6">
+                       <el-input v-model="anomaliePeau" placeholder="type d'anomalie"></el-input>
+                      </el-col>
+                    </el-row>
+                  </el-card>
+                  <!-- ________________________________________________________________________ -->
+                  <el-card class="box-card">
+                   <h6>Examen cardio-vesculaire</h6>
+                   <el-row>
+                     <el-col :span="6">Inspection</el-col>
+                     <el-col :span="6"><el-input v-model="inspCardio" placeholder=".."></el-input></el-col>
+                   </el-row>
+                   <el-row>
+                     <el-col :span="6">Ausculation</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="auscuCardio" placeholder="Selectionner">
+                         <el-option label="normale" value="1"></el-option>
+                         <el-option label="Anormale" value="2"></el-option>
+                      </el-select>
+                     </el-col>
+                   </el-row>
+                   <el-row v-if="isEnabledACV"  >
+                     <el-col :span="6">Anomalie</el-col>
+                     <el-col :span="18">
+                       <el-select v-model="anomalieSouffle" placeholder="Souffle">
+                             <el-option label="< 2/6" ></el-option>
+                             <el-option label="= 3>6" ></el-option>
+                             <el-option label=">= 4/6" ></el-option>
+                        </el-select>
+                        <el-select v-model="anomalieType" placeholder="Type">
+                             <el-option label="Systiloque" ></el-option>
+                             <el-option label="Diastolique" ></el-option>
+                        </el-select> 
+                        <el-select v-model="anomalieBruits" placeholder="Bruits cardiaques">
+                             <el-option label="Eclat de b1" ></el-option>
+                             <el-option label="Assourdissement" ></el-option>
+                        </el-select> 
+                     </el-col>
+                   </el-row>
+                   <el-row>
+                     <el-col :span="6">pouls peripheriques</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="poulsPeri" placeholder="selectionner">
+                             <el-option label="Percus" ></el-option>
+                             <el-option label="Abolis" ></el-option>
+                        </el-select> 
+                     </el-col>
+                     <el-col v-if="isEnabledPCV" :span="9"><el-input  v-model="anomaliePoulsPeri" placeholder=".."></el-input></el-col>
+                   </el-row>
+                   <el-row>
+                      <el-col :span="6">Tension Artecielle</el-col>
+                      <el-col :span="6"><el-input v-model="tensionArt" placeholder=".."></el-input></el-col>
+                   </el-row>
+                   <el-row>
+                      <el-col :span="6">Frequence cardiaque</el-col>
+                      <el-col :span="6"><el-input v-model="freqCard" placeholder=".."></el-input></el-col>
+                   </el-row>
+                  </el-card>
+                   <!-- ___________________________________________________________________________- -->
+                  <el-card class="box-card">
+                    <h6>Examen pleuropulmonaire</h6>
+                    <el-row>
+                     <el-col :span="6">Inspection</el-col>
+                     <el-col :span="6"><el-input v-model="inspPulmo" placeholder=".."></el-input></el-col>
+                   </el-row>
+                   <el-row>
+                      <el-col :span="6">Frequence  pulmonaire</el-col>
+                      <el-col :span="6"><el-input v-model="freqPulmo" placeholder=".."></el-input></el-col>
+                   </el-row>
+                    <el-row>
+                     <el-col :span="6">Palpation</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="palpPulmo" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Abolis" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledPAP" :span="9"><el-input v-model="anomaliePalpPulmo" placeholder=".."></el-input></el-col>
+                    </el-row>
+                    <el-row>
+                     <el-col :span="6">Percution</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="percuPulmo" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Abolis" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledPEP" :span="9"><el-input v-model="anomaliePercuPulmo" placeholder=".."></el-input></el-col>
+                    </el-row>
+                    <el-row>
+                     <el-col :span="6">Ausculation</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="auscuPulmo" placeholder="Selectionner">
+                         <el-option label="normale" ></el-option>
+                         <el-option label="Anormale" ></el-option>
+                      </el-select>
+                     </el-col>
+                   </el-row>
+                   <el-row v-if="isEnabledAP" > 
+                     <el-col :span="6">Anomalie</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="murmureViscu" placeholder="Murmure visiculaire">
+                         <el-option label="Abolis" ></el-option>
+                         <el-option label="Exagéré" ></el-option>
+                      </el-select>
+                     </el-col>
+                     <el-col :span="4"><el-checkbox v-model="checkedRales">Rales</el-checkbox></el-col>
+                     <el-col v-if="isEnabledAPR" :span="6">
+                        <el-select  v-model="locaRales" placeholder="Localisation">
+                         <el-option label="Ronflants" ></el-option>
+                         <el-option label="Crépitant" ></el-option>
+                         <el-option label="Sibilant"></el-option>
+                      </el-select>
+                     </el-col>
+                   </el-row>
+                  </el-card>
+                  <!-- ___________________________________________________________________________________ -->
+                  <el-card class="box-card">
+                   <h6>Examen abdominale</h6>
+                   <el-row>
+                      <el-col :span="6">Inspection</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="inspAbdo" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Anormale" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledIAB" :span="9"><el-input v-model="anomalieAbdo" placeholder="Anomalie?"></el-input></el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">palpation</el-col>
+                     <el-col :span="6">
+                       <el-select v-model="pulpAbdo" placeholder="selectionner">
+                             <el-option label="mepatomegalie" ></el-option>
+                             <el-option label="splenomegalie" ></el-option>
+                             <el-option label="Asaite" ></el-option>
+                             <el-option label="Masse" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledPAB" v-model="pulpMasse" :span="9">
+                       <el-input v-model="localiMasse" placeholder="Localisation"></el-input>
+                       <el-input v-model="ralesMasse" placeholder="Rales"></el-input>
+                       <el-input v-model="autreMasse" placeholder="Autre"></el-input>
+                       </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">Percution</el-col>
+                      <el-col :span="6"><el-input v-model="percuAbdo" placeholder=".."></el-input></el-col>
+                   </el-row>
+                  </el-card>
+                  <!-- ________________________________________________________________________________ -->
+                  <el-card class="box-card">
+                    <h6>Examen neurologique</h6>
+                    <el-row>
+                      <el-col :span="6">Sensibilite</el-col>
+                      <el-col :span="6">
+                       <el-select v-model="sensiNeuro" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Anormale" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledSN" :span="9"><el-input v-model="anomalieSensiNeuro" placeholder="Anomalie?"></el-input></el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">Matriticite</el-col>
+                      <el-col :span="6">
+                       <el-select v-model="matriNeuro" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Anormale" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledMN" :span="9"><el-input v-model="anomaieMatriNeuro" placeholder="Anomalie?"></el-input></el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">Troubles sylincteries</el-col>
+                      <el-col :span="6">
+                       <el-select v-model="troublesNeuro" placeholder="selectionner">
+                             <el-option label="Non" ></el-option>
+                             <el-option label="Oui" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledTN" :span="9"><el-input v-model="anomalieTroublesNeuro" placeholder=".."></el-input></el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">Oriantation</el-col>
+                      <el-col :span="6">
+                       <el-select v-model="orientNeuro" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Anormale" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                     <el-col v-if="isEnabledON" :span="9"><el-input v-model="anomalieOrientNeuro" placeholder="Anomalie?"></el-input></el-col>
+                    </el-row>
+                  </el-card>
+                  <!-- ________________________________________________________________________________________ -->
+                  <el-card class="box-card">
+                    <h6>Examen ORL</h6>
+                    <el-row>
+                      <el-col :span="6">Gorge</el-col>
+                      <el-col :span="6">
+                       <el-select v-model="gorgeORL" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Angine" ></el-option>
+                             <el-option label="Pharyngite" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                    </el-row>
+                    <el-row>
+                      <el-col :span="6">Auriculaire</el-col>
+                      <el-col :span="6">
+                       <el-select v-model="auricuORL" placeholder="selectionner">
+                             <el-option label="Normale" ></el-option>
+                             <el-option label="Otite" ></el-option>
+                        </el-select> 
+                     </el-col> 
+                    </el-row>
+                  </el-card>
+                  <!-- _____________________________________________________________________________________ -->
+                  <el-card class="box-card"> 
+                   <el-row>
+                     <el-col :span="6">Examen urogenitale</el-col>
+                     <el-col :span="18"><el-input v-model="examenUrogeni" placeholder=".." type="textarea" autorise></el-input></el-col>
+                   </el-row>
+                    <el-row>
+                     <el-col :span="6">Remarques</el-col>
+                     <el-col :span="18"><el-input v-model="remarqueCli" placeholder=".." type="textarea" autorise></el-input></el-col>
+                   </el-row>
+                  </el-card>
+                  <el-button type="success" icon="el-icon-check"  @click="saveExamenClinique">sauvgarder</el-button>
+                  </el-scrollbar>
+                  <el-scrollbar v-show="radio3 === 'Historique'">
+                    historique
+                  </el-scrollbar>
+                </el-card>
             </el-scrollbar>
             <!-- ****************************bilan paraclinique: mahdi + rania******************************* 
              <el-scrollbar v-show="radio1==='bilan paraclinique'">
@@ -1660,10 +1909,7 @@
                       </el-card>
                     </el-col>
                     <el-col :span="8">
-                      <el-card
-                        @click="radio1 = 'Bilans électriques'"
-                        class="bilancard électri"
-                      >
+                      <el-card @click="showBE(userselected)" class="bilancard électri">
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans électriques</h3>
                         <p>Nombre de bilans :</p>
@@ -2469,42 +2715,162 @@
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
-                </center>
+                </center>                
+                <el-scrollbar  v-show="radio2==='Historique'">
+                  <el-card>
+                    <el-table
+                      :data="tableDataBE"
+                      style="width: 100%"
+                      height="250">
 
-                <el-scrollbar v-show="radio2 === 'Historique'">
-                  <el-table
-                    :data="tableDataBE"
-                    style="width: 100%"
-                    height="250"
-                  >
-                    <el-table-column fixed prop="numero" label="N" width="50">
-                    </el-table-column>
-                    <el-table-column prop="motif" label="Motif" width="200">
-                    </el-table-column>
-                    <el-table-column prop="date" label="Date" width="150">
-                    </el-table-column>
-                    <el-table-column
-                      prop="bilans"
-                      label="Bilans présents"
-                      width="400"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                      fixed="right"
-                      label="Opérations"
-                      width="120"
-                    >
-                      <template #default="">
-                        <el-button
-                          @click="showBilanBiologique"
-                          type="text"
-                          size="small"
-                        >
-                          Consulter
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                      <el-table-column
+                        label="N"
+                        width="50">
+                        <template #default="scope">
+                          <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                          label="Motif"
+                          width="150">
+                          <template #default="scope">
+                            <span style="margin-left: 10px">{{ scope.row.motif }}</span>
+                          </template>
+                      </el-table-column>
+
+                      <el-table-column
+                        label="Date"
+                        width="150">
+                        <template #default="scope">
+                            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                          label="Bilans présents"
+                          width="300">
+                        Texte
+                      </el-table-column>
+
+                      <el-table-column
+                        label="Opérations"
+                        width="150">
+                        <template #default="scope">
+                          <el-button
+                            size="mini"
+                            @click="showBilanElectrique(scope.row.id)">Consulter</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </el-card>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Historique2'">
+                  <el-space>
+                    Motif
+                    <el-tag>{{ BEHis.Motif }}</el-tag>
+                  </el-space>
+                  <el-space>
+                    Date de création
+                    <el-tag>{{ BEHis.Date }}</el-tag>
+                  </el-space>
+                  <el-collapse>
+                    <el-collapse-item title="ECG" name="1">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.ECG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'ECG')">Télécharger le fichier: {{ BEHis.ECG.ECGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EEG" name="2">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EEG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'EEG')">Télécharger le fichier: {{ BEHis.EEG.EEGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EMG" name="3">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EMG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'EMG')">Télécharger le fichier: {{ BEHis.EMG.EMGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                  </el-collapse>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Créer'">
+                  <form @submit.prevent="createBilanElectrique" enctype="multipart/form-data">
+                    <el-space>
+                      Motif
+                      <el-input type="textarea" v-model="BECr.BEtext.Motif"></el-input>
+                    </el-space>
+                    <el-collapse>
+                      <el-collapse-item title="ECG" name="1">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.ECGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
+                              <el-button @click="clearECGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EEG" name="2">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EEGinter">></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
+                              <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EMG" name="3">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EMGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
+                              <el-button @click="clearEMGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                    </el-collapse>
+                    <br>
+                    <button class="btn btn-danger btn-block">Enregistrer</button>
+                  </form>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -2932,6 +3298,8 @@ export default {
 
       // Bilans paracliniques: BB-BR-BE
       tableDataBB: [],
+      tableDataBR: [],
+      tableDataBE: [],
       hivOptions: [{
           value: 'Positif',
           label: 'Positif'
@@ -3120,8 +3488,44 @@ export default {
         },
         autre: null
       },
-      tableDataBR: [],
-      tableDataBE: [],
+
+      BEHis: {
+        Motif: null,
+        Date: null,
+        ECG: {
+          inter: null,
+          ECGfile: null
+        },
+        EEG: {
+          inter: null,
+          EEGfile: null
+        },
+        EMG: {
+          inter: null,
+          EMGfile: null
+        }
+      },
+
+      idBE: null,
+
+      BECr: {
+        BEtext: {
+          Motif: null,
+          idP: null,
+          inter: {
+            ECGinter: null,
+            EEGinter: null,
+            EMGinter: null,
+          }
+        },
+        BEfile: {
+          ECGfile: null,
+          EEGfile: null,
+          EMGfile: null
+        }
+      },
+
+      fileListTest: [],
 
       bgOptions: [
         {
@@ -3517,7 +3921,68 @@ export default {
       },
       cashedUserAnt: "",
       isDisabledAnts: true,
-      
+      //examen clinique*********************************************************************************
+  examenClinique: {
+  temp: "",
+  peau: "",
+  anomaliePeau:"",
+  inspCardio:"",
+  auscuCardio: "",
+  anomalieAuscuCardio: "",
+  anomalieSouffle: "",
+  anomalieType: "",
+  anomalieBruits: "", 
+  poulsPeri: "",
+  anomaliePoulsPeri: "",
+  tensionArt: "",
+  freqCard: "",
+  inspPulmo: "",
+  freqPulmo: "",
+  palpPulmo: "",
+  anomaliePalpPulmo: "",
+  percuPulmo: "",
+  anomaliPercuPulmo: "",
+  auscuPulmo: "",
+  anomalieAuscuPulmo: "",
+  murmurViscu: "",
+  checkedRales: "",
+  locaRales: "",
+  inspAbdo: "",
+  anomalieAbdo: "",
+  pulpAbdo: "",
+  pulpMasse: "",
+  localiMasse: "",
+  ralesMasse: "",
+  autreMasse: "",
+  percuAbdo: "",
+  sensiNeuro: "",
+  anomalieSensiNeuro: "",
+  matriNeuro: "",
+  anomalieMatriNeuro: "",
+  troublesNeuro: "",
+  anomalieTroublesNeuro: "",
+  orientNeuro: "",
+  anomalieOrientNeuro:"",
+  gorgeORL: "",
+  auricuORL: "",
+  examenUrogeni: "",
+  remarqueCli: "",
+ },
+ isEnabledPT:"false",
+ isEnabledACV:"false",
+ isEnabledPCV:"false",
+ isEnabledPAP:"false",
+ isEnabledPEP:"false",
+ isEnabledAP:"false",
+ isEnabledAPR:"false",
+ isEnabledIAB:"false",
+ isEnabledPAB:"false",
+ isEnabledSN:"false",
+ isEnabledMN:"false",
+ isEnabledTN:"false",
+ isEnabledON:"false",
+ radio3: "Créer",
+ 
       //Ordonnance
        ordselected :"none",
        ords:[],
@@ -3647,6 +4112,105 @@ export default {
         console.log(response.data)
       } catch (error) {
         console.log(`something went wrong in createBilanBiologique ${error}`);
+      }
+    },
+
+    // Bilans paracliniques -> showBE from Bilans Electriques table
+    async showBE (user) {
+      try {
+        this.radio1 = 'Bilans électriques'
+        this.radio2 = 'Historique'
+        this.BECr.BEtext.idP = user.id
+        const response = await DocServices.showBE({
+          id: user.id,
+        });
+        this.tableDataBE = response.data.be
+      } catch (error) {
+        console.log(`something went wrong in showBB ${error}`);
+      }
+    },
+
+    // Bilans paracliniques -> showBE from ALL Bilans Biologiques tables
+    async showBilanElectrique (id) {
+      try {
+        this.radio2 = 'Historique2'
+        this.idBE = id
+        console.log("showBilanElectrique clicked")
+        const response = await DocServices.showBilanElectrique({
+          id: id,
+        });
+        this.BEHis = response.data.be
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in showBilanElectrique ${error}`)
+      }
+    },
+
+    async downloadBeFile (id, str) {
+      try {
+        DocServices.downloadBeFile({
+          id: id,
+          fileCateg: str
+        })
+      } catch (error) {
+        console.log(`something went wrong in downloadBeFile ${str} with error: ${error}`)
+      }
+    },
+
+    onFileChangeECG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.ECGfile = selectedFile;
+      console.log(this.BECr.BEfile.ECGfile)
+    },
+    clearECGFile() {
+      this.$refs.ECGfile.value = null
+      this.BECr.BEfile.ECGfile = null
+    },
+
+    onFileChangeEEG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.EEGfile = selectedFile;
+      console.log(this.BECr.BEfile.EEGfile)
+    },
+    clearEEGFile() {
+      this.$refs.EEGfile.value = null
+      this.BECr.BEfile.EEGfile = null
+    },
+
+    onFileChangeEMG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.EMGfile = selectedFile;
+      console.log(this.BECr.BEfile.EMGfile)
+    },
+    clearEMGFile() {
+      this.$refs.EMGfile.value = null
+      this.BECr.BEfile.EMGfile = null
+    },
+
+    async createBilanElectrique () {
+      try {
+        const formData = new FormData()
+        formData.append('BEMotif', this.BECr.BEtext.Motif)
+        formData.append('idPatient', this.BECr.BEtext.idP)
+        formData.append('BEinterECG', this.BECr.BEtext.inter.ECGinter)
+        formData.append('BEinterEEG', this.BECr.BEtext.inter.EEGinter)
+        formData.append('BEinterEMG', this.BECr.BEtext.inter.EMGinter)
+        formData.append('ECG', this.BECr.BEfile.ECGfile)
+        formData.append('EEG', this.BECr.BEfile.EEGfile)
+        formData.append('EMG', this.BECr.BEfile.EMGfile)
+        console.log("createBilanElectrique clicked")
+  
+        // const BEtext = this.BECr.BEtext.Motif
+        // console.log(BEtext)
+
+        const response = await DocServices.createBilanElectrique(formData)
+        // this.messageBECr = "Bilans électrique enregistré"
+        // clearECGFile()
+        // clearEEGFile()
+        // clearEMGFile()
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in createBilanElectrique ${error}`);
       }
     },
 
@@ -4910,8 +5474,60 @@ async annulerModificationOrd(ord) {
     }
   },
    
-   
-  
+      // examen clinique functions*****************************************************
+   async saveExamenClinique(user){
+     try{
+       const response = await DocServices.saveExamenClinique({
+         id: user.id,
+         ExamenClinique: this.examenClinique
+       });
+       console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+     }
+   },
+  // examen clinique enabling hidden anomalie inputs ************************ ***************  
+    enableInputs(test){
+      if (test == 'PT'){
+       this.isEnabledPT = true;
+      }
+      else if (test =='ACV'){
+        this.isEnabledACV = true;
+      }
+      else if (test == 'PCV'){
+        this.isEnabledPCV = true;
+      }
+      else if (test == 'PAP'){
+        this.isEnabledPAP = true;
+      }
+      else if (test == 'PEP'){
+        this.isEnabledPEP = true;
+      }
+      else if (test == 'AP'){
+        this.isEnabledAP = true;
+      }
+      else if (test == 'APR'){
+        this.isEnabledAPR = true;
+      }
+      else if (test == 'IAB'){
+        this.isEnabledIAB = true;
+      }
+      else if (test == 'PAB'){
+        this.isEnabledPAB = true;
+      }
+      else if (test == 'SN'){
+        this.isEnabledSN = true;
+      }
+      else if (test == 'MN'){
+        this.isEnabledMN = true;
+      }
+      else if (test == 'TN'){
+        this.isEnabledTN = true;
+      }
+      else if (test == 'ON'){
+        this.isEnabledON = true;
+      }
+   },
 };
 
 
@@ -5112,4 +5728,29 @@ async annulerModificationOrd(ord) {
   transform: scale(1.1);
   box-shadow: 0 9px 7px 11px rgba(4, 255, 221, 0.18);
 }
+/* css orientation */
+.evacu 
+{ background-image: url('https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=753&q=80');}
+.certif
+{background-image: url('https://images.unsplash.com/photo-1586001549061-24156ffd6742?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80');}
+.orient
+{image-resolution: 20;
+  background-image: url('https://images.unsplash.com/photo-1512069511692-b82d787265cf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=399&q=80');}
+.orientcard h3, .bilancard p{
+  color: white;
+  text-shadow: 2px 2px 8px grey;
+}
+.orientcard { 
+  align-items: center ;
+  text-align: center;
+  margin: 5%;
+  background-size: cover;
+  border: none;
+}
+
+.orientcard i {
+  font-size: 5rem;
+  color: white;
+}
+
 </style>

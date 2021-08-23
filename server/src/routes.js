@@ -5,6 +5,61 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+
+const { uuid } = require('uuidv4')
+const { BilansECG } = require('./models')
+const { BilansEEG } = require('./models')
+const { BilansEMG } = require('./models')
+const { BilansElectrique } = require('./models')
+var idECG = ''
+var idEEG = ''
+var idEMG = ''
+
+// Upload files
+const multer = require('multer')
+const storageBE = multer.diskStorage({
+  destination: (req, file, cb) => {
+    if (file.fieldname === 'ECG') {
+      cb(null, './uploads/BilansElec/ECG')
+    } else if (file.fieldname === 'EEG') {
+      cb(null, './uploads/BilansElec/EEG')
+    } else if (file.fieldname === 'EMG') {
+      cb(null, './uploads/BilansElec/EMG')
+    }
+  },
+  filename: async (req, file, cb) => {
+    if (file.fieldname === 'ECG') {
+      const filePath = `${uuid()}-${file.originalname}`
+      cb(null, filePath)
+      const ECG = {
+        inter: req.body.BEinterECG,
+        path: `uploads/BilansElec/ECG/${filePath}`
+      }
+      const BEecg = await BilansECG.create(ECG)
+      idECG = BEecg.id
+    } else if (file.fieldname === 'EEG') {
+      const filePath = `${uuid()}-${file.originalname}`
+      cb(null, filePath)
+      const EEG = {
+        inter: req.body.BEinterEEG,
+        path: `uploads/BilansElec/EEG/${filePath}`
+      }
+      const BEeeg = await BilansEEG.create(EEG)
+      idEEG = BEeeg.id
+    } else if (file.fieldname === 'EMG') {
+      const filePath = `${uuid()}-${file.originalname}`
+      cb(null, filePath)
+      const EMG = {
+        inter: req.body.BEinterEMG,
+        path: `uploads/BilansElec/EMG/${filePath}`
+      }
+      const BEemg = await BilansEMG.create(EMG)
+      idEMG = BEemg.id
+    }
+  }
+})
+const uploadBE = multer({ storage: storageBE })
+
 const RapportMedicalController = require('./controllers/RapportMedicalController')
 // const { Compte } = require('./models')
 // const passport = require('passport')
@@ -126,4 +181,29 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
   app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
+
+  // Bilans Electriques
+  app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
+  app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
+  app.post('/DOCdashboard/downloadBeFile', DocDashboardController.downloadBeFile)
+  app.post('/DOCdashboard/createBilanElectrique', uploadBE.any(), async (req, res) => {
+    const BE = {
+      motif: req.body.BEMotif,
+      idPatient: req.body.idPatient
+    }
+    const BECr = await BilansElectrique.create(BE)
+    BECr.idECG = idECG
+    BECr.idEEG = idEEG
+    BECr.idEMG = idEMG
+    await BECr.save()
+    res.send({
+      file: req.files,
+      body: req.body
+    })
+  })
+  // ************************ RDV medical ***************************
+  // app.post('/progRDVPatient', RDVController.progRDVPatient)
+  // app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
+  // app.post('/annulerRDV', RDVController.annulerRDV)
+  // app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
 }
