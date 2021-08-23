@@ -2663,13 +2663,26 @@
                       ></el-input></el-col
                   ></el-row>
                   <el-row>
+                        <el-col :span="3"> Orientation vers: </el-col>
+                        <el-select v-model="OrientationMedical.OrientVers" placeholder="Orientation vers">
+                          <el-option label="Orientation 1" value="Orientation 1"></el-option>
+                          <el-option label="Orientation 2" value="Orientation 2"></el-option>
+                          <el-option label="Orientation 3" value="Orientation 3"></el-option>
+                          <el-option label="Orientation 4" value="Orientation 4"></el-option>
+                          <el-option label="Orientation 5" value="Orientation 5"></el-option>
+                          <el-option label="Orientation 7" value="Orientation 7"></el-option>
+                          <el-option label="Orientation 6" value="Orientation 6"></el-option>
+                          <el-option label="Orientation 8" value="Orientation 8"></el-option>
+                        </el-select>
+                    </el-row>
+                  <!--<el-row>
                     <el-col :span="3"> Orientation vers: </el-col
                     ><el-col :span="21">
                       <el-input
                         placeholder="Histoire de la Maladie"
                         v-model="OrientationMedical.OrientVers"
                       ></el-input></el-col
-                  ></el-row>
+                  ></el-row>-->
                   <center>
                     <el-button
                       @click="creepdf2()"
@@ -2740,13 +2753,18 @@
                       ></el-input></el-col
                   ></el-row>
                    <el-row>
-                    <el-col :span="3"> Evacué Vers : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Motif"
-                        v-model="EvacuationMedical.EvacVers"
-                      ></el-input></el-col
-                  ></el-row>          
+                  <el-col :span="3"> Evacuation vers: </el-col>
+                        <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
+                          <el-option label="Evacuation 1" value="Evacuation 1"></el-option>
+                          <el-option label="Evacuation 2" value="Evacuation 2"></el-option>
+                          <el-option label="Evacuation 3" value="Evacuation 3"></el-option>
+                          <el-option label="Evacuation 4" value="Evacuation 4"></el-option>
+                          <el-option label="Evacuation 5" value="Evacuation 5"></el-option>
+                          <el-option label="Evacuation 7" value="Evacuation 7"></el-option>
+                          <el-option label="Evacuation 6" value="Evacuation 6"></el-option>
+                          <el-option label="Evacuation 8" value="Evacuation 8"></el-option>
+                        </el-select>
+                    </el-row>         
                   <center>
                     <el-button
                       @click="creepdf3()"
