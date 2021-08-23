@@ -3351,6 +3351,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 import RapportMedicalServices from "@/services/RapportMedicalServices.js";
+import RDVServices from "@/services/RDVServices.js"
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
