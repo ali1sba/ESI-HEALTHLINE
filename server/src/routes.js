@@ -61,11 +61,6 @@ const storageBE = multer.diskStorage({
 const uploadBE = multer({ storage: storageBE })
 
 const RapportMedicalController = require('./controllers/RapportMedicalController')
-const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
-const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
-const CertificatMedicalController = require('./controllers/CertificatMedicalController')
-const RDVController = require('./controllers/RDVController')
-
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -179,24 +174,13 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
-  // ************************ rapport medical ***************************
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
-  // ************************ Orientation medicalll **********************
-  app.post('/OrientationMedical', OrientationtMedicalController.createOM)
-  app.post('/getOrientationMedical', OrientationtMedicalController.getOrientations)
-  // ************************ Evacuation medicalll **********************
-  app.post('/EvacuationMedical', EvacuationMedicalController.createEvM)
-  app.post('/getEvacuationMedical', EvacuationMedicalController.getEvacuations)
-  // ************************ Certificat medicalll **********************
-  app.post('/CertificatMedical', CertificatMedicalController.createCM)
-  app.post('/getCertificatMedical', CertificatMedicalController.getCertificats)
   // ************************ Bilans paracliniques **********************
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
   app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
-
   // Bilans Electriques
   app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
