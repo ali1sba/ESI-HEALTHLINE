@@ -905,7 +905,6 @@ a {
   background-color: #000;
   border-radius: 0.25rem;
 }
-
 .popover {
   position: absolute;
   top: 0;
@@ -1107,7 +1106,6 @@ a {
   clear: both;
   content: "";
 }
-
 .carousel-item {
   position: relative;
   display: none;
@@ -1304,7 +1302,6 @@ a {
 .carousel-indicators .active {
   opacity: 1;
 }
-
 .carousel-caption {
   position: absolute;
   right: 15%;
@@ -2431,6 +2428,132 @@ padding-top: 15px;
 #btn-notifs
 {
   margin-right: 10px;
+}
+.el-dropdown .el-button-group .el-button {
+  float: none;
+  border-radius: 50%;
+  padding: 10px;
+  margin-left: 10px;
+  border:none;
+  font-size: 20px;
+background-color: rgba(36, 180, 171, 0.7);}
+ #app{
+   width: 100vw;
+   height: 100vh;
+ }
+ .el-input.is-disabled .el-input__inner {
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #0d0619;
+  cursor: none;
+}
+/*Home*/
+.WelcomeDoc {
+  font-weight: 600;
+  color: #000 !important; }
+.WelcomeDesc{
+ font-size: 18px !important;
+ line-height: 1.5;
+ margin-bottom: 0 !important;
+ }
+.WelcomingSection{
+  margin-top: 20px;
+  margin-left: 40px ;
+  display: block;
+  float: none;
+
+  }
+  /* recherche bar */
+  .search {
+    width: 100%;
+    position: relative;
+    display: flex;
+  }
+  
+  .searchTerm {
+    width: 100%;
+    border: 3px solid #00B4CC;
+    border-right: none;
+    padding: 5px;
+    height: 35px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+  }
+  
+  .searchTerm:focus{
+    color: #00B4CC;
+  }
+  
+  .searchButton {
+    width: 40px;
+    height: 36px;
+    border: 1px solid #00B4CC;
+    background: #00B4CC;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  /*Resize the wrap to see the search bar change!*/
+  .wrapsearch{
+    width: 30%;
+    position: absolute;
+    top: 28%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+  }
+  .Datedashboard{
+    width: 30%;
+    position: absolute;
+    top: 20%;
+    left: 78%;
+  }
+  
+.cardDash-body{
+display: inline-block;
+font-family: "Roboto", sans-serif;
+background:#00C292;
+margin: 39px;
+padding: 20px;
+width: 250px;
+height: 150px;
+color: #fff;
+border-radius: 5px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.color1{
+background:#00C292
+}
+.color2{
+background:#ff9ba8
+}
+.color3{
+background:#8b89ff
+}
+.floatDash-left{
+float: left;
+}
+.floatDash-right{
+float: right;
+}
+.cardDash-body h3{
+margin-top: 15px;
+margin-bottom: 5px;
+}
+.countDash{
+font-size: 30px;
+font-weight: 500;
+}
+.cardDash-body p{
+font-size: 16px;
+margin-top: 0;
+}
+.floatDash-right i{
+font-size: 95px;
+opacity: 0.5;
 }
 .el-dropdown .el-button-group .el-button {
   float: none;
