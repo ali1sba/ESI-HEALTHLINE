@@ -8,11 +8,12 @@ const { PersonalInfo } = require('../models')
 const { BiometricInfo } = require('../models')
 const { AntecedentsInfo } = require('../models')
 const { Depistage } = require('../models')
+const { ExamenClinique } = require('../models')
 const { Medicament } = require('../models')
 const { Ordonnance } = require('../models')
 const { Prescription } = require('../models')
 
-// Bilans paracliniques
+// *************** Bilans paracliniques ***************
 // Bilans Biologiques
 const { BilansBiologique } = require('../models')
 const { BilansBCardiaque } = require('../models')
@@ -26,6 +27,13 @@ const { BilansBNFS } = require('../models')
 const { BilansBRenale } = require('../models')
 const { BilansBSerologie } = require('../models')
 const { BilansBUrinaire } = require('../models')
+// Bilans Electriques
+const { BilansECG } = require('../models')
+const { BilansEEG } = require('../models')
+const { BilansEMG } = require('../models')
+const { BilansElectrique } = require('../models')
+// const fs = require('fs')
+const path = require('path')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -756,6 +764,111 @@ module.exports = {
       })
     }
   },
+  // examen clinique save function *********************************************************************
+  async saveExamenClinique (req, res) {
+    try {
+      const UserId = req.body.id
+      const ExmCli = {
+        patientId: UserId,
+        temp: null,
+        peau: null,
+        anomaliePeau: null,
+        inspCardio: null,
+        auscuCardio: null,
+        anomalieSouffle: null,
+        anomalieType: null,
+        anomalieBruits: null,
+        poulsPeri: null,
+        anomaliePoulsPeri: null,
+        tensionArt: null,
+        freqCard: null,
+        inspPulmo: null,
+        freqPulmo: null,
+        palpPulmo: null,
+        anomaliePalpPulmo: null,
+        percuPulmo: null,
+        anomaliePercuPulmo: null,
+        auscuPulmo: null,
+        murmurViscu: null,
+        checkedRales: null,
+        locaRales: null,
+        inspAbdo: null,
+        anomalieAbdo: null,
+        pulpAbdo: null,
+        pulpMasse: null,
+        localiMasse: null,
+        ralesMasse: null,
+        autreMasse: null,
+        percuAbdo: null,
+        sensiNeuro: null,
+        anomalieSensiNeuro: null,
+        matriNeuro: null,
+        anomalieMatriNeuro: null,
+        troublesNeuro: null,
+        anomalieTroublesNeuro: null,
+        orientNeuro: null,
+        anomalieOrientNeuro: null,
+        gorgeORL: null,
+        auricuORL: null,
+        examenUrogeni: null,
+        remarqueCli: null
+      }
+      const examenCliniqueCreation = await ExamenClinique.create(ExmCli)
+      const EC = examenCliniqueCreation.toJSON()
+      const exmCliInfo = await ExamenClinique.findOne({
+        where: {
+          id: UserId
+        }
+      })
+      exmCliInfo.temp = UserId.temp
+      exmCliInfo.peau = UserId.peau
+      exmCliInfo.anomaliePeau = UserId.anomaliePeau
+      exmCliInfo.inspCardio = UserId.inspCardio
+      exmCliInfo.auscuCardio = UserId.auscuCardio
+      exmCliInfo.anomalieSouffle = UserId.anomalieSouffle
+      exmCliInfo.anomalieType = UserId.anomalieType
+      exmCliInfo.anomalieBruits = UserId.anomalieBruits
+      exmCliInfo.poulsPeri = UserId.poulsPeri
+      exmCliInfo.anomaliePoulsPeri = UserId.anomaliePoulsPeri
+      exmCliInfo.tensionArt = UserId.tensionArt
+      exmCliInfo.freqCard = UserId.freqCard
+      exmCliInfo.inspPulmo = UserId.inspPulmo
+      exmCliInfo.palpPulmo = UserId.palpPulmo
+      exmCliInfo.anomaliePalpPulmo = UserId.anomaliePalpPulmo
+      exmCliInfo.percuPulmo = UserId.percuPulmo
+      exmCliInfo.anomaliePercuPulmo = UserId.anomaliePercuPulmo
+      exmCliInfo.auscuPulmo = UserId.auscuPulmo
+      exmCliInfo.murmurViscu = UserId.murmurViscu
+      exmCliInfo.checkedRales = UserId.checkedRales
+      exmCliInfo.locaRales = UserId.locaRales
+      exmCliInfo.inspAbdo = UserId.inspAbdo
+      exmCliInfo.anomalieAbdo = UserId.anomalieAbdo
+      exmCliInfo.pulpAbdo = UserId.pulpAbdo
+      exmCliInfo.pulpMasse = UserId.pulpMasse
+      exmCliInfo.localiMasse = UserId.localiMasse
+      exmCliInfo.percuAbdo = UserId.percuAbdo
+      exmCliInfo.sensiNeuro = UserId.sensiNeuro
+      exmCliInfo.anomalieSensiNeuro = UserId.anomalieSensiNeuro
+      exmCliInfo.matriNeuro = UserId.matriNeuro
+      exmCliInfo.anomalieMatriNeuro = UserId.anomalieMatriNeuro
+      exmCliInfo.troublesNeuro = UserId.troublesNeuro
+      exmCliInfo.anomalieTroublesNeuro = UserId.anomalieTroublesNeuro
+      exmCliInfo.orientNeuro = UserId.orientNeuro
+      exmCliInfo.anomalieOrientNeuro = UserId.anomalieOrientNeuro
+      exmCliInfo.gorgeORL = UserId.gorgeORL
+      exmCliInfo.auricuORL = UserId.auricuORL
+      exmCliInfo.examenUrogeni = UserId.examenUrogeni
+      exmCliInfo.remarqueCli = UserId.remarqueCli
+      await exmCliInfo.save()
+      res.send({
+        ec: EC
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch the users ${err}`
+      })
+    }
+  },
   async createOrdonnance (req, res) {
     try {
       const userId = req.body.id
@@ -1157,12 +1270,12 @@ module.exports = {
         Motif: bb.motif
       }
       res.send({
-        message: `response from the server to showBB function with id user : ${id}`,
+        message: `response from the server to showBilanBiologique function with id BilansBio : ${id}`,
         BilanBiologique: BilanBiologique
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to shoBB: ${err}`
+        error: `an error has occured trying to showBilanBiologique: ${err}`
       })
     }
   },
@@ -1216,7 +1329,147 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to shoBB: ${err}`
+        error: `an error has occured trying to createBilanBiologique: ${err}`
+      })
+    }
+  },
+
+  // Bilans Electrique
+  async showBE (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findAll({
+        where: {
+          idPatient: id
+        }
+      })
+      // const userJson = bb.toJSON()
+      res.send({
+        message: `response from the server to showBE function with id user : ${id}`,
+        be: be
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBE: ${err}`
+      })
+    }
+  },
+
+  async showBilanElectrique (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findOne({
+        where: {
+          id: id
+        }
+      })
+      const ecg = await BilansECG.findOne({
+        where: {
+          id: be.idECG
+        }
+      })
+      const eeg = await BilansEEG.findOne({
+        where: {
+          id: be.idEEG
+        }
+      })
+      const emg = await BilansEMG.findOne({
+        where: {
+          id: be.idEMG
+        }
+      })
+      const becr = {
+        Motif: be.motif,
+        Date: be.createdAt,
+        ECG: {
+          inter: ecg.inter,
+          ECGfile: path.basename(ecg.path).substr(37)
+        },
+        EEG: {
+          inter: eeg.inter,
+          EEGfile: path.basename(eeg.path).substr(37)
+        },
+        EMG: {
+          inter: emg.inter,
+          EMGfile: path.basename(emg.path).substr(37)
+        }
+      }
+      res.send({
+        message: `response from the server for showBilanElectrique with id showBilanElectrique : ${id}`,
+        be: becr
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to showBilanElectrique: ${err}`
+      })
+    }
+  },
+
+  async downloadBeFile (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findOne({
+        where: {
+          id: id
+        }
+      })
+      const fileCateg = req.body.fileCateg
+      if (fileCateg === 'ECG') {
+        const ecg = await BilansECG.findOne({
+          where: {
+            id: be.idECG
+          }
+        })
+        const ecgFile = path.join(__dirname, `../../${ecg.path}`)
+        res.download(ecgFile, function (err) {
+          if (err) {
+            console.log('Error')
+            console.log(err)
+          } else {
+            console.log('Success')
+          }
+        })
+      } else if (fileCateg === 'EEG') {
+        const eeg = await BilansEEG.findOne({
+          where: {
+            id: be.idEEG
+          }
+        })
+        const eegFile = path.join(__dirname, `../../${eeg.path}`)
+        res.download(eegFile, function (err) {
+          if (err) {
+            console.log('Error')
+            console.log(err)
+          } else {
+            console.log('Success')
+          }
+        })
+      } else if (fileCateg === 'EMG') {
+        const emg = await BilansEMG.findOne({
+          where: {
+            id: be.idEMG
+          }
+        })
+        const emgFile = path.join(__dirname, `../../${emg.path}`)
+        res.download(emgFile, function (err) {
+          if (err) {
+            console.log('Error')
+            console.log(err)
+          } else {
+            console.log('Success')
+          }
+        })
+      } else {
+        res.send({
+          error: 'error'
+        })
+      }
+      res.send({
+        message: `response from the server for downloadBeFile with id BE: ${id} and fileCateg : ${fileCateg}`
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to downloadBeFile: ${err}`
       })
     }
   }

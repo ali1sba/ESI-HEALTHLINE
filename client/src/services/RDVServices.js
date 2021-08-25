@@ -15,5 +15,8 @@ export default {
     saveChangRDVPatient (credantials){
         return Api().post('/saveChangRDVPatient',credantials)
     },
+    showRDVDashboard (credantials){
+        return Api().post('/showRDVDashboard',credantials)
+    },
     
 }

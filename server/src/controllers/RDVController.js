@@ -22,6 +22,27 @@ module.exports = {
       })
     }
   },
+  async showRDVDashboard (req, res) {
+    try {
+      // const idreceived = req.body.id
+      // console.log(idreceived)
+      // create RapportMedical
+      const RDVListDash = await RDV.findAll({
+      })
+      console.log(RDVListDash)
+      // const RDVList = [{}]
+      // RDVListcomplet.forEach(async element => {
+      //   console.log(element.dataValues)
+      //   RDVList.push(element.dataValues)
+      // })
+      // console.log(RDVList)
+      res.send(RDVListDash)
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create RDV ${err}`
+      })
+    }
+  },
   async showRDVSelectedPatient (req, res) {
     try {
       const idreceived = req.body.id
