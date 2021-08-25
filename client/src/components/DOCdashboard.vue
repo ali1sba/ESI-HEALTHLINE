@@ -139,16 +139,72 @@
           <!-- ********************** home ***************************** -->
 
           <div v-show="content === 'dashboard'" class="dossier">
-            <div class="doctor">
-              <img src="assets/dashboard/doctorr.png" />
-              <div>
-                <h1>BIENVENUE Dr.Merabet</h1>
-                <h3>Passez une belle journée</h3>
+           <div class="WelcomingSection">
+            <h3 class="WelcomeDoc"> Welcome to healthline! </h3>
+            <p class="WelcomeDesc">Have a great day Docteur Merabet</p>
+          </div>
+          <div class="cardDash">
+              <div class="cardInfo">
+               <!-- <p>Sidi Belabes</p>-->
+                <p class="cardInfoTime">Le : {{currentDate()}}</p>
+            <!--    <p>Le: {{currentDate()}}</p>-->
               </div>
+              <div class="cardWeather">
+                <svg width="34" class="cardWeatherIcon" height="24" viewBox="0 0 34 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M31.7764 13.3718C30.8073 12.1841 29.5779 11.4201 28.0897 11.0793C28.5632 10.3633 28.7992 9.57921 28.7992 8.72709C28.7992 7.52249 28.3664 6.49418 27.5014 5.64182C26.6361 4.78976 25.592 4.36354 24.3688 4.36354C23.2612 4.36354 22.3034 4.71584 21.496 5.42044C20.8155 3.80682 19.7334 2.50001 18.251 1.50001C16.7682 0.500241 15.1152 0 13.2921 0C10.8461 0 8.75757 0.852482 7.02679 2.55703C5.29589 4.26116 4.43071 6.31818 4.43071 8.72727C4.43071 8.89777 4.44229 9.1419 4.46532 9.46011C3.12694 10.0738 2.04801 11.0027 1.22884 12.2473C0.409735 13.4913 0 14.8637 0 16.3637C0 18.4659 0.758789 20.2642 2.27594 21.7583C3.79316 23.2528 5.61918 24 7.75375 24H26.5847C28.4191 24 29.9853 23.3603 31.2836 22.0823C32.5816 20.804 33.2308 19.2615 33.2308 17.4545C33.2306 15.9206 32.7457 14.5591 31.7764 13.3718Z"
+                    fill="#567DF4" />
+                </svg>
+
+                <p class="cardWeatherTemp">18° C</p>
+              </div>
+           </div>
+          <!--<h4 style="font-size:17px;" class="Datedashboard">Aujourd'hui est:&nbsp; {{currentDate()}}</h4>
+          <div class="wrapsearch">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Yadra ?">
+                <button type="submit" class="searchButton">
+                  <i class="fa fa-search"></i>
+              </button>
             </div>
+         </div> -->
+            <div class="cardDash-body color1">
+             <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">219</span>
+                </h3>
+                  <p>Patients</p>
+               </div>
+                <div class="floatDash-right">
+                 <i class="el-icon-message-solid"></i>
+                </div>
+             </div>
+            <div class="cardDash-body color2">
+             <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">17</span>
+                </h3>
+                  <p>Today's RDV</p>
+               </div>
+                <div class="floatDash-right">
+                 <i class="el-icon-rank"></i>
+                </div>
+             </div>
+             <div class="cardDash-body color3">
+             <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">999</span>
+                </h3>
+                  <p>Information 3</p>
+               </div>
+                <div class="floatDash-right">
+                 <i class="el-icon-setting"></i>
+                </div>
+             </div>
             <el-card class="boxRDV">
-              <h4>RDV</h4>
-              <table class="dashboardTable">
+              <h4>Les rendez-vous d'aujourd'hui :</h4>
+              <!--<table class="dashboardTable">
                 <thead class="dashboardTablethead">
                   <tr>
                     <th class="dashboardTableth">Name</th>
@@ -158,59 +214,67 @@
                   </tr>
                 </thead>
 
-                <tr class="dashboardTabletr">
+                <tr class="dashboardTabletr" > v-for="Rdv in RDVList" :key="Rdv.id"
                   <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 0</a>
+                    <a href="#" class="dashboardTableA"></a>
                   </td>
                   <td class="dashboardTabletd">1/5/2021</td>
                   <td class="dashboardTabletd">11am</td>
                   <td class="dashboardTabletd">
                     <p class="status status-unpaid">Annuler</p>
                   </td>
-                </tr>
+                  id:'',
+        idUser:'',
+        typeDeRDV:'',
+        dateAndTime:'',
+        note:'',
+                </tr> -->
+                  <el-table
+                  :data="RDVListDash"
+                  height="250"
+                  style="width: 96%"
+                  class="dashboardTable">
+                  <el-table-column
+                    prop="date"
+                    label="Date"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="Name"
+                    width="180"
+                    >
+                      <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    </template>
+                  </el-table-column>
+                   <el-table-column
+                    prop="Type"
+                    label="Type"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                    </template>
+                  </el-table-column>
+                   <el-table-column
+                    prop="Note"
+                    label="Note"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table> 
 
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 1</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-paid">Terminer</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 2</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-pending">Aujourd'hui</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 3</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-pending">ujourd'hui</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 4</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-paid">Paid</p>
-                  </td>
-                </tr>
-              </table>
-            </el-card>
+                
+             <!-- </table> -->
+            </el-card> 
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -2920,6 +2984,354 @@
                       ></el-input></el-col
                   ></el-row>
                   <el-row>
+                        <el-col :span="3"> Orientation vers: </el-col>
+                        <el-select v-model="OrientationMedical.OrientVers" placeholder="Orientation vers">
+                          <el-option label="Orientation 1" value="Orientation 1"></el-option>
+                          <el-option label="Orientation 2" value="Orientation 2"></el-option>
+                          <el-option label="Orientation 3" value="Orientation 3"></el-option>
+                          <el-option label="Orientation 4" value="Orientation 4"></el-option>
+                          <el-option label="Orientation 5" value="Orientation 5"></el-option>
+                          <el-option label="Orientation 7" value="Orientation 7"></el-option>
+                          <el-option label="Orientation 6" value="Orientation 6"></el-option>
+                          <el-option label="Orientation 8" value="Orientation 8"></el-option>
+                        </el-select>
+                    </el-row>
+                  <!--<el-row>
+                    <el-col :span="3"> Orientation vers: </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Histoire de la Maladie"
+                        v-model="RapportMedical.HistoireDeLaMaladie"
+                      ></el-input></el-col
+                  ></el-row>
+                  <el-row>
+                    <el-col :span="3"> Etat Général : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Etat général"
+                        v-model="RapportMedical.EtatGeneral"
+                      ></el-input></el-col
+                  ></el-row>
+                  <el-row>
+                    <el-col :span="3"> Autre : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Autre"
+                        v-model="RapportMedical.Autre"
+                        type="textarea"
+                        :autosize="{ minRows: 10, maxRows: 50 }"
+                      ></el-input></el-col
+                  ></el-row>
+                  <el-row>
+                    <el-col :span="3"> Conclusion : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Conclusion"
+                        v-model="RapportMedical.Conclusion"
+                      ></el-input></el-col
+                  ></el-row>-->
+                  <center>
+                    <el-button
+                      @click="creepdf()"
+                      class="creatbt"
+                      icon="el-icon-edit-outline"
+                      round
+                      >Crée un pdf</el-button
+                    >
+                  </center>
+                </div>
+              </el-card>
+            </el-scrollbar>
+            <!--********Evacuation Médical***********-->
+            <el-scrollbar  v-show="radio1==='Evacuation Medical'">
+              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
+              <el-card class="box-card">
+                <center>
+                  <div>
+                    <el-radio-group v-model="radioRM">
+                      <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                  <br />
+                  <h4>Evacuation Medical</h4>
+                </center>
+                <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Evac in evacuations.slice().reverse()" :key="Evac.id" >
+                      <el-card   class="cardGris">
+                                      <h4> {{Evac.Motif}} </h4>
+                                      <h6> Evacué vers </h6><p> {{Evac.EvacVers}}</p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterEvacuationMedical(Evac)">consulter</el-button>
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-dialog title="Evacuation Medical" v-model="dialogConsulterEvacuationMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{Evac.Motif}}</p>
+                    <b>Evacué vers: </b>
+                    <p>{{Evac.EvacVers}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterEvacuationMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
+                  
+                </div>
+             <!--   <div v-if="radioRM === 'Historique'">
+                  <el-card shadow="hover" v-for="Cert in certificats" :key="Cert.id" style="margin:1em 0em;" class="cardGris">
+                    <el-row>
+                      <el-col :span="6"> {{Cert.Motif}} </el-col>
+                      <el-col :span="6"> {{Cert.EtatGeneral}} </el-col>
+                      <el-col :span="6"> {{Cert.HistoireDeLaMaladie}} </el-col>
+                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
+                    </el-row>
+                  </el-card>
+                </div> -->
+                <div v-else>
+                  <el-row>
+                    <el-col :span="3"> Motif : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Motif"
+                        v-model="EvacuationMedical.Motif"
+                      ></el-input></el-col
+                  ></el-row>
+                   <el-row>
+                  <el-col :span="3"> Evacuation vers: </el-col>
+                        <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
+                          <el-option label="Evacuation 1" value="Evacuation 1"></el-option>
+                          <el-option label="Evacuation 2" value="Evacuation 2"></el-option>
+                          <el-option label="Evacuation 3" value="Evacuation 3"></el-option>
+                          <el-option label="Evacuation 4" value="Evacuation 4"></el-option>
+                          <el-option label="Evacuation 5" value="Evacuation 5"></el-option>
+                          <el-option label="Evacuation 7" value="Evacuation 7"></el-option>
+                          <el-option label="Evacuation 6" value="Evacuation 6"></el-option>
+                          <el-option label="Evacuation 8" value="Evacuation 8"></el-option>
+                        </el-select>
+                    </el-row>         
+                  <center>
+                    <el-button
+                      @click="creepdf3()"
+                      class="creatbt"
+                      icon="el-icon-edit-outline"
+                      round
+                      >Crée un pdf</el-button
+                    >
+                  </center>
+                </div>
+              </el-card>
+            </el-scrollbar>
+
+            <!--********Certificat Médical***********-->
+            <el-scrollbar  v-show="radio1==='Certificat Médical'">
+              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
+              <el-card class="box-card">
+                <center>
+                  <div>
+                    <el-radio-group v-model="radioRM">
+                      <el-radio-button label="Historique" @click="getCertificats();" ></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                  <br />
+                  <h4>Certificat Médical</h4>
+                </center>
+                <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Cert in certificats.slice().reverse()" :key="Cert.id" >
+                      <el-card   class="cardGris">
+                                      <h4> {{Cert.Motif}} </h4>
+                                      <h6> Date de debut: </h6><p> {{Cert.EtatGeneral}} </p>
+                                      <h6> Date de fin: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterCertificatMedical(Cert)">consulter</el-button>
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-dialog title="Certificat Medical" v-model="dialogConsulterCertificatMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{Cert.Motif}}</p>
+                    <b>Date de debut :</b>
+                    <p>{{Cert.EtatGeneral}}</p>
+                    <b>Date de fin</b>
+                    <p>{{Cert.HistoireDeLaMaladie}}</p>
+                    <b>Autre :</b>
+                    <p>{{Cert.Autre}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterCertificatMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
+                  
+                </div>
+             <!--   <div v-if="radioRM === 'Historique'">
+                  <el-card shadow="hover" v-for="Cert in certificats" :key="Cert.id" style="margin:1em 0em;" class="cardGris">
+                    <el-row>
+                      <el-col :span="6"> {{Cert.Motif}} </el-col>
+                      <el-col :span="6"> {{Cert.EtatGeneral}} </el-col>
+                      <el-col :span="6"> {{Cert.HistoireDeLaMaladie}} </el-col>
+                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
+                    </el-row>
+                  </el-card>
+                </div> -->
+                <div v-else>
+                  <el-row>
+                    <el-col :span="3"> Motif : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Motif"
+                        v-model="CertificatMedical.Motif"
+                      ></el-input></el-col
+                  ></el-row>
+                  <el-row>
+                    <el-col :span="3"> Date debut: </el-col
+                    ><el-col :span="21">
+                    <div class="block">
+                        <el-date-picker
+                          v-model="CertificatMedical.HistoireDeLaMaladie"
+                          type="date"
+                          placeholder="Date de debut">
+                        </el-date-picker>
+                      </div>
+                      <!--<el-input
+                        placeholder="Histoire de la Maladie"
+                        v-model="CertificatMedical.HistoireDeLaMaladie"
+                      ></el-input>--></el-col
+                  ></el-row>
+                  <el-row>
+                    <el-col :span="3"> Date Fin : </el-col
+                    ><el-col :span="21">
+                      <div class="block">
+                        <el-date-picker
+                          v-model="CertificatMedical.EtatGeneral"
+                          type="date"
+                          placeholder="Date de Fin">
+                        </el-date-picker>
+                      </div></el-col
+                  ></el-row>
+                  <el-row>
+                    <el-col :span="3"> Autre : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Autre"
+                        v-model="CertificatMedical.Autre"
+                        type="textarea"
+                        :autosize="{ minRows: 10, maxRows: 50 }"
+                      ></el-input></el-col
+                  ></el-row>
+                  <center>
+                    <el-button
+                      @click="creepdf4()"
+                      class="creatbt"
+                      icon="el-icon-edit-outline"
+                      round
+                      >Crée un pdf</el-button
+                    >
+                  </center>
+                </div>
+              </el-card>
+            </el-scrollbar>
+
+            <!-- ****************************rapport medical: ali******************************* -->
+
+            <el-scrollbar v-show="radio1 === 'rapport medical'">
+              <!--                                                  ***********to do*********** 
+                <el-card class="box-card">
+                   <el-empty  :image-size="300">
+              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer rapport medical</el-button>
+              </el-empty>
+                </el-card>
+                -->
+<center>
+                  <div>
+                    <el-radio-group v-model="radioRM" >
+                      <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                  
+                  
+                </center>
+              <el-card class="box-card">
+                
+                <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
+                      <el-card   class="cardGris">
+                                    
+                                      <h4> {{Rapp.Motif}} </h4>
+                                      
+                                      <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
+                                      <p>{{Rapp.createdAt}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
+                                  
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+
+                  <el-dialog title="Rapport Medical" v-model="dialogConsulterRapportMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{rapp.Motif}}</p>
+                    <b>Histoire de la Maladie :</b>
+                    <p>{{rapp.HistoireDeLaMaladie}}</p>
+                    <b>Etat Général :</b>
+                    <p>{{rapp.EtatGeneral}}</p>
+                    <b>Autre :</b>
+                    <p>{{rapp.autre}}</p>
+                    <b>Conclusion :</b>
+                    <p>{{rapp.Conclusion}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterRapportMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
+                  
+                </div>
+                <div v-else ref="contentord" style="padding: 0px 80px">
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                
+                  &nbsp; &nbsp;
+               
+                  <div style="display:flex">
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
+                    </div>
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                      <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+
+                    </div>
+                
+                  </div>
+                               
+                <hr>
+                
+                  <el-row>
+                    <el-col :span="3"> Motif : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Motif"
+                        v-model="RapportMedical.Motif"
+                      ></el-input></el-col
+                  ></el-row>
+                  <el-row>
                     <el-col :span="3"> Histoire de la Maladie : </el-col
                     ><el-col :span="21">
                       <el-input
@@ -2961,6 +3373,9 @@
                       round
                       >Crée un pdf</el-button
                     >
+                    <hr>
+                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
                   </center>
                 </div>
               </el-card>
@@ -4027,6 +4442,30 @@ export default {
         Conclusion: "",
       },
       reporrts: [''],
+      evacuations: [''],
+      dialogConsulterRapportMedical: false,
+      dialogConsulterCertificatMedical: false,
+      dialogConsulterEvacuationMedical: false,
+      dialogConsulterOrientationMedical: false,
+      rapp:[""],
+      Cert:[""],
+      Orr:[""],
+       //RDV**************************************************************************************************
+      dialogRDVFormVisible:false,
+      dialogRDVFormVisible2:false,
+      formLabelWidth:'120px',
+      haveRDV: false,
+      haveRDVDash: false,
+      RDVform: {
+        id:'',
+        idUser:'',
+        typeDeRDV:'',
+        dateAndTime:'',
+        note:'',
+      },
+      RDVList:[],
+      RDVListDash:[],
+      Evac:[""],
     };
 
   },
@@ -4052,6 +4491,147 @@ export default {
     });
   },
   methods: {
+
+
+
+    //RDV**********************************************************************************************
+    async progRDVPatient(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        console.log(this.userselected.id)
+        this.dialogRDVFormVisible = false;
+        this.RDVform.idUser = this.userselected.id;
+        const response = await RDVServices.progRDVPatient({
+          form:this.RDVform,
+        })
+        console.log(response.data);
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in programation de RDV patient ${error}`);
+      }
+    }, 
+    async  showRDVSelectedPatient(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        const response = await RDVServices.showRDVSelectedPatient({
+          id:this.userselected.id,
+        })
+        //this.RDVList = response.data.RDVList;
+        //console.log(response.data[0]);
+        //console.log(response.data.RDVList[1]);
+        // response.data.RDVList.forEach(function(element) {
+        //   console.log(element)
+        //   this.RDVList.push(element);
+        // });
+        //this.RDVList=[''];
+        this.RDVList=response.data;
+        console.log(Object.keys(response.data).length);
+        if(!(Object.keys(response.data).length === 0) ){
+          this.haveRDV = true;
+        }else{
+          this.haveRDV = false;
+        }
+        // Object.keys(response.data).forEach(function (key){showRDVDashboard
+           
+        //  // console.log(key);
+        //   console.log(response.data);
+        //   // this.RDVform.idUser = response.data[key].id;
+        //   // this.RDVform.typeDeVisite = response.data[key].Type;
+        //   // this.RDVform.dateAndTime = response.data[key].DateAndTime;
+        //   // this.RDVform.note = response.data[key].Note;
+        //   // //let y = response.data[key];
+        //   // console.log(this.RDVform.idUser);
+        //  console.log(response.data[key]);
+           
+        
+        // });
+        console.log(this.RDVList);
+      } catch (error) {
+        console.log(`something went wrong in showRDVSelectedPatient ${error}`);
+      }
+    },
+    async  showRDVDashboard(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        const response = await RDVServices.showRDVDashboard({
+        })
+        //this.RDVList = response.data.RDVList;
+        //console.log(response.data[0]);
+        //console.log(response.data.RDVList[1]);
+        // response.data.RDVList.forEach(function(element) {
+        //   console.log(element)
+        //   this.RDVList.push(element);
+        // });
+        //this.RDVList=[''];
+        this.RDVListDash=response.data;
+        console.log(Object.keys(response.data).length);
+        if(!(Object.keys(response.data).length === 0) ){
+          this.haveRDVDash = true;
+        }else{
+          this.haveRDVDash = false;
+        }
+        // Object.keys(response.data).forEach(function (key){showRDVDashboard
+           
+        //  // console.log(key);
+        //   console.log(response.data);
+        //   // this.RDVform.idUser = response.data[key].id;
+        //   // this.RDVform.typeDeVisite = response.data[key].Type;
+        //   // this.RDVform.dateAndTime = response.data[key].DateAndTime;
+        //   // this.RDVform.note = response.data[key].Note;
+        //   // //let y = response.data[key];
+        //   // console.log(this.RDVform.idUser);
+        //  console.log(response.data[key]);
+           
+        
+        // });
+        console.log(this.RDVList);
+      } catch (error) {
+        console.log(`something went wrong in showRDVSelectedPatient ${error}`);
+      }
+    },
+    async saveChangRDVPatient(){
+      try {
+        const response = await RDVServices.saveChangRDVPatient({
+          rdv:this.RDVform,
+        })
+        console.log(response.data);
+        this.dialogRDVFormVisible2=false;
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in supp de RDV patient ${error}`);
+      }
+    }, 
+    async modifRDV(rdv){
+      
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        //this.dialogRDVFormVisible = false;
+        //this.RDVform.idUser = this.userselected.id;
+        this.RDVform.id  = rdv.id;
+        this.RDVform.typeDeRDV = rdv.Type;
+        this.RDVform.dateAndTime = rdv.DateAndTime;
+        this.RDVform.note = rdv.Note;
+        this.dialogRDVFormVisible2 = true;
+        
+    }, 
+    async annulerRDV(rdv){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        //this.dialogRDVFormVisible = false;
+        //this.RDVform.idUser = this.userselected.id;
+        const response = await RDVServices.annulerRDV({
+          id:rdv.id,
+        })
+        console.log(response.data);
+        this.showRDVSelectedPatient();
+      } catch (error) {
+        console.log(`something went wrong in supp de RDV patient ${error}`);
+      }
+    }, 
+    //*************************************************************************************************
     async printPresc(prescs) {
       let x="";
        for (let i = 0; i < prescs.length; i++) {
@@ -4255,6 +4835,7 @@ export default {
             x = x + 1;
           });
           console.log(response.data);
+          this.showRDVDashboard();
         })
         .catch((error) => {
           console.log(error);
