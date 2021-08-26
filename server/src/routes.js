@@ -5,7 +5,7 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
-
+const RDVController = require('./controllers/RDVController')
 const { uuid } = require('uuidv4')
 const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
@@ -182,7 +182,10 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
   app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b134642e6c8d0d1f889efa8e9647abcc798145f
   // Bilans Electriques
   app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)

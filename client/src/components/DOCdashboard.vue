@@ -223,7 +223,10 @@
                   <td class="dashboardTabletd">
                     <p class="status status-unpaid">Annuler</p>
                   </td>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6b134642e6c8d0d1f889efa8e9647abcc798145f
                   id:'',
         idUser:'',
         typeDeRDV:'',
@@ -301,7 +304,7 @@
                   <el-radio-button label="Dossier Médical"></el-radio-button>
                   <el-radio-button label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
-                  <el-radio-button label="RDV"></el-radio-button>
+                  <el-radio-button label="RDV" @click="showRDVSelectedPatient"></el-radio-button>
                   <el-radio-button
                     v-show="hidden"
                     label="examen clinique"
@@ -2940,6 +2943,92 @@
               </el-card>
             </el-scrollbar>
 
+            <!--********Evacuation Médical***********-->
+            <el-scrollbar  v-show="radio1==='Evacuation Medical'">
+              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
+              <el-card class="box-card">
+                <center>
+                  <div>
+                    <el-radio-group v-model="radioRMyesy">
+                      <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                  <br />
+                  <h4>Evacuation Medical</h4>
+                </center>
+                <div v-if="radioRMyesy === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Evac in evacuations.slice().reverse()" :key="Evac.id" >
+                      <el-card   class="cardGris">
+                                      <h4> {{Evac.Motif}} </h4>
+                                      <h6> Evacué vers </h6><p> {{Evac.EvacVers}}</p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterEvacuationMedical(Evac)">consulter</el-button>
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-dialog title="Evacuation Medical" v-model="dialogConsulterEvacuationMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{Evac.Motif}}</p>
+                    <b>Evacué vers: </b>
+                    <p>{{Evac.EvacVers}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterEvacuationMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
+                  
+                </div>
+             <!--   <div v-if="radioRM === 'Historique'">
+                  <el-card shadow="hover" v-for="Cert in certificats" :key="Cert.id" style="margin:1em 0em;" class="cardGris">
+                    <el-row>
+                      <el-col :span="6"> {{Cert.Motif}} </el-col>
+                      <el-col :span="6"> {{Cert.EtatGeneral}} </el-col>
+                      <el-col :span="6"> {{Cert.HistoireDeLaMaladie}} </el-col>
+                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
+                    </el-row>
+                  </el-card>
+                </div> -->
+                <div v-else>
+                  <el-row>
+                    <el-col :span="3"> Motif : </el-col
+                    ><el-col :span="21">
+                      <el-input
+                        placeholder="Motif"
+                        v-model="EvacuationMedical.Motif"
+                      ></el-input></el-col
+                  ></el-row>
+                   <el-row>
+                  <el-col :span="3"> Evacuation vers: </el-col>
+                        <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
+                          <el-option label="Evacuation 1" value="Evacuation 1"></el-option>
+                          <el-option label="Evacuation 2" value="Evacuation 2"></el-option>
+                          <el-option label="Evacuation 3" value="Evacuation 3"></el-option>
+                          <el-option label="Evacuation 4" value="Evacuation 4"></el-option>
+                          <el-option label="Evacuation 5" value="Evacuation 5"></el-option>
+                          <el-option label="Evacuation 7" value="Evacuation 7"></el-option>
+                          <el-option label="Evacuation 6" value="Evacuation 6"></el-option>
+                          <el-option label="Evacuation 8" value="Evacuation 8"></el-option>
+                        </el-select>
+                    </el-row>         
+                  <center>
+                    <el-button
+                      @click="creepdf3()"
+                      class="creatbt"
+                      icon="el-icon-edit-outline"
+                      round
+                      >Crée un pdf</el-button
+                    >
+                  </center>
+                </div>
+              </el-card>
+            </el-scrollbar>
+
+            <!--********Certificat Médical***********-->
+            
+
             <!-- ****************************rapport medical: ali******************************* -->
 
             <el-scrollbar v-show="radio1 === 'rapport medical'">
@@ -2950,32 +3039,83 @@
               </el-empty>
                 </el-card>
                 -->
-
-              <el-card class="box-card">
-                <center>
+<center>
                   <div>
                     <el-radio-group v-model="radioRM" >
                       <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
-                  <br />
-                  <h4>Rapport Médical</h4>
+                  
+                  
                 </center>
+              <el-card class="box-card">
+                
                 <div v-if="radioRM === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
+                      <el-card   class="cardGris">
+                                    
+                                      <h4> {{Rapp.Motif}} </h4>
+                                      
+                                      <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
+                                      <p>{{Rapp.createdAt}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
+                                  
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+
+                  <el-dialog title="Rapport Medical" v-model="dialogConsulterRapportMedical" style=" position: absolute;left: auto;" >
+                    <b>Motif:</b>
+                    <p>{{rapp.Motif}}</p>
+                    <b>Histoire de la Maladie :</b>
+                    <p>{{rapp.HistoireDeLaMaladie}}</p>
+                    <b>Etat Général :</b>
+                    <p>{{rapp.EtatGeneral}}</p>
+                    <b>Autre :</b>
+                    <p>{{rapp.autre}}</p>
+                    <b>Conclusion :</b>
+                    <p>{{rapp.Conclusion}}</p>
+                     <template #footer>
+                        <span class="dialog-footer">
+                          <el-button type="primary" @click="dialogConsulterRapportMedical = false">return</el-button>
+                        </span>
+                      </template>
+                  </el-dialog>
                   
-                  
-                  <el-card shadow="hover" v-for="Rapp in reporrts" :key="Rapp.id" style="margin:1em 0em;" class="cardGris">
-                    <el-row>
-                      <el-col :span="6"> {{Rapp.Motif}} </el-col>
-                      <el-col :span="6"> {{Rapp.Conclusion}} </el-col>
-                      <el-col :span="6"> {{Rapp.createdAt}} </el-col>
-                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
-                    </el-row>
-                    
-                  </el-card>
                 </div>
-                <div v-else>
+                <div v-else ref="contentord" style="padding: 0px 80px">
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
+
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                
+                  &nbsp; &nbsp;
+               
+                  <div style="display:flex">
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
+                    </div>
+                    <div style="flex:50%">
+                      <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                      <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
+
+                    </div>
+                
+                  </div>
+                               
+                <hr>
+                
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -3026,6 +3166,9 @@
                       round
                       >Crée un pdf</el-button
                     >
+                    <hr>
+                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
                   </center>
                 </div>
               </el-card>
@@ -3293,16 +3436,112 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio1 === 'RDV'">
-              <el-card class="box-card">
-                <el-empty :image-size="300">
+              <div v-if="haveRDV">
+                <el-card>
+                   <el-card   class="cardGris">
+                        <el-row>
+                          <el-col :span="7">Type de RDV</el-col>
+                          <el-col :span="10">Date And Time</el-col>
+                          <el-col :span="7">Note</el-col>
+                        </el-row>
+                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button> -->
+                    
+                      </el-card>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Rdv in RDVList" :key="Rdv.id" >
+                      <el-card   class="cardGris">
+                        <el-row>
+                          <el-col :span="7">{{Rdv.Type}}</el-col>
+                          <el-col :span="10">{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="7">{{Rdv.Note}}</el-col>
+                        </el-row>
+                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
+                        <el-button type="" style="align-items: right;" @click="modifRDV(Rdv)">Modifier</el-button>
+                        <el-button type="" style="align-items: right;" @click="annulerRDV(Rdv)">Annuler</el-button>
+                    
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-button
+                  type="primary"
+                    @click="dialogRDVFormVisible = true"
+                    style="background-color: #24b4ab; width: 50%">
+                    programmer un RDV
+                    </el-button>
+                  </el-card>
+                                                <!--form-->
+                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVFormVisible2">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="Note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible2 = false">Annuler</el-button>
+                        <el-button type="primary" @click="saveChangRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
+                  
+              </div>
+
+              <el-card class="box-card"  v-else>
+                <el-empty :image-size="300" >
                   <el-button
                     type="primary"
+                    
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab; width: 100%"
-                    >Créer RDV</el-button
+                    @click="dialogRDVFormVisible = true"
+                    >programmer un RDV</el-button
                   >
+                 
                 </el-empty>
+                
               </el-card>
+               <!-- Form -->
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVFormVisible">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible = false">Annuler</el-button>
+                        <el-button type="primary" @click="progRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
             </el-scrollbar>
             <!-- ********************************************end******************************************** -->
             <center>
@@ -3351,7 +3590,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 import RapportMedicalServices from "@/services/RapportMedicalServices.js";
-import RDVServices from "@/services/RDVServices.js"
+import RDVServices from "@/services/RDVServices.js";
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
@@ -3750,7 +3989,8 @@ export default {
       // navigation bar*******************************************************************************************
       radio1: "Dossier Médical",
       radio2: "Historique",
-      radioRM: "Historique",
+      radioRMyesy: "Historique",
+      radioRM:"Historique",
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
 
@@ -5340,6 +5580,11 @@ const response1 = await DocServices.createOrdonnance({
         console.log(`something went wrong ${error}`);
       }
     },
+     async ConsulterRapportMedical(rapp) {
+      this.dialogConsulterRapportMedical = true;
+      this.rapp = rapp;
+      
+    },
 
     async creepdf() {
       try {
@@ -5781,7 +6026,6 @@ async annulerModificationOrd(ord) {
   border-radius: 15px;
 }
 .cardGris{
-  background-color: #f1f1f1;
   border-radius: 10px;
 }
 .boxRDV {
