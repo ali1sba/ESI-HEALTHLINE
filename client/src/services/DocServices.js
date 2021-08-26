@@ -23,6 +23,9 @@ export default {
     saveDepiInfo (credantials){
         return Api().post('/DOCdashboard/saveDepiInfo',credantials)
     },
+    saveExamenClinique (credantials){
+        return Api().post('/DOCdashboard/saveExamenClinique',credantials)
+    },
     recoverMedicaments (credantials){
         return Api().post('/DOCdashboard/recoverMedicaments',credantials)
     },
@@ -41,6 +44,8 @@ export default {
     showOrdonnance (credantials){
         return Api().post('/DOCdashboard/showOrdonnance',credantials)
     },
+    // ********************* Bilans paraclinique **************************
+    // BB: Bilans Biologiques
     showBB (credantials){
         return Api().post('/DOCdashboard/showBB',credantials)
     },
@@ -51,5 +56,22 @@ export default {
 
     createBilanBiologique (credantials){
         return Api().post('/DOCdashboard/createBilanBiologique',credantials)
-    }
+    },
+
+    // BE: Bilans Electriques
+    showBE (credantials){
+        return Api().post('/DOCdashboard/showBE',credantials)
+    },
+
+    showBilanElectrique (credantials){
+        return Api().post('/DOCdashboard/showBilanElectrique',credantials)
+    },
+
+    downloadBeFile (credantials){
+        return Api().post('/DOCdashboard/downloadBeFile',credantials)
+    },
+
+    createBilanElectrique (credantials){
+        return Api().post('/DOCdashboard/createBilanElectrique',credantials)
+    },
 }
