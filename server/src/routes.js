@@ -5,6 +5,7 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const RDVController = require('./controllers/RDVController')
 
 const { uuid } = require('uuidv4')
 const { BilansECG } = require('./models')
