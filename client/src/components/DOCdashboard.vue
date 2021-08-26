@@ -300,7 +300,7 @@
                   <el-radio-button label="Dossier Médical"></el-radio-button>
                   <el-radio-button label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
-                  <el-radio-button label="RDV"></el-radio-button>
+                  <el-radio-button label="RDV" @click="showRDVSelectedPatient"></el-radio-button>
                   <el-radio-button
                     v-show="hidden"
                     label="examen clinique"
@@ -2939,116 +2939,13 @@
               </el-card>
             </el-scrollbar>
 
-            <!-- ****************************rapport medical: ali******************************* -->
-
-            <el-scrollbar v-show="radio1 === 'rapport medical'">
-              <!--                                                  ***********to do*********** 
-                <el-card class="box-card">
-                   <el-empty  :image-size="300">
-              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer rapport medical</el-button>
-              </el-empty>
-                </el-card>
-                -->
-
-              <el-card class="box-card">
-                <center>
-                  <div>
-                    <el-radio-group v-model="radioRM" >
-                      <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
-                      <el-radio-button label="Créer"></el-radio-button>
-                    </el-radio-group>
-                  </div>
-                  <br />
-                  <h4>Rapport Médical</h4>
-                </center>
-                <div v-if="radioRM === 'Historique'">
-                  
-                  
-                  <el-card shadow="hover" v-for="Rapp in reporrts" :key="Rapp.id" style="margin:1em 0em;" class="cardGris">
-                    <el-row>
-                      <el-col :span="6"> {{Rapp.Motif}} </el-col>
-                      <el-col :span="6"> {{Rapp.Conclusion}} </el-col>
-                      <el-col :span="6"> {{Rapp.createdAt}} </el-col>
-                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
-                    </el-row>
-                    
-                  </el-card>
-                </div>
-                <div v-else>
-                  <el-row>
-                    <el-col :span="3"> Motif : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Motif"
-                        v-model="RapportMedical.Motif"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                        <el-col :span="3"> Orientation vers: </el-col>
-                        <el-select v-model="OrientationMedical.OrientVers" placeholder="Orientation vers">
-                          <el-option label="Orientation 1" value="Orientation 1"></el-option>
-                          <el-option label="Orientation 2" value="Orientation 2"></el-option>
-                          <el-option label="Orientation 3" value="Orientation 3"></el-option>
-                          <el-option label="Orientation 4" value="Orientation 4"></el-option>
-                          <el-option label="Orientation 5" value="Orientation 5"></el-option>
-                          <el-option label="Orientation 7" value="Orientation 7"></el-option>
-                          <el-option label="Orientation 6" value="Orientation 6"></el-option>
-                          <el-option label="Orientation 8" value="Orientation 8"></el-option>
-                        </el-select>
-                    </el-row>
-                  <!--<el-row>
-                    <el-col :span="3"> Orientation vers: </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Histoire de la Maladie"
-                        v-model="RapportMedical.HistoireDeLaMaladie"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Etat Général : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Etat général"
-                        v-model="RapportMedical.EtatGeneral"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Autre : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Autre"
-                        v-model="RapportMedical.Autre"
-                        type="textarea"
-                        :autosize="{ minRows: 10, maxRows: 50 }"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Conclusion : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Conclusion"
-                        v-model="RapportMedical.Conclusion"
-                      ></el-input></el-col
-                  ></el-row>-->
-                  <center>
-                    <el-button
-                      @click="creepdf()"
-                      class="creatbt"
-                      icon="el-icon-edit-outline"
-                      round
-                      >Crée un pdf</el-button
-                    >
-                  </center>
-                </div>
-              </el-card>
-            </el-scrollbar>
             <!--********Evacuation Médical***********-->
             <el-scrollbar  v-show="radio1==='Evacuation Medical'">
               <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
               <el-card class="box-card">
                 <center>
                   <div>
-                    <el-radio-group v-model="radioRM">
+                    <el-radio-group v-model="radioRMyesy">
                       <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
@@ -3056,7 +2953,7 @@
                   <br />
                   <h4>Evacuation Medical</h4>
                 </center>
-                <div v-if="radioRM === 'Historique'">
+                <div v-if="radioRMyesy === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Evac in evacuations.slice().reverse()" :key="Evac.id" >
@@ -3126,115 +3023,7 @@
             </el-scrollbar>
 
             <!--********Certificat Médical***********-->
-            <el-scrollbar  v-show="radio1==='Certificat Médical'">
-              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
-              <el-card class="box-card">
-                <center>
-                  <div>
-                    <el-radio-group v-model="radioRM">
-                      <el-radio-button label="Historique" @click="getCertificats();" ></el-radio-button>
-                      <el-radio-button label="Créer"></el-radio-button>
-                    </el-radio-group>
-                  </div>
-                  <br />
-                  <h4>Certificat Médical</h4>
-                </center>
-                <div v-if="radioRM === 'Historique'">
-                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
-                  <el-timeline style="margin:1% 0% 0% 0%;">
-                    <el-timeline-item  placement="top" v-for="Cert in certificats.slice().reverse()" :key="Cert.id" >
-                      <el-card   class="cardGris">
-                                      <h4> {{Cert.Motif}} </h4>
-                                      <h6> Date de debut: </h6><p> {{Cert.EtatGeneral}} </p>
-                                      <h6> Date de fin: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
-                                      <el-button type="" style="align-items: right;" @click="ConsulterCertificatMedical(Cert)">consulter</el-button>
-                                  </el-card>
-                    </el-timeline-item>
-                  </el-timeline>
-                  <el-dialog title="Certificat Medical" v-model="dialogConsulterCertificatMedical" style=" position: absolute;left: auto;" >
-                    <b>Motif:</b>
-                    <p>{{Cert.Motif}}</p>
-                    <b>Date de debut :</b>
-                    <p>{{Cert.EtatGeneral}}</p>
-                    <b>Date de fin</b>
-                    <p>{{Cert.HistoireDeLaMaladie}}</p>
-                    <b>Autre :</b>
-                    <p>{{Cert.Autre}}</p>
-                     <template #footer>
-                        <span class="dialog-footer">
-                          <el-button type="primary" @click="dialogConsulterCertificatMedical = false">return</el-button>
-                        </span>
-                      </template>
-                  </el-dialog>
-                  
-                </div>
-             <!--   <div v-if="radioRM === 'Historique'">
-                  <el-card shadow="hover" v-for="Cert in certificats" :key="Cert.id" style="margin:1em 0em;" class="cardGris">
-                    <el-row>
-                      <el-col :span="6"> {{Cert.Motif}} </el-col>
-                      <el-col :span="6"> {{Cert.EtatGeneral}} </el-col>
-                      <el-col :span="6"> {{Cert.HistoireDeLaMaladie}} </el-col>
-                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
-                    </el-row>
-                  </el-card>
-                </div> -->
-                <div v-else>
-                  <el-row>
-                    <el-col :span="3"> Motif : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Motif"
-                        v-model="CertificatMedical.Motif"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Date debut: </el-col
-                    ><el-col :span="21">
-                    <div class="block">
-                        <el-date-picker
-                          v-model="CertificatMedical.HistoireDeLaMaladie"
-                          type="date"
-                          placeholder="Date de debut">
-                        </el-date-picker>
-                      </div>
-                      <!--<el-input
-                        placeholder="Histoire de la Maladie"
-                        v-model="CertificatMedical.HistoireDeLaMaladie"
-                      ></el-input>--></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Date Fin : </el-col
-                    ><el-col :span="21">
-                      <div class="block">
-                        <el-date-picker
-                          v-model="CertificatMedical.EtatGeneral"
-                          type="date"
-                          placeholder="Date de Fin">
-                        </el-date-picker>
-                      </div></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Autre : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Autre"
-                        v-model="CertificatMedical.Autre"
-                        type="textarea"
-                        :autosize="{ minRows: 10, maxRows: 50 }"
-                      ></el-input></el-col
-                  ></el-row>
-                  <center>
-                    <el-button
-                      @click="creepdf4()"
-                      class="creatbt"
-                      icon="el-icon-edit-outline"
-                      round
-                      >Crée un pdf</el-button
-                    >
-                  </center>
-                </div>
-              </el-card>
-            </el-scrollbar>
+            
 
             <!-- ****************************rapport medical: ali******************************* -->
 
@@ -3643,16 +3432,112 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio1 === 'RDV'">
-              <el-card class="box-card">
-                <el-empty :image-size="300">
+              <div v-if="haveRDV">
+                <el-card>
+                   <el-card   class="cardGris">
+                        <el-row>
+                          <el-col :span="7">Type de RDV</el-col>
+                          <el-col :span="10">Date And Time</el-col>
+                          <el-col :span="7">Note</el-col>
+                        </el-row>
+                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button> -->
+                    
+                      </el-card>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="Rdv in RDVList" :key="Rdv.id" >
+                      <el-card   class="cardGris">
+                        <el-row>
+                          <el-col :span="7">{{Rdv.Type}}</el-col>
+                          <el-col :span="10">{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="7">{{Rdv.Note}}</el-col>
+                        </el-row>
+                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
+                        <el-button type="" style="align-items: right;" @click="modifRDV(Rdv)">Modifier</el-button>
+                        <el-button type="" style="align-items: right;" @click="annulerRDV(Rdv)">Annuler</el-button>
+                    
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+                  <el-button
+                  type="primary"
+                    @click="dialogRDVFormVisible = true"
+                    style="background-color: #24b4ab; width: 50%">
+                    programmer un RDV
+                    </el-button>
+                  </el-card>
+                                                <!--form-->
+                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVFormVisible2">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="Note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible2 = false">Annuler</el-button>
+                        <el-button type="primary" @click="saveChangRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
+                  
+              </div>
+
+              <el-card class="box-card"  v-else>
+                <el-empty :image-size="300" >
                   <el-button
                     type="primary"
+                    
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab; width: 100%"
-                    >Créer RDV</el-button
+                    @click="dialogRDVFormVisible = true"
+                    >programmer un RDV</el-button
                   >
+                 
                 </el-empty>
+                
               </el-card>
+               <!-- Form -->
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVFormVisible">
+                    <el-form :model="form">
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="RDVform.typeDeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVform.dateAndTime"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVform.note" placeholder="note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogRDVFormVisible = false">Annuler</el-button>
+                        <el-button type="primary" @click="progRDVPatient()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
             </el-scrollbar>
             <!-- ********************************************end******************************************** -->
             <center>
@@ -3701,6 +3586,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 import RapportMedicalServices from "@/services/RapportMedicalServices.js";
+import RDVServices from "@/services/RDVServices.js";
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
@@ -4099,7 +3985,8 @@ export default {
       // navigation bar*******************************************************************************************
       radio1: "Dossier Médical",
       radio2: "Historique",
-      radioRM: "Historique",
+      radioRMyesy: "Historique",
+      radioRM:"Historique",
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
 
@@ -5689,6 +5576,11 @@ const response1 = await DocServices.createOrdonnance({
         console.log(`something went wrong ${error}`);
       }
     },
+     async ConsulterRapportMedical(rapp) {
+      this.dialogConsulterRapportMedical = true;
+      this.rapp = rapp;
+      
+    },
 
     async creepdf() {
       try {
@@ -6130,7 +6022,6 @@ async annulerModificationOrd(ord) {
   border-radius: 15px;
 }
 .cardGris{
-  background-color: #f1f1f1;
   border-radius: 10px;
 }
 .boxRDV {
