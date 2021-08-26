@@ -947,30 +947,6 @@ module.exports = {
   async saveOrdonnance (req, res) {
     try {
       const currentOrd = req.body.id
-      const prescription = req.body.prescs
-      for (let i = 0; i < prescription.length; i++) {
-        prescription[i].ordonnanceId = currentOrd
-      }
-
-      const oldprescs = await Prescription.findAll({
-        where: {
-          ordonnanceId: currentOrd
-        }
-      })
-      if (oldprescs != null) {
-        for (let i = 0; i < oldprescs.length; i++) {
-          oldprescs[i].nom = prescription[i].nom
-          oldprescs[i].forme = prescription[i].forme
-          oldprescs[i].posologie = prescription[i].posologie
-          prescription.shift()
-          oldprescs[i].save()
-          // await oldprescs[i].destroy()
-        }
-      }
-      const prescCreated = await Prescription.bulkCreate(prescription)
-
-      const prsc = prescCreated
-
       // save changes in Ordonnance table
       const ord = await Ordonnance.findOne({
         where: {
@@ -981,9 +957,43 @@ module.exports = {
       ord.nombreMed = req.body.prescs.length
 
       await ord.save()
+      const prescription = req.body.prescs
+      for (let i = 0; i < prescription.length; i++) {
+        prescription[i].ordonnanceId = currentOrd
+      }
+
+      const oldprescs = await Prescription.findAll({
+        where: {
+          ordonnanceId: currentOrd
+        }
+      })
+      let prescCreated = []
+      // eslint-disable-next-line no-empty
+      if (oldprescs.length <= prescription.length) {
+        for (let i = 0; i < oldprescs.length; i++) {
+          oldprescs[i].nom = prescription[i].nom
+          oldprescs[i].forme = prescription[i].forme
+          oldprescs[i].posologie = prescription[i].posologie
+          prescription.shift()
+          oldprescs[i].save()
+          // await oldprescs[i].destroy()
+        }
+        prescCreated = await Prescription.bulkCreate(prescription)
+      } else {
+        for (let i = 0; i < prescription.length; i++) {
+          oldprescs[i].nom = prescription[i].nom
+          oldprescs[i].forme = prescription[i].forme
+          oldprescs[i].posologie = prescription[i].posologie
+          oldprescs[i].save()
+          // await oldprescs[i].destroy()
+        }
+        for (let i = prescription.length; i < oldprescs.length; i++) {
+          await oldprescs[i].destroy()
+        }
+      }
 
       res.send({
-        prsc: prsc,
+        prsc: prescCreated,
         Ord: currentOrd
       })
     } catch (err) {

@@ -223,10 +223,6 @@
                   <td class="dashboardTabletd">
                     <p class="status status-unpaid">Annuler</p>
                   </td>
-<<<<<<< HEAD
-
-=======
->>>>>>> 6b134642e6c8d0d1f889efa8e9647abcc798145f
                   id:'',
         idUser:'',
         typeDeRDV:'',
@@ -3184,7 +3180,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <p style="text-align:center ; margin:0px;font-size:30px ;color:white;font-family: sans-serif; font-weigjt: bold;">50</p></el-card>
                 <div style="padding:15px; width:70%; margin: auto" >
                   <el-button
-                    @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd'; isOrdDisabled=false " class="hovereffect"
+                    @click="  recoverMedicaments();viderOrdonnance(); addprescinput(); radio1 = 'nouvOrd'; isOrdDisabled=false;ordcreated= 'not created'" class="hovereffect"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab;width:45%;margin:10px" 
@@ -3262,8 +3258,8 @@ EMAIL: contact@esi-sba.dz</p>
                 </el-input>
                 </li>
                 </ol>
-                <button @click="addprescinput(); " :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
-                <button @click="removeprescinput();" v-show="prescs.length !=1" type="primary" style="padding:0px 18px 7px ;margin-left:10px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> - </button>
+                <button @click="addprescinput(); " v-show="prescs.length<10 && isOrdDisabled==false" :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <button @click="removeprescinput();" v-show="prescs.length !=1 && prescs.length<=10 &&isOrdDisabled==false" type="primary" style="padding:0px 18px 7px ;margin-left:10px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> - </button>
                
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
@@ -3287,10 +3283,11 @@ EMAIL: contact@esi-sba.dz</p>
                     <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
                     v-show="ordcreated ==='modify'">
                     Annuler</el-button> 
+                       
                        <el-button
                    
-                    type="primary"
-                    v-show="ordcreated ==='created'"
+                    type="primary"    
+                     v-show="ordcreated ==='created'"               
                      style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
                     >Voir en format Pdf </el-button > 
                 </div>
@@ -3327,8 +3324,10 @@ EMAIL: contact@esi-sba.dz</p>
                    <td style="flex:25%">
                     <el-button
                     type="primary"
-                    style="background-color: #24b4ab; "  @click="showOrdonnance(ord); radio1='consulterord'"
-                    class="hovereffect">consulter</el-button></td>
+                    style="background-color: #24b4ab; "  @click=" isOrdDisabled=true; showOrdonnance(ord); radio1='consulterord'"
+                    class="hovereffect">consulter</el-button>
+                    
+                    </td>
    
                  </tr>
              </el-card>
@@ -3336,7 +3335,14 @@ EMAIL: contact@esi-sba.dz</p>
             <!-- consulter ordonnance -->
             <el-scrollbar v-show="radio1 === 'consulterord'">
               <el-card class="box-card">
-                <button style="background:none; float:right; border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
+                <div  style="float:right; width:100px ">
+                  <el-button  @click=" recoverMedicaments(); isOrdDisabled=false "
+                                icon="el-icon-edit"
+                                style="background:none;font-size:25px;margin-top:-5px; float:left; border:none;"
+                             />
+                <button style="background:none;  border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
+                 </div>
+                
                 <div ref="contentord" style="padding: 0px 80px">
                                       <p>N°: {{ordselected}}</p>
                   <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
@@ -3370,9 +3376,9 @@ EMAIL: contact@esi-sba.dz</p>
                 <hr>
                 <ol id="prescs">
 
-                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in currentprescs" :key= index  >
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in prescs" :key= index  >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
+                   <el-select v-model="pr.nom" :disabled="isOrdDisabled" filterable placeholder="nom de médicament">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
@@ -3382,7 +3388,7 @@ EMAIL: contact@esi-sba.dz</p>
                 </el-option>
                 </el-select>
 
-                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-select v-model="pr.forme" :disabled="isOrdDisabled" filterable placeholder="forme pharmaceutique et dosage ">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
@@ -3392,19 +3398,37 @@ EMAIL: contact@esi-sba.dz</p>
                 >
                  </el-option>
                 </el-select>
-                <el-input v-model="pr.posologie"
+                <el-input v-model="pr.posologie" :disabled="isOrdDisabled"
                 style="width : 200px; margin-right:20px">
 
                 </el-input>
                 </li>
                 </ol>
-                <button  type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500; display:none" > + </button>
+                 <button @click="addprescinput(); " v-show="prescs.length<10 && isOrdDisabled==false" :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <button @click="removeprescinput();" v-show="prescs.length !=1 && prescs.length<=10 &&isOrdDisabled==false" type="primary" style="padding:0px 18px 7px ;margin-left:10px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> - </button>
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
                 <br>
                 <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
                 </div>   
+                
+                <div style="display:flex">
+                  <el-button
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                    v-show="isOrdDisabled==false" @click="saveOrdonnance(ordselected); " 
+                    >Enregistrer  </el-button >
+                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
+                    v-show="isOrdDisabled==false">
+                    Annuler</el-button> 
+                       <el-button
+                   
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
+                    >Voir en format Pdf </el-button > 
+                </div>
+               
                 
               </el-card>
             </el-scrollbar>
@@ -5465,6 +5489,10 @@ export default {
       
      await this.prescs.pop()
     },
+    async viderOrdonnance() {
+      
+     this.prescs=[];
+    },
     
 
      async addpresc(user){
@@ -5478,7 +5506,19 @@ export default {
             this.champsvides=false
           }
         }
-        if(!this.champsvides){
+        let duplicated=false;
+        let j,i=0;
+        while (! duplicated && i<(this.prescs.length-1) ){
+          j=i+1;
+          while(j< this.prescs.length && !duplicated){
+            if (this.prescs[i].nom==this.prescs[j].nom) duplicated=true;
+            j++;
+
+          } 
+          i++;       
+ 
+        }
+        if(!this.champsvides && !duplicated){
           this.ordcreated="created" 
           this.$notify.success({
           title: 'Succeès',
@@ -5500,13 +5540,21 @@ const response1 = await DocServices.createOrdonnance({
         console.log(response2.data);
         
          
-        }else{
+        }else if (this.champsvides){
          this.ordcreated="not created"; 
 
           this.$notify.error({
           title: 'ERREUR',
           dangerouslyUseHTMLString: true,
           message: '<strong>Champ(s) Vide(s)</strong>'
+        });
+        }else{
+          this.ordcreated="not created"; 
+
+          this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Médicament(s) dupliqué(s)</strong>'
         });
         }
          } catch (error) {
@@ -5543,6 +5591,7 @@ const response1 = await DocServices.createOrdonnance({
         // });
         this.prescs=[];
         this.ordcreated="not created";
+        this.isOrdDisabled=false;
         
            console.log("done");
       } catch (error) {
@@ -5895,6 +5944,7 @@ async annulerModificationOrd(ord) {
 
     async showOrdonnance(ordonnance) {
     try {
+      this.isOrdDisabled=true;
       this.ordselected=ordonnance.id;
       const response = await DocServices.showOrdonnance({
         id: ordonnance.id
@@ -5909,6 +5959,7 @@ async annulerModificationOrd(ord) {
      });
 
      this.currentprescs=list;
+     this.prescs=this.currentprescs;
       console.log(response.data);
     } catch (error) {
       console.log(`something went wrong ${error}`);
