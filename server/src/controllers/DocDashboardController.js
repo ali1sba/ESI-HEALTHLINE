@@ -944,20 +944,70 @@ module.exports = {
       })
     }
   },
+  async recoverMarques  (req, res) {
+    try {
+      const marques = await Medicament.findAll({
+        attributes: ['marque'],
+        where: {
+          nom: req.body.nom
+        },
+        raw: true
+      })
+      res.send({ marques: marques })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async recoverFormes  (req, res) {
+    try {
+      const formes = await Medicament.findAll({
+        attributes: ['forme'],
+        where: {
+          nom: req.body.nom,
+          marque: req.body.marque
+        },
+        raw: true
+      })
+      res.send({ formes: formes })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
+  async recoverDosages  (req, res) {
+    try {
+      const dosages = await Medicament.findAll({
+        attributes: ['dosage'],
+        where: {
+          nom: req.body.nom,
+          marque: req.body.marque,
+          forme: req.body.forme
+
+        },
+        raw: true
+      })
+      res.send({ dosages: dosages })
+      res.send('hello')
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch medicaments ${err}`
+      })
+    }
+  },
   async saveOrdonnance (req, res) {
     try {
       const currentOrd = req.body.id
-      // save changes in Ordonnance table
+      const prescription = req.body.prescs
       const ord = await Ordonnance.findOne({
         where: {
           id: currentOrd
         }
       })
-
-      ord.nombreMed = req.body.prescs.length
-
-      await ord.save()
-      const prescription = req.body.prescs
       for (let i = 0; i < prescription.length; i++) {
         prescription[i].ordonnanceId = currentOrd
       }
@@ -968,14 +1018,23 @@ module.exports = {
         }
       })
       let prescCreated = []
+      // save changes in Ordonnance table
+
+      ord.nombreMed = req.body.prescs.length - 1
+      await ord.save()
+      ord.nombreMed = req.body.prescs.length
+      await ord.save()
+
       // eslint-disable-next-line no-empty
       if (oldprescs.length <= prescription.length) {
         for (let i = 0; i < oldprescs.length; i++) {
-          oldprescs[i].nom = prescription[i].nom
-          oldprescs[i].forme = prescription[i].forme
-          oldprescs[i].posologie = prescription[i].posologie
+          oldprescs[i].nom = prescription[0].nom
+          oldprescs[i].forme = prescription[0].forme
+          oldprescs[i].marque = prescription[0].marque
+          oldprescs[i].dosage = prescription[0].dosage
+          oldprescs[i].duree = prescription[0].duree
           prescription.shift()
-          oldprescs[i].save()
+          await oldprescs[i].save()
           // await oldprescs[i].destroy()
         }
         prescCreated = await Prescription.bulkCreate(prescription)
@@ -983,21 +1042,21 @@ module.exports = {
         for (let i = 0; i < prescription.length; i++) {
           oldprescs[i].nom = prescription[i].nom
           oldprescs[i].forme = prescription[i].forme
-          oldprescs[i].posologie = prescription[i].posologie
+          oldprescs[i].marque = prescription[i].marque
+          oldprescs[i].dosage = prescription[i].dosage
+          oldprescs[i].duree = prescription[i].duree
           oldprescs[i].save()
-          // await oldprescs[i].destroy()
         }
         for (let i = prescription.length; i < oldprescs.length; i++) {
           await oldprescs[i].destroy()
         }
       }
-
       res.send({
         prsc: prescCreated,
         Ord: currentOrd
       })
     } catch (err) {
-      res.status(500).send({
+      res.send({
         error: `an error has occured trying to save ordonnance ${err}`
       })
     }
@@ -1006,7 +1065,7 @@ module.exports = {
     try {
       const userId = req.body.id
       const ords = await Ordonnance.findAll({
-        attributes: ['id', 'nombreMed', 'createdAt'],
+        attributes: ['id', 'nombreMed', 'updatedAt'],
         where: {
           patientId: userId
         },

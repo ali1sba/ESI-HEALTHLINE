@@ -3,10 +3,16 @@ module.exports = (sequelize, DataTypes) =>
     nom: {
       type: DataTypes.STRING
     },
+    marque: {
+      type: DataTypes.STRING
+    },
     forme: {
       type: DataTypes.STRING
     },
-    posologie: {
+    dosage: {
+      type: DataTypes.STRING
+    },
+    duree: {
       type: DataTypes.STRING
     },
     ordonnanceId: {
