@@ -4,6 +4,8 @@ const { Compte } = require('../models')
 const { RDV } = require('../models')
 
 module.exports = {
+  // ***************************** RDV GROUP **********************************
+  // ***************************** RDV INDIV **********************************
   async recoverPatients (req, res) {
     try {
       const cPatients = await Compte.findAll({

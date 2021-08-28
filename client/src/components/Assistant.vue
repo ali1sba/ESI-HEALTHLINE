@@ -24,78 +24,136 @@
       </ul>
     </nav>
     <main role="mainAdmin">
+      <!-- ********************************************** RDV GROUPE  ******************************************************* -->
       <div class="section1Assistant">
         <section v-if="section === 1" id="section1">
           <section class="panel important">
               <el-card class="box-card">
                   <h2>RDV groupés</h2>
                    <el-card   class="cardGris">
-                        <el-row>
-                          <el-col :span="7">Type de RDV</el-col>
-                          <el-col :span="10">Date And Time</el-col>
-                          <el-col :span="7">Note</el-col>
-                        </el-row>
-                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button> -->
-                    
-                      </el-card>
+                      <el-row>
+                        <el-col :span="6">Groupe</el-col>
+                        <el-col :span="6">Type de RDV</el-col>
+                        <el-col :span="6">Date And Time</el-col>
+                        <el-col :span="6">Note</el-col>
+                      </el-row>
+                  </el-card>
                   <el-timeline style="margin:1% 0% 0% 0%;">
-                    <el-timeline-item  placement="top" v-for="Rdv in RDVList" :key="Rdv.id" >
+                    <el-timeline-item  placement="top" v-for="Rdv in RDVGroupList" :key="Rdv.id" >
                       <el-card   class="cardGris">
                         <el-row>
-                          <el-col :span="7">{{Rdv.Type}}</el-col>
-                          <el-col :span="10">{{Rdv.DateAndTime}}</el-col>
-                          <el-col :span="7">{{Rdv.Note}}</el-col>
+                          <el-col :span="6">{{Rdv.Group}}</el-col>
+                          <el-col :span="6">{{Rdv.Type}}</el-col>
+                          <el-col :span="6">{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="6">{{Rdv.Note}}</el-col>
                         </el-row>
                         <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
-                        <el-button type="" style="align-items: right;">Modifier</el-button>
-                        <el-button type="" style="align-items: right;">Annuler</el-button>
-                    
+                        <el-button type="" style="align-items: right;" @click="modifRDVGroup(Rdv)">Modifier</el-button>
+                        <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir Annuler ce RDV ?"
+                          @confirm="annulerRDVGroup(Rdv)"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                            <el-button type="" style="align-items: right;">Annuler</el-button>
+                          </template>
+                        </el-popconfirm>
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
                   <el-button
                   type="primary"
-                    @click="dialogRDVGroupFormVisible = true"
+                    @click="recoverGroups()"
                     style="background-color: #24b4ab; width: 50%">
                     programmer un RDV
                     </el-button>
                   </el-card>
 
-                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVGroupFormVisible">
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVGroupFormVisible">
                     <el-form :model="form">
-                      <el-form-item label="Groupe" :label-width="formLabelWidth">
-                        <el-select placeholder="Sélectionnez le groupe">
-                          <el-option label="consultation médical" value="consultation médical"></el-option>
-                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                      <el-form-item label="Patient" :label-width="formLabelWidth">
+                        <el-select v-model="value" filterable remote placeholder="Sélectionnez le patient">
+                          <el-option
+                            v-for="item in Patients"
+                            :key="item.value"
+                            :label="item.label"
+                            :value ="item.value"
+                            style="margin-right:20px">
+                          </el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="type de RDV" :label-width="formLabelWidth">
-                        <el-select placeholder="Sélectionnez un type">
+                        <el-select v-model="value" placeholder="Sélectionnez un type">
                           <el-option label="consultation médical" value="consultation médical"></el-option>
                           <el-option label="suivi médical" value="suivi médical"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="Date" :label-width="formLabelWidth">
                         <el-date-picker
+                          v-model="value"
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
                           :shortcuts="shortcuts">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
-                        <el-input placeholder="Note"></el-input>
+                        <el-input v-model="value" placeholder="Note"></el-input>
                       </el-form-item>
                     </el-form>
                     <template #footer>
                       <span class="dialog-footer">
-                        <el-button @click="dialogRDVGroupFormVisible = false">Annuler</el-button>
-                        <el-button type="primary">Confirmer</el-button>
+                        <el-button @click="annulerProgRDVGroup()">Annuler</el-button>
+                        <el-button type="primary" @click="progRDVGroup()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
+
+                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVGroupFormVisible2">
+                    <el-form :model="form">
+                      <el-form-item label="Patient" :label-width="formLabelWidth">
+                        <el-select v-model="value" filterable remote disabled>
+                          <el-option
+                            v-for="item in Patients"
+                            :key="item.value"
+                            :label="item.label"
+                            :value ="item.value"
+                            style="margin-right:20px">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="value" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="value"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="value" placeholder="Note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="annulerModifRDVGroup()">Annuler</el-button>
+                        <el-button type="primary" @click="confirmModifRDVGroup()">Confirmer</el-button>
                       </span>
                     </template>
                   </el-dialog>
           </section>
         </section>
       </div>
+      <!-- ********************************************** RDV INDIVIDUEL  ******************************************************* -->
       <div class="section2Assistant">
         <section v-if="section === 2" id="section2">
           <section class="panel important">
@@ -133,7 +191,6 @@
                             <el-button type="" style="align-items: right;">Annuler</el-button>
                           </template>
                         </el-popconfirm>
-                    
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -236,12 +293,19 @@ export default {
       return {
           radio2: 'Historique',
           radio3: 'Groupé',
+          formLabelWidth:'120px',
+          value: '',
+          // ************ RDV GROUP **********************
           dialogRDVGroupFormVisible: false,
+          dialogRDVGroupFormVisible2: false,
+          Groups: [],
+          rdvGoup: '',
+          rdvGoupForm: '',
+          RDVGroupList: [],
+          // ************ RDV INDIV **********************
           dialogRDVIndivFormVisible: false,
           dialogRDVIndivFormVisible2: false,
-          formLabelWidth:'120px',
           Patients: [],
-          value: '',
           rdvIndiv: {
             idPatient: '',
             typeRDV: '',
@@ -261,6 +325,72 @@ export default {
   mounted: function () {
   },
   methods: {
+    // ************************************************ RDV groupés ********************************************
+    async recoverRDVG () {
+      try {
+        console.log("recoverRDVG clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async recoverGroups () {
+      try {
+        this.dialogRDVGroupFormVisible = true
+        console.log("recoverGroups clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async progRDVGroup () {
+      try {
+        console.log("progRDVGroup clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async annulerProgRDVGroup () {
+      try {
+        console.log("annulerProgRDVGroup clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async modifRDVGroup () {
+      try {
+        console.log("modifRDVGroup clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async confirmModifRDVGroup () {
+      try {
+        console.log("confirmModifRDVGroup clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async annulerModifRDVGroup () {
+      try {
+        console.log("annulerModifRDVGroup clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
+    async annulerRDVGroup () {
+      try {
+        console.log("annulerRDVGroup clicked")
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+
     // ********************************************** RDV individuels ******************************************
     async recoverRDVI () {
       try {
