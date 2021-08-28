@@ -1659,27 +1659,58 @@
                      <div>
                       <el-radio-group v-model="radio3">
                         <el-radio-button label="Créer"></el-radio-button>
-                        <el-radio-button label="Historique"></el-radio-button>
+                        <el-radio-button label="Historique" @click="recoverExamenClinique(userselected)"></el-radio-button>
                       </el-radio-group>
                      </div>
                     </center>
+                    <el-scrollbar v-show="radio3==='Historique'">
+                <el-card class="box-card">
+                  <tr style="display:flex">
+                   
+                  
+                   <th style="flex:30%">
+                     DATE
+                   </th>
+                   <th style="flex:45%">
+                     INFOS
+                   </th>
+                    <th style="flex:25%">
+                      CONSULTER
+                   </th>
+                 </tr>
+                 <tr v-for="ec in ExamenCliniques" :key="ec.id" style="display:flex;padding:4px; border-radius:10px" >
+                   
+                    <td style="flex:30%">{{ec.date}}</td>
+                   <td style="flex:45%"></td>
+                  
+                   <td style="flex:25%">
+                    <el-button
+                    type="primary"
+                    style="background-color: #24b4ab; "  @click="showExamenClinique(ec); radio3=''"
+                    class="hovereffect">consulter</el-button></td>
+   
+                 </tr>
+             
+                  </el-card>
+                  </el-scrollbar>
+
                   <el-scrollbar v-show="radio3 === 'Créer'" >  
                   <el-card class="box-card">
                     <h6>Inspection generale</h6><br>
                     <el-row>
                       <el-col :span="6">Temperature</el-col>
-                      <el-col :span="4"><el-input v-model="temp" placeholder="temp"></el-input></el-col> 
+                      <el-col :span="4"><el-input v-model="examenClinique.temp" placeholder="temp"></el-input></el-col> 
                     </el-row>
                     <el-row>
                       <el-col :span="6">Peau et teguments</el-col>
                       <el-col :span="6">
-                         <el-select v-model="peau" placeholder="Selectionner">
-                         <el-option label="normo coloree" value="1"></el-option>
-                         <el-option label="Anormale" value="2"></el-option>
+                         <el-select v-model="examenClinique.peau" placeholder="Selectionner">
+                         <el-option label="normo coloree" value="normo coloree"></el-option>
+                         <el-option label="Anormale" value="Anormale"></el-option>
                       </el-select>
                       </el-col>
-                      <el-col v-if="isEnabledPT" :span="6">
-                       <el-input v-model="anomaliePeau" placeholder="type d'anomalie"></el-input>
+                      <el-col v-show="examenClinique.peau==='Anormale'" :span="6">
+                       <el-input v-model="examenClinique.anomaliePeau" placeholder="type d'anomalie"></el-input>
                       </el-col>
                     </el-row>
                   </el-card>
@@ -1688,52 +1719,52 @@
                    <h6>Examen cardio-vesculaire</h6>
                    <el-row>
                      <el-col :span="6">Inspection</el-col>
-                     <el-col :span="6"><el-input v-model="inspCardio" placeholder=".."></el-input></el-col>
+                     <el-col :span="6"><el-input v-model="examenClinique.inspCardio" placeholder=".."></el-input></el-col>
                    </el-row>
                    <el-row>
                      <el-col :span="6">Ausculation</el-col>
                      <el-col :span="6">
-                       <el-select v-model="auscuCardio" placeholder="Selectionner">
-                         <el-option label="normale" value="1"></el-option>
-                         <el-option label="Anormale" value="2"></el-option>
+                       <el-select v-model="examenClinique.auscuCardio" placeholder="Selectionner">
+                         <el-option label="normale" value="normale"></el-option>
+                         <el-option label="Anormale" value="Anormale"></el-option>
                       </el-select>
                      </el-col>
                    </el-row>
-                   <el-row v-if="isEnabledACV"  >
+                   <el-row v-show="examenClinique.auscuCardio==='Anormale'"  >
                      <el-col :span="6">Anomalie</el-col>
                      <el-col :span="18">
-                       <el-select v-model="anomalieSouffle" placeholder="Souffle">
-                             <el-option label="< 2/6" ></el-option>
-                             <el-option label="= 3>6" ></el-option>
-                             <el-option label=">= 4/6" ></el-option>
+                       <el-select v-model="examenClinique.anomalieSouffle" placeholder="Souffle">
+                             <el-option label="< 2/6" value="< 2/6"></el-option>
+                             <el-option label="= 3>6" value="= 3>6"></el-option>
+                             <el-option label=">= 4/6" value=">= 4/6"></el-option>
                         </el-select>
-                        <el-select v-model="anomalieType" placeholder="Type">
-                             <el-option label="Systiloque" ></el-option>
-                             <el-option label="Diastolique" ></el-option>
+                        <el-select v-model="examenClinique.anomalieType" placeholder="Type">
+                             <el-option label="Systiloque" value="Systiloque"></el-option>
+                             <el-option label="Diastolique" value="Diastolique"></el-option>
                         </el-select> 
-                        <el-select v-model="anomalieBruits" placeholder="Bruits cardiaques">
-                             <el-option label="Eclat de b1" ></el-option>
-                             <el-option label="Assourdissement" ></el-option>
+                        <el-select v-model="examenClinique.anomalieBruits" placeholder="Bruits cardiaques">
+                             <el-option label="Eclat de b1" value="Eclat de b1"></el-option>
+                             <el-option label="Assourdissement" value="Assourdissement"></el-option>
                         </el-select> 
                      </el-col>
                    </el-row>
                    <el-row>
                      <el-col :span="6">pouls peripheriques</el-col>
                      <el-col :span="6">
-                       <el-select v-model="poulsPeri" placeholder="selectionner">
-                             <el-option label="Percus" ></el-option>
-                             <el-option label="Abolis" ></el-option>
+                       <el-select v-model="examenClinique.poulsPeri" placeholder="selectionner">
+                             <el-option label="Percus" value="Percus"></el-option>
+                             <el-option label="Abolis" value="Abolis"></el-option>
                         </el-select> 
                      </el-col>
-                     <el-col v-if="isEnabledPCV" :span="9"><el-input  v-model="anomaliePoulsPeri" placeholder=".."></el-input></el-col>
+                     <el-col v-show="examenClinique.poulsPeri==='Percus'" :span="9"><el-input  v-model="examenClinique.anomaliePoulsPeri" placeholder=".."></el-input></el-col>
                    </el-row>
                    <el-row>
                       <el-col :span="6">Tension Artecielle</el-col>
-                      <el-col :span="6"><el-input v-model="tensionArt" placeholder=".."></el-input></el-col>
+                      <el-col :span="6"><el-input v-model="examenClinique.tensionArt" placeholder=".."></el-input></el-col>
                    </el-row>
                    <el-row>
                       <el-col :span="6">Frequence cardiaque</el-col>
-                      <el-col :span="6"><el-input v-model="freqCard" placeholder=".."></el-input></el-col>
+                      <el-col :span="6"><el-input v-model="examenClinique.freqCard" placeholder=".."></el-input></el-col>
                    </el-row>
                   </el-card>
                    <!-- ___________________________________________________________________________- -->
@@ -1741,55 +1772,55 @@
                     <h6>Examen pleuropulmonaire</h6>
                     <el-row>
                      <el-col :span="6">Inspection</el-col>
-                     <el-col :span="6"><el-input v-model="inspPulmo" placeholder=".."></el-input></el-col>
+                     <el-col :span="6"><el-input v-model="examenClinique.inspPulmo" placeholder=".."></el-input></el-col>
                    </el-row>
                    <el-row>
                       <el-col :span="6">Frequence  pulmonaire</el-col>
-                      <el-col :span="6"><el-input v-model="freqPulmo" placeholder=".."></el-input></el-col>
+                      <el-col :span="6"><el-input v-model="examenClinique.reqPulmo" placeholder=".."></el-input></el-col>
                    </el-row>
                     <el-row>
                      <el-col :span="6">Palpation</el-col>
                      <el-col :span="6">
-                       <el-select v-model="palpPulmo" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Abolis" ></el-option>
+                       <el-select v-model="examenClinique.palpPulmo"  placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Abolis" value="Abolis"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledPAP" :span="9"><el-input v-model="anomaliePalpPulmo" placeholder=".."></el-input></el-col>
+                     <el-col v-show="examenClinique.palpPulmo==='Abolis'" :span="9"><el-input v-model="examenClinique.anomaliePalpPulmo" placeholder=".."></el-input></el-col>
                     </el-row>
                     <el-row>
                      <el-col :span="6">Percution</el-col>
                      <el-col :span="6">
-                       <el-select v-model="percuPulmo" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Abolis" ></el-option>
+                       <el-select v-model="examenClinique.percuPulmo" placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Abolis" value="Abolis"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledPEP" :span="9"><el-input v-model="anomaliePercuPulmo" placeholder=".."></el-input></el-col>
+                     <el-col v-show="examenClinique.percuPulmo==='Abolis'" :span="9"><el-input v-model="examenClinique.anomaliePercuPulmo" placeholder=".."></el-input></el-col>
                     </el-row>
                     <el-row>
                      <el-col :span="6">Ausculation</el-col>
                      <el-col :span="6">
-                       <el-select v-model="auscuPulmo" placeholder="Selectionner">
-                         <el-option label="normale" ></el-option>
-                         <el-option label="Anormale" ></el-option>
+                       <el-select v-model="examenClinique.auscuPulmo"  placeholder="Selectionner">
+                         <el-option label="normale" value="normale"></el-option>
+                         <el-option label="Anormale" value="Anormale"></el-option>
                       </el-select>
                      </el-col>
                    </el-row>
-                   <el-row v-if="isEnabledAP" > 
+                   <el-row v-show="examenClinique.auscuPulmo==='Anormale'" > 
                      <el-col :span="6">Anomalie</el-col>
                      <el-col :span="6">
-                       <el-select v-model="murmureViscu" placeholder="Murmure visiculaire">
-                         <el-option label="Abolis" ></el-option>
-                         <el-option label="Exagéré" ></el-option>
+                       <el-select v-model="examenClinique.murmureViscu" placeholder="Murmure visiculaire">
+                         <el-option label="Abolis" value="Abolis"></el-option>
+                         <el-option label="Exagéré" value="Exagéré"></el-option>
                       </el-select>
                      </el-col>
-                     <el-col :span="4"><el-checkbox v-model="checkedRales">Rales</el-checkbox></el-col>
-                     <el-col v-if="isEnabledAPR" :span="6">
-                        <el-select  v-model="locaRales" placeholder="Localisation">
-                         <el-option label="Ronflants" ></el-option>
-                         <el-option label="Crépitant" ></el-option>
-                         <el-option label="Sibilant"></el-option>
+                     <el-col :span="4"><el-checkbox v-model="examenClinique.checkedRales">Rales</el-checkbox></el-col>
+                     <el-col v-show="examenClinique.checkedRales==true" :span="6">
+                        <el-select  v-model="examenClinique.locaRales" placeholder="Localisation">
+                         <el-option label="Ronflants" value="Ronflants"></el-option>
+                         <el-option label="Crépitant" value="Crépitant"></el-option>
+                         <el-option label="Sibilant" value="Sibilant"></el-option>
                       </el-select>
                      </el-col>
                    </el-row>
@@ -1800,32 +1831,32 @@
                    <el-row>
                       <el-col :span="6">Inspection</el-col>
                      <el-col :span="6">
-                       <el-select v-model="inspAbdo" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Anormale" ></el-option>
+                       <el-select v-model="examenClinique.inspAbdo"  placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Anormale" value="Anormale"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledIAB" :span="9"><el-input v-model="anomalieAbdo" placeholder="Anomalie?"></el-input></el-col>
+                     <el-col v-show="examenClinique.inspAbdo==='Anormale'" :span="9"><el-input v-model="examenClinique.anomalieAbdo" placeholder="Anomalie?"></el-input></el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="6">palpation</el-col>
                      <el-col :span="6">
-                       <el-select v-model="pulpAbdo" placeholder="selectionner">
-                             <el-option label="mepatomegalie" ></el-option>
-                             <el-option label="splenomegalie" ></el-option>
-                             <el-option label="Asaite" ></el-option>
-                             <el-option label="Masse" ></el-option>
+                       <el-select v-model="examenClinique.pulpAbdo" placeholder="selectionner" >
+                             <el-option label="mepatomegalie" value="mepatomegalie"></el-option>
+                             <el-option label="splenomegalie" value="splenomegalie"></el-option>
+                             <el-option label="Asaite" value="Asaite"></el-option>
+                             <el-option label="Masse" value="Masse"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledPAB" v-model="pulpMasse" :span="9">
-                       <el-input v-model="localiMasse" placeholder="Localisation"></el-input>
-                       <el-input v-model="ralesMasse" placeholder="Rales"></el-input>
-                       <el-input v-model="autreMasse" placeholder="Autre"></el-input>
+                     <el-col v-show="examenClinique.pulpAbdo==='Masse'" v-model="examenClinique.pulpMasse" :span="9">
+                       <el-input v-model="examenClinique.localiMasse" placeholder="Localisation"></el-input>
+                       <el-input v-model="examenClinique.ralesMasse" placeholder="Rales"></el-input>
+                       <el-input v-model="examenClinique.autreMasse" placeholder="Autre"></el-input>
                        </el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="6">Percution</el-col>
-                      <el-col :span="6"><el-input v-model="percuAbdo" placeholder=".."></el-input></el-col>
+                      <el-col :span="6"><el-input v-model="examenClinique.percuAbdo" placeholder=".."></el-input></el-col>
                    </el-row>
                   </el-card>
                   <!-- ________________________________________________________________________________ -->
@@ -1834,42 +1865,42 @@
                     <el-row>
                       <el-col :span="6">Sensibilite</el-col>
                       <el-col :span="6">
-                       <el-select v-model="sensiNeuro" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Anormale" ></el-option>
+                       <el-select v-model="examenClinique.sensiNeuro" placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Anormale" value="Anormale"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledSN" :span="9"><el-input v-model="anomalieSensiNeuro" placeholder="Anomalie?"></el-input></el-col>
+                     <el-col v-show="examenClinique.sensiNeuro==='Anormale'" :span="9"><el-input v-model="examenClinique.anomalieSensiNeuro" placeholder="Anomalie?"></el-input></el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="6">Matriticite</el-col>
                       <el-col :span="6">
-                       <el-select v-model="matriNeuro" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Anormale" ></el-option>
+                       <el-select v-model="examenClinique.matriNeuro" placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Anormale" value="Anormale"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledMN" :span="9"><el-input v-model="anomaieMatriNeuro" placeholder="Anomalie?"></el-input></el-col>
+                     <el-col v-show="examenClinique.matriNeuro==='Anormale'" :span="9"><el-input v-model="examenClinique.anomaieMatriNeuro" placeholder="Anomalie?"></el-input></el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="6">Troubles sylincteries</el-col>
                       <el-col :span="6">
-                       <el-select v-model="troublesNeuro" placeholder="selectionner">
-                             <el-option label="Non" ></el-option>
-                             <el-option label="Oui" ></el-option>
+                       <el-select v-model="examenClinique.troublesNeuro" placeholder="selectionner">
+                             <el-option label="Non" value="Non"></el-option>
+                             <el-option label="Oui" value="Oui"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledTN" :span="9"><el-input v-model="anomalieTroublesNeuro" placeholder=".."></el-input></el-col>
+                     <el-col v-show="examenClinique.troublesNeuro==='Oui'" :span="9"><el-input v-model="examenClinique.anomalieTroublesNeuro" placeholder=".."></el-input></el-col>
                     </el-row>
                     <el-row>
                       <el-col :span="6">Oriantation</el-col>
                       <el-col :span="6">
-                       <el-select v-model="orientNeuro" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Anormale" ></el-option>
+                       <el-select v-model="examenClinique.orientNeuro" placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Anormale" value="Anormale"></el-option>
                         </el-select> 
                      </el-col> 
-                     <el-col v-if="isEnabledON" :span="9"><el-input v-model="anomalieOrientNeuro" placeholder="Anomalie?"></el-input></el-col>
+                     <el-col v-show="examenClinique.orientNeuro==='Anormale'" :span="9"><el-input v-model="examenClinique.anomalieOrientNeuro" placeholder="Anomalie?"></el-input></el-col>
                     </el-row>
                   </el-card>
                   <!-- ________________________________________________________________________________________ -->
@@ -1878,19 +1909,19 @@
                     <el-row>
                       <el-col :span="6">Gorge</el-col>
                       <el-col :span="6">
-                       <el-select v-model="gorgeORL" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Angine" ></el-option>
-                             <el-option label="Pharyngite" ></el-option>
+                       <el-select v-model="examenClinique.gorgeORL" placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Angine" value="Angine"></el-option>
+                             <el-option label="Pharyngite" value="Pharyngite"></el-option>
                         </el-select> 
                      </el-col> 
                     </el-row>
                     <el-row>
                       <el-col :span="6">Auriculaire</el-col>
                       <el-col :span="6">
-                       <el-select v-model="auricuORL" placeholder="selectionner">
-                             <el-option label="Normale" ></el-option>
-                             <el-option label="Otite" ></el-option>
+                       <el-select v-model="examenClinique.auricuORL" placeholder="selectionner">
+                             <el-option label="Normale" value="Normale"></el-option>
+                             <el-option label="Otite" value="Otite"></el-option>
                         </el-select> 
                      </el-col> 
                     </el-row>
@@ -1899,18 +1930,16 @@
                   <el-card class="box-card"> 
                    <el-row>
                      <el-col :span="6">Examen urogenitale</el-col>
-                     <el-col :span="18"><el-input v-model="examenUrogeni" placeholder=".." type="textarea" autorise></el-input></el-col>
+                     <el-col :span="18"><el-input v-model="examenClinique.examenUrogeni" placeholder=".." type="textarea" autorise></el-input></el-col>
                    </el-row>
                     <el-row>
                      <el-col :span="6">Remarques</el-col>
-                     <el-col :span="18"><el-input v-model="remarqueCli" placeholder=".." type="textarea" autorise></el-input></el-col>
+                     <el-col :span="18"><el-input v-model="examenClinique.remarqueCli" placeholder=".." type="textarea" autorise></el-input></el-col>
                    </el-row>
                   </el-card>
-                  <el-button type="success" icon="el-icon-check"  @click="saveExamenClinique">sauvgarder</el-button>
+                  <el-button type="success" icon="el-icon-check"  @click="saveExamenClinique(userselected)">sauvgarder</el-button>
                   </el-scrollbar>
-                  <el-scrollbar v-show="radio3 === 'Historique'">
-                    historique
-                  </el-scrollbar>
+                  
                 </el-card>
             </el-scrollbar>
             <!-- ****************************bilan paraclinique: mahdi + rania******************************* 
@@ -4254,7 +4283,9 @@ export default {
       cashedUserAnt: "",
       isDisabledAnts: true,
       //examen clinique*********************************************************************************
+      ExamenCliniques: [],
   examenClinique: {
+  userId: -1,
   temp: "",
   peau: "",
   anomaliePeau:"",
@@ -4300,19 +4331,19 @@ export default {
   examenUrogeni: "",
   remarqueCli: "",
  },
- isEnabledPT:"false",
- isEnabledACV:"false",
- isEnabledPCV:"false",
- isEnabledPAP:"false",
- isEnabledPEP:"false",
- isEnabledAP:"false",
- isEnabledAPR:"false",
- isEnabledIAB:"false",
- isEnabledPAB:"false",
- isEnabledSN:"false",
- isEnabledMN:"false",
- isEnabledTN:"false",
- isEnabledON:"false",
+ isEnabledPT:false,
+ isEnabledACV:false,
+ isEnabledPCV:false,
+ isEnabledPAP:false,
+ isEnabledPEP:false,
+ isEnabledAP:false,
+ isEnabledAPR:false,
+ isEnabledIAB:false,
+ isEnabledPAB:false,
+ isEnabledSN:false,
+ isEnabledMN:false,
+ isEnabledTN:false,
+ isEnabledON:false,
  radio3: "Créer",
  
       //Ordonnance
@@ -6433,7 +6464,7 @@ async annulerModificationOrd(ord) {
       let list=[];
     response.data.ords.map(function(value) {
        
-     list.push({id: value.id, date:value.createdAt ,nombreMed:value.nombreMed });
+     list.push({id: value.id, date:value.createdAt.toString() ,nombreMed:value.nombreMed });
      
      });
         
@@ -6467,50 +6498,33 @@ async annulerModificationOrd(ord) {
       console.log(`something went wrong ${error}`);
     }
   },
-  },
-  
-  //antecedents*****************************************************************************************
-  async modifierAntecedents() {
-    try {
-      this.cachedUser = Object.assign({}, this.userAntInfo);
-      this.isDisabledAnts = false;
-      console.log("modifierAntecedents button was clicked !");
-    } catch (error) {
-      console.log("something went wrong");
-    }
-  },
-  async annulerAntecedents() {
-    try {
-      this.userAntInfo = Object.assign({}, this.cachedUser);
-      this.isDisabledAnts = true;
-      console.log("annulerAntecedents button was clicked !");
-    } catch (error) {
-      console.log("something went wrong");
-    }
-  },
-  async saveAntecedents() {
-    try {
-      this.cachedUser = Object.assign({}, this.userAntInfo);
-      this.isDisabledAnts = true;
-      console.log("saveAntcedents button was clicked !");
-      console.log(this.userAntInfo);
-
-      const response = await DocServices.saveAntecedents({
-        antecedentsInfo: this.userAntInfo,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(`something went wrong ${error}`);
-    }
-  },
-   
-      // examen clinique functions*****************************************************
+     // examen clinique functions*****************************************************
    async saveExamenClinique(user){
      try{
+       this.examenClinique.userId=user.id
        const response = await DocServices.saveExamenClinique({
-         id: user.id,
          ExamenClinique: this.examenClinique
        });
+       console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+     }
+   },
+   async recoverExamenClinique(user){
+     try{
+       const response = await DocServices.recoverExamenClinique({
+         id: user.id,
+        
+       });
+        let list=[];
+    response.data.Ec.map(function(value) {
+       
+     list.push({ date:value.createdAt.toString() });
+     
+     });
+        
+        this.ExamenCliniques=list;
+      console.log(list);
        console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -6558,6 +6572,44 @@ async annulerModificationOrd(ord) {
         this.isEnabledON = true;
       }
    },
+  },
+  
+  //antecedents*****************************************************************************************
+  async modifierAntecedents() {
+    try {
+      this.cachedUser = Object.assign({}, this.userAntInfo);
+      this.isDisabledAnts = false;
+      console.log("modifierAntecedents button was clicked !");
+    } catch (error) {
+      console.log("something went wrong");
+    }
+  },
+  async annulerAntecedents() {
+    try {
+      this.userAntInfo = Object.assign({}, this.cachedUser);
+      this.isDisabledAnts = true;
+      console.log("annulerAntecedents button was clicked !");
+    } catch (error) {
+      console.log("something went wrong");
+    }
+  },
+  async saveAntecedents() {
+    try {
+      this.cachedUser = Object.assign({}, this.userAntInfo);
+      this.isDisabledAnts = true;
+      console.log("saveAntcedents button was clicked !");
+      console.log(this.userAntInfo);
+
+      const response = await DocServices.saveAntecedents({
+        antecedentsInfo: this.userAntInfo,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+  },
+   
+   
 };
 
 

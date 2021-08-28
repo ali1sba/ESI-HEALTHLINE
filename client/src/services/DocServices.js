@@ -26,6 +26,9 @@ export default {
     saveExamenClinique (credantials){
         return Api().post('/DOCdashboard/saveExamenClinique',credantials)
     },
+    recoverExamenClinique (credantials){
+        return Api().post('/DOCdashboard/recoverExamenClinique',credantials)
+    },
     recoverMedicaments (credantials){
         return Api().post('/DOCdashboard/recoverMedicaments',credantials)
     },

@@ -146,4 +146,7 @@ module.exports = (app) => {
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
+  // ************************ examen clinique **************************
+  app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
+  app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
 }

@@ -760,105 +760,81 @@ module.exports = {
   // examen clinique save function *********************************************************************
   async saveExamenClinique (req, res) {
     try {
-      const UserId = req.body.id
-      const ExmCli = {
-        patientId: UserId,
-        temp: null,
-        peau: null,
-        anomaliePeau: null,
-        inspCardio: null,
-        auscuCardio: null,
-        anomalieSouffle: null,
-        anomalieType: null,
-        anomalieBruits: null,
-        poulsPeri: null,
-        anomaliePoulsPeri: null,
-        tensionArt: null,
-        freqCard: null,
-        inspPulmo: null,
-        freqPulmo: null,
-        palpPulmo: null,
-        anomaliePalpPulmo: null,
-        percuPulmo: null,
-        anomaliePercuPulmo: null,
-        auscuPulmo: null,
-        murmurViscu: null,
-        checkedRales: null,
-        locaRales: null,
-        inspAbdo: null,
-        anomalieAbdo: null,
-        pulpAbdo: null,
-        pulpMasse: null,
-        localiMasse: null,
-        ralesMasse: null,
-        autreMasse: null,
-        percuAbdo: null,
-        sensiNeuro: null,
-        anomalieSensiNeuro: null,
-        matriNeuro: null,
-        anomalieMatriNeuro: null,
-        troublesNeuro: null,
-        anomalieTroublesNeuro: null,
-        orientNeuro: null,
-        anomalieOrientNeuro: null,
-        gorgeORL: null,
-        auricuORL: null,
-        examenUrogeni: null,
-        remarqueCli: null
-      }
+      const ExmCli = req.body.ExamenClinique
+
       const examenCliniqueCreation = await ExamenClinique.create(ExmCli)
       const EC = examenCliniqueCreation.toJSON()
-      const exmCliInfo = await ExamenClinique.findOne({
-        where: {
-          id: UserId
-        }
-      })
-      exmCliInfo.temp = UserId.temp
-      exmCliInfo.peau = UserId.peau
-      exmCliInfo.anomaliePeau = UserId.anomaliePeau
-      exmCliInfo.inspCardio = UserId.inspCardio
-      exmCliInfo.auscuCardio = UserId.auscuCardio
-      exmCliInfo.anomalieSouffle = UserId.anomalieSouffle
-      exmCliInfo.anomalieType = UserId.anomalieType
-      exmCliInfo.anomalieBruits = UserId.anomalieBruits
-      exmCliInfo.poulsPeri = UserId.poulsPeri
-      exmCliInfo.anomaliePoulsPeri = UserId.anomaliePoulsPeri
-      exmCliInfo.tensionArt = UserId.tensionArt
-      exmCliInfo.freqCard = UserId.freqCard
-      exmCliInfo.inspPulmo = UserId.inspPulmo
-      exmCliInfo.palpPulmo = UserId.palpPulmo
-      exmCliInfo.anomaliePalpPulmo = UserId.anomaliePalpPulmo
-      exmCliInfo.percuPulmo = UserId.percuPulmo
-      exmCliInfo.anomaliePercuPulmo = UserId.anomaliePercuPulmo
-      exmCliInfo.auscuPulmo = UserId.auscuPulmo
-      exmCliInfo.murmurViscu = UserId.murmurViscu
-      exmCliInfo.checkedRales = UserId.checkedRales
-      exmCliInfo.locaRales = UserId.locaRales
-      exmCliInfo.inspAbdo = UserId.inspAbdo
-      exmCliInfo.anomalieAbdo = UserId.anomalieAbdo
-      exmCliInfo.pulpAbdo = UserId.pulpAbdo
-      exmCliInfo.pulpMasse = UserId.pulpMasse
-      exmCliInfo.localiMasse = UserId.localiMasse
-      exmCliInfo.percuAbdo = UserId.percuAbdo
-      exmCliInfo.sensiNeuro = UserId.sensiNeuro
-      exmCliInfo.anomalieSensiNeuro = UserId.anomalieSensiNeuro
-      exmCliInfo.matriNeuro = UserId.matriNeuro
-      exmCliInfo.anomalieMatriNeuro = UserId.anomalieMatriNeuro
-      exmCliInfo.troublesNeuro = UserId.troublesNeuro
-      exmCliInfo.anomalieTroublesNeuro = UserId.anomalieTroublesNeuro
-      exmCliInfo.orientNeuro = UserId.orientNeuro
-      exmCliInfo.anomalieOrientNeuro = UserId.anomalieOrientNeuro
-      exmCliInfo.gorgeORL = UserId.gorgeORL
-      exmCliInfo.auricuORL = UserId.auricuORL
-      exmCliInfo.examenUrogeni = UserId.examenUrogeni
-      exmCliInfo.remarqueCli = UserId.remarqueCli
-      await exmCliInfo.save()
+      // const exmCliInfo = await ExamenClinique.findOne({
+      //   where: {
+      //     id: UserId
+      //   }
+      // })
+      // exmCliInfo.temp = UserId.temp
+      // exmCliInfo.peau = UserId.peau
+      // exmCliInfo.anomaliePeau = UserId.anomaliePeau
+      // exmCliInfo.inspCardio = UserId.inspCardio
+      // exmCliInfo.auscuCardio = UserId.auscuCardio
+      // exmCliInfo.anomalieSouffle = UserId.anomalieSouffle
+      // exmCliInfo.anomalieType = UserId.anomalieType
+      // exmCliInfo.anomalieBruits = UserId.anomalieBruits
+      // exmCliInfo.poulsPeri = UserId.poulsPeri
+      // exmCliInfo.anomaliePoulsPeri = UserId.anomaliePoulsPeri
+      // exmCliInfo.tensionArt = UserId.tensionArt
+      // exmCliInfo.freqCard = UserId.freqCard
+      // exmCliInfo.inspPulmo = UserId.inspPulmo
+      // exmCliInfo.palpPulmo = UserId.palpPulmo
+      // exmCliInfo.anomaliePalpPulmo = UserId.anomaliePalpPulmo
+      // exmCliInfo.percuPulmo = UserId.percuPulmo
+      // exmCliInfo.anomaliePercuPulmo = UserId.anomaliePercuPulmo
+      // exmCliInfo.auscuPulmo = UserId.auscuPulmo
+      // exmCliInfo.murmurViscu = UserId.murmurViscu
+      // exmCliInfo.checkedRales = UserId.checkedRales
+      // exmCliInfo.locaRales = UserId.locaRales
+      // exmCliInfo.inspAbdo = UserId.inspAbdo
+      // exmCliInfo.anomalieAbdo = UserId.anomalieAbdo
+      // exmCliInfo.pulpAbdo = UserId.pulpAbdo
+      // exmCliInfo.pulpMasse = UserId.pulpMasse
+      // exmCliInfo.localiMasse = UserId.localiMasse
+      // exmCliInfo.percuAbdo = UserId.percuAbdo
+      // exmCliInfo.sensiNeuro = UserId.sensiNeuro
+      // exmCliInfo.anomalieSensiNeuro = UserId.anomalieSensiNeuro
+      // exmCliInfo.matriNeuro = UserId.matriNeuro
+      // exmCliInfo.anomalieMatriNeuro = UserId.anomalieMatriNeuro
+      // exmCliInfo.troublesNeuro = UserId.troublesNeuro
+      // exmCliInfo.anomalieTroublesNeuro = UserId.anomalieTroublesNeuro
+      // exmCliInfo.orientNeuro = UserId.orientNeuro
+      // exmCliInfo.anomalieOrientNeuro = UserId.anomalieOrientNeuro
+      // exmCliInfo.gorgeORL = UserId.gorgeORL
+      // exmCliInfo.auricuORL = UserId.auricuORL
+      // exmCliInfo.examenUrogeni = UserId.examenUrogeni
+      // exmCliInfo.remarqueCli = UserId.remarqueCli
+      // await exmCliInfo.save()
       res.send({
-        ec: EC
+        Ec: EC
       })
     } catch (err) {
-      res.status(500).send({
-        error: `an error has occured trying to fetch the users ${err}`
+      res.send({
+        error: `an error has occured trying to create  ec  ${err}`
+      })
+    }
+  },
+  async recoverExamenClinique (req, res) {
+    try {
+      const userId = req.body.id
+
+      const Ec = await ExamenClinique.findAll({
+        where: {
+          userId: userId
+        },
+        raw: true
+      })
+
+      res.send({
+        Ec: Ec
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverExamenClinique ${err}`
       })
     }
   },
