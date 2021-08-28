@@ -5,6 +5,7 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const AssistantController = require('./controllers/AssistantController')
 
 const { uuid } = require('uuidv4')
 const { BilansECG } = require('./models')
@@ -221,4 +222,10 @@ module.exports = (app) => {
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
+  // ***************************** Assistant ****************************
+  app.post('/Assistant/recoverRDVI', AssistantController.recoverRDVI)
+  app.post('/Assistant/recoverPatients', AssistantController.recoverPatients)
+  app.post('/Assistant/progRDVIndividuel', AssistantController.progRDVIndividuel)
+  app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
+  app.post('/Assistant/confirmModifRDVIndividuel', AssistantController.confirmModifRDVIndividuel)
 }
