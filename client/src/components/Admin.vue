@@ -460,7 +460,7 @@ export default {
           value: 'PATIENT',
           label: 'PATIENT'
         }],
-          valueyear: ''
+          valueyear: '',
     };
 
   },
@@ -497,6 +497,7 @@ export default {
       });
   },
   methods: {
+    
     convertVTVC(V , VC){
       
       V.forEach(user => {
@@ -598,7 +599,8 @@ export default {
           phoneNum: this.phoneNum,
           state: this.state,
           role:this.role,
-          scolarYear: this.scolarYear          
+          scolarYear: this.scolarYear, 
+          
         })
         alert("regiter successfull")
         console.log(response.data)
