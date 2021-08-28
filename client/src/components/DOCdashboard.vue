@@ -1658,8 +1658,8 @@
                   <center>
                      <div>
                       <el-radio-group v-model="radio3">
-                        <el-radio-button label="Créer"></el-radio-button>
-                        <el-radio-button label="Historique" @click="recoverExamenClinique(userselected)"></el-radio-button>
+                        <el-radio-button label="Créer" @click="ECcreated=false"></el-radio-button>
+                        <el-radio-button label="Historique" @click="recoverExamenClinique(userselected);"></el-radio-button>
                       </el-radio-group>
                      </div>
                     </center>
@@ -1686,7 +1686,7 @@
                    <td style="flex:25%">
                     <el-button
                     type="primary"
-                    style="background-color: #24b4ab; "  @click="showExamenClinique(ec); radio3=''"
+                    style="background-color: #24b4ab; "  @click="showExamenClinique(ec); "
                     class="hovereffect">consulter</el-button></td>
    
                  </tr>
@@ -1937,7 +1937,9 @@
                      <el-col :span="18"><el-input v-model="examenClinique.remarqueCli" placeholder=".." type="textarea" autorise></el-input></el-col>
                    </el-row>
                   </el-card>
-                  <el-button type="success" icon="el-icon-check"  @click="saveExamenClinique(userselected)">sauvgarder</el-button>
+                  <el-button type="success" icon="el-icon-check " @click="saveExamenClinique(userselected)">sauvgarder</el-button>
+                  
+                  <el-button type="success" icon="el-icon-check" :class="{hidden: ECcreated} " @click="modifierExamenClinique(userselected)">Modifier</el-button>
                   </el-scrollbar>
                   
                 </el-card>
@@ -4284,6 +4286,7 @@ export default {
       isDisabledAnts: true,
       //examen clinique*********************************************************************************
       ExamenCliniques: [],
+      ECcreated: false,
   examenClinique: {
   userId: -1,
   temp: "",
@@ -6519,12 +6522,26 @@ async annulerModificationOrd(ord) {
         let list=[];
     response.data.Ec.map(function(value) {
        
-     list.push({ date:value.createdAt.toString() });
+     list.push({ id:value.id, date:value.createdAt.toString() });
      
      });
         
         this.ExamenCliniques=list;
       console.log(list);
+       console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+     }
+   },
+   async showExamenClinique(ec){
+     try{
+       const response = await DocServices.showExamenClinique({
+         id: ec.id,
+        
+       });
+          
+        
+        this.examenClinique=response.data.Ec;
        console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);

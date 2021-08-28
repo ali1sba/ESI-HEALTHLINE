@@ -838,6 +838,26 @@ module.exports = {
       })
     }
   },
+  async showExamenClinique (req, res) {
+    try {
+      const id = req.body.id
+
+      const Ec = await ExamenClinique.findOne({
+        where: {
+          id: id
+        },
+        raw: true
+      })
+
+      res.send({
+        Ec: Ec
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverExamenClinique ${err}`
+      })
+    }
+  },
   async createOrdonnance (req, res) {
     try {
       const userId = req.body.id

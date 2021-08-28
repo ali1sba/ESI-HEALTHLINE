@@ -149,4 +149,5 @@ module.exports = (app) => {
   // ************************ examen clinique **************************
   app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
   app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
+  app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
 }
