@@ -13,7 +13,7 @@ const { Medicament } = require('../models')
 const { Ordonnance } = require('../models')
 const { Prescription } = require('../models')
 
-// Bilans paracliniques
+// *************** Bilans paracliniques ***************
 // Bilans Biologiques
 const { BilansBiologique } = require('../models')
 const { BilansBCardiaque } = require('../models')
@@ -27,6 +27,13 @@ const { BilansBNFS } = require('../models')
 const { BilansBRenale } = require('../models')
 const { BilansBSerologie } = require('../models')
 const { BilansBUrinaire } = require('../models')
+// Bilans Electriques
+const { BilansECG } = require('../models')
+const { BilansEEG } = require('../models')
+const { BilansEMG } = require('../models')
+const { BilansElectrique } = require('../models')
+// const fs = require('fs')
+const path = require('path')
 
 module.exports = {
   async recoverPatients (req, res) {
@@ -1319,12 +1326,12 @@ module.exports = {
         Motif: bb.motif
       }
       res.send({
-        message: `response from the server to showBB function with id user : ${id}`,
+        message: `response from the server to showBilanBiologique function with id BilansBio : ${id}`,
         BilanBiologique: BilanBiologique
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to shoBB: ${err}`
+        error: `an error has occured trying to showBilanBiologique: ${err}`
       })
     }
   },
@@ -1378,7 +1385,147 @@ module.exports = {
       })
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to shoBB: ${err}`
+        error: `an error has occured trying to createBilanBiologique: ${err}`
+      })
+    }
+  },
+
+  // Bilans Electrique
+  async showBE (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findAll({
+        where: {
+          idPatient: id
+        }
+      })
+      // const userJson = bb.toJSON()
+      res.send({
+        message: `response from the server to showBE function with id user : ${id}`,
+        be: be
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to shoBE: ${err}`
+      })
+    }
+  },
+
+  async showBilanElectrique (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findOne({
+        where: {
+          id: id
+        }
+      })
+      const ecg = await BilansECG.findOne({
+        where: {
+          id: be.idECG
+        }
+      })
+      const eeg = await BilansEEG.findOne({
+        where: {
+          id: be.idEEG
+        }
+      })
+      const emg = await BilansEMG.findOne({
+        where: {
+          id: be.idEMG
+        }
+      })
+      const becr = {
+        Motif: be.motif,
+        Date: be.createdAt,
+        ECG: {
+          inter: ecg.inter,
+          ECGfile: path.basename(ecg.path).substr(37)
+        },
+        EEG: {
+          inter: eeg.inter,
+          EEGfile: path.basename(eeg.path).substr(37)
+        },
+        EMG: {
+          inter: emg.inter,
+          EMGfile: path.basename(emg.path).substr(37)
+        }
+      }
+      res.send({
+        message: `response from the server for showBilanElectrique with id showBilanElectrique : ${id}`,
+        be: becr
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to showBilanElectrique: ${err}`
+      })
+    }
+  },
+
+  async downloadBeFile (req, res) {
+    try {
+      const id = req.body.id
+      const be = await BilansElectrique.findOne({
+        where: {
+          id: id
+        }
+      })
+      const fileCateg = req.body.fileCateg
+      if (fileCateg === 'ECG') {
+        const ecg = await BilansECG.findOne({
+          where: {
+            id: be.idECG
+          }
+        })
+        const ecgFile = path.join(__dirname, `../../${ecg.path}`)
+        res.download(ecgFile, function (err) {
+          if (err) {
+            console.log('Error')
+            console.log(err)
+          } else {
+            console.log('Success')
+          }
+        })
+      } else if (fileCateg === 'EEG') {
+        const eeg = await BilansEEG.findOne({
+          where: {
+            id: be.idEEG
+          }
+        })
+        const eegFile = path.join(__dirname, `../../${eeg.path}`)
+        res.download(eegFile, function (err) {
+          if (err) {
+            console.log('Error')
+            console.log(err)
+          } else {
+            console.log('Success')
+          }
+        })
+      } else if (fileCateg === 'EMG') {
+        const emg = await BilansEMG.findOne({
+          where: {
+            id: be.idEMG
+          }
+        })
+        const emgFile = path.join(__dirname, `../../${emg.path}`)
+        res.download(emgFile, function (err) {
+          if (err) {
+            console.log('Error')
+            console.log(err)
+          } else {
+            console.log('Success')
+          }
+        })
+      } else {
+        res.send({
+          error: 'error'
+        })
+      }
+      res.send({
+        message: `response from the server for downloadBeFile with id BE: ${id} and fileCateg : ${fileCateg}`
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to downloadBeFile: ${err}`
       })
     }
   }

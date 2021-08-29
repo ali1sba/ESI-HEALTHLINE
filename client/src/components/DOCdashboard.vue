@@ -139,25 +139,41 @@
           <!-- ********************** home ***************************** -->
 
           <div v-show="content === 'dashboard'" class="dossier">
-            <div class="WelcomingSection">
-              <h3 class="WelcomeDoc">Welcome to healthline!</h3>
-              <p class="WelcomeDesc">Have a great day Docteur Merabet</p>
-            </div>
-            <h4 style="font-size:17px;" class="Datedashboard">
-              Aujourd'hui est:&nbsp; {{ currentDate() }}
-            </h4>
-            <div class="wrapsearch">
-              <div class="search">
-                <input type="text" class="searchTerm" placeholder="Yadra ?" />
+           <div class="WelcomingSection">
+            <h3 class="WelcomeDoc"> Welcome to healthline! </h3>
+            <p class="WelcomeDesc">Have a great day Docteur Merabet</p>
+          </div>
+          <div class="cardDash">
+              <div class="cardInfo">
+               <!-- <p>Sidi Belabes</p>-->
+                <p class="cardInfoTime">Le : {{currentDate()}}</p>
+            <!--    <p>Le: {{currentDate()}}</p>-->
+              </div>
+              <div class="cardWeather">
+                <svg width="34" class="cardWeatherIcon" height="24" viewBox="0 0 34 24" fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M31.7764 13.3718C30.8073 12.1841 29.5779 11.4201 28.0897 11.0793C28.5632 10.3633 28.7992 9.57921 28.7992 8.72709C28.7992 7.52249 28.3664 6.49418 27.5014 5.64182C26.6361 4.78976 25.592 4.36354 24.3688 4.36354C23.2612 4.36354 22.3034 4.71584 21.496 5.42044C20.8155 3.80682 19.7334 2.50001 18.251 1.50001C16.7682 0.500241 15.1152 0 13.2921 0C10.8461 0 8.75757 0.852482 7.02679 2.55703C5.29589 4.26116 4.43071 6.31818 4.43071 8.72727C4.43071 8.89777 4.44229 9.1419 4.46532 9.46011C3.12694 10.0738 2.04801 11.0027 1.22884 12.2473C0.409735 13.4913 0 14.8637 0 16.3637C0 18.4659 0.758789 20.2642 2.27594 21.7583C3.79316 23.2528 5.61918 24 7.75375 24H26.5847C28.4191 24 29.9853 23.3603 31.2836 22.0823C32.5816 20.804 33.2308 19.2615 33.2308 17.4545C33.2306 15.9206 32.7457 14.5591 31.7764 13.3718Z"
+                    fill="#567DF4" />
+                </svg>
+
+                <p class="cardWeatherTemp">18° C</p>
+              </div>
+           </div>
+          <!--<h4 style="font-size:17px;" class="Datedashboard">Aujourd'hui est:&nbsp; {{currentDate()}}</h4>
+          <div class="wrapsearch">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="Yadra ?">
                 <button type="submit" class="searchButton">
                   <i class="fa fa-search"></i>
                 </button>
               </div>
             </div>
+         </div> -->
             <div class="cardDash-body color1">
               <div class="floatDash-left">
                 <h3>
-                  <span class="countDash">120</span>
+                  <span class="countDash">219</span>
                 </h3>
                 <p>Patients</p>
               </div>
@@ -188,8 +204,8 @@
               </div>
             </div>
             <el-card class="boxRDV">
-              <h4>RDV</h4>
-              <table class="dashboardTable">
+              <h4>Les rendez-vous d'aujourd'hui :</h4>
+              <!--<table class="dashboardTable">
                 <thead class="dashboardTablethead">
                   <tr>
                     <th class="dashboardTableth">Name</th>
@@ -199,59 +215,67 @@
                   </tr>
                 </thead>
 
-                <tr class="dashboardTabletr">
+                <tr class="dashboardTabletr" > v-for="Rdv in RDVList" :key="Rdv.id"
                   <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 0</a>
+                    <a href="#" class="dashboardTableA"></a>
                   </td>
                   <td class="dashboardTabletd">1/5/2021</td>
                   <td class="dashboardTabletd">11am</td>
                   <td class="dashboardTabletd">
                     <p class="status status-unpaid">Annuler</p>
                   </td>
-                </tr>
+                  id:'',
+        idUser:'',
+        typeDeRDV:'',
+        dateAndTime:'',
+        note:'',
+                </tr> -->
+                  <el-table
+                  :data="RDVListDash"
+                  height="250"
+                  style="width: 96%"
+                  class="dashboardTable">
+                  <el-table-column
+                    prop="date"
+                    label="Date"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    prop="name"
+                    label="Name"
+                    width="180"
+                    >
+                      <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    </template>
+                  </el-table-column>
+                   <el-table-column
+                    prop="Type"
+                    label="Type"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                    </template>
+                  </el-table-column>
+                   <el-table-column
+                    prop="Note"
+                    label="Note"
+                    width="180"
+                    >
+                    <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </template>
+                  </el-table-column>
+                </el-table> 
 
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 1</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-paid">Terminer</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 2</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-pending">Aujourd'hui</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 3</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-pending">Aujourd'hui</p>
-                  </td>
-                </tr>
-                <tr class="dashboardTabletr">
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA">Patient n 4</a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-paid">Terminer</p>
-                  </td>
-                </tr>
-              </table>
-            </el-card>
+                
+             <!-- </table> -->
+            </el-card> 
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -2860,10 +2884,7 @@
                       </el-card>
                     </el-col>
                     <el-col :span="8">
-                      <el-card
-                        @click="radio1 = 'Bilans électriques'"
-                        class="bilancard électri"
-                      >
+                      <el-card @click="showBE(userselected)" class="bilancard électri">
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans électriques</h3>
                         <p>Nombre de bilans :</p>
@@ -3699,7 +3720,8 @@
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
-                </center>
+                </center>                
+                
 
                 <el-scrollbar v-show="radio2 === 'Historique'">
                   <el-table
@@ -3843,6 +3865,8 @@
                     </template>
                   </el-dialog>
                 </div>
+              </el-card>
+            </el-scrollbar>
                 <!--  <div v-if="radioRM === 'Historique'">
                   <el-card shadow="hover" v-for="Orr in orientations" :key="Orr.id" style="margin:1em 0em;" class="cardGris">
                     <el-row>
@@ -3852,37 +3876,118 @@
                     </el-row>
                     
                   </el-card>
-                </div>-->
-                <div v-else>
-                  <el-row>
-                    <el-col :span="3"> Motif </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Motif"
-                        v-model="OrientationMedical.Motif"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Orientation vers: </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Histoire de la Maladie"
-                        v-model="OrientationMedical.OrientVers"
-                      ></el-input></el-col
-                  ></el-row>
-                  <center>
-                    <el-button
-                      @click="creepdf2()"
-                      class="creatbt"
-                      icon="el-icon-edit-outline"
-                      round
-                      >Crée un pdf</el-button
-                    >
-                  </center>
-                </div>
-              </el-card>
-            </el-scrollbar>
-            <!--********Evacuation Médical***********-->
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Historique2'">
+                  <el-space>
+                    Motif
+                    <el-tag>{{ BEHis.Motif }}</el-tag>
+                  </el-space>
+                  <el-space>
+                    Date de création
+                    <el-tag>{{ BEHis.Date }}</el-tag>
+                  </el-space>
+                  <el-collapse>
+                    <el-collapse-item title="ECG" name="1">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.ECG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'ECG')">Télécharger le fichier: {{ BEHis.ECG.ECGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EEG" name="2">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EEG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'EEG')">Télécharger le fichier: {{ BEHis.EEG.EEGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EMG" name="3">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EMG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'EMG')">Télécharger le fichier: {{ BEHis.EMG.EMGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                  </el-collapse>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Créer'">
+                  <form @submit.prevent="createBilanElectrique" enctype="multipart/form-data">
+                    <el-space>
+                      Motif
+                      <el-input type="textarea" v-model="BECr.BEtext.Motif"></el-input>
+                    </el-space>
+                    <el-collapse>
+                      <el-collapse-item title="ECG" name="1">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.ECGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
+                              <el-button @click="clearECGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EEG" name="2">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EEGinter">></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
+                              <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EMG" name="3">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EMGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
+                              <el-button @click="clearEMGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                    </el-collapse>
+                    <br>
+                    <button class="btn btn-danger btn-block">Enregistrer</button>
+                  </form>
+                </el-scrollbar>-->
+                
+            
+
+            <!-- ********Evacuation Médical***********--> 
             <el-scrollbar v-show="radio1 === 'Evacuation Medical'">
               <el-button icon="el-icon-arrow-left" @click="goBackOrientations()"
                 >Orientation / Evacuation / Certificat Medical</el-button
@@ -3890,23 +3995,16 @@
               <el-card class="box-card">
                 <center>
                   <div>
-                    <el-radio-group v-model="radioRM">
-                      <el-radio-button
-                        label="Historique"
-                        @click="getEvacuations()"
-                      ></el-radio-button>
+                    <el-radio-group v-model="radioRMyesy">
+                      <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
                   </div>
                   <br />
                   <h4>Evacuation Medical</h4>
                 </center>
-                <div v-if="radioRM === 'Historique'">
-                  <p
-                    style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;"
-                  >
-                    Evacuation Medical
-                  </p>
+                <div v-if="radioRMyesy === 'Historique'">
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item
                       placement="top"
@@ -3965,14 +4063,19 @@
                         v-model="EvacuationMedical.Motif"
                       ></el-input></el-col
                   ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Evacué Vers : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Motif"
-                        v-model="EvacuationMedical.EvacVers"
-                      ></el-input></el-col
-                  ></el-row>
+                   <el-row>
+                  <el-col :span="3"> Evacuation vers: </el-col>
+                        <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
+                          <el-option label="Evacuation 1" value="Evacuation 1"></el-option>
+                          <el-option label="Evacuation 2" value="Evacuation 2"></el-option>
+                          <el-option label="Evacuation 3" value="Evacuation 3"></el-option>
+                          <el-option label="Evacuation 4" value="Evacuation 4"></el-option>
+                          <el-option label="Evacuation 5" value="Evacuation 5"></el-option>
+                          <el-option label="Evacuation 7" value="Evacuation 7"></el-option>
+                          <el-option label="Evacuation 6" value="Evacuation 6"></el-option>
+                          <el-option label="Evacuation 8" value="Evacuation 8"></el-option>
+                        </el-select>
+                    </el-row>         
                   <center>
                     <el-button
                       @click="creepdf3()"
@@ -3987,7 +4090,7 @@
             </el-scrollbar>
 
             <!--********Certificat Médical***********-->
-            <el-scrollbar v-show="radio1 === 'Certificat Médical'">
+            <!-- <el-scrollbar v-show="radio1 === 'Certificat Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBackOrientations()"
                 >Orientation / Evacuation / Certificat Medical</el-button
               >
@@ -3999,132 +4102,8 @@
                         label="Historique"
                         @click="getCertificats()"
                       ></el-radio-button>
-                      <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
-                  </div>
-                  <br />
-                  <h4>Certificat Médical</h4>
-                </center>
-                <div v-if="radioRM === 'Historique'">
-                  <p
-                    style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;"
-                  >
-                    Certificat Medical
-                  </p>
-                  <el-timeline style="margin:1% 0% 0% 0%;">
-                    <el-timeline-item
-                      placement="top"
-                      v-for="Cert in certificats.slice().reverse()"
-                      :key="Cert.id"
-                    >
-                      <el-card class="cardGris">
-                        <h4>{{ Cert.Motif }}</h4>
-                        <h6>Date de debut:</h6>
-                        <p>{{ Cert.EtatGeneral }}</p>
-                        <h6>Date de fin:</h6>
-                        <p>{{ Cert.HistoireDeLaMaladie }}</p>
-                        <el-button
-                          type=""
-                          style="align-items: right;"
-                          @click="ConsulterCertificatMedical(Cert)"
-                          >consulter</el-button
-                        >
-                      </el-card>
-                    </el-timeline-item>
-                  </el-timeline>
-                  <el-dialog
-                    title="Certificat Medical"
-                    v-model="dialogConsulterCertificatMedical"
-                    style=" position: absolute;left: auto;"
-                  >
-                    <b>Motif:</b>
-                    <p>{{ Cert.Motif }}</p>
-                    <b>Date de debut :</b>
-                    <p>{{ Cert.EtatGeneral }}</p>
-                    <b>Date de fin</b>
-                    <p>{{ Cert.HistoireDeLaMaladie }}</p>
-                    <b>Autre :</b>
-                    <p>{{ Cert.Autre }}</p>
-                    <template #footer>
-                      <span class="dialog-footer">
-                        <el-button
-                          type="primary"
-                          @click="dialogConsulterCertificatMedical = false"
-                          >return</el-button
-                        >
-                      </span>
-                    </template>
-                  </el-dialog>
-                </div>
-                <!--   <div v-if="radioRM === 'Historique'">
-                  <el-card shadow="hover" v-for="Cert in certificats" :key="Cert.id" style="margin:1em 0em;" class="cardGris">
-                    <el-row>
-                      <el-col :span="6"> {{Cert.Motif}} </el-col>
-                      <el-col :span="6"> {{Cert.EtatGeneral}} </el-col>
-                      <el-col :span="6"> {{Cert.HistoireDeLaMaladie}} </el-col>
-                      <el-col :span="6"> <el-button type="">consulter</el-button> </el-col>
-                    </el-row>
-                  </el-card>
-                </div> -->
-                <div v-else>
-                  <el-row>
-                    <el-col :span="3"> Motif : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Motif"
-                        v-model="CertificatMedical.Motif"
-                      ></el-input></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Date debut: </el-col
-                    ><el-col :span="21">
-                      <div class="block">
-                        <el-date-picker
-                          v-model="CertificatMedical.HistoireDeLaMaladie"
-                          type="date"
-                          placeholder="Date de debut"
-                        >
-                        </el-date-picker>
-                      </div>
-                      <!--<el-input
-                        placeholder="Histoire de la Maladie"
-                        v-model="CertificatMedical.HistoireDeLaMaladie"
-                      ></el-input>--></el-col
-                    ></el-row
-                  >
-                  <el-row>
-                    <el-col :span="3"> Date Fin : </el-col
-                    ><el-col :span="21">
-                      <div class="block">
-                        <el-date-picker
-                          v-model="CertificatMedical.EtatGeneral"
-                          type="date"
-                          placeholder="Date de Fin"
-                        >
-                        </el-date-picker></div></el-col
-                  ></el-row>
-                  <el-row>
-                    <el-col :span="3"> Autre : </el-col
-                    ><el-col :span="21">
-                      <el-input
-                        placeholder="Autre"
-                        v-model="CertificatMedical.Autre"
-                        type="textarea"
-                        :autosize="{ minRows: 10, maxRows: 50 }"
-                      ></el-input></el-col
-                  ></el-row>
-                  <center>
-                    <el-button
-                      @click="creepdf4()"
-                      class="creatbt"
-                      icon="el-icon-edit-outline"
-                      round
-                      >Crée un pdf</el-button
-                    >
-                  </center>
-                </div>
-              </el-card>
-            </el-scrollbar>
+                                </center> -->
 
             <!-- ****************************rapport medical: ali******************************* -->
 
@@ -4136,43 +4115,31 @@
               </el-empty>
                 </el-card>
                 -->
-              <center>
-                <div>
-                  <el-radio-group v-model="radioRM">
-                    <el-radio-button
-                      label="Historique"
-                      @click="getRepports()"
-                    ></el-radio-button>
-                    <el-radio-button label="Créer"></el-radio-button>
-                  </el-radio-group>
-                </div>
-              </center>
+<center>
+                  <div>
+                    <el-radio-group v-model="radioRM" >
+                      <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
+                      <el-radio-button label="Créer"></el-radio-button>
+                    </el-radio-group>
+                  </div>
+                  
+                  
+                </center>
               <el-card class="box-card">
+                
                 <div v-if="radioRM === 'Historique'">
-                  <p
-                    style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;"
-                  >
-                    Rapport Médical
-                  </p>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
-                    <el-timeline-item
-                      placement="top"
-                      v-for="Rapp in reporrts.slice().reverse()"
-                      :key="Rapp.id"
-                    >
-                      <el-card class="cardGris">
-                        <h4>{{ Rapp.Motif }}</h4>
-
-                        <h6>Conclusion:</h6>
-                        <p>{{ Rapp.Conclusion }}</p>
-                        <p>{{ Rapp.createdAt }}</p>
-                        <el-button
-                          type=""
-                          style="align-items: right;"
-                          @click="ConsulterRapportMedical(Rapp)"
-                          >consulter</el-button
-                        >
-                      </el-card>
+                    <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
+                      <el-card   class="cardGris">
+                                    
+                                      <h4> {{Rapp.Motif}} </h4>
+                                      
+                                      <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
+                                      <p>{{Rapp.createdAt}} </p>
+                                      <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
+                                  
+                                  </el-card>
                     </el-timeline-item>
                   </el-timeline>
 
@@ -4385,114 +4352,66 @@
                   &#x2715;
                 </button>
                 <div ref="contentord" style="padding: 0px 80px">
-                  <p
-                    style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;"
-                  >
-                    République Algérienne Démocratique et Populaire
-                  </p>
+                  <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
 
-                  <p
-                    style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;"
-                  >
-                    l'Ecole superieure d'informatique de Sidi Bel-Abbes
-                  </p>
-                  <hr style="width:48%; margin:auto; margin-bottom:5px" />
-                  <p
-                    style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;"
-                  >
-                    Dr MERABET Mohammed
-                  </p>
-                  <p
-                    style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;"
-                  >
-                    Médecin Géneraliste
-                  </p>
-                  <hr style="width:26%; margin:auto; margin-bottom:5px" />
-                  <br />
-                  <p
-                    style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;"
-                  >
-                    Ordonnance
-                  </p>
+                  <p style="font-size:16px; text-align:center;font-weight:500;margin-bottom:5px;">l'Ecole superieure d'informatique de Sidi Bel-Abbes</p>
+                  <hr  style="width:48%; margin:auto; margin-bottom:5px">
+                  <p style="font-size:16px; text-align:center; margin-bottom :0px;font-weight:500;">Dr MERABET Mohammed </p>
+                  <p style="font-size:16px;text-align:center;font-weight:500;margin-bottom:5px;">Médecin Géneraliste </p>
+                 <hr style="width:26%; margin:auto; margin-bottom:5px">
+                 <br>
+                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnance</p>
+                
+                &nbsp; &nbsp;
+               
+                <div style="display:flex">
+                  <div style="flex:50%">
+                  <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
+                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                
+                </div>
+                <div style="flex:50%">
+                  <p style="font-size:17px;">Le :&nbsp; {{currentDate()}}</p>
+                  <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes </p>
 
-                  &nbsp; &nbsp;
-
-                  <div style="display:flex">
-                    <div style="flex:50%">
-                      <p style="font-size:17px;">
-                        Nom : &nbsp; {{ userselected.firstName }}
-                      </p>
-                      <p style="font-size:17px;">
-                        prenom : &nbsp; {{ userselected.lastName }}
-                      </p>
-                      <p style="font-size:17px;">
-                        Age : &nbsp; {{ userselected.age }}
-                      </p>
-                    </div>
-                    <div style="flex:50%">
-                      <p style="font-size:17px;">
-                        Le :&nbsp; {{ currentDate() }}
-                      </p>
-                      <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
-                    </div>
+                </div>
+                
                   </div>
 
-                  <hr />
-                  <ol id="prescs">
-                    <li
-                      class="prescselement"
-                      style="margin: 1px 0px 20px 0px; "
-                      v-for="(pr, index) in prescs"
-                      :key="index"
-                      v-bind:class="{ floating: index === prescs.length - 1 }"
-                    >
-                      <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                      <el-select
-                        v-model="pr.nom"
-                        filterable
-                        :disabled="isOrdDisabled"
-                        placeholder="nom de médicament"
-                      >
-                        <el-option
-                          v-for="item in Medoptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                          style="margin-right:20px"
-                        >
-                        </el-option>
-                      </el-select>
-
-                      <el-select
-                        v-model="pr.forme"
-                        filterable
-                        :disabled="isOrdDisabled"
-                        placeholder="forme pharmaceutique et dosage "
-                      >
-                        <el-option
-                          v-for="item in fpoptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
-                          style="margin-right:20px"
-                        >
-                        </el-option>
-                      </el-select>
-                      <el-input
-                        v-model="pr.posologie"
-                        :disabled="isOrdDisabled"
-                        style="width : 200px; margin-right:20px"
-                      >
-                      </el-input>
-                    </li>
-                  </ol>
-                  <button
-                    @click="addprescinput()"
+                
+                <button @click="addprescinput(); " :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
+                <button @click="removeprescinput();" v-show="prescs.length !=1" type="primary" style="padding:0px 18px 7px ;margin-left:10px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> - </button>
+               
+                <hr>
+                <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
+                <br>
+                <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+EMAIL: contact@esi-sba.dz</p>
+                <div style="display:flex; ">
+                  <el-button 
+                    @click=" addpresc(userselected); "
                     type="primary"
-                    style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"
-                  >
-                    +
-                  </button>
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                    v-show="ordcreated === 'not created'">Créer </el-button >
+                    <el-button @click="isOrdDisabled=false ;ordcreated='modify' "
+                    v-show="ordcreated ==='created'" style="flex:50%;">
+                    Modifier</el-button> 
+                    <el-button
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                    v-show="ordcreated ==='modify'" @click="saveOrdonnance(ordselected); " 
+                    >Enregistrer  </el-button >
+                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
+                    v-show="ordcreated ==='modify'">
+                    Annuler</el-button> 
+                       <el-button
+                   
+                    type="primary"
+                    v-show="ordcreated ==='created'"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
+                    >Voir en format Pdf </el-button > 
+                </div>
 
                   <hr />
                   <p style="font-size:17px; font-weight:500; text-align:center">
@@ -4962,8 +4881,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import axios from "axios";
 import DocServices from "@/services/DocServices.js";
 import RapportMedicalServices from "@/services/RapportMedicalServices.js";
-import OrientationMedicalService from "@/services/OrientationMedicalService.js";
-import CertificatMedicalService from "@/services/CertificatMedicalService.js";
 import RDVServices from "@/services/RDVServices.js";
 import EvacuationMedicalService from "@/services/EvacuationMedicalService.js";
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -4978,46 +4895,36 @@ export default {
 
       // Bilans paracliniques: BB-BR-BE
       tableDataBB: [],
-      hivOptions: [
-        {
-          value: "Positif",
-          label: "Positif",
-        },
-        {
-          value: "Négatif",
-          label: "Négatif",
-        },
-      ],
-      hbsOptions: [
-        {
-          value: "Positif",
-          label: "Positif",
-        },
-        {
-          value: "Négatif",
-          label: "Négatif",
-        },
-      ],
-      hcvOptions: [
-        {
-          value: "Positif",
-          label: "Positif",
-        },
-        {
-          value: "Négatif",
-          label: "Négatif",
-        },
-      ],
-      siphilisOptions: [
-        {
-          value: "Positif",
-          label: "Positif",
-        },
-        {
-          value: "Négatif",
-          label: "Négatif",
-        },
-      ],
+      tableDataBR: [],
+      tableDataBE: [],
+      hivOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
+      hbsOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
+      hcvOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
+      siphilisOptions: [{
+          value: 'Positif',
+          label: 'Positif'
+        }, {
+          value: 'Négatif',
+          label: 'Négatif'
+      }],
       BBHis: {
         Motif: "",
         Date: "",
@@ -5178,8 +5085,44 @@ export default {
         },
         autre: null,
       },
-      tableDataBR: [],
-      tableDataBE: [],
+
+      BEHis: {
+        Motif: null,
+        Date: null,
+        ECG: {
+          inter: null,
+          ECGfile: null
+        },
+        EEG: {
+          inter: null,
+          EEGfile: null
+        },
+        EMG: {
+          inter: null,
+          EMGfile: null
+        }
+      },
+
+      idBE: null,
+
+      BECr: {
+        BEtext: {
+          Motif: null,
+          idP: null,
+          inter: {
+            ECGinter: null,
+            EEGinter: null,
+            EMGinter: null,
+          }
+        },
+        BEfile: {
+          ECGfile: null,
+          EEGfile: null,
+          EMGfile: null
+        }
+      },
+
+      fileListTest: [],
 
       bgOptions: [
         {
@@ -5338,7 +5281,8 @@ export default {
       // navigation bar*******************************************************************************************
       radio1: "Dossier Médical",
       radio2: "Historique",
-      radioRM: "Historique",
+      radioRMyesy: "Historique",
+      radioRM:"Historique",
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
 
@@ -5716,6 +5660,7 @@ export default {
       dialogRDVFormVisible2: false,
       formLabelWidth: "120px",
       haveRDV: false,
+      haveRDVDash: false,
       RDVform: {
         id: "",
         idUser: "",
@@ -5723,8 +5668,9 @@ export default {
         dateAndTime: "",
         note: "",
       },
-      RDVList: [],
-      Evac: [""],
+      RDVList:[],
+      RDVListDash:[],
+      Evac:[""],
     };
   },
   mounted: function() {
@@ -5789,8 +5735,48 @@ export default {
         } else {
           this.haveRDV = false;
         }
-        // Object.keys(response.data).forEach(function (key){
-
+        // Object.keys(response.data).forEach(function (key){showRDVDashboard
+           
+        //  // console.log(key);
+        //   console.log(response.data);
+        //   // this.RDVform.idUser = response.data[key].id;
+        //   // this.RDVform.typeDeVisite = response.data[key].Type;
+        //   // this.RDVform.dateAndTime = response.data[key].DateAndTime;
+        //   // this.RDVform.note = response.data[key].Note;
+        //   // //let y = response.data[key];
+        //   // console.log(this.RDVform.idUser);
+        //  console.log(response.data[key]);
+           
+        
+        // });
+        console.log(this.RDVList);
+      } catch (error) {
+        console.log(`something went wrong in showRDVSelectedPatient ${error}`);
+      }
+    },
+    async  showRDVDashboard(){
+      try {
+        //console.log("createBilanBiologique clicked")
+        //console.log(this.userselected.id)
+        const response = await RDVServices.showRDVDashboard({
+        })
+        //this.RDVList = response.data.RDVList;
+        //console.log(response.data[0]);
+        //console.log(response.data.RDVList[1]);
+        // response.data.RDVList.forEach(function(element) {
+        //   console.log(element)
+        //   this.RDVList.push(element);
+        // });
+        //this.RDVList=[''];
+        this.RDVListDash=response.data;
+        console.log(Object.keys(response.data).length);
+        if(!(Object.keys(response.data).length === 0) ){
+          this.haveRDVDash = true;
+        }else{
+          this.haveRDVDash = false;
+        }
+        // Object.keys(response.data).forEach(function (key){showRDVDashboard
+           
         //  // console.log(key);
         //   console.log(response.data);
         //   // this.RDVform.idUser = response.data[key].id;
@@ -5918,6 +5904,105 @@ export default {
       }
     },
 
+    // Bilans paracliniques -> showBE from Bilans Electriques table
+    async showBE (user) {
+      try {
+        this.radio1 = 'Bilans électriques'
+        this.radio2 = 'Historique'
+        this.BECr.BEtext.idP = user.id
+        const response = await DocServices.showBE({
+          id: user.id,
+        });
+        this.tableDataBE = response.data.be
+      } catch (error) {
+        console.log(`something went wrong in showBB ${error}`);
+      }
+    },
+
+    // Bilans paracliniques -> showBE from ALL Bilans Biologiques tables
+    async showBilanElectrique (id) {
+      try {
+        this.radio2 = 'Historique2'
+        this.idBE = id
+        console.log("showBilanElectrique clicked")
+        const response = await DocServices.showBilanElectrique({
+          id: id,
+        });
+        this.BEHis = response.data.be
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in showBilanElectrique ${error}`)
+      }
+    },
+
+    async downloadBeFile (id, str) {
+      try {
+        DocServices.downloadBeFile({
+          id: id,
+          fileCateg: str
+        })
+      } catch (error) {
+        console.log(`something went wrong in downloadBeFile ${str} with error: ${error}`)
+      }
+    },
+
+    onFileChangeECG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.ECGfile = selectedFile;
+      console.log(this.BECr.BEfile.ECGfile)
+    },
+    clearECGFile() {
+      this.$refs.ECGfile.value = null
+      this.BECr.BEfile.ECGfile = null
+    },
+
+    onFileChangeEEG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.EEGfile = selectedFile;
+      console.log(this.BECr.BEfile.EEGfile)
+    },
+    clearEEGFile() {
+      this.$refs.EEGfile.value = null
+      this.BECr.BEfile.EEGfile = null
+    },
+
+    onFileChangeEMG(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.BECr.BEfile.EMGfile = selectedFile;
+      console.log(this.BECr.BEfile.EMGfile)
+    },
+    clearEMGFile() {
+      this.$refs.EMGfile.value = null
+      this.BECr.BEfile.EMGfile = null
+    },
+
+    async createBilanElectrique () {
+      try {
+        const formData = new FormData()
+        formData.append('BEMotif', this.BECr.BEtext.Motif)
+        formData.append('idPatient', this.BECr.BEtext.idP)
+        formData.append('BEinterECG', this.BECr.BEtext.inter.ECGinter)
+        formData.append('BEinterEEG', this.BECr.BEtext.inter.EEGinter)
+        formData.append('BEinterEMG', this.BECr.BEtext.inter.EMGinter)
+        formData.append('ECG', this.BECr.BEfile.ECGfile)
+        formData.append('EEG', this.BECr.BEfile.EEGfile)
+        formData.append('EMG', this.BECr.BEfile.EMGfile)
+        console.log("createBilanElectrique clicked")
+  
+        // const BEtext = this.BECr.BEtext.Motif
+        // console.log(BEtext)
+
+        const response = await DocServices.createBilanElectrique(formData)
+        // this.messageBECr = "Bilans électrique enregistré"
+        // clearECGFile()
+        // clearEEGFile()
+        // clearEMGFile()
+        console.log(response.data)
+      } catch (error) {
+        console.log(`something went wrong in createBilanElectrique ${error}`);
+      }
+    },
+
     remoteMethod(query) {
       if (query !== "") {
         this.wilayaLoading = true;
@@ -5959,6 +6044,7 @@ export default {
             x = x + 1;
           });
           console.log(response.data);
+          this.showRDVDashboard();
         })
         .catch((error) => {
           console.log(error);
@@ -6693,6 +6779,11 @@ export default {
         ordonnanceId: "",
       });
     },
+    async removeprescinput() {
+      
+     await this.prescs.pop()
+    },
+    
 
     async addpresc(user) {
       try {
@@ -6802,45 +6893,45 @@ export default {
         console.log(`something went wrong ${error}`);
       }
     },
-    async getOrientations() {
-      try {
-        console.log(this.userselected.id);
-        const response = await OrientationMedicalService.getAllOM({
-          id: this.userselected.id,
-        });
-        console.log(response.data);
-        this.orientations = response.data.orientations;
-        console.log(this.orientations);
-      } catch (error) {
-        console.log(`something went wrong ${error}`);
-      }
-    },
-    async getCertificats() {
-      try {
-        console.log(this.userselected.id);
-        const response = await CertificatMedicalService.getAllCM({
-          id: this.userselected.id,
-        });
-        console.log(response.data);
-        this.certificats = response.data.certificats;
-        console.log(this.certificats);
-      } catch (error) {
-        console.log(`something went wrong ${error}`);
-      }
-    },
-    async getEvacuations() {
-      try {
-        console.log(this.userselected.id);
-        const response = await EvacuationMedicalService.getAllEvM({
-          id: this.userselected.id,
-        });
-        console.log(response.data);
-        this.evacuations = response.data.evacuations;
-        console.log(this.evacuations);
-      } catch (error) {
-        console.log(`something went wrong evacuations ${error}`);
-      }
-    },
+    // async getOrientations() {
+    //   try {
+    //     console.log(this.userselected.id);
+    //     const response = await OrientationMedicalService.getAllOM({
+    //       id: this.userselected.id,
+    //     });
+    //     console.log(response.data);
+    //     this.orientations = response.data.orientations;
+    //     console.log(this.orientations);
+    //   } catch (error) {
+    //     console.log(`something went wrong ${error}`);
+    //   }
+    // },
+    // async getCertificats() {
+    //   try {
+    //     console.log(this.userselected.id);
+    //     const response = await CertificatMedicalService.getAllCM({
+    //       id: this.userselected.id,
+    //     });
+    //     console.log(response.data);
+    //     this.certificats = response.data.certificats;
+    //     console.log(this.certificats);
+    //   } catch (error) {
+    //     console.log(`something went wrong ${error}`);
+    //   }
+    // },
+    // async getEvacuations() {
+    //   try {
+    //     console.log(this.userselected.id);
+    //     const response = await EvacuationMedicalService.getAllEvM({
+    //       id: this.userselected.id,
+    //     });
+    //     console.log(response.data);
+    //     this.evacuations = response.data.evacuations;
+    //     console.log(this.evacuations);
+    //   } catch (error) {
+    //     console.log(`something went wrong evacuations ${error}`);
+    //   }
+    // },
 
     async ConsulterRapportMedical(rapp) {
       this.dialogConsulterRapportMedical = true;
@@ -7005,7 +7096,7 @@ export default {
               margin: [0, 0, 0, 20],
             },
             {
-              text: " Motif Médical:\n",
+              text: " Motif Médical",
               style: "mainTitle",
             },
             {
@@ -7013,15 +7104,15 @@ export default {
               style: "main",
             },
             {
-              text: " Histoire de la Maladie:\n",
+              text: " Histoire de la Maladie :",
               style: "mainTitle",
             },
             {
               text: this.RapportMedical.HistoireDeLaMaladie,
               style: "main",
             },
-            {
-              text: " Etat Général:\n",
+             {
+              text: " Etat Général :",
               style: "mainTitle",
             },
             {
@@ -7029,15 +7120,15 @@ export default {
               style: "main",
             },
             {
-              text: " Autre: \n",
+              text: " Autre :",
               style: "mainTitle",
             },
             {
               text: this.RapportMedical.Autre,
               style: "main",
             },
-            {
-              text: " Conclusion:\n",
+             {
+              text: " Conclusion :",
               style: "mainTitle",
             },
             {
@@ -7296,10 +7387,10 @@ export default {
       try {
         console.log("creepdf4 button was clicked !");
         //console.log(this.userAntInfo);
-        this.CertificatMedical.idUser = this.userselected.id;
-        const response = await CertificatMedicalService.creeCM({
-          CertificatMedical: this.CertificatMedical,
-        });
+        // this.CertificatMedical.idUser = this.userselected.id;
+        // const response = await CertificatMedicalService.creeCM({
+        //   CertificatMedical: this.CertificatMedical,
+        // });
 
         var docDefinition = {
           footer: [
@@ -7506,7 +7597,7 @@ export default {
 
         pdfMake.createPdf(docDefinition).open();
 
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -7515,10 +7606,10 @@ export default {
       try {
         console.log("creepdf2 button was clicked !");
         //console.log(this.userAntInfo);
-        this.OrientationMedical.idUser = this.userselected.id;
-        const response = await OrientationMedicalService.creeOM({
-          OrientationMedical: this.OrientationMedical,
-        });
+        // this.OrientationMedical.idUser = this.userselected.id;
+        // const response = await OrientationMedicalService.creeOM({
+        //   OrientationMedical: this.OrientationMedical,
+        // });
 
         var docDefinition = {
           footer: [
@@ -7714,7 +7805,7 @@ export default {
 
         pdfMake.createPdf(docDefinition).open();
 
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -8021,9 +8112,8 @@ export default {
   margin: 20px;
   border-radius: 15px;
 }
-.cardGris {
+.cardGris{
   border-radius: 10px;
-  border: 10px;
 }
 .boxRDV {
   width: 97%;
@@ -8192,6 +8282,9 @@ export default {
   color: white;
 }
 .floating {
+  float: left;
+}
+.floatingplus {
   float: left;
 }
 .hovereffect:hover {
