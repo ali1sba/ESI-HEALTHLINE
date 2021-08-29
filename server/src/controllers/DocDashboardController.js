@@ -846,6 +846,7 @@ module.exports = {
         where: {
           id: id
         },
+        attributes: { exclude: ['id'] },
         raw: true
       })
 
@@ -855,6 +856,65 @@ module.exports = {
     } catch (err) {
       res.send({
         error: `an error has occured trying to recoverExamenClinique ${err}`
+      })
+    }
+  },
+  async modifierExamenClinique (req, res) {
+    try {
+      const id = req.body.id
+      const newexamenclinique = req.body.ExamenClinique
+      const exmCliInfo = await ExamenClinique.findOne({
+        where: {
+          id: id
+        }
+      })
+      exmCliInfo.temp = newexamenclinique.temp
+      exmCliInfo.peau = newexamenclinique.peau
+      exmCliInfo.anomaliePeau = newexamenclinique.anomaliePeau
+      exmCliInfo.inspCardio = newexamenclinique.inspCardio
+      exmCliInfo.auscuCardio = newexamenclinique.auscuCardio
+      exmCliInfo.anomalieSouffle = newexamenclinique.anomalieSouffle
+      exmCliInfo.anomalieType = newexamenclinique.anomalieType
+      exmCliInfo.anomalieBruits = newexamenclinique.anomalieBruits
+      exmCliInfo.poulsPeri = newexamenclinique.poulsPeri
+      exmCliInfo.anomaliePoulsPeri = newexamenclinique.anomaliePoulsPeri
+      exmCliInfo.tensionArt = newexamenclinique.tensionArt
+      exmCliInfo.freqCard = newexamenclinique.freqCard
+      exmCliInfo.inspPulmo = newexamenclinique.inspPulmo
+      exmCliInfo.palpPulmo = newexamenclinique.palpPulmo
+      exmCliInfo.anomaliePalpPulmo = newexamenclinique.anomaliePalpPulmo
+      exmCliInfo.percuPulmo = newexamenclinique.percuPulmo
+      exmCliInfo.anomaliePercuPulmo = newexamenclinique.anomaliePercuPulmo
+      exmCliInfo.auscuPulmo = newexamenclinique.auscuPulmo
+      exmCliInfo.murmurViscu = newexamenclinique.murmurViscu
+      exmCliInfo.checkedRales = newexamenclinique.checkedRales
+      exmCliInfo.locaRales = newexamenclinique.locaRales
+      exmCliInfo.inspAbdo = newexamenclinique.inspAbdo
+      exmCliInfo.anomalieAbdo = newexamenclinique.anomalieAbdo
+      exmCliInfo.pulpAbdo = newexamenclinique.pulpAbdo
+      exmCliInfo.pulpMasse = newexamenclinique.pulpMasse
+      exmCliInfo.localiMasse = newexamenclinique.localiMasse
+      exmCliInfo.percuAbdo = newexamenclinique.percuAbdo
+      exmCliInfo.sensiNeuro = newexamenclinique.sensiNeuro
+      exmCliInfo.anomalieSensiNeuro = newexamenclinique.anomalieSensiNeuro
+      exmCliInfo.matriNeuro = newexamenclinique.matriNeuro
+      exmCliInfo.anomalieMatriNeuro = newexamenclinique.anomalieMatriNeuro
+      exmCliInfo.troublesNeuro = newexamenclinique.troublesNeuro
+      exmCliInfo.anomalieTroublesNeuro = newexamenclinique.anomalieTroublesNeuro
+      exmCliInfo.orientNeuro = newexamenclinique.orientNeuro
+      exmCliInfo.anomalieOrientNeuro = newexamenclinique.anomalieOrientNeuro
+      exmCliInfo.gorgeORL = newexamenclinique.gorgeORL
+      exmCliInfo.auricuORL = newexamenclinique.auricuORL
+      exmCliInfo.examenUrogeni = newexamenclinique.examenUrogeni
+      exmCliInfo.remarqueCli = newexamenclinique.remarqueCli
+      await exmCliInfo.save()
+
+      res.send({
+        ExamenClinique: exmCliInfo
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to  save ExamenClinique ${err}`
       })
     }
   },
