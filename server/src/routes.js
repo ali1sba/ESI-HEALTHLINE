@@ -223,9 +223,15 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   // ***************************** Assistant ****************************
-  app.post('/Assistant/recoverRDVI', AssistantController.recoverRDVI)
+  // ********** RDV GROUP **********
+  app.post('/Assistant/recoverRDVG', AssistantController.recoverRDVG)
+  app.post('/Assistant/progRDVGroup', AssistantController.progRDVGroup)
+  app.post('/Assistant/confirmModifRDVGroup', AssistantController.confirmModifRDVGroup)
+  app.post('/Assistant/annulerRDVGroup', AssistantController.annulerRDVGroup)
+  // ********** RDV INDIV **********
   app.post('/Assistant/recoverPatients', AssistantController.recoverPatients)
+  app.post('/Assistant/recoverRDVI', AssistantController.recoverRDVI)
   app.post('/Assistant/progRDVIndividuel', AssistantController.progRDVIndividuel)
-  app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   app.post('/Assistant/confirmModifRDVIndividuel', AssistantController.confirmModifRDVIndividuel)
+  app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
 }

@@ -10,12 +10,12 @@
   background-color="#545c64"
   text-color="#fff"
   active-text-color="#ffd04b">
-  <el-menu-item index="1" @click="section = 1">HealtheLine</el-menu-item>
-  <el-menu-item index="4" @click="section = 2">Profile</el-menu-item>
+  <el-menu-item index="1">HealtheLine</el-menu-item>
+  <el-menu-item index="4">Profile</el-menu-item>
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAssistant">
-        <div id="dashboard_btn" @click="section = 1">
+        <div id="dashboard_btn" @click="recoverRDVG()">
           <li class="dashboardAdmin"><a href="#/Assistant">RDV groupés</a></li>
         </div>
         <div id="dashboard_btn" @click="recoverRDVI()">
@@ -32,7 +32,7 @@
                   <h2>RDV groupés</h2>
                    <el-card   class="cardGris">
                       <el-row>
-                        <el-col :span="6">Groupe</el-col>
+                        <el-col :span="6">Année/Groupe</el-col>
                         <el-col :span="6">Type de RDV</el-col>
                         <el-col :span="6">Date And Time</el-col>
                         <el-col :span="6">Note</el-col>
@@ -42,7 +42,7 @@
                     <el-timeline-item  placement="top" v-for="Rdv in RDVGroupList" :key="Rdv.id" >
                       <el-card   class="cardGris">
                         <el-row>
-                          <el-col :span="6">{{Rdv.Group}}</el-col>
+                          <el-col :span="6">{{Rdv.ScolarYear}}/{{Rdv.Group}}</el-col>
                           <el-col :span="6">{{Rdv.Type}}</el-col>
                           <el-col :span="6">{{Rdv.DateAndTime}}</el-col>
                           <el-col :span="6">{{Rdv.Note}}</el-col>
@@ -73,12 +73,23 @@
                     </el-button>
                   </el-card>
 
-                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVGroupFormVisible">
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVGroupFormVisible" :before-close="annulerModifRDVGroup">
                     <el-form :model="form">
-                      <el-form-item label="Patient" :label-width="formLabelWidth">
-                        <el-select v-model="value" filterable remote placeholder="Sélectionnez le patient">
+                      <el-form-item label="Année" :label-width="formLabelWidth">
+                        <el-select v-model="rdvGroup.annee" filterable remote placeholder="Sélectionnez l'année scolaire">
                           <el-option
-                            v-for="item in Patients"
+                            v-for="item in optionyear"
+                            :key="item.value"
+                            :label="item.label"
+                            :value ="item.value"
+                            style="margin-right:20px">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Groupe" :label-width="formLabelWidth">
+                        <el-select v-model="rdvGroup.group" filterable remote placeholder="Sélectionnez le groupe">
+                          <el-option
+                            v-for="item in optiongroup"
                             :key="item.value"
                             :label="item.label"
                             :value ="item.value"
@@ -87,21 +98,22 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="type de RDV" :label-width="formLabelWidth">
-                        <el-select v-model="value" placeholder="Sélectionnez un type">
+                        <el-select v-model="rdvGroup.typeRDV" placeholder="Sélectionnez un type">
                           <el-option label="consultation médical" value="consultation médical"></el-option>
                           <el-option label="suivi médical" value="suivi médical"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="Date" :label-width="formLabelWidth">
                         <el-date-picker
-                          v-model="value"
+                          v-model="rdvGroup.date"
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
-                          :shortcuts="shortcuts">
+                          :shortcuts="shortcuts"
+                          :default-time="defaultTime1">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
-                        <el-input v-model="value" placeholder="Note"></el-input>
+                        <el-input v-model="rdvGroup.note" placeholder="Note"></el-input>
                       </el-form-item>
                     </el-form>
                     <template #footer>
@@ -112,12 +124,23 @@
                     </template>
                   </el-dialog>
 
-                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVGroupFormVisible2">
+                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVGroupFormVisible2" :before-close="annulerModifRDVGroup">
                     <el-form :model="form">
-                      <el-form-item label="Patient" :label-width="formLabelWidth">
-                        <el-select v-model="value" filterable remote disabled>
+                      <el-form-item label="Année" :label-width="formLabelWidth">
+                        <el-select v-model="rdvGroupForm.ScolarYear" filterable remote disabled placeholder="Sélectionnez l'année scolaire">
                           <el-option
-                            v-for="item in Patients"
+                            v-for="item in optionyear"
+                            :key="item.value"
+                            :label="item.label"
+                            :value ="item.value"
+                            style="margin-right:20px">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Groupe" :label-width="formLabelWidth">
+                        <el-select v-model="rdvGroupForm.Group" filterable remote disabled placeholder="Sélectionnez le groupe">
+                          <el-option
+                            v-for="item in optiongroup"
                             :key="item.value"
                             :label="item.label"
                             :value ="item.value"
@@ -126,21 +149,21 @@
                         </el-select>
                       </el-form-item>
                       <el-form-item label="type de RDV" :label-width="formLabelWidth">
-                        <el-select v-model="value" placeholder="Sélectionnez un type">
+                        <el-select v-model="rdvGroupForm.Type" placeholder="Sélectionnez un type">
                           <el-option label="consultation médical" value="consultation médical"></el-option>
                           <el-option label="suivi médical" value="suivi médical"></el-option>
                         </el-select>
                       </el-form-item>
                       <el-form-item label="Date" :label-width="formLabelWidth">
                         <el-date-picker
-                          v-model="value"
+                          v-model="rdvGroupForm.DateAndTime"
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
                           :shortcuts="shortcuts">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
-                        <el-input v-model="value" placeholder="Note"></el-input>
+                        <el-input v-model="rdvGroupForm.Note" placeholder="Note"></el-input>
                       </el-form-item>
                     </el-form>
                     <template #footer>
@@ -202,7 +225,7 @@
                     </el-button>
                   </el-card>
 
-                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVIndivFormVisible">
+                  <el-dialog title=" Programmer un RDV " v-model="dialogRDVIndivFormVisible" :before-close="annulerProgRDVIndividuel">
                     <el-form :model="form">
                       <el-form-item label="Patient" :label-width="formLabelWidth">
                         <el-select v-model="rdvIndiv.idPatient" filterable remote placeholder="Sélectionnez le patient">
@@ -226,7 +249,8 @@
                           v-model="rdvIndiv.date"
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
-                          :shortcuts="shortcuts">
+                          :shortcuts="shortcuts"
+                          :default-time="defaultTime1">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
@@ -241,7 +265,7 @@
                     </template>
                   </el-dialog>
 
-                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVIndivFormVisible2">
+                  <el-dialog title=" Modifier un RDV " v-model="dialogRDVIndivFormVisible2" :before-close="annulerModifRDVIndividuel">
                     <el-form :model="form">
                       <el-form-item label="Patient" :label-width="formLabelWidth">
                         <el-select v-model="rdvIndivForm.Patient" filterable remote disabled>
@@ -294,13 +318,66 @@ export default {
           radio2: 'Historique',
           radio3: 'Groupé',
           formLabelWidth:'120px',
+          defaultTime1: [
+            new Date(2000, 1, 1, 10, 0, 0),
+          ],
           value: '',
           // ************ RDV GROUP **********************
           dialogRDVGroupFormVisible: false,
           dialogRDVGroupFormVisible2: false,
-          Groups: [],
-          rdvGoup: '',
-          rdvGoupForm: '',
+          optionyear: [{
+            value: '1CPI',
+            label: '1CPI'
+          }, {
+            value: '2CPI',
+            label: '2CPI'
+          }, {
+            value: '1CS',
+            label: '1CS'
+          }, {
+            value: '2CS-ISI',
+            label: '2CS-ISI'
+          }, {
+            value: '2CS-SIW',
+            label: '2CS-SIW'
+          }, {
+            value: '3CS-ISI',
+            label: '3CS-ISI'
+          }, {
+            value: '3CS-SIW',
+            label: '3CS-SIW'
+          }],
+          optiongroup: [{
+            value: 'G1',
+            label: 'G1'
+          }, {
+            value: 'G2',
+            label: 'G2'
+          }, {
+            value: 'G3',
+            label: 'G3'
+          }, {
+            value: 'G4',
+            label: 'G4'
+          }, {
+            value: 'G5',
+            label: 'G5'
+          }],
+          rdvGroup: {
+            annee: '',
+            group: '',
+            typeRDV: '',
+            date: '',
+            note: ''
+          },
+          rdvGroupForm: {
+            idRDV: '',
+            annee: '',
+            group: '',
+            typeRDV: '',
+            date: '',
+            note: ''
+          },
           RDVGroupList: [],
           // ************ RDV INDIV **********************
           dialogRDVIndivFormVisible: false,
@@ -328,7 +405,9 @@ export default {
     // ************************************************ RDV groupés ********************************************
     async recoverRDVG () {
       try {
-        console.log("recoverRDVG clicked")
+        this.section = 1
+        const response = await AssisServices.recoverRDVG()
+        this.RDVGroupList = response.data.rdv
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -345,7 +424,20 @@ export default {
 
     async progRDVGroup () {
       try {
-        console.log("progRDVGroup clicked")
+        console.log(this.rdvGroup)
+        const response = await AssisServices.progRDVGroup({
+          rdv: this.rdvGroup
+        })
+        console.log(response.data)
+        this.recoverRDVG()
+        this.dialogRDVGroupFormVisible = false
+        this.rdvGroup = {
+          annee: '',
+          group: '',
+          typeRDV: '',
+          date: '',
+          note: ''
+        }
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -353,15 +445,24 @@ export default {
 
     async annulerProgRDVGroup () {
       try {
-        console.log("annulerProgRDVGroup clicked")
+        this.dialogRDVGroupFormVisible = false
+        this.rdvGroup = {
+          annee: '',
+          group: '',
+          typeRDV: '',
+          date: '',
+          note: ''
+        }
+        this.recoverRDVG()
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
     },
 
-    async modifRDVGroup () {
+    async modifRDVGroup (rdv) {
       try {
-        console.log("modifRDVGroup clicked")
+        this.rdvGroupForm = rdv
+        this.dialogRDVGroupFormVisible2 = true
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -369,7 +470,12 @@ export default {
 
     async confirmModifRDVGroup () {
       try {
-        console.log("confirmModifRDVGroup clicked")
+        const response = await AssisServices.confirmModifRDVGroup({
+          rdv: this.rdvGroupForm
+        })
+        console.log(response.data)
+        this.recoverRDVG()
+        this.dialogRDVGroupFormVisible2 = false
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -377,15 +483,28 @@ export default {
 
     async annulerModifRDVGroup () {
       try {
-        console.log("annulerModifRDVGroup clicked")
+        this.recoverRDVG()
+        this.dialogRDVGroupFormVisible2 = false
+        this.rdvGroupForm = {
+          annee: '',
+          group: '',
+          typeRDV: '',
+          date: '',
+          note: ''
+        }
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
     },
 
-    async annulerRDVGroup () {
+    async annulerRDVGroup (rdv) {
       try {
-        console.log("annulerRDVGroup clicked")
+        const id = rdv.id
+        const response = await AssisServices.annulerRDVGroup({
+          idRDV: id
+        })
+        console.log(response.data)
+        this.recoverRDVG()
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
