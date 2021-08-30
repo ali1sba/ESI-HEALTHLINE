@@ -905,7 +905,6 @@ a {
   background-color: #000;
   border-radius: 0.25rem;
 }
-
 .popover {
   position: absolute;
   top: 0;
@@ -1107,7 +1106,6 @@ a {
   clear: both;
   content: "";
 }
-
 .carousel-item {
   position: relative;
   display: none;
@@ -1304,7 +1302,6 @@ a {
 .carousel-indicators .active {
   opacity: 1;
 }
-
 .carousel-caption {
   position: absolute;
   right: 15%;
@@ -2272,7 +2269,7 @@ padding-top: 15px;
   margin-left: 23px;
   font-style: italic;
 }
-/*
+
 .doctor {
   background-position: center;
   background-color: #bae1de;
@@ -2321,7 +2318,7 @@ padding-top: 15px;
 }
 .doctor h3 {
   font-size: 20px;
-}*/
+}
 
 /*navbar dm*/
 #menutab {
@@ -2501,18 +2498,67 @@ background-color: rgba(36, 180, 171, 0.7);}
   }
   
   /*Resize the wrap to see the search bar change!*/
+  button {
+    font-family: inherit;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .cardDash {
+    background: #fff;
+    width: 400px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    padding: 32px;
+    margin-left: 570px;
+    margin-top: -80px;
+  }
+    .cardInfoPlace{
+      font-size: 14px;
+      color: #2f2f31;
+    }
+    .cardInfoTime{
+      font-size: 30px;
+      color: #22215b;
+    }
+    .cardInfoDate{
+      font-size: 14px;
+      color: #2f2f31;
+    }
+    .cardWeather{
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cardWeatherTemp{
+      font-size: 30px;
+    }
+    .cardWeatherIcon{
+      animation: move 2s infinite alternate ease-in-out;
+    }
+
+  @keyframes move {
+    to {
+      transform: translateY(-10px);
+    }
+  }
+  
   .wrapsearch{
     width: 30%;
     position: absolute;
-    top: 28%;
-    left: 80%;
+    margin-left: 760px;
+    margin-top: -20px;
     transform: translate(-50%, -50%);
   }
   .Datedashboard{
     width: 30%;
     position: absolute;
-    top: 20%;
-    left: 78%;
+    margin-left: 730px;
+    margin-top: -70px;
   }
   
 .cardDash-body{
@@ -2557,4 +2603,22 @@ margin-top: 0;
 .floatDash-right i{
 font-size: 95px;
 opacity: 0.5;
+}
+.el-dropdown .el-button-group .el-button {
+  float: none;
+  border-radius: 50%;
+  padding: 10px;
+  margin-left: 10px;
+  border:none;
+  font-size: 20px;
+background-color: rgba(36, 180, 171, 0.7);}
+ #app{
+   width: 100vw;
+   height: 100vh;
+ }
+ .el-input.is-disabled .el-input__inner {
+  background-color: #f5f7fa;
+  border-color: #e4e7ed;
+  color: #0d0619;
+  cursor: none;
 }

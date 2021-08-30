@@ -490,7 +490,7 @@ export default {
           value: 'PATIENT',
           label: 'PATIENT'
         }],
-          valueyear: ''
+          valueyear: '',
     };
 
   },
@@ -527,6 +527,7 @@ export default {
       });
   },
   methods: {
+    
     convertVTVC(V , VC){
       
       V.forEach(user => {

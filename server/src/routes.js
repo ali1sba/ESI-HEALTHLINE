@@ -7,6 +7,12 @@ const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
 const AssistantController = require('./controllers/AssistantController')
 
+const RapportMedicalController = require('./controllers/RapportMedicalController')
+const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
+const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
+const CertificatMedicalController = require('./controllers/CertificatMedicalController')
+const RDVController = require('./controllers/RDVController')
+
 const { uuid } = require('uuidv4')
 const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
@@ -60,12 +66,6 @@ const storageBE = multer.diskStorage({
   }
 })
 const uploadBE = multer({ storage: storageBE })
-
-const RapportMedicalController = require('./controllers/RapportMedicalController')
-const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
-const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
-const CertificatMedicalController = require('./controllers/CertificatMedicalController')
-const RDVController = require('./controllers/RDVController')
 
 // const { Compte } = require('./models')
 // const passport = require('passport')
@@ -197,7 +197,6 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
   app.post('/DOCdashboard/showBilanBiologique', DocDashboardController.showBilanBiologique)
   app.post('/DOCdashboard/createBilanBiologique', DocDashboardController.createBilanBiologique)
-
   // Bilans Electriques
   app.post('/DOCdashboard/showBE', DocDashboardController.showBE)
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
@@ -234,4 +233,6 @@ module.exports = (app) => {
   app.post('/Assistant/progRDVIndividuel', AssistantController.progRDVIndividuel)
   app.post('/Assistant/confirmModifRDVIndividuel', AssistantController.confirmModifRDVIndividuel)
   app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
+  // ******show rdv in dashboard*****
+  app.post('/showRDVDashboard', RDVController.showRDVDashboard)
 }

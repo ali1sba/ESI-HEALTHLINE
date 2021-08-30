@@ -9,7 +9,6 @@
 --DROP TABLE 'UserNonValides';
 --DROP TABLE 'Users';
 -- DROP TABLE 'biometricInfos';
- --DROP TABLE 'EvacuationMedicalBDDs';
 --DROP TABLE 'ResetPasswordRequests';
 --DROP TABLE 'BilansBiologiques';
 --DROP TABLE 'BilansECGs';
