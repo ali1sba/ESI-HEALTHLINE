@@ -7,6 +7,10 @@ export default {
         return Api().post('/',credantials)
     },
 
+    loginMobile (credantials){
+        return Api().post('/loginMobile',credantials)
+    },
+
     register (credantials){
         return Api().post('/register',credantials)
     },

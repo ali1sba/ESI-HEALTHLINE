@@ -149,6 +149,7 @@ module.exports = (app) => {
   })
   */
   app.post('/', AuthController.login)
+  app.post('/loginMobile', AuthController.loginMobile)
   // app.get('/logout', AuthController.logout)
   app.post('/register', AuthControllerPolicy.register, AuthController.register)
   app.post('/forgotpw', AuthController.forgotpw)
@@ -205,6 +206,7 @@ module.exports = (app) => {
   })
   // ************************ RDV medical ***************************
   app.post('/progRDVPatient', RDVController.progRDVPatient)
+  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
