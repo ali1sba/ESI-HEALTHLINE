@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) =>
     scolarYear: {
       type: DataTypes.STRING
     },
+    group: {
+      type: DataTypes.STRING
+    },
     idCompte: {
       type: DataTypes.INTEGER,
       allowNull: false

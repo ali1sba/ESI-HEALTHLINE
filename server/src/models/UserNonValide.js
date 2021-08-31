@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
     scolarYear: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    group: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }, {
     hooks: {
