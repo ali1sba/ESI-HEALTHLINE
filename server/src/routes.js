@@ -5,7 +5,14 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const AssistantController = require('./controllers/AssistantController')
+
+const RapportMedicalController = require('./controllers/RapportMedicalController')
+const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
+const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
+const CertificatMedicalController = require('./controllers/CertificatMedicalController')
 const RDVController = require('./controllers/RDVController')
+
 const { uuid } = require('uuidv4')
 const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
@@ -60,7 +67,6 @@ const storageBE = multer.diskStorage({
 })
 const uploadBE = multer({ storage: storageBE })
 
-const RapportMedicalController = require('./controllers/RapportMedicalController')
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -174,8 +180,18 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  // ************************ rapport medical ***************************
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
+  // ************************ Orientation medicalll **********************
+  app.post('/OrientationMedical', OrientationtMedicalController.createOM)
+  app.post('/getOrientationMedical', OrientationtMedicalController.getOrientations)
+  // ************************ Evacuation medicalll **********************
+  app.post('/EvacuationMedical', EvacuationMedicalController.createEvM)
+  app.post('/getEvacuationMedical', EvacuationMedicalController.getEvacuations)
+  // ************************ Certificat medicalll **********************
+  app.post('/CertificatMedical', CertificatMedicalController.createCM)
+  app.post('/getCertificatMedical', CertificatMedicalController.getCertificats)
   // ************************ Bilans paracliniques **********************
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
@@ -206,6 +222,18 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
+  // ***************************** Assistant ****************************
+  // ********** RDV GROUP **********
+  app.post('/Assistant/recoverRDVG', AssistantController.recoverRDVG)
+  app.post('/Assistant/progRDVGroup', AssistantController.progRDVGroup)
+  app.post('/Assistant/confirmModifRDVGroup', AssistantController.confirmModifRDVGroup)
+  app.post('/Assistant/annulerRDVGroup', AssistantController.annulerRDVGroup)
+  // ********** RDV INDIV **********
+  app.post('/Assistant/recoverPatients', AssistantController.recoverPatients)
+  app.post('/Assistant/recoverRDVI', AssistantController.recoverRDVI)
+  app.post('/Assistant/progRDVIndividuel', AssistantController.progRDVIndividuel)
+  app.post('/Assistant/confirmModifRDVIndividuel', AssistantController.confirmModifRDVIndividuel)
+  app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
 }
