@@ -109,7 +109,8 @@
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
                           :shortcuts="shortcuts"
-                          :default-time="defaultTime1">
+                          :default-time="defaultTime1"
+                          :disabled-date="disabledDate">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
@@ -159,7 +160,8 @@
                           v-model="rdvGroupForm.DateAndTime"
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
-                          :shortcuts="shortcuts">
+                          :shortcuts="shortcuts"
+                          :disabled-date="disabledDate">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
@@ -250,7 +252,8 @@
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
                           :shortcuts="shortcuts"
-                          :default-time="defaultTime1">
+                          :default-time="defaultTime1"
+                          :disabled-date="disabledDate">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
@@ -289,7 +292,8 @@
                           v-model="rdvIndivForm.DateAndTime"
                           type="datetime"
                           placeholder="Selectionnez date et horaire"
-                          :shortcuts="shortcuts">
+                          :shortcuts="shortcuts"
+                          :disabled-date="disabledDate">
                         </el-date-picker>
                       </el-form-item>
                       <el-form-item label="Note" :label-width="formLabelWidth">
@@ -315,6 +319,9 @@ import AssisServices from "@/services/AssisServices.js"
 export default {
   data() {
       return {
+          disabledDate (time) {
+            return time.getTime() < Date.now()
+          },
           radio2: 'Historique',
           radio3: 'Groupé',
           formLabelWidth:'120px',
@@ -470,6 +477,7 @@ export default {
 
     async confirmModifRDVGroup () {
       try {
+        console.log(this.rdvGroupForm)
         const response = await AssisServices.confirmModifRDVGroup({
           rdv: this.rdvGroupForm
         })
