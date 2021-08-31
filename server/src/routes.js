@@ -205,6 +205,7 @@ module.exports = (app) => {
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
+  app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
 }
