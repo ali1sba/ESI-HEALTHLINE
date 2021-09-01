@@ -3721,42 +3721,161 @@
                     </el-radio-group>
                   </div>
                 </center>                
-                
+                <el-scrollbar  v-show="radio2==='Historique'">
+                  <el-card>
+                    <el-table
+                      :data="tableDataBE"
+                      style="width: 100%"
+                      height="250">
 
-                <el-scrollbar v-show="radio2 === 'Historique'">
-                  <el-table
-                    :data="tableDataBE"
-                    style="width: 100%"
-                    height="250"
-                  >
-                    <el-table-column fixed prop="numero" label="N" width="50">
-                    </el-table-column>
-                    <el-table-column prop="motif" label="Motif" width="200">
-                    </el-table-column>
-                    <el-table-column prop="date" label="Date" width="150">
-                    </el-table-column>
-                    <el-table-column
-                      prop="bilans"
-                      label="Bilans présents"
-                      width="400"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                      fixed="right"
-                      label="Opérations"
-                      width="120"
-                    >
-                      <template #default="">
-                        <el-button
-                          @click="showBilanBiologique"
-                          type="text"
-                          size="small"
-                        >
-                          Consulter
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                      <el-table-column
+                        label="N"
+                        width="50">
+                        <template #default="scope">
+                          <span style="margin-left: 10px">{{ scope.row.id }}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                          label="Motif"
+                          width="150">
+                          <template #default="scope">
+                            <span style="margin-left: 10px">{{ scope.row.motif }}</span>
+                          </template>
+                      </el-table-column>
+
+                      <el-table-column
+                        label="Date"
+                        width="150">
+                        <template #default="scope">
+                            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+                        </template>
+                      </el-table-column>
+
+                      <el-table-column
+                          label="Bilans présents"
+                          width="300">
+                        Texte
+                      </el-table-column>
+
+                      <el-table-column
+                        label="Opérations"
+                        width="150">
+                        <template #default="scope">
+                          <el-button
+                            size="mini"
+                            @click="showBilanElectrique(scope.row.id)">Consulter</el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </el-card>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Historique2'">
+                  <el-space>
+                    Motif
+                    <el-tag>{{ BEHis.Motif }}</el-tag>
+                  </el-space>
+                  <el-space>
+                    Date de création
+                    <el-tag>{{ BEHis.Date }}</el-tag>
+                  </el-space>
+                  <el-collapse>
+                    <el-collapse-item title="ECG" name="1">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.ECG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'ECG')">Télécharger le fichier: {{ BEHis.ECG.ECGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EEG" name="2">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EEG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'EEG')">Télécharger le fichier: {{ BEHis.EEG.EEGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                    <el-collapse-item title="EMG" name="3">
+                      <el-space orientation="vertical"> 
+                        <el-space wrap :size="7">
+                          Interprétation
+                          <el-tag>{{ BEHis.EMG.inter }}</el-tag>
+                        </el-space>
+                        <el-space wrap :size="7">
+                          <el-button @click="downloadBeFile(idBE, 'EMG')">Télécharger le fichier: {{ BEHis.EMG.EMGfile }}</el-button>
+                        </el-space>
+                      </el-space>
+                    </el-collapse-item>
+                  </el-collapse>
+                </el-scrollbar>
+
+                <el-scrollbar  v-show="radio2==='Créer'">
+                  <form @submit.prevent="createBilanElectrique" enctype="multipart/form-data">
+                    <el-space>
+                      Motif
+                      <el-input type="textarea" v-model="BECr.BEtext.Motif"></el-input>
+                    </el-space>
+                    <el-collapse>
+                      <el-collapse-item title="ECG" name="1">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.ECGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
+                              <el-button @click="clearECGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EEG" name="2">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EEGinter">></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
+                              <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                      <el-collapse-item title="EMG" name="3">
+                        <el-space orientation="vertical"> 
+                          <el-space wrap :size="7">
+                            Interprétation
+                            <el-input type="textarea" v-model="BECr.BEtext.inter.EMGinter"></el-input>
+                          </el-space>
+                          <el-space wrap :size="7">
+                            Fichier
+                            <div class="file-upload">
+                              <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
+                              <el-button @click="clearEMGFile">Supprimer le fichier</el-button>
+                            </div>
+                            <div class="el-upload__tip">Vous devez choisir un seul fichier (PDF), et de taille inférieur à 1MB</div>
+                          </el-space>
+                        </el-space>
+                      </el-collapse-item>
+                    </el-collapse>
+                    <br>
+                    <button class="btn btn-danger btn-block">Enregistrer</button>
+                  </form>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
