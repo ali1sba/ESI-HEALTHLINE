@@ -175,6 +175,10 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
+  app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
+  app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
+  app.post('/DOCdashboard/modifierExamenClinique', DocDashboardController.modifierExamenClinique)
   // ************************ rapport medical ***************************
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
