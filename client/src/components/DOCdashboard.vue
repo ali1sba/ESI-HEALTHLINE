@@ -4454,59 +4454,6 @@ EMAIL: contact@esi-sba.dz</p>
                     >Voir en format Pdf </el-button > 
                 </div>
 
-                  <hr />
-                  <p style="font-size:17px; font-weight:500; text-align:center">
-                    Ne laissez jamais les médicaments à la portée des enfants
-                  </p>
-                  <br />
-                  <p style="font-size:12px; font-weight:500; text-align:center">
-                    BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie
-                    TEL: +213-48-74-94-52<br />
-                    EMAIL: contact@esi-sba.dz
-                  </p>
-                  <div style="display:flex; ">
-                    <el-button
-                      @click="addpresc(userselected)"
-                      type="primary"
-                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                      v-show="ordcreated === 'not created'"
-                      >Créer
-                    </el-button>
-                    <el-button
-                      @click="
-                        isOrdDisabled = false;
-                        ordcreated = 'modify';
-                      "
-                      v-show="ordcreated === 'created'"
-                    >
-                      Modifier</el-button
-                    >
-                    <el-button
-                      type="primary"
-                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                      v-show="ordcreated === 'modify'"
-                      @click="saveOrdonnance(ordselected)"
-                      >Enregistrer
-                    </el-button>
-                    <el-button
-                      @click="
-                        ordcreated = 'created';
-                        annulerModificationOrd(ordselected);
-                      "
-                      v-show="ordcreated === 'modify'"
-                    >
-                      Annuler</el-button
-                    >
-                    <el-button
-                      type="primary"
-                      style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                      @click="
-                        viewordpdf();
-                        printPresc(prescs);
-                      "
-                      >view pdf
-                    </el-button>
-                  </div>
                 </div>
               </el-card>
             </el-scrollbar>
