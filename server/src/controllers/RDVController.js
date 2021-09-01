@@ -1,4 +1,5 @@
 const { RDV } = require('../models')
+const { RDVNonValide } = require('../models')
 const express = require('express')
 const app = express()
 // var fs = require("fs")
@@ -43,7 +44,7 @@ module.exports = {
         Note: RDVreceived.note
       }
       console.log(RDVToSave)
-      const RDVsaved = await RDV.create(RDVToSave)
+      const RDVsaved = await RDVNonValide.create(RDVToSave)
       console.log(JSON.stringify(RDVsaved))
       res.send({
         RDV: JSON.stringify(RDVsaved)
