@@ -213,9 +213,14 @@
     </el-row>
   <!-- seventh row year  -->
   <el-row>
-    <el-col :span="6"><el-select v-if="state === 'Etudiant'" v-model="scolarYear" >
+    <el-col :span="6"><el-select v-if="state === 'Etudiant'" v-model="scolarYear" placeholder="Année scolaire">
        <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
-      </el-select></el-col>
+      </el-select>
+    </el-col>
+    <el-col :span="6"><el-select v-if="state === 'Etudiant'" v-model="group" placeholder="Groupe" >
+       <el-option v-for="item in optiongroup" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select>
+    </el-col>
     <div class="error" v-html="error" ></div>
   </el-row>
  <!-- sign up button  -->
@@ -250,6 +255,7 @@ export default {
       phoneNum: "",
       state: "etat",
       scolarYear: "",
+      group: "",
       error: null,
        options: [{
           value: 'FEMME',
@@ -276,12 +282,34 @@ export default {
          }, {
           value: '1CS',
           label: '1CS'
-          }, {
-          value: '2CS',
-          label: '2CS'
-          }, {
-          value: '3CS',
-          label: '3CS'
+         }, {
+          value: '2CS-ISI',
+          label: '2CS-ISI'
+         }, {
+          value: '2CS-SIW',
+          label: '2CS-SIW'
+         }, {
+          value: '3CS-ISI',
+          label: '3CS-ISI'
+         }, {
+          value: '3CS-SIW',
+          label: '3CS-SIW'
+        }],
+        optiongroup: [{
+          value: 'G1',
+          label: 'G1'
+        }, {
+          value: 'G2',
+          label: 'G2'
+        }, {
+          value: 'G3',
+          label: 'G3'
+        }, {
+          value: 'G4',
+          label: 'G4'
+        }, {
+          value: 'G5',
+          label: 'G5'
         }],
         valueyear: ''
     };
@@ -291,7 +319,10 @@ export default {
     async register() {
       try {
         if (this.password === this.password2){
-          if (this.state === "ATS"){this.scolarYear= "/"}
+          if (this.state === "ATS"){
+            this.scolarYear= "/"
+            this.group = "/"
+          }
           this.error = ''
           const response = await AuthServices.register({
           firstName: this.firstName,
@@ -304,7 +335,8 @@ export default {
           password2: this.password2,
           phoneNum: this.phoneNum,
           state: this.state,
-          scolarYear: this.scolarYear
+          scolarYear: this.scolarYear,
+          group: this.group
           
         })
         alert("regiter successfull")

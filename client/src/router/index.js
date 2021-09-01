@@ -8,6 +8,7 @@ import patientinterface from '@/components/patientinterface.vue'
 // import Patient from '@/components/Patient.vue'
 import Resetpw from '@/components/Resetpw.vue'
 import test from '@/components/test.vue'
+import Assistant from '@/components/Assistant.vue'
 
 const routes = [
   {
@@ -49,6 +50,12 @@ const routes = [
     path: '/test',
     name: 'test',
     component: test
+  },
+  
+  {
+    path: '/Assistant',
+    name: 'Assistant',
+    component: Assistant
   },
   {
     path: '/about',

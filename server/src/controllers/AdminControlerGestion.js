@@ -31,6 +31,7 @@ module.exports = {
         phoneNum: user.phoneNum,
         state: user.state,
         scolarYear: user.scolarYear,
+        group: user.group,
         idCompte: userAccount.id
       })
 
@@ -142,6 +143,7 @@ module.exports = {
           phoneNum: user.phoneNum,
           state: user.state,
           scolarYear: user.scolarYear,
+          group: user.group,
           idCompte: userAccount.id
         })
 

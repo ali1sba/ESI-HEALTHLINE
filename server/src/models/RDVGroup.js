@@ -1,6 +1,9 @@
 module.exports = (sequelize, DataTypes) =>
-  sequelize.define('RDV', {
-    idUser: {
+  sequelize.define('RDVGroup', {
+    ScolarYear: {
+      type: DataTypes.INTEGER
+    },
+    Group: {
       type: DataTypes.INTEGER
     },
     DateAndTime: {
@@ -10,9 +13,6 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING
     },
     Note: {
-      type: DataTypes.STRING
-    },
-    GroupORIndiv: {
       type: DataTypes.STRING
     }
   })

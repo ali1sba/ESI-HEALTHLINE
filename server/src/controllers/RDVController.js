@@ -142,5 +142,41 @@ module.exports = {
         error: `an error has occured trying to update RDV ${err}`
       })
     }
+  },
+  async showRDVSelectedPatientapp (req, res) {
+    try {
+      const idreceived = req.body.id
+      console.log(req.body)
+      // create RapportMedical
+      const RDVList = await RDV.findAll({
+        where: {
+          idUser: idreceived
+        }
+      })
+      const tab = []
+      RDVList.forEach(async element => {
+        console.log(element.dataValues)
+        const rdvlist = {
+          id: element.id,
+          type: element.Type,
+          date: element.DateAndTime
+        }
+        tab.push(rdvlist)
+      })
+      // const rdvlist = {
+      //   id: RDVList.id,
+      //   type: RDVList.Type,
+      //   date: RDVList.DateAndTime
+      // }
+      const tabale = {
+        table: tab
+      }
+      console.log(JSON.stringify(tabale))
+      res.status(200).send(JSON.stringify(tabale))
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create RDV ${err}`
+      })
+    }
   }
 }

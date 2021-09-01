@@ -351,11 +351,17 @@
   <!-- seventh row year  -->
   <el-row>
     <el-col :span="6"><el-select v-model="scolarYear" v-if="state === 'Etudiant'" >
-       <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
-      </el-select></el-col>
-       <el-col :span="6"><el-select v-model="role" v-if="state === 'ATS'" >
-       <el-option v-for="item in optionroleATS" :key="item.value" :label="item.label" :value="item.value" ></el-option>
-      </el-select></el-col>
+      <el-option v-for="item in optionyear" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select>
+    </el-col>
+    <el-col :span="6"><el-select v-model="group" v-if="state === 'Etudiant'" >
+      <el-option v-for="item in optiongroup" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select>
+    </el-col>
+    <el-col :span="6"><el-select v-model="role" v-if="state === 'ATS'" >
+      <el-option v-for="item in optionroleATS" :key="item.value" :label="item.label" :value="item.value" ></el-option>
+      </el-select>
+    </el-col>
     <div class="error" v-html="error" ></div>
   </el-row>
  <!-- sign up button  -->
@@ -394,6 +400,7 @@ export default {
         phoneNum: '',
         state: '',
         scolarYear: '',
+        group: '',
         idCompte: '',
         email: '',
         role: '',
@@ -412,7 +419,8 @@ export default {
       password2: "",
       phoneNum: "",
       state: "etat",
-      scolarYear: "/",
+      scolarYear: "",
+      group: "",
       role: "Role",
       error: null,
        options: [{
@@ -441,11 +449,33 @@ export default {
           value: '1CS',
           label: '1CS'
           }, {
-          value: '2CS',
-          label: '2CS'
+          value: '2CS-ISI',
+          label: '2CS-ISI'
           }, {
-          value: '3CS',
-          label: '3CS'
+          value: '2CS-SIW',
+          label: '2CS-SIW'
+          }, {
+          value: '3CS-ISI',
+          label: '3CS-ISI'
+          }, {
+          value: '3CS-SIW',
+          label: '3CS-SIW'
+        }],
+        optiongroup: [{
+          value: 'G1',
+          label: 'G1'
+        }, {
+          value: 'G2',
+          label: 'G2'
+        }, {
+          value: 'G3',
+          label: 'G3'
+        }, {
+          value: 'G4',
+          label: 'G4'
+        }, {
+          value: 'G5',
+          label: 'G5'
         }],
         optionroleATS: [{
           value: 'MED',
@@ -509,6 +539,7 @@ export default {
         phoneNum: user.phoneNum,
         state: user.state,
         scolarYear: user.scolarYear,
+        group: user.group,
         idCompte: user.idCompte,
       });
         
@@ -585,7 +616,10 @@ export default {
         if (this.password === this.password2){
           
           if (this.state === "Etudiant"){this.role= "PATIENT" }
-          if (this.state === "ATS"){this.scolarYear= "/"}
+          if (this.state === "ATS"){
+            this.scolarYear= "/"
+            this.group = "/"
+          }
           this.error = ''
           const response = await adminservice.register({
           firstName: this.firstName,
@@ -599,8 +633,8 @@ export default {
           phoneNum: this.phoneNum,
           state: this.state,
           role:this.role,
-          scolarYear: this.scolarYear, 
-          
+          scolarYear: this.scolarYear,
+          group: this.group
         })
         alert("regiter successfull")
         console.log(response.data)
