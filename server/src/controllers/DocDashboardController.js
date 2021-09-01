@@ -767,105 +767,161 @@ module.exports = {
   // examen clinique save function *********************************************************************
   async saveExamenClinique (req, res) {
     try {
-      const UserId = req.body.id
-      const ExmCli = {
-        patientId: UserId,
-        temp: null,
-        peau: null,
-        anomaliePeau: null,
-        inspCardio: null,
-        auscuCardio: null,
-        anomalieSouffle: null,
-        anomalieType: null,
-        anomalieBruits: null,
-        poulsPeri: null,
-        anomaliePoulsPeri: null,
-        tensionArt: null,
-        freqCard: null,
-        inspPulmo: null,
-        freqPulmo: null,
-        palpPulmo: null,
-        anomaliePalpPulmo: null,
-        percuPulmo: null,
-        anomaliePercuPulmo: null,
-        auscuPulmo: null,
-        murmurViscu: null,
-        checkedRales: null,
-        locaRales: null,
-        inspAbdo: null,
-        anomalieAbdo: null,
-        pulpAbdo: null,
-        pulpMasse: null,
-        localiMasse: null,
-        ralesMasse: null,
-        autreMasse: null,
-        percuAbdo: null,
-        sensiNeuro: null,
-        anomalieSensiNeuro: null,
-        matriNeuro: null,
-        anomalieMatriNeuro: null,
-        troublesNeuro: null,
-        anomalieTroublesNeuro: null,
-        orientNeuro: null,
-        anomalieOrientNeuro: null,
-        gorgeORL: null,
-        auricuORL: null,
-        examenUrogeni: null,
-        remarqueCli: null
-      }
+      const ExmCli = req.body.ExamenClinique
+
       const examenCliniqueCreation = await ExamenClinique.create(ExmCli)
       const EC = examenCliniqueCreation.toJSON()
-      const exmCliInfo = await ExamenClinique.findOne({
-        where: {
-          id: UserId
-        }
-      })
-      exmCliInfo.temp = UserId.temp
-      exmCliInfo.peau = UserId.peau
-      exmCliInfo.anomaliePeau = UserId.anomaliePeau
-      exmCliInfo.inspCardio = UserId.inspCardio
-      exmCliInfo.auscuCardio = UserId.auscuCardio
-      exmCliInfo.anomalieSouffle = UserId.anomalieSouffle
-      exmCliInfo.anomalieType = UserId.anomalieType
-      exmCliInfo.anomalieBruits = UserId.anomalieBruits
-      exmCliInfo.poulsPeri = UserId.poulsPeri
-      exmCliInfo.anomaliePoulsPeri = UserId.anomaliePoulsPeri
-      exmCliInfo.tensionArt = UserId.tensionArt
-      exmCliInfo.freqCard = UserId.freqCard
-      exmCliInfo.inspPulmo = UserId.inspPulmo
-      exmCliInfo.palpPulmo = UserId.palpPulmo
-      exmCliInfo.anomaliePalpPulmo = UserId.anomaliePalpPulmo
-      exmCliInfo.percuPulmo = UserId.percuPulmo
-      exmCliInfo.anomaliePercuPulmo = UserId.anomaliePercuPulmo
-      exmCliInfo.auscuPulmo = UserId.auscuPulmo
-      exmCliInfo.murmurViscu = UserId.murmurViscu
-      exmCliInfo.checkedRales = UserId.checkedRales
-      exmCliInfo.locaRales = UserId.locaRales
-      exmCliInfo.inspAbdo = UserId.inspAbdo
-      exmCliInfo.anomalieAbdo = UserId.anomalieAbdo
-      exmCliInfo.pulpAbdo = UserId.pulpAbdo
-      exmCliInfo.pulpMasse = UserId.pulpMasse
-      exmCliInfo.localiMasse = UserId.localiMasse
-      exmCliInfo.percuAbdo = UserId.percuAbdo
-      exmCliInfo.sensiNeuro = UserId.sensiNeuro
-      exmCliInfo.anomalieSensiNeuro = UserId.anomalieSensiNeuro
-      exmCliInfo.matriNeuro = UserId.matriNeuro
-      exmCliInfo.anomalieMatriNeuro = UserId.anomalieMatriNeuro
-      exmCliInfo.troublesNeuro = UserId.troublesNeuro
-      exmCliInfo.anomalieTroublesNeuro = UserId.anomalieTroublesNeuro
-      exmCliInfo.orientNeuro = UserId.orientNeuro
-      exmCliInfo.anomalieOrientNeuro = UserId.anomalieOrientNeuro
-      exmCliInfo.gorgeORL = UserId.gorgeORL
-      exmCliInfo.auricuORL = UserId.auricuORL
-      exmCliInfo.examenUrogeni = UserId.examenUrogeni
-      exmCliInfo.remarqueCli = UserId.remarqueCli
-      await exmCliInfo.save()
+      // const exmCliInfo = await ExamenClinique.findOne({
+      //   where: {
+      //     id: UserId
+      //   }
+      // })
+      // exmCliInfo.temp = UserId.temp
+      // exmCliInfo.peau = UserId.peau
+      // exmCliInfo.anomaliePeau = UserId.anomaliePeau
+      // exmCliInfo.inspCardio = UserId.inspCardio
+      // exmCliInfo.auscuCardio = UserId.auscuCardio
+      // exmCliInfo.anomalieSouffle = UserId.anomalieSouffle
+      // exmCliInfo.anomalieType = UserId.anomalieType
+      // exmCliInfo.anomalieBruits = UserId.anomalieBruits
+      // exmCliInfo.poulsPeri = UserId.poulsPeri
+      // exmCliInfo.anomaliePoulsPeri = UserId.anomaliePoulsPeri
+      // exmCliInfo.tensionArt = UserId.tensionArt
+      // exmCliInfo.freqCard = UserId.freqCard
+      // exmCliInfo.inspPulmo = UserId.inspPulmo
+      // exmCliInfo.palpPulmo = UserId.palpPulmo
+      // exmCliInfo.anomaliePalpPulmo = UserId.anomaliePalpPulmo
+      // exmCliInfo.percuPulmo = UserId.percuPulmo
+      // exmCliInfo.anomaliePercuPulmo = UserId.anomaliePercuPulmo
+      // exmCliInfo.auscuPulmo = UserId.auscuPulmo
+      // exmCliInfo.murmurViscu = UserId.murmurViscu
+      // exmCliInfo.checkedRales = UserId.checkedRales
+      // exmCliInfo.locaRales = UserId.locaRales
+      // exmCliInfo.inspAbdo = UserId.inspAbdo
+      // exmCliInfo.anomalieAbdo = UserId.anomalieAbdo
+      // exmCliInfo.pulpAbdo = UserId.pulpAbdo
+      // exmCliInfo.pulpMasse = UserId.pulpMasse
+      // exmCliInfo.localiMasse = UserId.localiMasse
+      // exmCliInfo.percuAbdo = UserId.percuAbdo
+      // exmCliInfo.sensiNeuro = UserId.sensiNeuro
+      // exmCliInfo.anomalieSensiNeuro = UserId.anomalieSensiNeuro
+      // exmCliInfo.matriNeuro = UserId.matriNeuro
+      // exmCliInfo.anomalieMatriNeuro = UserId.anomalieMatriNeuro
+      // exmCliInfo.troublesNeuro = UserId.troublesNeuro
+      // exmCliInfo.anomalieTroublesNeuro = UserId.anomalieTroublesNeuro
+      // exmCliInfo.orientNeuro = UserId.orientNeuro
+      // exmCliInfo.anomalieOrientNeuro = UserId.anomalieOrientNeuro
+      // exmCliInfo.gorgeORL = UserId.gorgeORL
+      // exmCliInfo.auricuORL = UserId.auricuORL
+      // exmCliInfo.examenUrogeni = UserId.examenUrogeni
+      // exmCliInfo.remarqueCli = UserId.remarqueCli
+      // await exmCliInfo.save()
       res.send({
-        ec: EC
+        Ec: EC
       })
     } catch (err) {
-      res.status(500).send({
-        error: `an error has occured trying to fetch the users ${err}`
+      res.send({
+        error: `an error has occured trying to create  ec  ${err}`
+      })
+    }
+  },
+  async recoverExamenClinique (req, res) {
+    try {
+      const userId = req.body.id
+
+      const Ec = await ExamenClinique.findAll({
+        where: {
+          userId: userId
+        },
+        raw: true
+      })
+
+      res.send({
+        Ec: Ec
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverExamenClinique ${err}`
+      })
+    }
+  },
+  async showExamenClinique (req, res) {
+    try {
+      const id = req.body.id
+
+      const Ec = await ExamenClinique.findOne({
+        where: {
+          id: id
+        },
+        attributes: { exclude: ['id'] },
+        raw: true
+      })
+
+      res.send({
+        Ec: Ec
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverExamenClinique ${err}`
+      })
+    }
+  },
+  async modifierExamenClinique (req, res) {
+    try {
+      const id = req.body.id
+      const newexamenclinique = req.body.ExamenClinique
+      const exmCliInfo = await ExamenClinique.findOne({
+        where: {
+          id: id
+        }
+      })
+      exmCliInfo.temp = newexamenclinique.temp
+      exmCliInfo.peau = newexamenclinique.peau
+      exmCliInfo.anomaliePeau = newexamenclinique.anomaliePeau
+      exmCliInfo.inspCardio = newexamenclinique.inspCardio
+      exmCliInfo.auscuCardio = newexamenclinique.auscuCardio
+      exmCliInfo.anomalieSouffle = newexamenclinique.anomalieSouffle
+      exmCliInfo.anomalieType = newexamenclinique.anomalieType
+      exmCliInfo.anomalieBruits = newexamenclinique.anomalieBruits
+      exmCliInfo.poulsPeri = newexamenclinique.poulsPeri
+      exmCliInfo.anomaliePoulsPeri = newexamenclinique.anomaliePoulsPeri
+      exmCliInfo.tensionArt = newexamenclinique.tensionArt
+      exmCliInfo.freqCard = newexamenclinique.freqCard
+      exmCliInfo.inspPulmo = newexamenclinique.inspPulmo
+      exmCliInfo.palpPulmo = newexamenclinique.palpPulmo
+      exmCliInfo.anomaliePalpPulmo = newexamenclinique.anomaliePalpPulmo
+      exmCliInfo.percuPulmo = newexamenclinique.percuPulmo
+      exmCliInfo.anomaliePercuPulmo = newexamenclinique.anomaliePercuPulmo
+      exmCliInfo.auscuPulmo = newexamenclinique.auscuPulmo
+      exmCliInfo.murmurViscu = newexamenclinique.murmurViscu
+      exmCliInfo.checkedRales = newexamenclinique.checkedRales
+      exmCliInfo.locaRales = newexamenclinique.locaRales
+      exmCliInfo.inspAbdo = newexamenclinique.inspAbdo
+      exmCliInfo.anomalieAbdo = newexamenclinique.anomalieAbdo
+      exmCliInfo.pulpAbdo = newexamenclinique.pulpAbdo
+      exmCliInfo.pulpMasse = newexamenclinique.pulpMasse
+      exmCliInfo.localiMasse = newexamenclinique.localiMasse
+      exmCliInfo.percuAbdo = newexamenclinique.percuAbdo
+      exmCliInfo.sensiNeuro = newexamenclinique.sensiNeuro
+      exmCliInfo.anomalieSensiNeuro = newexamenclinique.anomalieSensiNeuro
+      exmCliInfo.matriNeuro = newexamenclinique.matriNeuro
+      exmCliInfo.anomalieMatriNeuro = newexamenclinique.anomalieMatriNeuro
+      exmCliInfo.troublesNeuro = newexamenclinique.troublesNeuro
+      exmCliInfo.anomalieTroublesNeuro = newexamenclinique.anomalieTroublesNeuro
+      exmCliInfo.orientNeuro = newexamenclinique.orientNeuro
+      exmCliInfo.anomalieOrientNeuro = newexamenclinique.anomalieOrientNeuro
+      exmCliInfo.gorgeORL = newexamenclinique.gorgeORL
+      exmCliInfo.auricuORL = newexamenclinique.auricuORL
+      exmCliInfo.examenUrogeni = newexamenclinique.examenUrogeni
+      exmCliInfo.remarqueCli = newexamenclinique.remarqueCli
+      await exmCliInfo.save()
+
+      res.send({
+        ExamenClinique: exmCliInfo
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to  save ExamenClinique ${err}`
       })
     }
   },

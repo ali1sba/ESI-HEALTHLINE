@@ -210,7 +210,15 @@ module.exports = (app) => {
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
+<<<<<<< HEAD
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
+=======
+  // ************************ examen clinique **************************
+  app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
+  app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
+  app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
+  app.post('/DOCdashboard/modifierExamenClinique', DocDashboardController.modifierExamenClinique)
+>>>>>>> 80fb3b9272a62f0662a7ea6ebef7aaa62b10877a
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
 }
