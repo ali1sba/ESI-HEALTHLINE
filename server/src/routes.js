@@ -18,9 +18,9 @@ const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
 const { BilansEMG } = require('./models')
 const { BilansElectrique } = require('./models')
-var idECG = ''
-var idEEG = ''
-var idEMG = ''
+let idECG = ''
+let idEEG = ''
+let idEMG = ''
 
 // Upload files
 const multer = require('multer')
@@ -80,7 +80,6 @@ const authMiddleware = (req, res, next) => {
     return next()
   }
 }
-
 // config passport
 passport.use(
   new LocalStrategy(
@@ -88,7 +87,6 @@ passport.use(
       usernameField: 'email',
       passwordField: 'password'
     },
-
     (username, password, done) => {
       try {
         // problem :
@@ -129,11 +127,9 @@ module.exports = (app) => {
       if (err) {
         return next(err)
       }
-
       if (!user) {
         return res.send([user, 'Cannot log in', info])
       }
-
       req.login(user, err => {
         if (err) {
           return next(err)
@@ -143,7 +139,6 @@ module.exports = (app) => {
       })
     })(req, res, next)
   })
-
   app.get('/api/user', authMiddleware, (req, res) => {
     const user = Compte.findOne({
       where: {

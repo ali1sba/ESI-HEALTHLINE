@@ -1,7 +1,11 @@
 module.exports = (sequelize, DataTypes) =>
   sequelize.define('ExamenClinique', {
+    userId: {
+      type: DataTypes.INTEGER,
+      unique: false
+    },
     temp: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     peau: {
       type: DataTypes.STRING

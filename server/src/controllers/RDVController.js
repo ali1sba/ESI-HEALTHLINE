@@ -1,4 +1,12 @@
 const { RDV } = require('../models')
+const express = require('express')
+const app = express()
+// var fs = require("fs")
+const bodyparser = require('body-parser')
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({
+  extended: true
+}))
 
 module.exports = {
   async progRDVPatient (req, res) {
@@ -15,6 +23,30 @@ module.exports = {
       const RDVsaved = await RDV.create(RDVToSave)
       res.send({
         RDV: RDVsaved
+      })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to create RDV ${err}`
+      })
+    }
+  },
+  async progRDVPatientMobile (req, res) {
+    try {
+      const RDVreceived = req.body
+      console.log(RDVreceived)
+      // create RapportMedical
+      const iduser = parseInt(RDVreceived.idUser)
+      const RDVToSave = {
+        idUser: iduser,
+        DateAndTime: RDVreceived.dateAndTime,
+        Type: RDVreceived.typeDeRDV,
+        Note: RDVreceived.note
+      }
+      console.log(RDVToSave)
+      const RDVsaved = await RDV.create(RDVToSave)
+      console.log(JSON.stringify(RDVsaved))
+      res.send({
+        RDV: JSON.stringify(RDVsaved)
       })
     } catch (err) {
       res.status(500).send({
