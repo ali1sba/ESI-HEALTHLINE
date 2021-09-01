@@ -5,15 +5,22 @@ const adminControler3 = require('./controllers/adminControler3')
 const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
+const AssistantController = require('./controllers/AssistantController')
+
+const RapportMedicalController = require('./controllers/RapportMedicalController')
+const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
+const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
+const CertificatMedicalController = require('./controllers/CertificatMedicalController')
 const RDVController = require('./controllers/RDVController')
+
 const { uuid } = require('uuidv4')
 const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
 const { BilansEMG } = require('./models')
 const { BilansElectrique } = require('./models')
-var idECG = ''
-var idEEG = ''
-var idEMG = ''
+let idECG = ''
+let idEEG = ''
+let idEMG = ''
 
 // Upload files
 const multer = require('multer')
@@ -60,7 +67,6 @@ const storageBE = multer.diskStorage({
 })
 const uploadBE = multer({ storage: storageBE })
 
-const RapportMedicalController = require('./controllers/RapportMedicalController')
 // const { Compte } = require('./models')
 // const passport = require('passport')
 // getting the local authentication type
@@ -74,7 +80,6 @@ const authMiddleware = (req, res, next) => {
     return next()
   }
 }
-
 // config passport
 passport.use(
   new LocalStrategy(
@@ -82,7 +87,6 @@ passport.use(
       usernameField: 'email',
       passwordField: 'password'
     },
-
     (username, password, done) => {
       try {
         // problem :
@@ -123,11 +127,9 @@ module.exports = (app) => {
       if (err) {
         return next(err)
       }
-
       if (!user) {
         return res.send([user, 'Cannot log in', info])
       }
-
       req.login(user, err => {
         if (err) {
           return next(err)
@@ -137,7 +139,6 @@ module.exports = (app) => {
       })
     })(req, res, next)
   })
-
   app.get('/api/user', authMiddleware, (req, res) => {
     const user = Compte.findOne({
       where: {
@@ -149,7 +150,6 @@ module.exports = (app) => {
   })
   */
   app.post('/', AuthController.login)
-  app.post('/loginMobile', AuthController.loginMobile)
   // app.get('/logout', AuthController.logout)
   app.post('/register', AuthControllerPolicy.register, AuthController.register)
   app.post('/forgotpw', AuthController.forgotpw)
@@ -172,14 +172,21 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
   app.post('/DOCdashboard/createOrdonnance', DocDashboardController.createOrdonnance)
   app.post('/DOCdashboard/addpresc', DocDashboardController.addpresc)
-  app.post('/DOCdashboard/recoverFormes', DocDashboardController.recoverFormes)
-  app.post('/DOCdashboard/recoverMarques', DocDashboardController.recoverMarques)
-  app.post('/DOCdashboard/recoverDosages', DocDashboardController.recoverDosages)
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  // ************************ rapport medical ***************************
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
+  // ************************ Orientation medicalll **********************
+  app.post('/OrientationMedical', OrientationtMedicalController.createOM)
+  app.post('/getOrientationMedical', OrientationtMedicalController.getOrientations)
+  // ************************ Evacuation medicalll **********************
+  app.post('/EvacuationMedical', EvacuationMedicalController.createEvM)
+  app.post('/getEvacuationMedical', EvacuationMedicalController.getEvacuations)
+  // ************************ Certificat medicalll **********************
+  app.post('/CertificatMedical', CertificatMedicalController.createCM)
+  app.post('/getCertificatMedical', CertificatMedicalController.getCertificats)
   // ************************ Bilans paracliniques **********************
   // Bilans Biologiques
   app.post('/DOCdashboard/showBB', DocDashboardController.showBB)
@@ -206,19 +213,22 @@ module.exports = (app) => {
   })
   // ************************ RDV medical ***************************
   app.post('/progRDVPatient', RDVController.progRDVPatient)
-  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
-<<<<<<< HEAD
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
-=======
-  // ************************ examen clinique **************************
-  app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
-  app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
-  app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
-  app.post('/DOCdashboard/modifierExamenClinique', DocDashboardController.modifierExamenClinique)
->>>>>>> 80fb3b9272a62f0662a7ea6ebef7aaa62b10877a
+  // ***************************** Assistant ****************************
+  // ********** RDV GROUP **********
+  app.post('/Assistant/recoverRDVG', AssistantController.recoverRDVG)
+  app.post('/Assistant/progRDVGroup', AssistantController.progRDVGroup)
+  app.post('/Assistant/confirmModifRDVGroup', AssistantController.confirmModifRDVGroup)
+  app.post('/Assistant/annulerRDVGroup', AssistantController.annulerRDVGroup)
+  // ********** RDV INDIV **********
+  app.post('/Assistant/recoverPatients', AssistantController.recoverPatients)
+  app.post('/Assistant/recoverRDVI', AssistantController.recoverRDVI)
+  app.post('/Assistant/progRDVIndividuel', AssistantController.progRDVIndividuel)
+  app.post('/Assistant/confirmModifRDVIndividuel', AssistantController.confirmModifRDVIndividuel)
+  app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
 }
