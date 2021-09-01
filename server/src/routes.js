@@ -149,6 +149,7 @@ module.exports = (app) => {
   })
   */
   app.post('/', AuthController.login)
+  app.post('/loginMobile', AuthController.loginMobile)
   // app.get('/logout', AuthController.logout)
   app.post('/register', AuthControllerPolicy.register, AuthController.register)
   app.post('/forgotpw', AuthController.forgotpw)
@@ -171,6 +172,9 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
   app.post('/DOCdashboard/createOrdonnance', DocDashboardController.createOrdonnance)
   app.post('/DOCdashboard/addpresc', DocDashboardController.addpresc)
+  app.post('/DOCdashboard/recoverFormes', DocDashboardController.recoverFormes)
+  app.post('/DOCdashboard/recoverMarques', DocDashboardController.recoverMarques)
+  app.post('/DOCdashboard/recoverDosages', DocDashboardController.recoverDosages)
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
@@ -202,6 +206,7 @@ module.exports = (app) => {
   })
   // ************************ RDV medical ***************************
   app.post('/progRDVPatient', RDVController.progRDVPatient)
+  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   app.post('/showRDVSelectedPatient', RDVController.showRDVSelectedPatient)
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)

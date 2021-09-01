@@ -1,5 +1,14 @@
+const express = require('express')
+const app = express()
+// var fs = require("fs")
+const bodyparser = require('body-parser')
+app.use(bodyparser.json())
+app.use(bodyparser.urlencoded({
+  extended: true
+}))
 const { UserNonValide } = require('../models')
 const { Compte } = require('../models')
+const { User } = require('../models')
 const { ResetPasswordRequest } = require('../models')
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
@@ -74,6 +83,53 @@ module.exports = {
       res.status(500).send({ error: `An error occured trying to login ${err}` })
     }
   },
+  async loginMobile (req, res) {
+    try {
+      const email = req.body.email
+      const password = req.body.password
+      const user = await Compte.findOne({
+        where: {
+          email: email
+        }
+      })
+      if (!user) {
+        res.status(400).send({
+          error: 'The login information was incorrect {email} !'
+        })
+      } else {
+        if (user.state === 'ACTIVATED') {
+          const isPasswordValid = await user.comparePassword(password)
+          if (!isPasswordValid) {
+            res.status(400).send({
+              error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
+            })
+          } else {
+            const compteId = user.id
+            const userAccount = await User.findOne({
+              where: {
+                idCompte: compteId
+              }
+            })
+            const object = {
+              id: userAccount.id,
+              email: email,
+              nom: userAccount.firstName,
+              prenom: userAccount.lastName
+            }
+            const objecttosend = JSON.stringify(object)
+            res.status(200).send(objecttosend)
+          }
+        } else {
+          res.status(400).send({
+            error: 'This account is desactivated !'
+          })
+        }
+      }
+    } catch (err) {
+      res.status(500).send({ error: `An error occured trying to login ${err}` })
+    }
+  },
+
   /*
   async logout (req, res) {
     try {

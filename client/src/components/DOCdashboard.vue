@@ -3099,8 +3099,8 @@
                   <div style="display:flex">
                     <div style="flex:50%">
                       <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                      <p style="font-size:17px;">Prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Date de naissance : &nbsp; {{ this.userPersInfo.dateOfBirth}}</p>
                 
                     </div>
                     <div style="flex:50%">
@@ -3181,7 +3181,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <p style="text-align:center ; margin:0px;font-size:30px ;color:white;font-family: sans-serif; font-weigjt: bold;">50</p></el-card>
                 <div style="padding:15px; width:70%; margin: auto" >
                   <el-button
-                    @click="  recoverMedicaments(); addprescinput(); radio1 = 'nouvOrd'; isOrdDisabled=false " class="hovereffect"
+                    @click="  recoverMedicaments();viderOrdonnance(); addprescinput(); radio1 = 'nouvOrd'; isOrdDisabled=false;ordcreated= 'not created'" class="hovereffect"
                     type="primary"
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab;width:45%;margin:10px" 
@@ -3231,36 +3231,57 @@ EMAIL: contact@esi-sba.dz</p>
                 <hr>
                 <ol id="prescs">
 
-                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index === (prescs.length-1)}" >
+                <li  style="margin-left:-90px;margin-right:-130px;margin-bottom:10px" v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index == (prescs.length-1)&& isOrdDisabled==false}" >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament">
+                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament" @change="pr.forme='';pr.marque='';pr.dosage=''" style="width:170px;">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
                        :label="item.label"
                      :value ="item.value"
-                     style="margin-right:20px">
+                     style="margin-right:7px">
                 </el-option>
                 </el-select>
+                <el-select v-model="pr.marque" filterable :disabled="isOrdDisabled" placeholder="marque " @click=" recoverMarques(pr.nom)" @change="pr.forme='';pr.dosage=''" style="width:170px;">
+                <el-option
+                 v-for="item in marqueoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:7px"
+                >
+                 </el-option>
+                </el-select>
 
-                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique et dosage ">
+                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique  " @click=" recoverFormes(pr.nom,pr.marque)" @change="pr.dosage=''" style="width:170px;">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
                  :label="item.label"
                 :value ="item.value"
-                style="margin-right:20px"
+                style="margin-right:7px"
                 >
                  </el-option>
                 </el-select>
-                <el-input v-model="pr.posologie" :disabled="isOrdDisabled"
-                style="width : 200px; margin-right:20px">
+                <el-select v-model="pr.dosage" filterable :disabled="isOrdDisabled" placeholder="dosage " @click=" recoverDosages(pr.nom,pr.marque,pr.forme)" style="width:170px;">
+                <el-option
+                 v-for="item in dosageoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:7px"
+                >
+                 </el-option>
+                </el-select>
+                <el-input v-model="pr.duree" placeholder="durée"  :disabled="isOrdDisabled"
+                style="width : 75px; margin-right:7px">
 
                 </el-input>
                 </li>
                 </ol>
-                <button @click="addprescinput(); " :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> + </button>
-                <button @click="removeprescinput();" v-show="prescs.length !=1" type="primary" style="padding:0px 18px 7px ;margin-left:10px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500"> - </button>
+                <button @click="addprescinput(); " v-show="prescs.length<10 && isOrdDisabled==false" :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding: 0px 10px 3px;
+    margin-left: 130px; background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:24px; font-weight:500"> + </button>
+                <button @click="removeprescinput();" v-show="prescs.length !=1 && prescs.length<=10 &&isOrdDisabled==false" type="primary" style="padding: 0px 14px 3px;margin-left: 5px;    margin-right: -70px; margin-top: -6px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:24px; font-weight:500"> - </button>
                
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
@@ -3284,10 +3305,11 @@ EMAIL: contact@esi-sba.dz</p>
                     <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
                     v-show="ordcreated ==='modify'">
                     Annuler</el-button> 
+                       
                        <el-button
                    
-                    type="primary"
-                    v-show="ordcreated ==='created'"
+                    type="primary"    
+                     v-show="ordcreated ==='created'"               
                      style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
                     >Voir en format Pdf </el-button > 
                 </div>
@@ -3303,29 +3325,29 @@ EMAIL: contact@esi-sba.dz</p>
               <el-card class="box-card" style="padding-left:90px;padding-right:90px;" >
                <button style="background:none; float:right; border:none;font-size:22px;padding-right:-40px;" @click="annulerOrdonnance(); radio1='ordonnances'">&#x2715;</button>
                  <tr style="display:flex">
-                   <th style="flex:25%">
-                     ID
-                   </th>
+                   
                   
-                   <th style="flex:25%">
-                     DATE
+                   <th style="flex:30%">
+                     DATE ET HEURE
                    </th>
                    <th style="flex:25%">
                      Nombre de médicaments
                    </th>
-                    <th style="flex:25%">
+                    <th style="flex:30%">
                    </th>
                  </tr>
                  <tr v-for="ord in ords" :key="ord.id" style="display:flex;padding:4px; border-radius:10px" >
                    
-                    <td style="flex:25%">{{ord.id}}</td>
-                   <td style="flex:25%">{{ord.createdAt}}</td>
+                    
+                   <td style="flex:30%">{{ord.date}}</td>
                    <td style="flex:25%">{{ord.nombreMed}}</td>
-                   <td style="flex:25%">
+                   <td style="flex:30%">
                     <el-button
                     type="primary"
-                    style="background-color: #24b4ab; "  @click="showOrdonnance(ord); radio1='consulterord'"
-                    class="hovereffect">consulter</el-button></td>
+                    style="background-color: #24b4ab; "  @click=" isOrdDisabled=true; showOrdonnance(ord); radio1='consulterord'"
+                    class="hovereffect">consulter</el-button>
+                    
+                    </td>
    
                  </tr>
              </el-card>
@@ -3333,7 +3355,14 @@ EMAIL: contact@esi-sba.dz</p>
             <!-- consulter ordonnance -->
             <el-scrollbar v-show="radio1 === 'consulterord'">
               <el-card class="box-card">
-                <button style="background:none; float:right; border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
+                <div  style="float:right; width:100px ">
+                  <el-button  @click=" recoverMedicaments(); isOrdDisabled=false "
+                                icon="el-icon-edit"
+                                style="background:none;font-size:25px;margin-top:-5px; float:left; border:none;"
+                             />
+                <button style="background:none;  border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
+                 </div>
+                
                 <div ref="contentord" style="padding: 0px 80px">
                                       <p>N°: {{ordselected}}</p>
                   <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
@@ -3352,11 +3381,11 @@ EMAIL: contact@esi-sba.dz</p>
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                   <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                  <p style="font-size:17px;">Date de : &nbsp; {{ userselected.age}}</p>
                  
                 </div>
                 <div style="flex:50%">
-                  <p style="font-size:17px;">Le :&nbsp; {{}}</p>
+                  <p style="font-size:17px;">Le :&nbsp; {{orddate}}</p>
                   <p style="font-size:17px;">à : &nbsp; Sidi Bel-Abbes</p>
                   
 
@@ -3367,41 +3396,81 @@ EMAIL: contact@esi-sba.dz</p>
                 <hr>
                 <ol id="prescs">
 
-                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in currentprescs" :key= index  >
+                <li class="prescselement" style="margin: 1px 0px 20px 0px; " v-for="(pr,index) in prescs" :key= index  >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                   <el-select v-model="pr.nom" filterable placeholder="nom de médicament">
+                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament" @change="pr.forme='';pr.marque='';pr.dosage=''" style="width:170px;">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
                        :label="item.label"
                      :value ="item.value"
-                     style="margin-right:20px">
+                     style="margin-right:7px">
                 </el-option>
                 </el-select>
+                <el-select v-model="pr.marque" filterable :disabled="isOrdDisabled" placeholder="marque " @click=" recoverMarques(pr.nom)" @change="pr.forme='';pr.dosage=''" style="width:170px;">
+                <el-option
+                 v-for="item in marqueoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:7px"
+                >
+                 </el-option>
+                </el-select>
 
-                <el-select v-model="pr.forme" filterable placeholder="forme pharmaceutique et dosage ">
+                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique  " @click=" recoverFormes(pr.nom,pr.marque)" @change="pr.dosage=''" style="width:170px;">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
                  :label="item.label"
                 :value ="item.value"
-                style="margin-right:20px"
+                style="margin-right:7px"
                 >
                  </el-option>
                 </el-select>
-                <el-input v-model="pr.posologie"
-                style="width : 200px; margin-right:20px">
+                <el-select v-model="pr.dosage" filterable :disabled="isOrdDisabled" placeholder="dosage " @click=" recoverDosages(pr.nom,pr.marque,pr.forme)" style="width:170px;">
+                <el-option
+                 v-for="item in dosageoptions"
+                 :key="item.value"
+                 :label="item.label"
+                :value ="item.value"
+                style="margin-right:7px"
+                >
+                 </el-option>
+                </el-select>
+                <el-input v-model="pr.duree" placeholder="durée"  :disabled="isOrdDisabled"
+                style="width : 75px; margin-right:7px">
 
                 </el-input>
                 </li>
                 </ol>
-                <button  type="primary" style="padding:0px 13px 7px;background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:25px; font-weight:500; display:none" > + </button>
+                <button @click="addprescinput(); " v-show="prescs.length<10 && isOrdDisabled==false" :class="{floatingplus : (prescs.length)!=1}" type="primary" style="padding: 0px 10px 3px;
+    margin-left: 130px; background-color: #24b4ab;border-radius:50%; border:none; color:white ;font-size:24px; font-weight:500"> + </button>
+                <button @click="removeprescinput();" v-show="prescs.length !=1 && prescs.length<=10 &&isOrdDisabled==false" type="primary" style="padding: 0px 14px 3px;margin-left: 5px;    margin-right: -70px; margin-top: -6px;background-color: red ;border-radius:50%; border:none; color:white ;font-size:24px; font-weight:500"> - </button>
+               
                 <hr>
                 <p style="font-size:17px; font-weight:500; text-align:center">Ne laissez jamais les médicaments à la portée des enfants</p>
                 <br>
                 <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
                 </div>   
+                
+                <div style="display:flex">
+                  <el-button
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
+                    v-show="isOrdDisabled==false" @click="saveOrdonnance(ordselected); " 
+                    >Enregistrer  </el-button >
+                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
+                    v-show="isOrdDisabled==false">
+                    Annuler</el-button> 
+                       <el-button
+                   
+                    type="primary"
+                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
+                    >Voir en format Pdf </el-button > 
+                </div>
+               
                 
               </el-card>
             </el-scrollbar>
@@ -4296,21 +4365,10 @@ export default {
       
       
       Medoptions: [],
-      fpoptions:[
-        {
-          value: "123",
-          label: "123",
-        },
-         {
-          value: "122",
-          label: "122",
-        },
-         {
-          value:"222",
-          label: "222",
-        },
-
-      ],
+      fpoptions:[],
+      marqueoptions:[],
+      dosageoptions:[],
+      orddate:'',
       currentord: "",
  
         currentprescs:[]
@@ -4523,7 +4581,7 @@ export default {
     async printPresc(prescs) {
       let x="";
        for (let i = 0; i < prescs.length; i++) {
-         x= "["+prescs[i].nom+","+prescs[i].forme+","+prescs[i].posologie+"],\n"
+         x= "["+prescs[i].nom+","+prescs[i].forme+","+prescs[i].dosage+"],\n"
 
        }
        console.log(x);
@@ -5048,7 +5106,7 @@ export default {
 	    
 	},
   
-		this.table(this.prescs, ["nom","forme","posologie"]),
+		this.table(this.prescs, ["nom","marque","forme","dosage","duree"]),
    
 	
 	],
@@ -5447,20 +5505,117 @@ export default {
       console.log(`something went wrong ${error}`);
     }
    },
+     async recoverMarques(Medicament) {
+    try {
+        const response = await DocServices.recoverMarques ({
+        nom: Medicament,
+        
+      })
+      let list=[];
+    response.data.marques.map(function(value) {
+     list.push({value: value.marque, label : value.marque });
+     
+     });
+        
+      //   supprimer les doublons 
+
+      let obj = {};
+
+       for ( var i=0, len=list.length; i < len; i++ )
+      obj[list[i]['value']] = list[i];
+
+      let listnew =[]
+      for ( var key in obj )
+      listnew.push(obj[key]);
+
+      console.log(listnew);
+      this.marqueoptions=listnew;
+       
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+   },
+   async recoverFormes(Medicament,marque) {
+    try {
+        const response = await DocServices.recoverFormes ({
+        nom: Medicament,
+        marque:marque
+      })
+      let list=[];
+    response.data.formes.map(function(value) {
+     list.push({value: value.forme, label : value.forme });
+     
+     });
+        
+      //   supprimer les doublons 
+
+      let obj = {};
+
+       for ( var i=0, len=list.length; i < len; i++ )
+      obj[list[i]['value']] = list[i];
+
+      let listnew =[]
+      for ( var key in obj )
+      listnew.push(obj[key]);
+
+      console.log(listnew);
+      this.fpoptions=listnew;
+       
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+   },
+    async recoverDosages(Medicament,marque,forme) {
+    try {
+        const response = await DocServices.recoverDosages ({
+        nom: Medicament,
+        marque:marque,
+        forme:forme
+      })
+      let list=[];
+    response.data.dosages.map(function(value) {
+     list.push({value: value.dosage, label : value.dosage });
+     
+     });
+        
+      //   supprimer les doublons 
+
+      let obj = {};
+
+       for ( var i=0, len=list.length; i < len; i++ )
+      obj[list[i]['value']] = list[i];
+
+      let listnew =[]
+      for ( var key in obj )
+      listnew.push(obj[key]);
+
+      console.log(listnew);
+      this.dosageoptions=listnew;
+       
+    } catch (error) {
+      console.log(`something went wrong ${error}`);
+    }
+   },
     
     async addprescinput() {
       
      await this.prescs.push({
       
       nom: "",
+      marque:"",
       forme: "",
-      posologie: "",
+      dosage:"",
+      duree: "",
       ordonnanceId: "",
       })
     },
     async removeprescinput() {
       
      await this.prescs.pop()
+    },
+    async viderOrdonnance() {
+      
+     this.prescs=[];
     },
     
 
@@ -5469,13 +5624,25 @@ export default {
          
          for (let i = 0; i < this.prescs.length; i++) {
           //  this.prescs[i].nom == "" || 
-          if (this.prescs[i].forme == ""||this.prescs[i].posologie == ""){
+          if (this.prescs[i].nom == ""||this.prescs[i].marque == ""|| this.prescs[i].forme == "" || this.prescs[i].dosage == ""||this.prescs[i].duree == ""){
             this.champsvides=true
           }else{
             this.champsvides=false
           }
         }
-        if(!this.champsvides){
+        let duplicated=false;
+        let j,i=0;
+        while (! duplicated && i<(this.prescs.length-1) ){
+          j=i+1;
+          while(j< this.prescs.length && !duplicated){
+            if (this.prescs[i].nom==this.prescs[j].nom) duplicated=true;
+            j++;
+
+          } 
+          i++;       
+ 
+        }
+        if(!this.champsvides && !duplicated){
           this.ordcreated="created" 
           this.$notify.success({
           title: 'Succeès',
@@ -5497,13 +5664,21 @@ const response1 = await DocServices.createOrdonnance({
         console.log(response2.data);
         
          
-        }else{
+        }else if (this.champsvides){
          this.ordcreated="not created"; 
 
           this.$notify.error({
           title: 'ERREUR',
           dangerouslyUseHTMLString: true,
           message: '<strong>Champ(s) Vide(s)</strong>'
+        });
+        }else{
+          this.ordcreated="not created"; 
+
+          this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Médicament(s) dupliqué(s)</strong>'
         });
         }
          } catch (error) {
@@ -5540,6 +5715,7 @@ const response1 = await DocServices.createOrdonnance({
         // });
         this.prescs=[];
         this.ordcreated="not created";
+        this.isOrdDisabled=false;
         
            console.log("done");
       } catch (error) {
@@ -5806,27 +5982,29 @@ const response1 = await DocServices.createOrdonnance({
     },
      async saveOrdonnance(ord) {
     try {
+      this.champsvides=false
+
       for (let i = 0; i < this.prescs.length; i++) {
           //  this.prescs[i].nom == "" || 
-          if (this.prescs[i].forme == ""||this.prescs[i].posologie == ""){
+           
+          if (this.prescs[i].nom == ""||this.prescs[i].marque == ""|| this.prescs[i].forme == "" || this.prescs[i].dosage == ""||this.prescs[i].duree == ""){
             this.champsvides=true
-          }else{
-            this.champsvides=false
           }
         }
-        if(!this.champsvides){
+        if(!this.champsvides){  
           this.ordcreated="created" 
           this.isOrdDisabled=true
-          this.$notify.success({
-          title: 'Succeès',
-          message: 'Ordonnance modifiée avec succes ',
-          offset: 100
-        });
+          
         
         const response = await DocServices.saveOrdonnance({
         id: ord,
         prescs: this.prescs,
       });
+      this.$notify.success({
+          title: 'Succeès',
+          message: 'Ordonnance modifiée avec succes ',
+          offset: 100
+        });
       console.log('befire bulk')
       console.log(response.data);
 
@@ -5855,7 +6033,7 @@ async annulerModificationOrd(ord) {
 
       response.data.prescs.map(function(value) {
        
-     list.push({nom: value.nom, forme:value.forme ,posologie:value.posologie });
+     list.push({nom: value.nom, marque:value.marque,forme:value.forme , dosage:value.dosage,duree:value.duree , ordonnanceId:ord});
      
      
      });
@@ -5877,7 +6055,7 @@ async annulerModificationOrd(ord) {
       let list=[];
     response.data.ords.map(function(value) {
        
-     list.push({id: value.id, date:value.createdAt ,nombreMed:value.nombreMed });
+     list.push({id: value.id, date:value.updatedAt.toString() ,nombreMed:value.nombreMed });
      
      });
         
@@ -5892,7 +6070,9 @@ async annulerModificationOrd(ord) {
 
     async showOrdonnance(ordonnance) {
     try {
-      this.ordselected=ordonnance.id;
+      this.orddate=ordonnance.date;
+      this.isOrdDisabled=true;
+      this.ordselected=ordonnance.id
       const response = await DocServices.showOrdonnance({
         id: ordonnance.id
       })
@@ -5900,12 +6080,13 @@ async annulerModificationOrd(ord) {
 
       response.data.prescs.map(function(value) {
        
-     list.push({nom: value.nom, forme:value.forme ,posologie:value.posologie });
+     list.push({nom: value.nom, marque:value.marque,forme:value.forme , dosage:value.dosage,duree:value.duree , ordonnanceId: ordonnance.id});
      
      
      });
 
      this.currentprescs=list;
+     this.prescs=this.currentprescs;
       console.log(response.data);
     } catch (error) {
       console.log(`something went wrong ${error}`);
@@ -6196,6 +6377,7 @@ async annulerModificationOrd(ord) {
 }
 .floatingplus {
   float: left;
+  margin-top: -5px;
 }
 .hovereffect:hover {
   transform: scale(1.1);
@@ -6225,4 +6407,6 @@ async annulerModificationOrd(ord) {
   font-size: 5rem;
   color: white;
 }
+
+
 </style>

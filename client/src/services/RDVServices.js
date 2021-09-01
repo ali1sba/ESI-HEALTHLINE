@@ -6,6 +6,9 @@ export default {
     progRDVPatient (credantials){
         return Api().post('/progRDVPatient',credantials)
     },
+    progRDVPatientMobile (credantials){
+        return Api().post('/progRDVPatientMobile',credantials)
+    },
     showRDVSelectedPatient (credantials){
         return Api().post('/showRDVSelectedPatient',credantials)
     },
