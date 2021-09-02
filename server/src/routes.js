@@ -220,6 +220,8 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
+  app.post('/loginMobile', AuthController.loginMobile)
+  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   // ***************************** Assistant ****************************
   // ********** RDV GROUP **********
   app.post('/Assistant/recoverRDVG', AssistantController.recoverRDVG)
