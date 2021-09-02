@@ -8,7 +8,7 @@ const DocDashboardController = require('./controllers/DocDashboardController')
 const AssistantController = require('./controllers/AssistantController')
 
 const RapportMedicalController = require('./controllers/RapportMedicalController')
-const OrientationtMedicalController = require('./controllers/OrientationMedicalController')
+const OrientationMedicalController = require('./controllers/OrientationMedicalController')
 const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
 const CertificatMedicalController = require('./controllers/CertificatMedicalController')
 const RDVController = require('./controllers/RDVController')
@@ -186,8 +186,8 @@ module.exports = (app) => {
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
   // ************************ Orientation medicalll **********************
-  app.post('/OrientationMedical', OrientationtMedicalController.createOM)
-  app.post('/getOrientationMedical', OrientationtMedicalController.getOrientations)
+  app.post('/OrientationMedical', OrientationMedicalController.createOM)
+  app.post('/getOrientationMedical', OrientationMedicalController.getOrientations)
   // ************************ Evacuation medicalll **********************
   app.post('/EvacuationMedical', EvacuationMedicalController.createEvM)
   app.post('/getEvacuationMedical', EvacuationMedicalController.getEvacuations)
@@ -224,6 +224,8 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
+  app.post('/loginMobile', AuthController.loginMobile)
+  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   // ***************************** Assistant ****************************
   // ********** RDV GROUP **********
   app.post('/Assistant/recoverRDVG', AssistantController.recoverRDVG)
