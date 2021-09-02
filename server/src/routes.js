@@ -6,7 +6,7 @@ const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
 const AssistantController = require('./controllers/AssistantController')
-
+const demanderBilanController = require('./controllers/demanderBilanController')
 const RapportMedicalController = require('./controllers/RapportMedicalController')
 const OrientationMedicalController = require('./controllers/OrientationMedicalController')
 const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
@@ -240,4 +240,6 @@ module.exports = (app) => {
   app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
+  app.post('/DemanderBilan', demanderBilanController.createDB)
+  app.post('/getDemanderBilan', demanderBilanController.getDemandes)
 }
