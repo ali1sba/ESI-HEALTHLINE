@@ -179,7 +179,7 @@ module.exports = {
       })
     }
   },
-  async numberofRDVNotifs(req, res){
+  async numberofRDVNotifs (req, res) {
     try {
       const tst = await RDV.findAll()
       console.log(tst.length)
@@ -188,6 +188,5 @@ module.exports = {
         error: `an error has occured trying to getting the number of rdv's notifs ${err}`
       })
     }
-
   }
 }

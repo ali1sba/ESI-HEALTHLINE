@@ -115,7 +115,7 @@ module.exports = {
               email: email,
               nom: userAccount.firstName,
               prenom: userAccount.lastName,
-              phone: userAccount.phoneNum
+              number: userAccount.phoneNum
             }
             const objecttosend = JSON.stringify(object)
             res.status(200).send(objecttosend)

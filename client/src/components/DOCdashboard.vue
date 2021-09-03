@@ -647,7 +647,7 @@
                     </div>
                   </center>
                 </el-card>
-                <!-- **********************ilhem********************** -->
+               <!-- **********************ilhem********************** -->
                 <el-card class="box-card" id="Antécédents">
                   <h6>Antécédents</h6>
                   <div class="text item">
@@ -662,7 +662,7 @@
                             ><el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="boolFumer"
+                              v-model="userAntInfo.boolFumer"
                               label="1"
                               >Oui</el-radio
                             ></el-col
@@ -671,7 +671,7 @@
                             ><el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="boolFumer"
+                              v-model="userAntInfo.boolFumer"
                               label="2"
                               >Non</el-radio
                             ></el-col
@@ -680,7 +680,7 @@
                             <el-space wrap :size="4"
                               >Nombre cigarettes /j<el-input-number
                                 :disabled="isDisabledAnts"
-                                v-model="nbrFumer"
+                                v-model="userAntInfo.nbrFumer"
                                 controls-position="right"
                                 @change="handleChange"
                                 :min="1"
@@ -694,7 +694,7 @@
                             ><el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="boolChiquer"
+                              v-model="userAntInfo.boolChiquer"
                               label="1"
                               >Oui</el-radio
                             ></el-col
@@ -703,7 +703,7 @@
                             <el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="boolChiquer"
+                              v-model="userAntInfo.boolChiquer"
                               label="2"
                               >Non</el-radio
                             ></el-col
@@ -712,7 +712,7 @@
                             <el-space wrap :size="4"
                               >Nombre de boites /j<el-input-number
                                 :disabled="isDisabledAnts"
-                                v-model="nbrChiquer"
+                                v-model="userAntInfo.nbrChiquer"
                                 controls-position="right"
                                 @change="handleChange"
                                 :min="1"
@@ -726,7 +726,7 @@
                             ><el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="boolPrise"
+                              v-model="userAntInfo.boolPrise"
                               label="1"
                               >Oui</el-radio
                             ></el-col
@@ -735,7 +735,7 @@
                             <el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="boolPrise"
+                              v-model="userAntInfo.boolPrise"
                               label="2"
                               >Non</el-radio
                             ></el-col
@@ -744,7 +744,7 @@
                             <el-space wrap :size="4"
                               >Nombre de boites /j<el-input-number
                                 :disabled="isDisabledAnts"
-                                v-model="nbrPrise"
+                                v-model="userAntInfo.nbrPrise"
                                 controls-position="right"
                                 @change="handleChange"
                                 :min="1"
@@ -758,7 +758,7 @@
                             ><el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="ancienFum"
+                              v-model="userAntInfo.ancienFum"
                               label="1"
                               >Oui</el-radio
                             ></el-col
@@ -767,7 +767,7 @@
                             <el-radio
                               :disabled="isDisabledAnts"
                               class="ouinon"
-                              v-model="ancienFum"
+                              v-model="userAntInfo.ancienFum"
                               label="2"
                               >Non</el-radio
                             ></el-col
@@ -777,7 +777,7 @@
                               >periode d'exposition
                               <el-input-number
                                 :disabled="isDisabledAnts"
-                                v-model="perExpo"
+                                v-model="userAntInfo.perExpo"
                                 controls-position="right"
                                 @change="handleChange"
                                 :min="1"
@@ -793,7 +793,7 @@
                               ><el-input
                                 :disabled="isDisabledAnts"
                                 placeholder="..."
-                                v-model="alcool"
+                                v-model="userAntInfo.alcool"
                               ></el-input
                             ></el-space>
                           </h6>
@@ -803,7 +803,7 @@
                               ><el-input
                                 :disabled="isDisabledAnts"
                                 placeholder="..."
-                                v-model="medicat"
+                                v-model="userAntInfo.medicat"
                               ></el-input
                             ></el-space>
                           </h6>
@@ -814,7 +814,7 @@
                             ><el-input
                               :disabled="isDisabledAnts"
                               placeholder=""
-                              v-model="autres"
+                              v-model="userAntInfo.autres"
                             ></el-input
                           ></el-space>
                         </h6>
@@ -826,7 +826,7 @@
                         <h6>Affections congenitales</h6>
                         <el-input
                           :disabled="isDisabledAnts"
-                          v-model="affec"
+                          v-model="userAntInfo.affec"
                           type="textarea"
                           autosize
                           placeholder=".."
@@ -834,7 +834,7 @@
                         <h6>Maladies generalees</h6>
                         <el-input
                           :disabled="isDisabledAnts"
-                          v-model="malaGene"
+                          v-model="userAntInfo.malaGene"
                           type="textarea"
                           autosize
                           placeholder=".."
@@ -842,7 +842,7 @@
                         <h6>Intervention chirurgicales</h6>
                         <el-input
                           :disabled="isDisabledAnts"
-                          v-model="intChiru"
+                          v-model="userAntInfo.intChiru"
                           type="textarea"
                           autosize
                           placeholder=".."
@@ -850,7 +850,7 @@
                         <h6>Reactions allergiques au medicaments</h6>
                         <el-input
                           :disabled="isDisabledAnts"
-                          v-model="reactMed"
+                          v-model="userAntInfo.reactMed"
                           type="textarea"
                           autosize
                           placeholder=".."
@@ -864,7 +864,7 @@
                           <el-space
                             ><el-button
                               icon="el-icon-edit"
-                              @click="modifierAntecedents"
+                              @click="modifierAntecedents()"
                             >
                               Modifier
                             </el-button></el-space
@@ -875,13 +875,13 @@
                             ><el-button
                               type="success"
                               icon="el-icon-check"
-                              @click="saveAntecedents"
+                              @click="saveAntecedents()"
                             >
                               Enregister </el-button
                             ><el-button
                               type="danger"
                               icon="el-icon-delete"
-                              @click="annulerAntecedents"
+                              @click="annulerAntecedents()"
                             >
                               Annuler
                             </el-button></el-space
@@ -889,15 +889,7 @@
                         </div>
                       </el-space>
                     </el-row>
-                    <!-- <div v-if="isDisabledAnts">
-                      <el-space><el-button class="savebtnant"  @click="modifierAntecedents" round>modifier</el-button></el-space>
-                    </div>
-                    <div v-else>
-                      <el-space>
-                        <el-button class="savebtnant"  @click="saveAntecedents"  round>Sauvgarder</el-button>
-                        <el-button class="savebtnant"  @click="cancelAnts" round>annuler</el-button>
-                  </el-space>
-                </div> -->
+                   
                   </div>
                 </el-card>
                 <!-- **********************ali********************** -->
@@ -1629,7 +1621,8 @@
                   <el-row>
                     <el-col :span="12">
                       <el-card
-                        @click="radio1 = 'examen clinique'"
+                        @click="radio1 = 'examen clinique'
+                        recoverExamenClinique(userselected);"
                         class="examcard examcli"
                       >
                         <i class="fa fa-stethoscope"> </i>
@@ -1694,16 +1687,16 @@
                 <center>
                   <div>
                     <el-radio-group v-model="radio3">
-                      <el-radio-button
-                        label="Créer"
-                        @click="emptyEC()"
-                      ></el-radio-button>
-                      <el-radio-button
+                     <el-radio-button
                         label="Historique"
                         @click="
                           recoverExamenClinique(userselected);
                           radio4 = 'table';
                         "
+                      ></el-radio-button>
+                      <el-radio-button
+                        label="Créer"
+                        @click="emptyEC()"
                       ></el-radio-button>
                     </el-radio-group>
                   </div>
@@ -2297,7 +2290,7 @@
                         <el-col :span="6">Remarques</el-col>
                         <el-col :span="18"
                           ><el-input
-                            v-model="examenClinique.remarqueCli" :disabled="isECdisable"
+                            v-model="examenClinique.remarqueCLI" :disabled="isECdisable"
                             placeholder=".."
                             type="textarea"
                             autorise
@@ -2835,7 +2828,7 @@
                       <el-col :span="6">Remarques</el-col>
                       <el-col :span="18"
                         ><el-input
-                          v-model="examenClinique.remarqueCli"
+                          v-model="examenClinique.remarqueCLI"
                           placeholder=".."
                           type="textarea"
                           autorise
@@ -5735,7 +5728,7 @@ export default {
         gorgeORL: "",
         auricuORL: "",
         examenUrogeni: "",
-        remarqueCli: "",
+        remarqueCLI: "",
       },
       isEnabledPT: false,
       isEnabledACV: false,
@@ -5750,7 +5743,7 @@ export default {
       isEnabledMN: false,
       isEnabledTN: false,
       isEnabledON: false,
-      radio3: "Créer",
+      radio3: "Historique",
       radio4: "table",
       isECdisable: false,
       ECselected:"",
@@ -6590,6 +6583,7 @@ async minceViews() {
         this.userPersInfo = response.data.medFile.personalInfo;
         this.userDepiInfo = response.data.medFile.depistagelInfo;
         this.userBiomInfo = response.data.medFile.biometricInfo;
+        this.userAntInfo = response.data.medFile.antecedentsInfo;
         // partie de depistage
         this.userDepiInfo.checkedDouleurs = this.stringToBoolean(
           this.userDepiInfo.checkedDouleurs
@@ -7114,7 +7108,7 @@ const response1 = await DocServices.createOrdonnance({
       }
     },
     //antecedents*****************************************************************************************
-    async modifierAntecedents() {
+async modifierAntecedents() {
       try {
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = false;
@@ -8282,7 +8276,7 @@ async annulerModificationOrd(ord) {
      this.examenClinique.gorgeORL = "";
      this.examenClinique.auricuORL = "";
      this.examenClinique.examenUrogeni = "";
-     this.examenClinique.remarqueCli = "";
+     this.examenClinique.remarqueCLI = "";
      this.isEnabledPT = false;
      this.isEnabledACV = false;
      this.isEnabledPCV = false;
@@ -8356,40 +8350,40 @@ async annulerModificationOrd(ord) {
     },
   },
 
-  //antecedents*****************************************************************************************
-  async modifierAntecedents() {
-    try {
-      this.cachedUser = Object.assign({}, this.userAntInfo);
-      this.isDisabledAnts = false;
-      console.log("modifierAntecedents button was clicked !");
-    } catch (error) {
-      console.log("something went wrong");
-    }
-  },
-  async annulerAntecedents() {
-    try {
-      this.userAntInfo = Object.assign({}, this.cachedUser);
-      this.isDisabledAnts = true;
-      console.log("annulerAntecedents button was clicked !");
-    } catch (error) {
-      console.log("something went wrong");
-    }
-  },
-  async saveAntecedents() {
-    try {
-      this.cachedUser = Object.assign({}, this.userAntInfo);
-      this.isDisabledAnts = true;
-      console.log("saveAntcedents button was clicked !");
-      console.log(this.userAntInfo);
+  // //antecedents*****************************************************************************************
+  // async modifierAntecedents() {
+  //   try {
+  //     this.cachedUser = Object.assign({}, this.userAntInfo);
+  //     this.isDisabledAnts = false;
+  //     console.log("modifierAntecedents button was clicked !");
+  //   } catch (error) {
+  //     console.log("something went wrong");
+  //   }
+  // },
+  // async annulerAntecedents() {
+  //   try {
+  //     this.userAntInfo = Object.assign({}, this.cachedUser);
+  //     this.isDisabledAnts = true;
+  //     console.log("annulerAntecedents button was clicked !");
+  //   } catch (error) {
+  //     console.log("something went wrong");
+  //   }
+  // },
+  // async saveAntecedents() {
+  //   try {
+  //     this.cachedUser = Object.assign({}, this.userAntInfo);
+  //     this.isDisabledAnts = true;
+  //     console.log("saveAntcedents button was clicked !");
+  //     console.log(this.userAntInfo);
 
-      const response = await DocServices.saveAntecedents({
-        antecedentsInfo: this.userAntInfo,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(`something went wrong ${error}`);
-    }
-  },
+  //     const response = await DocServices.saveAntecedents({
+  //       antecedentsInfo: this.userAntInfo,
+  //     });
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(`something went wrong ${error}`);
+  //   }
+  // },
 };
 </script>
 

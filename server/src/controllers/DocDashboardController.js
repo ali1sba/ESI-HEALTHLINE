@@ -622,9 +622,9 @@ module.exports = {
     }
   },
 
-  async saveAntecedentsInfo (req, res) {
+  async saveAntecedents (req, res) {
     try {
-      const userAI = req.body.antInfo
+      const userAI = req.body.antecedentsInfo
       const userAntInfo = await AntecedentsInfo.findOne({
         where: {
           id: userAI.idAI
@@ -913,7 +913,7 @@ module.exports = {
       exmCliInfo.gorgeORL = newexamenclinique.gorgeORL
       exmCliInfo.auricuORL = newexamenclinique.auricuORL
       exmCliInfo.examenUrogeni = newexamenclinique.examenUrogeni
-      exmCliInfo.remarqueCli = newexamenclinique.remarqueCli
+      exmCliInfo.remarqueCLI = newexamenclinique.remarqueCLI
       await exmCliInfo.save()
 
       res.send({
