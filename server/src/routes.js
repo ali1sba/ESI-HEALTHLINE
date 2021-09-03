@@ -240,4 +240,6 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
   app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
   app.post('/DOCdashboard/modifierExamenClinique', DocDashboardController.modifierExamenClinique)
+  app.post('/loginMobile', AuthController.loginMobile)
+  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
 }
