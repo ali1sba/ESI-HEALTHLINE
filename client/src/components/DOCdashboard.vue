@@ -644,7 +644,7 @@
                     </div>
                   </center>
                 </el-card>
-                <!-- **********************ilhem********************** -->
+               <!-- **********************ilhem********************** -->
                 <el-card class="box-card" id="Antécédents">
                   <h6>Antécédents</h6>
                   <div class="text item">
@@ -6822,7 +6822,7 @@ export default {
       }
     },
     //antecedents*****************************************************************************************
-    async modifierAntecedents() {
+async modifierAntecedents() {
       try {
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = false;
