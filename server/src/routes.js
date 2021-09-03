@@ -167,7 +167,7 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showPatient', DocDashboardController.showPatient)
   app.post('/DOCdashboard/savePersInfo', DocDashboardController.savePersInfo)
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
-  // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
+  app.post('/DOCdashboard/saveAntecedents', DocDashboardController.saveAntecedents)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
   app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
   app.post('/DOCdashboard/recoverFormes', DocDashboardController.recoverFormes)
