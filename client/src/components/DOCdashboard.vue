@@ -6165,7 +6165,7 @@ export default {
           body: this.buildTableBody(data, columns),
         },
         /* eslint-disable no-mixed-spaces-and-tabs */
-      },
+      }
     },
  viewpdf() {  
     var doc = { /* eslint-disable no-mixed-spaces-and-tabs */
@@ -6394,7 +6394,7 @@ export default {
 	
 	
     },
-	pageMargins: [30,30,30,90]
+	pageMargins: [30,30,30,90],
         layout: {
           hLineWidth: function(i, node) {
             return i === 0 || i === node.table.body.length ? 0 : 1;
@@ -7014,13 +7014,13 @@ export default {
       }
     },
 
-      console.log(listnew);
-      this.Medoptions=listnew;
+  //     console.log(listnew);
+  //     this.Medoptions=listnew;
        
-    } catch (error) {
-      console.log(`something went wrong ${error}`);
-    }
-   },
+  //   } catch (error) {
+  //     console.log(`something went wrong ${error}`);
+  //   }
+  //  },
      async recoverMarques(Medicament) {
     try {
         const response = await DocServices.recoverMarques ({
@@ -7124,6 +7124,7 @@ export default {
       duree: "",
       ordonnanceId: "",
       })
+    },
     async addprescinput() {
       await this.prescs.push({
         nom: "",
