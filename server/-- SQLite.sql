@@ -35,6 +35,11 @@
 -- SET createdAt = '2021-08-15 22:31:19.066 +00:00', updatedAt = '2021-08-05 22:31:19.066 +00:00' 
 -- INSERT INTO Medicaments(nom,marque,forme,dosage,createdAt,updatedAt) SELECT * FROM medic
 -- DROP TABLE 'medic';
-
-
-
+--DROP TABLE 'RDVaReporters';
+--DROP TABLE 'RDVNonValides';
+--INSERT INTO 'RDVNonValides' VALUES ('1','1','2021-08-05 00:31:17 +00:00','suivi','Test1','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');
+--INSERT INTO 'RDVNonValides' VALUES ('2','1','2021-08-05 00:31:17 +00:00','suivi médical','Test2','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');
+--INSERT INTO 'RDVaReporters' VALUES ('1','1','2021-08-05 22:31:19.066 +00:00','consultation','Test1','Individuel','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');
+--INSERT INTO 'RDVaReporters' VALUES ('2','1','2021-08-05 22:31:19.066 +00:00','consultation med','Test2','Individuel','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');
+--INSERT INTO 'RDVaReporters' VALUES ('3','1','2021-08-05 22:31:19.066 +00:00','consultation médicale','Test3','Individuel','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');
+--INSERT INTO 'RDVaReporters' VALUES ('4','1','2021-08-05 22:31:19.066 +00:00','consultation medddddd','Test4','Individuel','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');

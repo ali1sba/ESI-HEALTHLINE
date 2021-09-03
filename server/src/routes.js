@@ -234,4 +234,12 @@ module.exports = (app) => {
   app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
+  // ******************************** RDV Section ****************************************
+  app.get('/DOCdashboard/recoverDemandesRDV', RDVController.recoverDemandesRDV)
+  app.post('/DOCdashboard/validerRDVdemande', RDVController.validerRDVdemande)
+  app.post('/DOCdashboard/refuserRDVdemande', RDVController.refuserRDVdemande)
+  app.get('/DOCdashboard/recoverDemandesRDVReport', RDVController.recoverDemandesRDVReport)
+  app.post('/DOCdashboard/enregistrerDemandeReportRDV', RDVController.enregistrerDemandeReportRDV)
+  app.post('/DOCdashboard/refuserDemandeReportRDV', RDVController.refuserDemandeReportRDV)
+  // **************************************************************************************
 }
