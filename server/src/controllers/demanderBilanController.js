@@ -1,4 +1,4 @@
-const { DemandeBilan } = require('../models')
+const { demanderBilan } = require('../models')
 module.exports = {
   async createDB (req, res) {
     try {
@@ -6,12 +6,14 @@ module.exports = {
       console.log(DemandeBilanreceived)
       // create RapportMedical
       const demandeBilan = {
-        idUser: DemandeBilanreceived.DemandeBilan.idUser,
-        BilanDeSanté: DemandeBilanreceived.DemandeBilan.BilanDeSanté,
-        TypeDeBilan: DemandeBilanreceived.DemandeBilan.TypeDeBilan,
-        Autre: DemandeBilanreceived.DemandeBilan.Autre
+        idUser: DemandeBilanreceived.DemanderBilan.idUser,
+        BilanDeSante: DemandeBilanreceived.DemanderBilan.BilanDeSante,
+        // TypeDeBilan: DemandeBilanreceived.DemandeBilan.TypeDeBilan,
+        Autre: DemandeBilanreceived.DemanderBilan.Autre
       }
-      const demandeBilancalsaved = await DemandeBilan.create(demandeBilan)
+      console.log(demandeBilan)
+      const demandeBilancalsaved = await demanderBilan.create(demandeBilan)
+      console.log(demandeBilancalsaved)
       res.send({
         DemandeBilan: demandeBilancalsaved
       })
@@ -24,7 +26,7 @@ module.exports = {
   async getDemandes (req, res) {
     try {
       console.log(req.body)
-      const demandes = await DemandeBilan.findAll({
+      const demandes = await demanderBilan.findAll({
         where: {
           idUser: req.body.id
         }

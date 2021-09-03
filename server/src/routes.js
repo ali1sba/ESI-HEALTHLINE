@@ -240,6 +240,6 @@ module.exports = (app) => {
   app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
-  app.post('/DemanderBilan', demanderBilanController.createDB)
+  app.post('/DemandeBilanl', demanderBilanController.createDB)
   app.post('/getDemanderBilan', demanderBilanController.getDemandes)
 }

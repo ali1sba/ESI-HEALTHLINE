@@ -35,6 +35,6 @@
 -- SET createdAt = '2021-08-15 22:31:19.066 +00:00', updatedAt = '2021-08-05 22:31:19.066 +00:00' 
 -- INSERT INTO Medicaments(nom,marque,forme,dosage,createdAt,updatedAt) SELECT * FROM medic
 -- DROP TABLE 'medic';
-
+-- DROP TABLE 'DemanderBilans';
 
 

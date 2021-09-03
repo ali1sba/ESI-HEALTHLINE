@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) =>
-  sequelize.define('DemanderBilan', {
+  sequelize.define('demanderBilan', {
     idUser: {
       type: DataTypes.INTEGER
     },
