@@ -20,13 +20,15 @@
             >
           </li>
           <li>
-            <a @click="content = '3'">
+            <a @click="RDVSection()">
+               
               <span class="fa fa-sticky-note">
-                <el-badge :value="count" class="itemNotifs" type="danger">
+               <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
                   </el-badge>
-              </span>
-              <p class="nom">Blog</p></a>
-          </li>
+                  
+              </span>               
+              <p class="nom">RDV Section</p></a
+            >          </li>
           <li>
             <a @click="content = '4'"
               ><span class="fa fa-cogs"></span>
@@ -5002,8 +5004,125 @@ EMAIL: contact@esi-sba.dz</p>
 
           <!-- ********************** 3 ***************************** -->
 
-          <div v-show="content === '3'" class="dossier">
-            <div class="doctor">3</div>
+           <div v-show="content === 'RDVSection'" class="dossier">
+            <br><br>
+            <center>
+              <el-radio-group v-model="radioRDVsection">
+                <el-radio-button label="Valider" @click="recoverDemandesRDV()">
+                  <el-badge :value="countrdv" class="itemNotifs" type="danger">
+                    
+                  </el-badge>
+                   Valider
+                </el-radio-button>
+                <el-radio-button label="Reporter" @click="recoverDemandesRDVReport()">
+                  <el-badge :value="countrdv2" class="itemNotifs" type="danger">
+                    
+                  </el-badge>
+                   Reporter
+                </el-radio-button>
+              </el-radio-group>
+            </center>
+            <el-card class="box-card">
+
+              <el-scrollbar v-show="radioRDVsection === 'Valider'">
+                <h2>Demandes de RDV</h2>
+                <el-card   class="cardGris">
+                  <el-row>
+                    <el-col :span="6">Patient</el-col>
+                    <el-col :span="6">Type de RDV</el-col>
+                    <el-col :span="6">Date And Time</el-col>
+                    <el-col :span="6">Note</el-col>
+                  </el-row>
+                </el-card>
+                <el-timeline style="margin:1% 0% 0% 0%;">
+                  <el-timeline-item  placement="top" v-for="Rdv in ValiderRDVList" :key="Rdv.id" >
+                    <el-card   class="cardGris">
+                      <el-row>
+                        <el-col :span="5">{{Rdv.Patient}}</el-col>
+                        <el-col :span="6">{{Rdv.Type}}</el-col>
+                        <el-col :span="6">{{Rdv.DateAndTime}}</el-col>
+                        <el-col :span="6">{{Rdv.Note}}</el-col>
+                      </el-row>
+                      <el-button type="" style="align-items: right;" @click="validerRDVdemande(Rdv)">Valider</el-button>
+                      <el-popconfirm
+                        confirmButtonText="Oui"
+                        cancelButtonText="Non"
+                        icon="el-icon-info"
+                        iconColor="red"
+                        title="Etes-vous sur de vouloir Refuser ce RDV ?"
+                        @confirm="refuserRDVdemande(Rdv)"
+                        @cancel="cancelEvent"
+                      >
+                        <template #reference>
+                          <el-button type="" style="align-items: right;">Refuser</el-button>
+                        </template>
+                      </el-popconfirm>
+                    </el-card>
+                  </el-timeline-item>
+                </el-timeline>
+              </el-scrollbar>
+
+              <el-scrollbar v-show="radioRDVsection === 'Reporter'">
+                <h2>Demandes de report de RDV</h2>
+                <el-card   class="cardGris">
+                  <el-row>
+                    <el-col :span="6">Patient</el-col>
+                    <el-col :span="6">Type de RDV</el-col>
+                    <el-col :span="6">Date And Time</el-col>
+                    <el-col :span="6">Note</el-col>
+                  </el-row>
+                </el-card>
+                <el-timeline style="margin:1% 0% 0% 0%;">
+                  <el-timeline-item  placement="top" v-for="Rdv in ReporterRDVList" :key="Rdv.id" >
+                    <el-card   class="cardGris">
+                      <el-row>
+                        <el-col :span="5">{{Rdv.Patient}}</el-col>
+                        <el-col :span="6">{{Rdv.Type}}</el-col>
+                        <el-col :span="6">{{Rdv.DateAndTime}}</el-col>
+                        <el-col :span="6">{{Rdv.Note}}</el-col>
+                      </el-row>
+                        <el-button type="" style="align-items: right;" @click="consulterReporterRDV(Rdv)">Consulter</el-button>
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+              </el-scrollbar>
+
+              <el-dialog title=" Consulter la demande " v-model="dialogRDVReportFormVisible" :before-close="annulerRDVReportForm">
+                    <el-form :model="form">
+                      <el-form-item label="Patient" :label-width="formLabelWidth">
+                        <el-input v-model="RDVReportForm.Patient" disabled>
+                        </el-input>
+                      </el-form-item>
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-input v-model="RDVReportForm.Type" disabled>
+                        </el-input>
+                      </el-form-item>
+                      <el-form-item label="Date à reporter" :label-width="formLabelWidth">
+                        <el-tag type="danger" effect="dark">{{RDVReportForm.DateAndTime}}</el-tag>
+                      </el-form-item>
+                      <el-form-item label="Nouvelle date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="RDVReportFormNewDate"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts"
+                          :default-time="defaultTime1"
+                          :disabled-date="disabledDate">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="RDVReportForm.Note" disabled></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="refuserDemandeReportRDV(RDVReportForm)">Refuser</el-button>
+                        <el-button type="primary" @click="enregistrerDemandeReportRDV(RDVReportForm)">Enregistrer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
+
+            </el-card>
             <center>
               © Designed and Developed by linara it solutions 2021
             </center>
@@ -5049,6 +5168,25 @@ window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
+      // ************** RDVSection déclaration ***************
+      radioRDVsection: "Valider",
+      ValiderRDVList: [],
+      ReporterRDVList: [],
+      RDVReportForm: {
+        idRDV: '',
+        Patient: '',
+        DateAndTime: '',
+        Type: '',
+        Note: '',
+        GroupORIndiv: ''
+      },
+      show: false,
+      RDVReportFormNewDate: '',
+      dialogRDVReportFormVisible: false,
+      defaultTime1: [
+        new Date(2000, 1, 1, 10, 0, 0),
+      ],
+      // ****************************************************************************
       ordcreated: "not created",
       items: [],
       isactive: true,
@@ -5844,6 +5982,8 @@ export default {
         this.userselected = this.patients[0];
         console.log(response.data);
         this.count = x -1;
+        this.NumRDV();
+        this.NumRDV2();
       })
       .catch((error) => {
         console.log(error);
@@ -5875,9 +6015,29 @@ async minceViews() {
       } catch (error) {
         console.log(
           `something went wrong in programation de RDV patient ${error}`
-        );
-      }
-    },
+        );}},
+      async NumRDV() {
+    try {
+      const response = await DocServices.NumValider()
+      this.countrdv=Object.keys(response.data).length;
+      console.log(this.countrdv)
+      
+    } catch {
+      console.log('probleme in docdashoardController / numrdv')
+
+    }
+  },
+  async NumRDV2() {
+    try {
+      const response = await DocServices.Numreporter()
+      this.countrdv2=Object.keys(response.data).length;
+      console.log(this.countrdv2)
+      
+    } catch {
+      console.log('probleme in docdashoardController / numrdv')
+
+    }
+      },
     async showRDVSelectedPatient() {
       try {
         //console.log("createBilanBiologique clicked")
@@ -6197,6 +6357,132 @@ async minceViews() {
     //   }
     // },
     // home button
+    // ************************************ RDVSection ******************************
+    async recoverDemandesRDV () {
+    try {
+      const response = await DocServices.recoverDemandesRDV()
+      this.ValiderRDVList = response.data.rdv
+      console.log(this.ValiderRDVList)
+      this.NumRDV()
+      this.NumRDV2()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async validerRDVdemande (rdv) {
+    try {
+      const response = await DocServices.validerRDVdemande({
+        idRDV: rdv.idRDV
+      })
+      console.log(rdv.idRDV)
+      console.log(response.data)
+      this.NumRDV()
+      this.NumRDV2()
+      this.recoverDemandesRDV()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async refuserRDVdemande (rdv) {
+    try {
+      const response = await DocServices.refuserRDVdemande({
+        idRDV: rdv.idRDV
+      })
+      console.log(rdv.idRDV)
+      console.log(response.data)
+      this.NumRDV()
+      this.NumRDV2()
+      this.recoverDemandesRDV()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async recoverDemandesRDVReport () {
+    try {
+      const response = await DocServices.recoverDemandesRDVReport()
+      this.ReporterRDVList = response.data.rdv
+      console.log(this.ReporterRDVList)
+      this.NumRDV()
+      this.NumRDV2()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async consulterReporterRDV (rdv) {
+    try {
+      this.RDVReportForm = rdv
+      this.dialogRDVReportFormVisible = true
+      this.recoverDemandesRDVReport()
+      this.NumRDV()
+      this.NumRDV2()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async enregistrerDemandeReportRDV (rdv) {
+    try {
+      const response = await DocServices.enregistrerDemandeReportRDV({
+        idRDV: rdv.idRDV,
+        newDate: this.RDVReportFormNewDate
+      })
+      console.log(response.data)
+      this.annulerRDVReportForm()
+      this.NumRDV()
+      this.NumRDV2()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async refuserDemandeReportRDV (rdv) {
+    try {
+      const response = await DocServices.refuserDemandeReportRDV({
+        idRDV: rdv.idRDV
+      })
+      console.log(response.data)
+      this.annulerRDVReportForm()
+      this.NumRDV()
+      this.NumRDV2()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  async annulerRDVReportForm () {
+    try {
+      this.dialogRDVReportFormVisible = false
+      this.RDVReportForm = {
+        idRDV: '',
+        Patient: '',
+        DateAndTime: '',
+        Type: '',
+        Note: '',
+        GroupORIndiv: ''
+      }
+      this.RDVReportFormNewDate = ''
+      this.recoverDemandesRDVReport()
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+
+  RDVSection () {
+    try {
+      this.recoverDemandesRDV()
+      console.log("RDVSection clicked")
+      this.content = 'RDVSection'
+      this.radioRDVsection = 'Valider'
+    } catch (error) {
+      console.log(`something went wrong ${error}`)
+    }
+  },
+  // *********************************************************************************
+
     home() {
       this.content = "dashboard";
       axios
@@ -6212,7 +6498,8 @@ async minceViews() {
           });
           console.log(response.data);
           this.showRDVDashboard();
-          this.numberofRDVNotifs();
+          this.NumRDV();
+          this.NumRDV2();    
         })
         .catch((error) => {
           console.log(error);
