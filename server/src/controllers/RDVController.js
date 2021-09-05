@@ -1,5 +1,8 @@
 const { RDV } = require('../models')
+const { User } = require('../models')
+
 const { RDVNonValide } = require('../models')
+const { RDVaReporter } = require('../models')
 const express = require('express')
 const app = express()
 // var fs = require("fs")
@@ -178,6 +181,164 @@ module.exports = {
         error: `an error has occured trying to create RDV ${err}`
       })
     }
+  },
+  // ********************** RDV Section DocDashboard *********************
+  // ***** Traitement des demandes de RDV *****
+  async recoverDemandesRDV (req, res) {
+    try {
+      const rdv = await RDVNonValide.findAll({
+        attributes: ['id', 'idUser', 'DateAndTime', 'Type', 'Note']
+      })
+      const rdvSent = []
+      for (let i = 0; i < rdv.length; i++) {
+        const idUser = rdv[(i)].idUser
+        const user = await User.findOne({
+          where: {
+            id: idUser
+          }
+        })
+        rdvSent.push({ idRDV: rdv[(i)].id, Patient: user.dataValues.lastName + ' ' + user.dataValues.firstName, DateAndTime: rdv[(i)].DateAndTime, Type: rdv[(i)].Type, Note: rdv[(i)].Note })
+      }
+      res.send({
+        message: 'response from the server to recoverDemandesRDV',
+        rdv: rdvSent
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverDemandesRDV ${err}`
+      })
+    }
+  },
+
+  async validerRDVdemande (req, res) {
+    try {
+      const id = req.body.idRDV
+      const rdv = await RDVNonValide.findOne({
+        where: {
+          id: id
+        }
+      })
+      const rdvCr = {
+        idUser: rdv.idUser,
+        DateAndTime: rdv.DateAndTime,
+        Type: rdv.Type,
+        Note: rdv.Note,
+        GroupORIndiv: 'Individuel'
+      }
+      await RDV.create(rdvCr)
+      rdv.destroy()
+      res.send({
+        message: 'response from the server to validerRDVdemande',
+        idRDV: id
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to validerRDVdemande ${err}`
+      })
+    }
+  },
+
+  async refuserRDVdemande (req, res) {
+    try {
+      const id = req.body.idRDV
+      const rdv = await RDVNonValide.findOne({
+        where: {
+          id: id
+        }
+      })
+      rdv.destroy()
+      res.send({
+        message: 'response from the server to refuserRDVdemande',
+        idRDV: id
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to refuserRDVdemande ${err}`
+      })
+    }
+  },
+
+  // ***** Traitements des demandes de report de RDV *****
+  async recoverDemandesRDVReport (req, res) {
+    try {
+      const rdv = await RDVaReporter.findAll({
+        attributes: ['id', 'idUser', 'DateAndTime', 'Type', 'Note', 'GroupORIndiv']
+      })
+      const rdvSent = []
+      for (let i = 0; i < rdv.length; i++) {
+        const idUser = rdv[(i)].idUser
+        const user = await User.findOne({
+          where: {
+            id: idUser
+          }
+        })
+        rdvSent.push({ idRDV: rdv[(i)].id, Patient: user.dataValues.lastName + ' ' + user.dataValues.firstName, DateAndTime: rdv[(i)].DateAndTime, Type: rdv[(i)].Type, Note: rdv[(i)].Note, GroupORIndiv: rdv[(i)].GroupORIndiv })
+      }
+      res.send({
+        message: 'response from the server to recoverDemandesRDVReport',
+        rdv: rdvSent
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverDemandesRDVReport ${err}`
+      })
+    }
+  },
+
+  async enregistrerDemandeReportRDV (req, res) {
+    try {
+      const id = req.body.idRDV
+      const newDate = req.body.newDate
+      const rdv = await RDVaReporter.findOne({
+        where: {
+          id: id
+        }
+      })
+      const rdvCr = {
+        idUser: rdv.dataValues.idUser,
+        DateAndTime: newDate,
+        Type: rdv.dataValues.Type,
+        Note: rdv.dataValues.Note,
+        GroupORIndiv: rdv.dataValues.GroupORIndiv
+      }
+      await RDV.create(rdvCr)
+      rdv.destroy()
+      res.send({
+        message: 'enregistrerDemandeReportRDV from server'
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to enregistrerDemandeReportRDV ${err}`
+      })
+    }
+  },
+
+  async refuserDemandeReportRDV (req, res) {
+    try {
+      const id = req.body.idRDV
+      const rdv = await RDVaReporter.findOne({
+        where: {
+          id: id
+        }
+      })
+      const rdvCr = {
+        idUser: rdv.dataValues.idUser,
+        DateAndTime: rdv.dataValues.DateAndTime,
+        Type: rdv.dataValues.Type,
+        Note: rdv.dataValues.Note,
+        GroupORIndiv: rdv.dataValues.GroupORIndiv
+      }
+      await RDV.create(rdvCr)
+      rdv.destroy()
+      res.send({
+        message: 'response from the server to refuserDemandeReportRDV'
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to refuserDemandeReportRDV ${err}`
+      })
+    }
   }
+  // *********************************************************************************
 
 }
