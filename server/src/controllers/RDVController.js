@@ -178,15 +178,6 @@ module.exports = {
         error: `an error has occured trying to create RDV ${err}`
       })
     }
-  },
-  async numberofRDVNotifs (req, res) {
-    try {
-      const tst = await RDV.findAll()
-      console.log(tst.length)
-    } catch (err) {
-      res.send({
-        error: `an error has occured trying to getting the number of rdv's notifs ${err}`
-      })
-    }
   }
+
 }

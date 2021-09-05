@@ -1,6 +1,8 @@
 /* eslint-disable no-var */
 const { Op } = require('sequelize')
 const { User } = require('../models')
+const { RDVNonValide } = require('../models')
+const { RDVaReporter } = require('../models')
 const { Compte } = require('../models')
 
 const { MedicalFile } = require('../models')
@@ -1596,6 +1598,22 @@ module.exports = {
       res.send({
         error: `an error has occured trying to downloadBeFile: ${err}`
       })
+    }
+  },
+  async NumValider (req, res) {
+    try {
+      const tst = await RDVNonValide.findAll()
+      res.send(tst)
+    } catch {
+      console.log('probleme in docdashoardController / numrdv')
+    }
+  },
+  async Numreporter (req, res) {
+    try {
+      const tst = await RDVaReporter.findAll()
+      res.send(tst)
+    } catch {
+      console.log('probleme in docdashoardController / numrdv')
     }
   }
 }
