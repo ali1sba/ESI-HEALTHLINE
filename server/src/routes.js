@@ -18,9 +18,9 @@ const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
 const { BilansEMG } = require('./models')
 const { BilansElectrique } = require('./models')
-let idECG = ''
-let idEEG = ''
-let idEMG = ''
+let idECG = null
+let idEEG = null
+let idEMG = null
 
 // Upload files
 const multer = require('multer')
@@ -200,19 +200,28 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
   app.post('/DOCdashboard/downloadBeFile', DocDashboardController.downloadBeFile)
   app.post('/DOCdashboard/createBilanElectrique', uploadBE.any(), async (req, res) => {
-    const BE = {
-      motif: req.body.BEMotif,
-      idPatient: req.body.idPatient
+    try {
+      const BE = {
+        motif: req.body.BEMotif,
+        idPatient: req.body.idPatient
+      }
+      const BECr = await BilansElectrique.create(BE)
+      BECr.idECG = idECG
+      BECr.idEEG = idEEG
+      BECr.idEMG = idEMG
+      await BECr.save()
+      idECG = null
+      idEEG = null
+      idEMG = null
+      res.send({
+        file: req.files,
+        body: req.body
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to createBilanElectrique: ${err}`
+      })
     }
-    const BECr = await BilansElectrique.create(BE)
-    BECr.idECG = idECG
-    BECr.idEEG = idEEG
-    BECr.idEMG = idEMG
-    await BECr.save()
-    res.send({
-      file: req.files,
-      body: req.body
-    })
   })
   // ************************ RDV medical ***************************
   app.post('/progRDVPatient', RDVController.progRDVPatient)
