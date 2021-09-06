@@ -896,13 +896,12 @@
                 </el-card>
                 <!-- **********************ali********************** -->
                 <el-card class="box-card" id="Dépistage">
-                  <center>
-                    <h6>Dépistage</h6>
-                    <div class="text item">
-                      <el-space direction="vertical">
-                        <el-row>
-                          <el-col :span="24">
-                            <el-space wrap :size="10">
+                  <h6>Dépistage</h6>
+                  <div class="text ">
+                   
+                        
+                          <el-col :span="24"><center>
+                            <el-space wrap :size="20">
                               visite médical
                               <el-select
                                 v-model="userDepiInfo.typeDeVisite"
@@ -934,39 +933,89 @@
                                 v-model="userDepiInfo.docteurName"
                               ></el-input>
                             </el-space>
-                          </el-col>
-                        </el-row>
-                        <!-- <el-row>
-                      <el-col :span="24">
-                        <el-space wrap :size="50">
-                          <el-space wrap :size="10">
-                            Poids
-                            <el-input
-                              placeholder="KG"
-                              v-model="userDepiInfo.poids"
-                            ></el-input
-                          ></el-space>
-                          <el-space wrap :size="10"
-                            >Taille
-                            <el-input
-                              placeholder="Mètre"
-                              v-model="userDepiInfo.taille"
-                            ></el-input
-                          ></el-space>
-                        </el-space>
-                      </el-col>
-                    </el-row> 
-                    <el-divider></el-divider>-->
+                          </center></el-col>
+                        
+                      
+                      <!-- <el-row>
+                    <el-col :span="24">
+                      <el-space wrap :size="50">
+                        <el-space wrap :size="10">
+                          Poids
+                          <el-input
+                            placeholder="KG"
+                            v-model="userDepiInfo.poids"
+                          ></el-input
+                        ></el-space>
+                        <el-space wrap :size="10"
+                          >Taille
+                          <el-input
+                            placeholder="Mètre"
+                            v-model="userDepiInfo.taille"
+                          ></el-input
+                        ></el-space>
+                      </el-space>
+                    </el-col>
+                  </el-row> 
+                  <el-divider></el-divider>-->
 
-                        <el-collapse
-                          v-model="userDepiInfo.activeNames"
-                          @change="handleChange"
-                        >
-                          <el-collapse-item title="Audition" name="1">
-                            <el-space wrap :size="10">
-                              OD
-                              <el-select
-                                v-model="userDepiInfo.auditionOD"
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+                  <!-- card1 -->
+                  <el-card class="box-card">
+                    <h5>Audition</h5>
+                      <br />
+                      <el-row>
+                        <el-col :span="6"> OD </el-col>
+                        <el-col :span="4">
+                          <el-select
+                              v-model="userDepiInfo.auditionOD"
+                              placeholder="OD"
+                              :disabled="isDisabledDepiInfo"
+                            >
+                              <el-option
+                                v-for="item in options1To10"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                              >
+                              </el-option>
+                            </el-select>
+                        </el-col>
+                      </el-row>
+                      <el-row>
+                        <el-col :span="6">OG</el-col>
+                        <el-col :span="4">
+                          <el-select
+                              v-model="userDepiInfo.auditionOG"
+                              placeholder="OG"
+                              :disabled="isDisabledDepiInfo"
+                            >
+                              <el-option
+                                v-for="item in options1To10"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                              >
+                              </el-option>
+                            </el-select>
+                        </el-col>
+                      </el-row>
+                    </el-card>
+                    
+
+                  <!-- card2 -->
+
+                    <el-card class="box-card">
+                      <h5>Acuite Visuelle</h5>
+                      <br />
+                      <h6>SANS CORRECTIONS</h6>
+                      <el-row>
+                        <el-col :span="6"> OD </el-col>
+                        <el-col :span="4">
+                            <el-select
+                                v-model="userDepiInfo.AcuiteVisuelleSansCOD"
                                 placeholder="OD"
                                 :disabled="isDisabledDepiInfo"
                               >
@@ -977,12 +1026,47 @@
                                   :value="item.value"
                                 >
                                 </el-option>
-                              </el-select>
-                            </el-space>
-                            <el-space wrap :size="10">
-                              OG
-                              <el-select
-                                v-model="userDepiInfo.auditionOG"
+                            </el-select>
+                        </el-col>
+                        <el-col :span="6"> OG </el-col>
+                        <el-col :span="4">
+                          <el-select
+                              v-model="userDepiInfo.AcuiteVisuelleSansCOG"
+                              placeholder="OG"
+                              :disabled="isDisabledDepiInfo"
+                            >
+                              <el-option
+                                v-for="item in options1To10"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                              >
+                              </el-option>
+                          </el-select>
+                        </el-col>
+                      </el-row>
+                      <h6>AVEC CORRECTIONS</h6>
+                      <el-row>
+                        <el-col :span="6">OD</el-col>
+                        <el-col :span="4">
+                          <el-select
+                                v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
+                                placeholder="OD"
+                                :disabled="isDisabledDepiInfo"
+                              >
+                                <el-option
+                                  v-for="item in options1To10"
+                                  :key="item.value"
+                                  :label="item.label"
+                                  :value="item.value"
+                                >
+                                </el-option>
+                          </el-select>
+                        </el-col>
+                        <el-col :span="6">OG</el-col>
+                        <el-col :span="4">
+                          <el-select
+                                v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
                                 placeholder="OG"
                                 :disabled="isDisabledDepiInfo"
                               >
@@ -993,627 +1077,575 @@
                                   :value="item.value"
                                 >
                                 </el-option>
-                              </el-select>
-                            </el-space>
-                          </el-collapse-item>
-                          <el-collapse-item title="Acuite Visuelle" name="2">
-                            <el-space orientation="vertical">
-                              <el-space wrap :size="10">
-                                OD
-                                <el-select
-                                  v-model="userDepiInfo.AcuiteVisuelleSansCOD"
-                                  placeholder="OD"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                  <el-option
-                                    v-for="item in options1To10"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                  >
-                                  </el-option>
-                                </el-select>
-                              </el-space>
-                              <el-space wrap :size="10"
-                                >OG
-                                <el-select
-                                  v-model="userDepiInfo.AcuiteVisuelleSansCOG"
-                                  placeholder="OG"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                  <el-option
-                                    v-for="item in options1To10"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                  >
-                                  </el-option>
-                                </el-select>
-                              </el-space>
-                              SANS CORRECTIONS
-                            </el-space>
-                            <el-space orientation="vertical">
-                              <el-space wrap :size="10">
-                                OD
-                                <el-select
-                                  v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
-                                  placeholder="OD"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                  <el-option
-                                    v-for="item in options1To10"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                  >
-                                  </el-option>
-                                </el-select>
-                              </el-space>
-                              <el-space wrap :size="10"
-                                >OG
-                                <el-select
-                                  v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
-                                  placeholder="OG"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                  <el-option
-                                    v-for="item in options1To10"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value"
-                                  >
-                                  </el-option>
-                                </el-select>
-                              </el-space>
-                              AVEC CORRECTIONS
-                            </el-space>
-                          </el-collapse-item>
+                          </el-select>
+                        </el-col>
+                      </el-row>
+                    </el-card>
 
-                          <el-collapse-item title="les tests" name="3">
-                            <el-row :gutter="10">
-                              <el-col :span="8"> Appareils </el-col>
+                  <!-- card3 -->
 
-                              <el-col :span="8"> Interrogatoire </el-col>
+                    <el-card class="box-card">
+                        <el-row :gutter="10">
+                            <el-col :span="6"> Appareils </el-col>
 
-                              <el-col :span="8"> Examens Clinique </el-col>
-                            </el-row>
+                            <el-col :span="10"> Interrogatoire </el-col>
 
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8"> peau et muqueu </el-col>
+                            <el-col :span="6"> Examens Clinique </el-col>
+                          </el-row>
 
-                              <el-col :span="8">
-                                <el-checkbox
-                                  v-model="userDepiInfo.checkedDouleurs"
-                                  :disabled="isDisabledDepiInfo"
-                                  >douleurs</el-checkbox
-                                >
-                              </el-col>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> peau et muqueu </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  type="textarea"
-                                  :rows="2"
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Examens clinique"
-                                  v-model="userDepiInfo.textarea1"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
+                            <el-col :span="10">
+                              <el-checkbox
+                                v-model="userDepiInfo.checkedDouleurs"
+                                :disabled="isDisabledDepiInfo"
+                                >douleurs</el-checkbox
+                              >
+                            </el-col>
 
-                            <el-divider></el-divider>
+                            <el-col :span="8">
+                              <el-input
+                                type="textarea"
+                                :rows="2"
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Examens clinique"
+                                v-model="userDepiInfo.textarea1"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
 
-                            <el-row :gutter="10">
-                              <el-col :span="8"> Ophtalmolodique </el-col>
+                          <el-divider></el-divider>
 
-                              <el-col :span="8">
-                                <el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkLarmoiement"
-                                  label="Larmoiement"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkDouleurs"
-                                  label="Douleurs"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="
-                                    userDepiInfo.checkTachesdevantlesyeux
-                                  "
-                                  label="Taches devant les yeux"
-                                ></el-checkbox>
-                              </el-col>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> Ophtalmolodique </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  type="textarea"
-                                  :disabled="isDisabledDepiInfo"
-                                  :rows="2"
-                                  placeholder="Examens clinique"
-                                  v-model="userDepiInfo.textarea2"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8"> O.R.L </el-col>
-                              <el-col :span="8">
-                                <el-checkbox
-                                  label="sifflements"
-                                  v-model="userDepiInfo.checksifflements"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Angines répétées"
-                                  v-model="userDepiInfo.checkAnginesrépétées"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Epistaxis"
-                                  v-model="userDepiInfo.checkEpistaxis"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Rhinorhée"
-                                  v-model="userDepiInfo.checkRhinorhée"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                              </el-col>
+                            <el-col :span="10">
+                              <el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkLarmoiement"
+                                label="Larmoiement"
+                              ></el-checkbox>
+                              <el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkDouleurs"
+                                label="Douleurs"
+                              ></el-checkbox>
+                              <el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="
+                                  userDepiInfo.checkTachesdevantlesyeux
+                                "
+                                label="Taches devant les yeux"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  type="textarea"
-                                  :disabled="isDisabledDepiInfo"
-                                  :rows="2"
-                                  placeholder="Examens clinique"
-                                  v-model="userDepiInfo.textarea3"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8"> Locomoteur </el-col>
+                            <el-col :span="8">
+                              <el-input
+                                type="textarea"
+                                :disabled="isDisabledDepiInfo"
+                                :rows="2"
+                                placeholder="Examens clinique"
+                                v-model="userDepiInfo.textarea2"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> O.R.L </el-col>
+                            <el-col :span="10">
+                              <el-checkbox
+                                label="sifflements"
+                                v-model="userDepiInfo.checksifflements"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Angines répétées"
+                                v-model="userDepiInfo.checkAnginesrépétées"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Epistaxis"
+                                v-model="userDepiInfo.checkEpistaxis"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Rhinorhée"
+                                v-model="userDepiInfo.checkRhinorhée"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                Douleurs: <br />
+                            <el-col :span="8">
+                              <el-input
+                                type="textarea"
+                                :disabled="isDisabledDepiInfo"
+                                :rows="2"
+                                placeholder="Examens clinique"
+                                v-model="userDepiInfo.textarea3"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> Locomoteur </el-col>
 
-                                <el-checkbox
-                                  label="Musculaire"
-                                  v-model="userDepiInfo.checkMusculaire"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Articulaire"
-                                  v-model="userDepiInfo.checkArticulaire"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="vertébraire"
-                                  v-model="userDepiInfo.checkvertébraire"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Neurologique"
-                                  v-model="userDepiInfo.checkNeurologique"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                              </el-col>
+                            <el-col :span="10">
+                              Douleurs: <br />
 
-                              <el-col :span="8">
-                                <el-input
-                                  type="textarea"
-                                  :disabled="isDisabledDepiInfo"
-                                  :rows="2"
-                                  placeholder="Examens clinique"
-                                  v-model="userDepiInfo.textarea4"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8"> cardio-vasculaire </el-col>
+                              <el-checkbox
+                                label="Musculaire"
+                                v-model="userDepiInfo.checkMusculaire"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Articulaire"
+                                v-model="userDepiInfo.checkArticulaire"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="vertébraire"
+                                v-model="userDepiInfo.checkvertébraire"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Neurologique"
+                                v-model="userDepiInfo.checkNeurologique"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-checkbox
-                                  label="Oedémes"
-                                  v-model="userDepiInfo.checkOedémes"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="A la marche"
-                                  v-model="userDepiInfo.checkAlamarchecv"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="au repos"
-                                  v-model="userDepiInfo.checkaurepos"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="A l'efforts"
-                                  v-model="userDepiInfo.checkAlefforts"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Permanents"
-                                  v-model="userDepiInfo.checkPermanents"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="palpitation"
-                                  v-model="userDepiInfo.checkpalpitation"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                              </el-col>
+                            <el-col :span="8">
+                              <el-input
+                                type="textarea"
+                                :disabled="isDisabledDepiInfo"
+                                :rows="2"
+                                placeholder="Examens clinique"
+                                v-model="userDepiInfo.textarea4"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> cardio-vasculaire </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  placeholder="Pouls"
-                                  v-model="userDepiInfo.CVPouls"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                </el-input>
-                                <el-input
-                                  placeholder="T.A"
-                                  v-model="userDepiInfo.CVTa"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                </el-input>
-                                <el-input
-                                  placeholder="Cyanose"
-                                  v-model="userDepiInfo.CVCyanose"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8"> Respiratoire </el-col>
+                            <el-col :span="10">
+                              <el-checkbox
+                                label="Oedémes"
+                                v-model="userDepiInfo.checkOedémes"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="A la marche"
+                                v-model="userDepiInfo.checkAlamarchecv"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="au repos"
+                                v-model="userDepiInfo.checkaurepos"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="A l'efforts"
+                                v-model="userDepiInfo.checkAlefforts"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Permanents"
+                                v-model="userDepiInfo.checkPermanents"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="palpitation"
+                                v-model="userDepiInfo.checkpalpitation"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-checkbox
-                                  label="Toux"
-                                  v-model="userDepiInfo.checkToux"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Dyspnee nacturne"
-                                  v-model="userDepiInfo.checkDyspneenacturne"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Dyspnee dlurne"
-                                  v-model="userDepiInfo.checkDyspneedlurne"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Expectorations"
-                                  v-model="userDepiInfo.checkExpectorations"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                              </el-col>
+                            <el-col :span="8">
+                              <el-input
+                                placeholder="Pouls"
+                                v-model="userDepiInfo.CVPouls"
+                                :disabled="isDisabledDepiInfo"
+                              >
+                              </el-input>
+                              <el-input
+                                placeholder="T.A"
+                                v-model="userDepiInfo.CVTa"
+                                :disabled="isDisabledDepiInfo"
+                              >
+                              </el-input>
+                              <el-input
+                                placeholder="Cyanose"
+                                v-model="userDepiInfo.CVCyanose"
+                                :disabled="isDisabledDepiInfo"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> Respiratoire </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  type="textarea"
-                                  :disabled="isDisabledDepiInfo"
-                                  :rows="2"
-                                  placeholder="Fréquence respiratoire"
-                                  v-model="userDepiInfo.textarea6"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row>
-                              <el-col :span="8"> Digestif </el-col>
+                            <el-col :span="10">
+                              <el-checkbox
+                                label="Toux"
+                                v-model="userDepiInfo.checkToux"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Dyspnee nacturne"
+                                v-model="userDepiInfo.checkDyspneenacturne"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Dyspnee dlurne"
+                                v-model="userDepiInfo.checkDyspneedlurne"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Expectorations"
+                                v-model="userDepiInfo.checkExpectorations"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.DigestifPyrosis"
-                                  label="Pyrosis"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.DigestifVomissements"
-                                  label="Vomissements"
-                                ></el-checkbox>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Appétit"
-                                  v-model="userDepiInfo.DigestifAppétit"
-                                >
-                                </el-input
-                                ><el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkDigestifAppétit"
-                                ></el-checkbox>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Transit"
-                                  v-model="userDepiInfo.DigestifTransit"
-                                >
-                                </el-input
-                                ><el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkDigestifTransit"
-                                ></el-checkbox>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Selles"
-                                  v-model="userDepiInfo.DigestifSelles"
-                                >
-                                </el-input
-                                ><el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkDigestifSelles"
-                                ></el-checkbox>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Rectorragies"
-                                  v-model="userDepiInfo.DigestifRectorragies"
-                                >
-                                </el-input
-                                ><el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="
-                                    userDepiInfo.checkDigestifRectorragies
-                                  "
-                                ></el-checkbox>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Douleur Abdominales"
-                                  v-model="
-                                    userDepiInfo.DigestifDouleurAbdominales
-                                  "
-                                >
-                                </el-input
-                                ><el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="
-                                    userDepiInfo.checkDigestifDouleurAbdominales
-                                  "
-                                ></el-checkbox>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Autres"
-                                  v-model="userDepiInfo.DigestifAutres"
-                                >
-                                </el-input
-                                ><el-checkbox
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkDigestifAutres"
-                                ></el-checkbox>
-                              </el-col>
+                            <el-col :span="8">
+                              <el-input
+                                type="textarea"
+                                :disabled="isDisabledDepiInfo"
+                                :rows="2"
+                                placeholder="Fréquence respiratoire"
+                                v-model="userDepiInfo.textarea6"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row>
+                            <el-col :span="6"> Digestif </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Denture:Carie:"
-                                  v-model="userDepiInfo.DigestifDentureCarie"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Gingivopatie"
-                                  v-model="userDepiInfo.DigestifGingivopatie"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="autres"
-                                  v-model="userDepiInfo.Digestifautres"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="abdomens"
-                                  v-model="userDepiInfo.Digestifabdomens"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Hernie"
-                                  v-model="userDepiInfo.DigestifHernie"
-                                >
-                                </el-input>
-                                <el-input
-                                  placeholder="Foie"
-                                  v-model="userDepiInfo.DigestifFoie"
-                                  :disabled="isDisabledDepiInfo"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8">
-                                Hematologique et Ganglionnaire
-                              </el-col>
+                            <el-col :span="10">
+                              <div style="margin-right:10px;">
+                              
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Appétit"
+                                v-model="userDepiInfo.DigestifAppétit"
+                              >
+                              </el-input
+                               ><!--<el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkDigestifAppétit"
+                              ></el-checkbox> -->
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Transit"
+                                v-model="userDepiInfo.DigestifTransit"
+                              >
+                              </el-input
+                               ><!--<el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkDigestifTransit"
+                              ></el-checkbox> -->
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Selles"
+                                v-model="userDepiInfo.DigestifSelles"
+                              >
+                              </el-input
+                              ><!--<el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkDigestifSelles"
+                              ></el-checkbox> -->
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Rectorragies"
+                                v-model="userDepiInfo.DigestifRectorragies"
+                              >
+                              </el-input
+                              ><!--<el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="
+                                  userDepiInfo.checkDigestifRectorragies
+                                "
+                              ></el-checkbox> -->
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Douleur Abdominales"
+                                v-model="
+                                  userDepiInfo.DigestifDouleurAbdominales
+                                "
+                              >
+                              </el-input
+                              ><!--<el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="
+                                  userDepiInfo.checkDigestifDouleurAbdominales
+                                "
+                              ></el-checkbox> -->
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Autres"
+                                v-model="userDepiInfo.DigestifAutres"
+                              >
+                              </el-input
+                              ><!--<el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkDigestifAutres"
+                              ></el-checkbox> -->
 
-                              <el-col :span="8">
-                                <el-checkbox
-                                  label="Ecchymoses"
-                                  v-model="userDepiInfo.checkEcchymoses"
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="Tendances aux hémorragies"
-                                  v-model="
-                                    userDepiInfo.checkTendancesauxhémorragies
-                                  "
-                                  :disabled="isDisabledDepiInfo"
-                                ></el-checkbox>
-                              </el-col>
+                              <el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.DigestifPyrosis"
+                                label="Pyrosis"
+                              ></el-checkbox>
+                              <el-checkbox
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.DigestifVomissements"
+                                label="Vomissements"
+                              ></el-checkbox>
+                              </div>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Pétéchies"
-                                  v-model="userDepiInfo.HematologiquePétéchies"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Purpura"
-                                  v-model="userDepiInfo.HematologiquePurpura"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Rate"
-                                  v-model="userDepiInfo.HematologiqueRate"
-                                >
-                                </el-input>
-                                Ganglions
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Cervicaux"
-                                  v-model="userDepiInfo.HematologiqueCervicaux"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Sous Auxillaires"
-                                  v-model="
-                                    userDepiInfo.HematologiqueSsAuxillaires
-                                  "
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Sous Claviculaires"
-                                  v-model="
-                                    userDepiInfo.HematologiqueSsClaviculaires
-                                  "
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Ingionaux"
-                                  v-model="userDepiInfo.HematologiqueIngionaux"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                            <el-row :gutter="10">
-                              <el-col :span="8"> Endocrinologie </el-col>
+                            <el-col :span="8">
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Denture:Carie:"
+                                v-model="userDepiInfo.DigestifDentureCarie"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Gingivopatie"
+                                v-model="userDepiInfo.DigestifGingivopatie"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="autres"
+                                v-model="userDepiInfo.Digestifautres"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="abdomens"
+                                v-model="userDepiInfo.Digestifabdomens"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Hernie"
+                                v-model="userDepiInfo.DigestifHernie"
+                              >
+                              </el-input>
+                              <el-input
+                                placeholder="Foie"
+                                v-model="userDepiInfo.DigestifFoie"
+                                :disabled="isDisabledDepiInfo"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6">
+                              Hematologique et Ganglionnaire
+                            </el-col>
 
-                              <el-col :span="8">
-                                Douleurs
-                                <el-checkbox
-                                  label="Obésité familiales"
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkObésitéfamiliales"
-                                ></el-checkbox>
-                                <el-checkbox
-                                  label="A la marche"
-                                  :disabled="isDisabledDepiInfo"
-                                  v-model="userDepiInfo.checkAlamarche"
-                                ></el-checkbox>
-                              </el-col>
+                            <el-col :span="10">
+                              <el-checkbox
+                                label="Ecchymoses"
+                                v-model="userDepiInfo.checkEcchymoses"
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="Tendances aux hémorragies"
+                                v-model="
+                                  userDepiInfo.checkTendancesauxhémorragies
+                                "
+                                :disabled="isDisabledDepiInfo"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Tyroide"
-                                  v-model="userDepiInfo.EndocrinologieTyroide"
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Testicules"
-                                  v-model="
-                                    userDepiInfo.EndocrinologieTesticules
-                                  "
-                                >
-                                </el-input>
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  placeholder="Glandes Mammaires"
-                                  v-model="
-                                    userDepiInfo.EndocrinologieGlandesMammaires
-                                  "
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
+                            <el-col :span="8">
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Pétéchies"
+                                v-model="userDepiInfo.HematologiquePétéchies"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Purpura"
+                                v-model="userDepiInfo.HematologiquePurpura"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Rate"
+                                v-model="userDepiInfo.HematologiqueRate"
+                              >
+                              </el-input>
+                              Ganglions
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Cervicaux"
+                                v-model="userDepiInfo.HematologiqueCervicaux"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Sous Auxillaires"
+                                v-model="
+                                  userDepiInfo.HematologiqueSsAuxillaires
+                                "
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Sous Claviculaires"
+                                v-model="
+                                  userDepiInfo.HematologiqueSsClaviculaires
+                                "
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Ingionaux"
+                                v-model="userDepiInfo.HematologiqueIngionaux"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> Endocrinologie </el-col>
 
-                            <el-row :gutter="10">
-                              <el-col :span="8"> Profil Psychologique </el-col>
+                            <el-col :span="10">
+                              Douleurs 
+                              <br />
+                              <el-checkbox
+                                label="Obésité familiales"
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkObésitéfamiliales"
+                              ></el-checkbox>
+                              <el-checkbox
+                                label="A la marche"
+                                :disabled="isDisabledDepiInfo"
+                                v-model="userDepiInfo.checkAlamarche"
+                              ></el-checkbox>
+                            </el-col>
 
-                              <el-col :span="8">
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  type="textarea"
-                                  :rows="3"
-                                  placeholder="Interrogatoire"
-                                  v-model="userDepiInfo.PsychoInterrogatoire"
-                                >
-                                </el-input>
-                              </el-col>
+                            <el-col :span="8">
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Tyroide"
+                                v-model="userDepiInfo.EndocrinologieTyroide"
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Testicules"
+                                v-model="
+                                  userDepiInfo.EndocrinologieTesticules
+                                "
+                              >
+                              </el-input>
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                placeholder="Glandes Mammaires"
+                                v-model="
+                                  userDepiInfo.EndocrinologieGlandesMammaires
+                                "
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          <el-divider></el-divider>
 
-                              <el-col :span="8">
-                                <el-input
-                                  :disabled="isDisabledDepiInfo"
-                                  type="textarea"
-                                  :rows="3"
-                                  placeholder="Examens Clinique"
-                                  v-model="userDepiInfo.PsychoExamensClinique"
-                                >
-                                </el-input>
-                              </el-col>
-                            </el-row>
-                            <el-divider></el-divider>
-                          </el-collapse-item>
-                        </el-collapse>
-                      </el-space>
+                          <el-row :gutter="10">
+                            <el-col :span="6"> Profil Psychologique </el-col>
 
-                      <center>
-                        <div v-if="isDisabledDepiInfo">
-                          <el-space
-                            ><el-button
-                              icon="el-icon-edit"
-                              class="savebtnant"
-                              @click="modifierInfoDepi"
-                            >
-                              Modifier
-                            </el-button></el-space
-                          >
-                        </div>
-                        <div v-else>
-                          <el-space
-                            ><el-button
-                              type="success"
-                              icon="el-icon-check"
-                              @click="saveDepiInfo"
-                            >
-                              Enregister
-                            </el-button>
-                            <el-button
-                              type="danger"
-                              icon="el-icon-delete"
-                              @click="cancelInfoDepi"
-                            >
-                              Annuler
-                            </el-button></el-space
-                          >
-                        </div>
-                      </center>
-                    </div>
-                  </center>
+                            <el-col :span="10">
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                type="textarea"
+                                :rows="3"
+                                placeholder="Interrogatoire"
+                                v-model="userDepiInfo.PsychoInterrogatoire"
+                              >
+                              </el-input>
+                            </el-col>
+
+                            <el-col :span="8">
+                              <el-input
+                                :disabled="isDisabledDepiInfo"
+                                type="textarea"
+                                :rows="3"
+                                placeholder="Examens Clinique"
+                                v-model="userDepiInfo.PsychoExamensClinique"
+                              >
+                              </el-input>
+                            </el-col>
+                          </el-row>
+                          
+
+                    </el-card>
+
+                     
+                     
+
+
+                    <center>
+                     <!-- <el-button 
+                    @click=" addpresc(userselected); "
+                    type="primary"
+                    class="aliButton"
+                    v-show="ordcreated === 'not created'" round>Créer </el-button > -->
+                    
+                    
+                      <div v-if="isDisabledDepiInfo">
+
+<el-button type="primary" @click="modifierInfoDepi"  style="background-color: #24b4ab;width:60%;" round><h6>Modifier</h6></el-button>
+
+
+                        
+                      </div>
+                      <div v-else>
+                        <el-button type="success" @click="saveDepiInfo"  style="background-color: #24b4ab;width:40%;" round><h6>Enregister</h6></el-button>
+
+                         <el-popconfirm
+                        confirmButtonText="Oui"
+                        cancelButtonText="Non"
+                        icon="el-icon-info"
+                        iconColor="red"
+                        title="Etes-vous sur de vouloir Annuler les modifications ?"
+                        @confirm="cancelInfoDepi"
+                        @cancel="cancelEvent"
+                      >
+                        <template #reference>
+                          <el-button  type="danger"  style="width:40%;" round><h6>Annuler</h6></el-button>
+                        </template>
+                      </el-popconfirm>
+                        
+                        
+                      </div>
+                    </center>
+                  </div>
+                  
+                  
+                  
+                
+                
                 </el-card>
               </div>
+              
             </el-scrollbar>
 
             <!-- ********************************************Examen Médical******************************************** -->
@@ -7181,7 +7213,11 @@ async minceViews() {
           DepistageInfo: this.userDepiInfo,
         });
         this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
-        this.messageSaveDone();
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Dépistage modifiée avec succes ',
+          offset: 100
+        });
         console.log(response.data);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -8895,6 +8931,11 @@ async annulerModificationOrd(ord) {
 .orientcard i {
   font-size: 5rem;
   color: white;
+}
+
+.aliButton {
+  background-color: #24b4ab;
+  width: 75%;
 }
 
 
