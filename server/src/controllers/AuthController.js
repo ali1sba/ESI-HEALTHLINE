@@ -56,14 +56,14 @@ module.exports = {
       })
       if (!user) {
         res.status(400).send({
-          error: 'The login information was incorrect {email} !'
+          error: "L'email est incorrect!"
         })
       } else {
         if (user.state === 'ACTIVATED') {
           const isPasswordValid = await user.comparePassword(password)
           if (!isPasswordValid) {
             res.status(400).send({
-              error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
+              error: 'Le mot de passe est incorrect !'
             })
           } else {
             const userJson = user.toJSON()
@@ -75,7 +75,7 @@ module.exports = {
           }
         } else {
           res.status(400).send({
-            error: 'This account is desactivated !'
+            error: 'Ce compte est désactivé !'
           })
         }
       }
