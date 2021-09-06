@@ -302,14 +302,13 @@
             </div>
             <center>
               <div>
-                <el-radio-group v-model="radio1">
+                <el-radio-group v-model="radio0">
                   <el-radio-button label="Dossier Médical"></el-radio-button>
-                  <el-radio-button label="Examen Médical"></el-radio-button>
+                  <el-radio-button @click="radio1='Examen Médical'" label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
-                  <el-radio-button
-                    label="RDV"
-                    @click="showRDVSelectedPatient"
-                  ></el-radio-button>
+                  <el-radio-button label="RDV" @click="showRDVSelectedPatient"></el-radio-button>
+                </el-radio-group>
+                <el-radio-group v-model="radio1">
                   <el-radio-button
                     v-show="hidden"
                     label="examen clinique"
@@ -349,7 +348,7 @@
             <!-- ********************************************Medical file******************************************** -->
             <!-- **********************have or not the Medical file********************** -->
 
-            <el-scrollbar v-show="radio1 === 'Dossier Médical'">
+            <el-scrollbar v-show="radio0 === 'Dossier Médical'">
               <el-card
                 v-if="!haveMF"
                 class="box-card"
@@ -1603,38 +1602,27 @@
 
 
                     <center>
-                     <!-- <el-button 
-                    @click=" addpresc(userselected); "
-                    type="primary"
-                    class="aliButton"
-                    v-show="ordcreated === 'not created'" round>Créer </el-button > -->
-                    
-                    
-                      <div v-if="isDisabledDepiInfo">
 
-<el-button type="primary" @click="modifierInfoDepi"  style="background-color: #24b4ab;width:60%;" round><h6>Modifier</h6></el-button>
-
-
-                        
+                      <div v-if="isDisabledDepiInfo" >
+                        <el-button type="primary" @click="modifierInfoDepi" icon="el-icon-edit" style="background-color: #24b4ab; display:flex;" round>Modifier</el-button>
                       </div>
-                      <div v-else>
-                        <el-button type="success" @click="saveDepiInfo"  style="background-color: #24b4ab;width:40%;" round><h6>Enregister</h6></el-button>
+                      <div v-else style="display:flex;align-items: center;justify-content: center" >
+                          
+                        <el-button type="success" icon="el-icon-check" @click="saveDepiInfo"  style="background-color: #24b4ab;display:flex;" round>Enregister</el-button>
 
-                         <el-popconfirm
-                        confirmButtonText="Oui"
-                        cancelButtonText="Non"
-                        icon="el-icon-info"
-                        iconColor="red"
-                        title="Etes-vous sur de vouloir Annuler les modifications ?"
-                        @confirm="cancelInfoDepi"
-                        @cancel="cancelEvent"
-                      >
-                        <template #reference>
-                          <el-button  type="danger"  style="width:40%;" round><h6>Annuler</h6></el-button>
-                        </template>
-                      </el-popconfirm>
-                        
-                        
+                        <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir Annuler les modifications ?"
+                          @confirm="cancelInfoDepi"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" icon="el-icon-delete" round>Annuler</el-button>
+                          </template>
+                        </el-popconfirm>
                       </div>
                     </center>
                   </div>
@@ -1649,7 +1637,7 @@
             </el-scrollbar>
 
             <!-- ********************************************Examen Médical******************************************** -->
-            <el-scrollbar v-show="radio1 === 'Examen Médical'">
+            <el-scrollbar v-show="radio0 === 'Examen Médical'&& radio1=== 'Examen Médical'">
               <el-card class="box-card">
                 <el-space>
                   <el-row>
@@ -1680,6 +1668,7 @@
                         @click="
                           radio1 = 'rapport medical';
                           getRepports();
+                          radioRM = 'Historique'
                         "
                         class="examcard rapmed"
                       >
@@ -1714,9 +1703,11 @@
               </el-card>
             </el-scrollbar>
             <!-- ****************************examen clinique: ilhem******************************* -->
-            <el-scrollbar v-show="radio1 === 'examen clinique'">
+            <el-scrollbar v-show="radio1 === 'examen clinique' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
-                <h6>Examen clinique</h6>
+                <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
+                <center><h4>Examen clinique</h4></center>
+                
                 <br />
                 <center>
                   <div>
@@ -2888,9 +2879,10 @@
                 </el-card>
             </el-scrollbar>
             ***************************cards bilan paraclinique******************************************-->
-            <el-scrollbar v-show="radio1 === 'bilan paraclinique'">
+            <el-scrollbar v-show="radio1 === 'bilan paraclinique' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
-                <h6>Bilans para-cliniques</h6>
+                 <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
+                <center><h4>Bilans para-cliniques</h4></center>
                 <el-space>
                   <el-row>
                     <el-col :span="8">
@@ -2925,7 +2917,7 @@
               </el-card>
             </el-scrollbar>
             <!-- *********************************** Bilans biologiques***************************** -->
-            <el-scrollbar v-show="radio1 === 'Bilans Biologiques'">
+            <el-scrollbar v-show="radio1 === 'Bilans Biologiques' && radio0 === 'Examen Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBack()"
                 >Bilans para-cliniques</el-button
               >
@@ -3683,7 +3675,7 @@
             </el-scrollbar>
 
             <!--******************* Bilans Radiologiques *******************************-->
-            <el-scrollbar v-show="radio1 === 'Bilans Radiologiques'">
+            <el-scrollbar v-show="radio1 === 'Bilans Radiologiques' && radio0 === 'Examen Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBack()"
                 >Bilans para-cliniques</el-button
               >
@@ -3737,7 +3729,7 @@
             </el-scrollbar>
 
             <!--********************************* Bilans Electriques ********************************-->
-            <el-scrollbar v-show="radio1 === 'Bilans électriques'">
+            <el-scrollbar v-show="radio1 === 'Bilans électriques' && radio0 === 'Examen Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBack()"
                 >Bilans para-cliniques</el-button
               >
@@ -3911,9 +3903,10 @@
             </el-scrollbar>
             <!-- ****************************Orientation / Evacuation / Certificat******************************* -->
             <!--***************************cards orientation (lahcene)******************************************-->
-            <el-scrollbar v-show="radio1 === 'orientations'">
+            <el-scrollbar v-show="radio1 === 'orientations' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
-                <h6>Orientation / Evacuation / Certificat Medical</h6>
+                 <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
+                <center><h4>Orientation / Evacuation / Certificat Medical</h4></center>
                 <el-space>
                   <el-row>
                     <el-col :span="8">
@@ -3951,7 +3944,7 @@
               </el-card>
             </el-scrollbar>
             <!--********Orientation Medicall***********-->
-            <el-scrollbar v-show="radio1 === 'Orientation Medical'">
+            <el-scrollbar v-show="radio1 === 'Orientation Medical' && radio0 === 'Examen Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBackOrientations()"
                 >Orientation / Evacuation / Certificat Medical</el-button
               >
@@ -4027,11 +4020,12 @@
                     </el-row>         
                   <center>
                     <el-button
+                      style="display:flex;"
                       @click="creepdf2()"
                       class="creatbt"
-                      icon="el-icon-edit-outline"
+                      icon="el-icon-edit"
                       round
-                      >Crée un pdf</el-button
+                      >Créer un pdf</el-button
                     >
                   </center>
                 </div>
@@ -4158,7 +4152,7 @@
             
 
             <!-- ********Evacuation Médical***********--> 
-            <el-scrollbar v-show="radio1 === 'Evacuation Medical'">
+            <el-scrollbar v-show="radio1 === 'Evacuation Medical' && radio0 === 'Examen Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBackOrientations()"
                 >Orientation / Evacuation / Certificat Medical</el-button
               >
@@ -4251,7 +4245,7 @@
                 </div>
               </el-card>
             </el-scrollbar>
-            <el-scrollbar  v-show="radio1==='Certificat Médical'">
+            <el-scrollbar  v-show="radio1==='Certificat Médical' && radio0 === 'Examen Médical'">
               <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
               <el-card class="box-card">
                 <center>
@@ -4364,7 +4358,7 @@
 
             <!-- ****************************rapport medical: ali******************************* -->
 
-            <el-scrollbar v-show="radio1 === 'rapport medical'">
+            <el-scrollbar v-show="radio1 === 'rapport medical' && radio0 === 'Examen Médical'">
               <!--                                                  ***********to do*********** 
                 <el-card class="box-card">
                    <el-empty  :image-size="300">
@@ -4383,6 +4377,7 @@
                   
                 </center>
               <el-card class="box-card">
+                 <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
@@ -4492,13 +4487,15 @@
                       ></el-input></el-col
                   ></el-row>
                   <center>
-                    <el-button
+                     <el-button
+                      style="display:flex;"
                       @click="creepdf()"
                       class="creatbt"
-                      icon="el-icon-edit-outline"
+                      icon="el-icon-edit"
                       round
-                      >Crée un pdf</el-button
+                      >Créer un pdf</el-button
                     >
+                    
                     <hr>
                     <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
@@ -4508,8 +4505,11 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
 
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
-            <el-scrollbar v-show="radio1 === 'ordonnances'">
-              <el-card class="box-card" style="padding:40px">
+            <el-scrollbar v-show="radio1 === 'ordonnances' && radio0 === 'Examen Médical'">
+              
+                
+              <el-card class="box-card" style="padding:40px"> 
+                <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 <button
                   style="background:none;margin:-40px; float:right; border:none;font-size:25px"
                   @click="radio1 = 'Examen Médical'"
@@ -4554,7 +4554,7 @@ EMAIL: contact@esi-sba.dz</p>
               </el-card>
             </el-scrollbar>
             <!-- creer ordonnance -->
-            <el-scrollbar v-show="radio1 === 'nouvOrd'">
+            <el-scrollbar v-show="radio1 === 'nouvOrd' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
                 <button
                   style="background:none; float:right; border:none;font-size:25px"
@@ -4683,7 +4683,7 @@ EMAIL: contact@esi-sba.dz</p>
               </el-card>
             </el-scrollbar>
             <!-- historique des ordonnance -->
-            <el-scrollbar v-show="radio1 === 'ordhistory'">
+            <el-scrollbar v-show="radio1 === 'ordhistory' && radio0 === 'Examen Médical'">
               <el-card class="box-card" style="padding-left:90px;padding-right:90px;" >
                <button style="background:none; float:right; border:none;font-size:22px;padding-right:-40px;" @click="annulerOrdonnance(); radio1='ordonnances'">&#x2715;</button>
                  <tr style="display:flex">
@@ -4715,7 +4715,7 @@ EMAIL: contact@esi-sba.dz</p>
              </el-card>
             </el-scrollbar>
             <!-- consulter ordonnance -->
-            <el-scrollbar v-show="radio1 === 'consulterord'">
+            <el-scrollbar v-show="radio1 === 'consulterord' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
                 <div  style="float:right; width:100px ">
                   <el-button  @click=" recoverMedicaments(); isOrdDisabled=false "
@@ -4839,7 +4839,7 @@ EMAIL: contact@esi-sba.dz</p>
               </el-card>
             </el-scrollbar>
             <!-- ****************************orientations: lahcen ******************************* -->
-            <el-scrollbar v-show="radio1 === 'orientations'">
+            <!-- <el-scrollbar v-show="radio1 === 'orientations'">
               <el-card class="box-card">
                 <el-empty :image-size="300">
                   <el-button
@@ -4850,9 +4850,9 @@ EMAIL: contact@esi-sba.dz</p>
                   >
                 </el-empty>
               </el-card>
-            </el-scrollbar>
+            </el-scrollbar> -->
             <!-- ********************************************Statistique******************************************** -->
-            <el-scrollbar v-show="radio1 === 'Statistique'">
+            <el-scrollbar v-show="radio0 === 'Statistique'">
               <el-card class="box-card">
                 <el-empty :image-size="300">
                   <el-button
@@ -4865,7 +4865,7 @@ EMAIL: contact@esi-sba.dz</p>
               </el-card>
             </el-scrollbar>
             <!-- ********************************************RDV******************************************** -->
-            <el-scrollbar v-show="radio1 === 'RDV'">
+            <el-scrollbar v-show="radio0 === 'RDV'">
               <div v-if="haveRDV">
                 <el-card>
                   <el-card class="cardGris">
@@ -5611,7 +5611,8 @@ export default {
       error: null,
       email: "",
       // navigation bar*******************************************************************************************
-      radio1: "Dossier Médical",
+      radio0: "Dossier Médical",
+      radio1: "Examen Médical",
       radio2: "Historique",
       radioRMyesy: "Historique",
       radioRM:"Historique",
@@ -6887,6 +6888,11 @@ async minceViews() {
     pdfMake.createPdf(doc).open();        
  },
     async showPatient(user) {
+      this.radio0 = "Dossier Médical",
+      this.radio1 = "Examen Médical",
+      this.radio2 = "Historique",
+      this.radioRMyesy = "Historique",
+      this.radioRM ="Historique",
       this.openFullScreen1();
       this.content = "dossier";
       this.userselected = user;
