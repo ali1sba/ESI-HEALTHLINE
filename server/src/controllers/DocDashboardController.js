@@ -598,6 +598,25 @@ module.exports = {
       })
     }
   },
+  async annulerBiometricInfo (req, res) {
+    try {
+      const userBI = req.body.biometricInfo
+
+      // update the tables with save function of sequelize
+      const userBiometricInfo = await BiometricInfo.findOne({
+        where: {
+          id: userBI.id
+        }
+      })
+      const BI = userBiometricInfo.toJSON()
+      console.log(BI)
+      res.send({ BI: BI })
+    } catch (err) {
+      res.status(500).send({
+        error: `an error has occured trying to fetch the users ${err}`
+      })
+    }
+  },
 
   async saveBiometricInfo (req, res) {
     try {
@@ -1123,7 +1142,7 @@ module.exports = {
     try {
       const userId = req.body.id
       const ords = await Ordonnance.findAll({
-        attributes: ['id', 'nombreMed', 'updatedAt'],
+        attributes: ['id', 'nombreMed', 'updatedAt', 'createdAt'],
         where: {
           patientId: userId
         },

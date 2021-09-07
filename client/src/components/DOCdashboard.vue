@@ -614,39 +614,66 @@
                 <!-- **********************nour********************** -->
                 <el-card class="box-card" id="Informations-Biométriques">
                   <h6>Informations Biométriques</h6>
-                  <center>
+                
                     <div class="text item">
-                      <div class="text item" id="biom">
+                      <div class="text item" id="biom" >
+                        <div style="display:flex">
                         <p class="droite">Poids : (kg)</p>
                         <div classe="gauche">
-                          <el-input
+                          <el-input    :disabled="isDisabledBiomInfo"
                             placeholder="Entrez le poids"
                             v-model="userBiomInfo.poids"
                           >
                           </el-input>
                         </div>
+                        </div>
+                         <div style="display:flex">
                         <p class="droite">Taille : (cm)</p>
                         <div classe="gauche">
-                          <el-input
+                          <el-input    :disabled="isDisabledBiomInfo"
                             id="weight"
                             placeholder="Entrez la taille"
                             v-model="userBiomInfo.taille"
                           >
                           </el-input>
                         </div>
+                         </div>
                         <el-button
                           @click="
                             bmiCalculation();
-                            saveBiometricInfo();
                           "
+                         :disabled="isDisabledBiomInfo"
                           class="droite"
                         >
                           IMC
                         </el-button>
-                        <p class="droite" id="imcValue">{{ responseimc }}</p>
+                        <p class="droite2" id="imcValue">{{ responseimc }}</p>
                       </div>
                     </div>
-                  </center>
+                    <br>
+                       <div v-if="isDisabledBiomInfo" >
+                        <el-button type="primary" @click="isDisabledBiomInfo=false" icon="el-icon-edit" style="background-color: #24b4ab; display:flex; margin:0 auto" round>Modifier</el-button>
+                      </div>
+                      <div v-else style="display:flex;align-items: center;justify-content: center" >
+                          
+                        <el-button type="success" icon="el-icon-check" @click=" bmiCalculation();
+                          saveBiometricInfo();isDisabledBiomInfo=true"  style="background-color: #24b4ab;display:flex;" round>Enregister</el-button>
+
+                        <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir Annuler les modifications ?"
+                          @confirm="annulerInfoBiom()"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" icon="el-icon-delete" round>Annuler</el-button>
+                          </template>
+                        </el-popconfirm>
+                      </div>
+                
                 </el-card>
                <!-- **********************ilhem********************** -->
                 <el-card class="box-card" id="Antécédents">
@@ -1679,7 +1706,7 @@
                     </el-col>
                     <el-col :span="12">
                       <el-card
-                        @click="radio1 = 'ordonnances'"
+                        @click="radio1 = 'ordonnances'; radio1O='ordhistory'; recoverOrdonnances(userselected); radio2O='history'"
                         class="examcard ord"
                       >
                         <i class="fa fa-medkit"> </i>
@@ -4511,64 +4538,28 @@ EMAIL: contact@esi-sba.dz</p>
             <!-- ****************************ordonnances :noor el hooha :3 ******************************* -->
             <el-scrollbar v-show="radio1 === 'ordonnances' && radio0 === 'Examen Médical'">
               
-                
-              <el-card class="box-card" style="padding:40px"> 
-                <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
-                <button
-                  style="background:none;margin:-40px; float:right; border:none;font-size:25px"
-                  @click="radio1 = 'Examen Médical'"
-                >
-                  &#x2715;
-                </button>
-                <el-card
-                  style="width:70%;margin:auto;background: linear-gradient(337deg, rgba(29,99,95,1) 0%, rgba(36,180,171,0.8323704481792717) 46%, rgba(36,180,171,0.23573179271708689) 100%);  box-shadow: 0 4px 5px 3px rgba(230, 230, 230, 0.9);font
-"
-                >
-                  <p
-                    style=" vertical-align: middle; text-align:center; margin:0px;font-size:30px;font-family: sans-serif; font-weigjt: bold;color:white"
-                  >
-                    Total Des Ordonnances
-                  </p>
-                  <p
-                    style="text-align:center ; margin:0px;font-size:30px ;color:white;font-family: sans-serif; font-weigjt: bold;"
-                  >
-                    50
-                  </p></el-card
-                >
-                <div style="padding:15px; width:70%; margin: auto">
-                  <el-button
-                    @click="  recoverMedicaments();viderOrdonnance(); addprescinput(); radio1 = 'nouvOrd'; isOrdDisabled=false;ordcreated= 'not created'" class="hovereffect"
-                    type="primary"
-                    v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:45%;margin:10px"
-                    >Créer ordonnance</el-button
-                  >
-                  <el-button
-                    type="primary"
-                    v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab;width:45%;margin:10px"
-                    @click="
+               <center>
+                  <div>
+                    <el-radio-group v-model="radio1O">
+                     <el-radio-button
+                        label="ordhistory"
+                        @click="
                       recoverOrdonnances(userselected);
-                      radio1 = 'ordhistory';
-                    "
-                    class="hovereffect"
-                    >Historique</el-button
-                  >
-                </div>
-              </el-card>
-            </el-scrollbar>
+                                         "
+                      >Historique</el-radio-button>
+                      <el-radio-button
+                        label="nouvOrd"
+                        @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'"
+                      >Créer</el-radio-button>
+                    </el-radio-group>
+                  </div>
+                </center>
+                      
             <!-- creer ordonnance -->
-            <el-scrollbar v-show="radio1 === 'nouvOrd' && radio0 === 'Examen Médical'">
+            <el-scrollbar v-show="radio1O === 'nouvOrd' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
-                <button
-                  style="background:none; float:right; border:none;font-size:25px"
-                  @click="
-                    annulerOrdonnance();
-                    radio1 = 'ordonnances';
-                  "
-                >
-                  &#x2715;
-                </button>
+                <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'; annulerOrdonnance();" round></el-button>
+                               
                 <div ref="contentord" style="padding: 0px 80px">
                   <p style="font-size:16px; text-align:center;margin-bottom:0px;margin-bottom:0px;font-weight:500;">République Algérienne Démocratique et Populaire </p>
 
@@ -4687,46 +4678,48 @@ EMAIL: contact@esi-sba.dz</p>
               </el-card>
             </el-scrollbar>
             <!-- historique des ordonnance -->
-            <el-scrollbar v-show="radio1 === 'ordhistory' && radio0 === 'Examen Médical'">
-              <el-card class="box-card" style="padding-left:90px;padding-right:90px;" >
-               <button style="background:none; float:right; border:none;font-size:22px;padding-right:-40px;" @click="annulerOrdonnance(); radio1='ordonnances'">&#x2715;</button>
-                 <tr style="display:flex">
-                   
-                  
-                   <th style="flex:30%">
-                     DATE ET HEURE
-                   </th>
-                   <th style="flex:25%">
-                     Nombre de médicaments
-                   </th>
-                    <th style="flex:30%">
-                   </th>
-                 </tr>
-                 <tr v-for="ord in ords" :key="ord.id" style="display:flex;padding:4px; border-radius:10px" >
-                   
-                    
-                   <td style="flex:30%">{{ord.date}}</td>
-                   <td style="flex:25%">{{ord.nombreMed}}</td>
-                   <td style="flex:30%">
-                    <el-button
-                    type="primary"
-                    style="background-color: #24b4ab; "  @click=" isOrdDisabled=true; showOrdonnance(ord); radio1='consulterord'"
-                    class="hovereffect">consulter</el-button>
-                    
-                    </td>
-   
-                 </tr>
+            <el-scrollbar v-show="radio1O === 'ordhistory' && radio2O === 'history' && radio0 === 'Examen Médical'">
+              <el-card class="box-card"  >
+              <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
+                
+
+
+
+                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnances</p>
+                  <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="ord in ords.slice().reverse()" :key="ord.id"  >
+                      <p style="font-size: 15px;font-weight: bold;margin-top:-15px">&nbsp;{{ord.date}} </p>
+                      <el-card   class="cardGris">
+                                    
+                                    
+                                      <div style="display:flex;"><h6> Heure:&nbsp;&nbsp; </h6><p> {{ord.heure}} </p></div>
+                                      <div style="display:flex;"><h6>Le:&nbsp; &nbsp;</h6>
+                                      <p>{{ord.date}} </p></div>
+                                      <div style="display:flex;"><h6>Nombre de médicaments:&nbsp; &nbsp;</h6>
+                                      <p>{{ord.nombreMed}} </p></div>
+                                      
+                                      <el-button type="" style="align-items: right;" @click=" isOrdDisabled=true; showOrdonnance(ord); radio2O='consulterord'">consulter</el-button>
+                                      <el-button type="" style="align-items: right;" @click="Viewpdf(ord)">Voir en PDF</el-button>
+                                  
+                                  </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+
+
+                
              </el-card>
             </el-scrollbar>
             <!-- consulter ordonnance -->
-            <el-scrollbar v-show="radio1 === 'consulterord' && radio0 === 'Examen Médical'">
+            <el-scrollbar v-show="radio2O === 'consulterord' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
+                <el-button icon="el-icon-arrow-left"  @click="radio2O='history'"  round></el-button>
+                
                 <div  style="float:right; width:100px ">
                   <el-button  @click=" recoverMedicaments(); isOrdDisabled=false "
                                 icon="el-icon-edit"
                                 style="background:none;font-size:25px;margin-top:-5px; float:left; border:none;"
                              />
-                <button style="background:none;  border:none;font-size:25px;font-weight:400;" @click="radio1='ordonnances'">&#x2715;</button>
+               
                  </div>
                 
                 <div ref="contentord" style="padding: 0px 80px">
@@ -4842,6 +4835,7 @@ EMAIL: contact@esi-sba.dz</p>
                 
               </el-card>
             </el-scrollbar>
+             </el-scrollbar>
             <!-- ****************************orientations: lahcen ******************************* -->
             <!-- <el-scrollbar v-show="radio1 === 'orientations'">
               <el-card class="box-card">
@@ -5618,6 +5612,10 @@ export default {
       // navigation bar*******************************************************************************************
       radio0: "Dossier Médical",
       radio1: "Examen Médical",
+      radio1O: "ordhistory",
+      radio2O: "history",
+
+
       radio2: "Historique",
       radioRMyesy: "Historique",
       radioRM:"Historique",
@@ -5632,6 +5630,7 @@ export default {
         taille: 0,
         imc: 0,
       },
+      isDisabledBiomInfo:true,
       userPersInfo: {
         idUser: null,
         idPI: null,
@@ -6037,6 +6036,21 @@ export default {
       //date = x[0];
       //alert(date);
       return x[0];
+    },
+      getDateFromStringS(str){
+      var x = [];
+      x = str.split(' ');
+      //date = x[0];
+      //alert(date);
+      return x[0];
+    },
+      getHourFromStringS(str){
+      var x = [];
+      x = str.split(' ');
+      //date = x[0];
+      //alert(date);
+     
+      return  x[1].substr(0,5);
     },
 
 
@@ -6614,12 +6628,14 @@ async minceViews() {
         this.userBiomInfo.poids /
         ((this.userBiomInfo.taille / 100) * (this.userBiomInfo.taille / 100));
       this.userBiomInfo.imc = bmi;
-      if (bmi < 25) {
-        this.responseimc = "Low: " + bmi.toFixed(2) + " kg/m2";
-      } else if (bmi >= 25 && bmi < 30) {
-        this.responseimc = "Moderate: " + bmi.toFixed(2) + " kg/m2";
-      } else if (bmi >= 30) {
-        this.responseimc = "High: " + bmi.toFixed(2) + " kg/m2";
+      if (bmi < 18.5 ) {
+        this.responseimc = " Insuffisance pondérale: " + bmi.toFixed(2) + " kg/m2";
+      } else if (bmi >= 18.5 && bmi < 25) {
+        this.responseimc = "Poids normal: " + bmi.toFixed(2) + " kg/m2";
+      } else if (bmi >= 25 && bmi<30) {
+        this.responseimc = "Surpoids: " + bmi.toFixed(2) + " kg/m2";
+      }else{
+        this.responseimc = "obésité: " + bmi.toFixed(2) + " kg/m2";
       }
     },
     //     createpdf() {
@@ -6902,6 +6918,7 @@ async minceViews() {
     }
     pdfMake.createPdf(doc).open();        
  },
+
     async showPatient(user) {
       this.radio0 = "Dossier Médical",
       this.radio1 = "Examen Médical",
@@ -6923,6 +6940,7 @@ async minceViews() {
         this.userPersInfo = response.data.medFile.personalInfo;
         this.userDepiInfo = response.data.medFile.depistagelInfo;
         this.userBiomInfo = response.data.medFile.biometricInfo;
+        this.responseimc=response.data.medFile.biometricInfo.imc.toFixed(2);
         this.userAntInfo = response.data.medFile.antecedentsInfo;
         // partie de depistage
         this.userDepiInfo.checkedDouleurs = this.stringToBoolean(
@@ -7102,6 +7120,20 @@ async minceViews() {
         this.userDepiInfo = Object.assign({}, this.cachedUserDepistage);
         this.isDisabledDepiInfo = true;
         console.log("cancelInfoDepi button was clicked !");
+      } catch (error) {
+        alert("something went wrong");
+      }
+    },
+      async annulerInfoBiom() {
+      try {
+        console.log("CANCEL biominfo button was clicked !");
+        const response = await DocServices.annulerBiometricInfo({
+          biometricInfo: this.userBiomInfo,
+        });
+        this.userBiomInfo.poids=response.data.BI.poids
+        this.userBiomInfo.taille=response.data.BI.taille
+this.bmiCalculation();
+        this.isDisabledBiomInfo = true;
       } catch (error) {
         alert("something went wrong");
       }
@@ -7361,6 +7393,25 @@ async minceViews() {
       console.log(`something went wrong ${error}`);
     }
    },
+    async Viewpdf(ordonnance){
+try {
+const response = await DocServices.showOrdonnance({
+        id: ordonnance.id
+      })
+      let list=[];
+
+      response.data.prescs.map(function(value) {
+       
+     list.push({nom: value.nom, marque:value.marque,forme:value.forme , dosage:value.dosage,duree:value.duree , ordonnanceId: ordonnance.id});
+         
+     });
+     this.currentprescs=list;
+     this.prescs=this.currentprescs;
+     this.viewpdf();} catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+ },
     
     async addprescinput() {
       
@@ -8516,9 +8567,19 @@ async annulerModificationOrd(ord) {
         id: user.id
       })
       let list=[];
+       this.ordons = response.data.ords;
+        for (let index = 0; index < this.ordons.length; index++) {
+          var element = this.ordons[index];
+          var x = this.getHourFromStringS( element.updatedAt);
+          this.ordons[index].createdAt = x ;
+ 
+           x = this.getDateFromStringS( element.updatedAt);
+          this.ordons[index].updatedAt = x ;
+       }
+          
     response.data.ords.map(function(value) {
        
-     list.push({id: value.id, date:value.updatedAt.toString() ,nombreMed:value.nombreMed });
+     list.push({id: value.id, date:value.updatedAt.toString() , heure:value.createdAt.toString(),nombreMed:value.nombreMed });
      
      });
         
@@ -8781,6 +8842,12 @@ async annulerModificationOrd(ord) {
   float: left;
   margin-top: 5px;
   width: 85px;
+}
+.droite2 {
+  margin-right: 20px;
+  float: left;
+  margin-top: 5px;
+  width:200px;
 }
 #biom {
   width: 350px;
