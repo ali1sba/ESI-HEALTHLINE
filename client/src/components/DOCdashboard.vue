@@ -27,7 +27,7 @@
                   </el-badge>
                   
               </span>               
-              <p class="nom">RDV Section</p></a
+              <p class="nom">Rendez-vous Section</p></a
             >          </li>
           <li>
             <a @click="content = '4'"
@@ -191,7 +191,7 @@
                 <h3>
                   <span class="countDash">{{RDVCount}}</span>
                 </h3>
-                <p>Today's RDV</p>
+                <p>Today's Rendez-vous</p>
               </div>
               <div class="floatDash-right">
                 <i class="el-icon-rank"></i>
@@ -4383,13 +4383,17 @@
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
+                      <p style="font-size: 15px;font-weight: bold;">&nbsp;{{Rapp.createdAt}} </p>
                       <el-card   class="cardGris">
                                     
                                       <h4> {{Rapp.Motif}} </h4>
                                       
                                       <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
-                                      <p>{{Rapp.createdAt}} </p>
+                                      <div style="display:flex;"><h6>Le:&nbsp; </h6>
+                                      <p>{{Rapp.createdAt}} </p></div>
+                                      
                                       <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
+                                      <el-button type="" style="align-items: right;" @click="pdfGenerator(Rapp)">créer PDF</el-button>
                                   
                                   </el-card>
                     </el-timeline-item>
@@ -4403,7 +4407,7 @@
                     <b>Etat Général :</b>
                     <p>{{rapp.EtatGeneral}}</p>
                     <b>Autre :</b>
-                    <p>{{rapp.autre}}</p>
+                    <p>{{ rapp.Autre}}</p>
                     <b>Conclusion :</b>
                     <p>{{rapp.Conclusion}}</p>
                      <template #footer>
@@ -4870,7 +4874,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <el-card>
                   <el-card class="cardGris">
                     <el-row>
-                      <el-col :span="7">Type de RDV</el-col>
+                      <el-col :span="7">Type de Rendez-vous</el-col>
                       <el-col :span="10">Date And Time</el-col>
                       <el-col :span="7">Note</el-col>
                     </el-row>
@@ -4883,10 +4887,11 @@ EMAIL: contact@esi-sba.dz</p>
                       :key="Rdv.id"
                     >
                       <el-card class="cardGris">
+                        
                         <el-row>
-                          <el-col :span="7">{{ Rdv.Type }}</el-col>
-                          <el-col :span="10">{{ Rdv.DateAndTime }}</el-col>
-                          <el-col :span="7">{{ Rdv.Note }}</el-col>
+                          <el-col :span="7"><h6> Type de Rendez-vous:</h6> &nbsp;{{ Rdv.Type }}</el-col>
+                          <el-col :span="10"><h6> Date And Time: </h6>  &nbsp;{{ Rdv.DateAndTime }}</el-col>
+                          <el-col :span="7"><h6> Note: </h6>  &nbsp;{{ Rdv.Note }}</el-col>
                         </el-row>
                         <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
                         <el-button
@@ -4909,7 +4914,7 @@ EMAIL: contact@esi-sba.dz</p>
                     @click="dialogRDVFormVisible = true"
                     style="background-color: #24b4ab; width: 50%"
                   >
-                    programmer un RDV
+                    Programmer un Rendez-vous
                   </el-button>
                 </el-card>
                 <!--form-->
@@ -4972,7 +4977,7 @@ EMAIL: contact@esi-sba.dz</p>
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab; width: 100%"
                     @click="dialogRDVFormVisible = true"
-                    >programmer un RDV</el-button
+                    >Programmer un Rendez-vous</el-button
                   >
                 </el-empty>
               </el-card>
@@ -6026,6 +6031,16 @@ export default {
     });
   },
   methods: {
+     getDateFromString(str){
+      var x = [];
+      x = str.split('T');
+      //date = x[0];
+      //alert(date);
+      return x[0];
+    },
+
+
+
     async addViews() {
   localStorage.setItem('bannerViews', ++this.RDVCount);
 },
@@ -7496,6 +7511,12 @@ async modifierAntecedents() {
         });
         console.log(response.data);
         this.reporrts = response.data.repports;
+        for (let index = 0; index < this.reporrts.length; index++) {
+          var element = this.reporrts[index];
+          var x = this.getDateFromString( element.createdAt);
+          this.reporrts[index].createdAt = x ;
+        }
+        
         console.log(this.reporrts);
       } catch (error) {
         console.log(`something went wrong ${error}`);
@@ -7566,7 +7587,16 @@ async modifierAntecedents() {
           RapportMedical: this.RapportMedical,
         });
 
-        var docDefinition = {
+        this.pdfGenerator(this.RapportMedical);
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+
+    pdfGenerator(R){
+      var docDefinition = {
           footer: [
             {
               columns: [
@@ -7708,7 +7738,7 @@ async modifierAntecedents() {
               style: "mainTitle",
             },
             {
-              text: this.RapportMedical.Motif,
+              text: R.Motif,
               style: "main",
             },
             {
@@ -7716,7 +7746,7 @@ async modifierAntecedents() {
               style: "mainTitle",
             },
             {
-              text: this.RapportMedical.HistoireDeLaMaladie,
+              text: R.HistoireDeLaMaladie,
               style: "main",
             },
              {
@@ -7724,7 +7754,7 @@ async modifierAntecedents() {
               style: "mainTitle",
             },
             {
-              text: this.RapportMedical.EtatGeneral,
+              text: R.EtatGeneral,
               style: "main",
             },
             {
@@ -7732,7 +7762,7 @@ async modifierAntecedents() {
               style: "mainTitle",
             },
             {
-              text: this.RapportMedical.Autre,
+              text: R.Autre,
               style: "main",
             },
              {
@@ -7740,7 +7770,7 @@ async modifierAntecedents() {
               style: "mainTitle",
             },
             {
-              text: this.RapportMedical.Conclusion,
+              text: R.Conclusion,
               style: "main",
             },
           ],
@@ -7776,12 +7806,8 @@ async modifierAntecedents() {
 
         pdfMake.createPdf(docDefinition).open();
 
-        console.log(response.data);
-      } catch (error) {
-        this.error = error.response.data.error;
-        console.log(this.error);
-      }
     },
+
     async creepdf3() {
       try {
         console.log("creepdf3 button was clicked !");
