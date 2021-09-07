@@ -809,17 +809,18 @@
                               ></el-input
                             ></el-space>
                           </h6>
-                        </el-row>
-                        <h6>
+                          <h6>
                           Autres
                           <el-space wrap :size="10"
                             ><el-input
                               :disabled="isDisabledAnts"
-                              placeholder=""
+                              placeholder="..."
                               v-model="userAntInfo.autres"
                             ></el-input
                           ></el-space>
                         </h6>
+                        </el-row>
+                        
                       </el-col>
                     </el-row>
                     <el-row>
@@ -859,30 +860,33 @@
                         ></el-input>
                       </el-col>
                     </el-row>
-
+                 
                     <el-row>
+                      
                       <el-space wrap :size="10">
-                        <div v-if="isDisabledAnts">
+                        <div style="display:flex; align-items:center; justify-content:center;" v-if="isDisabledAnts">
                           <el-space
                             ><el-button
                               icon="el-icon-edit"
+                              class="savebtn"
                               @click="modifierAntecedents()"
                             >
                               Modifier
                             </el-button></el-space
                           >
                         </div>
-                        <div v-else>
+                        <div style="display:flex; align-items:center; justify-content:center;" v-else>
                           <el-space
                             ><el-button
-                              type="success"
+                              class="savebtn"
                               icon="el-icon-check"
                               @click="saveAntecedents()"
                             >
                               Enregister </el-button
                             ><el-button
-                              type="danger"
+                              class="cancelbtn"
                               icon="el-icon-delete"
+                              
                               @click="annulerAntecedents()"
                             >
                               Annuler
@@ -890,6 +894,7 @@
                           >
                         </div>
                       </el-space>
+                      
                     </el-row>
                    
                   </div>
@@ -1629,7 +1634,7 @@
                       >
                         <i class="fa fa-stethoscope"> </i>
                         <h3>Examen clinique</h3>
-                        <p>Nombre d'elements :20</p>
+                        
                       </el-card>
                     </el-col>
                     <el-col :span="12">
@@ -1639,7 +1644,7 @@
                       >
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Bilan paraclinique</h3>
-                        <p>Nombre d'elements :20</p>
+                        
                       </el-card>
                     </el-col>
 
@@ -1653,7 +1658,7 @@
                       >
                         <i class="fa fa-folder-open"> </i>
                         <h3>Rapport medical</h3>
-                        <p>Nombre d'elements :20</p>
+                        
                       </el-card>
                     </el-col>
                     <el-col :span="12">
@@ -1663,18 +1668,18 @@
                       >
                         <i class="fa fa-medkit"> </i>
                         <h3>Ordonnances</h3>
-                        <p>Nombre d'elements :20</p>
+                        
                       </el-card>
                     </el-col>
 
-                    <el-col :span="12">
+                    <el-col :span="24">
                       <el-card
                         @click="radio1 = 'orientations'"
                         class="examcard orient"
                       >
                         <i class="fa fa-user-md"> </i>
                         <h3>Orientations/ evaluations</h3>
-                        <p>Nombre d'elements :20</p>
+                        
                       </el-card>
                     </el-col>
                   </el-row>
@@ -1705,7 +1710,7 @@
                 </center>
                 <el-scrollbar v-show="radio3 === 'Historique'">
                   <el-card class="box-card" v-show="radio4 === 'table'">
-                    <tr style="display:flex">
+                    <!-- <tr style="display:flex">
                       <th style="flex:30%">
                         DATE
                       </th>
@@ -1715,8 +1720,8 @@
                       <th style="flex:25%">
                         CONSULTER
                       </th>
-                    </tr>
-                    <tr
+                    </tr> -->
+                    <!-- <tr
                       v-for="ec in ExamenCliniques"
                       :key="ec.id"
                       style="display:flex;padding:4px; border-radius:10px"
@@ -1736,7 +1741,17 @@
                           >consulter</el-button
                         >
                       </td>
-                    </tr>
+                    </tr> -->
+                    <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
+                      :key="ec.id" >
+                      <el-card   class="cardGris">               
+                                      <h6> Date de: </h6>
+                                      <p>{{ ec.date }} </p>
+                                      <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" >consulter</el-button >     
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
                   </el-card>
 
                 
@@ -2300,22 +2315,23 @@
                         ></el-col>
                       </el-row>
                     </el-card>
-
+                    <div style="display:flex; align-items:center; justify-content:center;">
                     <el-button
                       type="success"
                       icon="el-icon-check"
+                      class="savebtn"
                       v-show="!isECdisable"
                       @click="modifierExamenClinique(ECselected); isECdisable=true"
                       >Enregistrer</el-button
                     >
                     <el-button
-                      type="success"
-                      
+                      type="success"  
                       v-show="!isECdisable"
                       icon="el-icon-close"
+                      class="cancelbtn"
                       @click="showExamenClinique(ECselected); "
                       >Annuler</el-button
-                    >
+                    ></div>
                   </el-card>
                 </el-scrollbar>
                 <!-- **************************************creer ***************************** -->
@@ -2838,12 +2854,13 @@
                       ></el-col>
                     </el-row>
                   </el-card>
+                  <div style="display:flex; align-items:center; justify-content:center;">
                   <el-button
                     type="success"
-                    icon="el-icon-check "
+                    class="savebtn"
                     @click="saveExamenClinique(userselected)"
                     >sauvgarder</el-button
-                  >
+                  ></div>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -7442,6 +7459,7 @@ async modifierAntecedents() {
           antecedentsInfo: this.userAntInfo,
         });
         console.log(response.data);
+        alert("Informations sauvgarder!")
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -8497,6 +8515,7 @@ async annulerModificationOrd(ord) {
         });
         console.log(this.examenClinique);
         console.log(response.data);
+        alert("Informations sauvgarder!")
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -8637,40 +8656,7 @@ async annulerModificationOrd(ord) {
     },
   },
 
-  // //antecedents*****************************************************************************************
-  // async modifierAntecedents() {
-  //   try {
-  //     this.cachedUser = Object.assign({}, this.userAntInfo);
-  //     this.isDisabledAnts = false;
-  //     console.log("modifierAntecedents button was clicked !");
-  //   } catch (error) {
-  //     console.log("something went wrong");
-  //   }
-  // },
-  // async annulerAntecedents() {
-  //   try {
-  //     this.userAntInfo = Object.assign({}, this.cachedUser);
-  //     this.isDisabledAnts = true;
-  //     console.log("annulerAntecedents button was clicked !");
-  //   } catch (error) {
-  //     console.log("something went wrong");
-  //   }
-  // },
-  // async saveAntecedents() {
-  //   try {
-  //     this.cachedUser = Object.assign({}, this.userAntInfo);
-  //     this.isDisabledAnts = true;
-  //     console.log("saveAntcedents button was clicked !");
-  //     console.log(this.userAntInfo);
 
-  //     const response = await DocServices.saveAntecedents({
-  //       antecedentsInfo: this.userAntInfo,
-  //     });
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.log(`something went wrong ${error}`);
-  //   }
-  // },
 };
 </script>
 
@@ -8723,14 +8709,29 @@ async annulerModificationOrd(ord) {
   margin-left: 10px;
   width: 150px;
 }
-.savebtnant:hover {
+.savebtn:hover {
   color: #24b4ab;
   background-color: white;
+  border:1px solid #24b4ab;
 }
-.savebtnant {
+.savebtn {
   color: white;
   background-color: #24b4ab;
-  float: right;
+  display:flex;
+  border:none;
+  border-radius:30px;
+}
+.cancelbtn{
+  color:white;
+  background-color:#8a0707;
+  display:flex;
+  border:none;
+  border-radius:30px;
+}
+.cancelbtn:hover{
+  color:#8a0707;
+  border: 1px solid #8a0707;
+  background-color:white;
 }
 .creatbt:hover {
   color: #24b4ab;
@@ -8806,19 +8807,25 @@ async annulerModificationOrd(ord) {
   border: none;
 }
 .examcli {
-  background-image: url("https://images.unsplash.com/photo-1557825835-a526494be845?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80");
+  background-image: url("https://images.unsplash.com/photo-1485848395967-65dff62dc35b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80");
+
+  
+}
+.examcli::before{
+  background-color: white;
 }
 .bilanpara {
   background-image: url("https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGRvY3RvcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60");
 }
 .rapmed {
-  background-image: url("https://images.unsplash.com/photo-1554224155-1696413565d3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZmlsZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60");
+  background-image: url("https://images.unsplash.com/photo-1554224155-cfa08c2a758f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=712&q=80");
 }
 .ord {
-  background-image: url("https://images.unsplash.com/photo-1622227922682-56c92e523e58?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8aG9zcGl0YWwlMjBzaWdufGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60");
+  background-image: url("https://images.unsplash.com/photo-1563213126-a4273aed2016?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
 }
 .orient {
-  background-image: url("https://images.unsplash.com/photo-1485848395967-65dff62dc35b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=749&q=80");
+  background-image: url("https://images.unsplash.com/photo-1497091071254-cc9b2ba7c48a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=753&q=80");
+  margin:0 25% ;
 }
 .examcard i {
   font-size: 5rem;
@@ -8875,10 +8882,10 @@ async annulerModificationOrd(ord) {
 .certif {
   background-image: url("https://images.unsplash.com/photo-1586001549061-24156ffd6742?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80");
 }
-.orient {
+/* .orient {
   image-resolution: 20;
   background-image: url("https://images.unsplash.com/photo-1512069511692-b82d787265cf?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=399&q=80");
-}
+} */
 .orientcard h3,
 .bilancard p {
   color: white;
