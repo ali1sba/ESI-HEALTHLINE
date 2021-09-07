@@ -4872,14 +4872,14 @@ EMAIL: contact@esi-sba.dz</p>
             <el-scrollbar v-show="radio0 === 'RDV'">
               <div v-if="haveRDV">
                 <el-card>
-                  <el-card class="cardGris">
-                    <el-row>
-                      <el-col :span="7">Type de Rendez-vous</el-col>
-                      <el-col :span="10">Date And Time</el-col>
-                      <el-col :span="7">Note</el-col>
-                    </el-row>
-                    <!-- <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button> -->
-                  </el-card>
+                  <h4>Rendez-vous</h4><br/><br/>
+                  <center>                <el-button
+                    type="primary"
+                    @click="dialogRDVFormVisible = true"
+                    style="background-color: #24b4ab; "
+                  round>
+                    Programmer un Rendez-vous
+                  </el-button></center>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item
                       placement="top"
@@ -4889,9 +4889,9 @@ EMAIL: contact@esi-sba.dz</p>
                       <el-card class="cardGris">
                         
                         <el-row>
-                          <el-col :span="7"><h6> Type de Rendez-vous:</h6> &nbsp;{{ Rdv.Type }}</el-col>
-                          <el-col :span="10"><h6> Date And Time: </h6>  &nbsp;{{ Rdv.DateAndTime }}</el-col>
-                          <el-col :span="7"><h6> Note: </h6>  &nbsp;{{ Rdv.Note }}</el-col>
+                          <el-col :span="7"><h6> Type de Rendez-vous:</h6> &nbsp;&nbsp;&nbsp;{{ Rdv.Type }}</el-col>
+                          <el-col :span="10"><h6> Date And Time: </h6>  &nbsp;&nbsp;&nbsp;{{ Rdv.DateAndTime }}</el-col>
+                          <el-col :span="7"><h6> Note: </h6>  &nbsp;&nbsp;&nbsp;{{ Rdv.Note }}</el-col>
                         </el-row>
                         <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
                         <el-button
@@ -4909,13 +4909,7 @@ EMAIL: contact@esi-sba.dz</p>
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  <el-button
-                    type="primary"
-                    @click="dialogRDVFormVisible = true"
-                    style="background-color: #24b4ab; width: 50%"
-                  >
-                    Programmer un Rendez-vous
-                  </el-button>
+                  
                 </el-card>
                 <!--form-->
                 <el-dialog
@@ -6053,13 +6047,28 @@ async minceViews() {
         //console.log("createBilanBiologique clicked")
         console.log(this.userselected.id);
         this.dialogRDVFormVisible = false;
-        this.RDVform.idUser = this.userselected.id;
+        if (this.RDVform.type ==='' || this.RDVform.dateAndTime ==='' ){
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+
+        }else{
+          this.RDVform.idUser = this.userselected.id;
         const response = await RDVServices.progRDVPatient({
           form: this.RDVform,
         });
         console.log(response.data);
         this.addViews();
+        this.$notify.success({
+          title: 'Succeès',
+          message: ' Rendez-vous créer avec succes ',
+          offset: 100
+        });
         this.showRDVSelectedPatient();
+        }
+        
       } catch (error) {
         console.log(
           `something went wrong in programation de RDV patient ${error}`
@@ -6174,6 +6183,11 @@ async minceViews() {
         });
         console.log(response.data);
         this.dialogRDVFormVisible2 = false;
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Rendez-vous modifiée avec succes ',
+          offset: 100
+        });
         this.showRDVSelectedPatient();
       } catch (error) {
         console.log(`something went wrong in supp de RDV patient ${error}`);
@@ -6192,16 +6206,40 @@ async minceViews() {
     },
     async annulerRDV(rdv) {
       try {
+
+        
+        this.$confirm('Ceci annulera le rendez-vous, continuer?', 'Warning', {
+          confirmButtonText: 'continuer',
+          cancelButtonText: 'Annuler',
+          type: 'warning',
+          center: true,
+        })
+          .then(async () => {
+            const response = await RDVServices.annulerRDV({
+              id: rdv.id,
+            });
+            console.log(response.data);
+            this.minceViews();
+            this.showRDVSelectedPatient();
+             this.$notify.success({
+                title: 'Succeès',
+                message: 'Rendez-vous annuler avec succes ',
+                offset: 100
+              });
+          })
+          .catch(() => {
+          //  this.$notify.error({
+          //   title: "Info",
+          //   dangerouslyUseHTMLString: true,
+          //   message: "<strong>Champ(s) Vide(s)</strong>",
+          // });
+          })
+      
         //console.log("createBilanBiologique clicked")
         //console.log(this.userselected.id)
         //this.dialogRDVFormVisible = false;
         //this.RDVform.idUser = this.userselected.id;
-        const response = await RDVServices.annulerRDV({
-          id: rdv.id,
-        });
-        console.log(response.data);
-        this.minceViews();
-        this.showRDVSelectedPatient();
+        
       } catch (error) {
         console.log(`something went wrong in supp de RDV patient ${error}`);
       }
