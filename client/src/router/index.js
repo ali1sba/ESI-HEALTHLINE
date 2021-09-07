@@ -14,7 +14,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { hideForAuth: true }
   },
   {
     path: '/register',
@@ -104,9 +105,26 @@ router.beforeEach((to, from, next) => {
     } else {
       next('/')
     }
-  } else {
-    next()
-  }
+  } else if (to.meta.hideForAuth) {
+      const isUserLoggedIn = JSON.parse(window.localStorage.getItem('isUserLoggedIn'))
+      const token = JSON.parse(window.localStorage.getItem('token'))
+      const role = JSON.parse(window.localStorage.getItem('role'))
+      if (!isUserLoggedIn || !token) {
+        next()
+      } else {
+        if (role === 'ADMIN') {
+          next('/admin')
+        } else if (role === 'MED') {
+          next('/DOCdashboard')
+        } else if (role === 'ASSIS') {
+          next('/Assistant')
+        } else {
+          next()
+        }
+      }
+    } else {
+      next()
+    }
 })
 
 export default router
