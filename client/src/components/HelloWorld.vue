@@ -69,7 +69,21 @@ export default {
           password: this.form.password,
         });
         alert("welecome")
-        console.log(response.data);
+        console.log(response.data)
+        this.$store.dispatch('setToken', response.data.user.token)
+        this.$store.dispatch('setUser', response.data.user.id)
+        this.$store.dispatch('setRole', response.data.user.role)
+        if (this.$store.state.isUserLoggedIn) {
+          if (this.$store.state.role === 'MED') {
+            this.$router.push('/DOCdashboard')
+          } else if (this.$store.state.role === 'ASSIS') {
+            this.$router.push('/Assistant')
+          } else if (this.$store.state.role === 'ADMIN') {
+            this.$router.push('/admin')
+          }
+        } else {
+          this.$router.push('/')
+        }
       } catch (error) {
         this.error = error.response.data.error;
         this.err();

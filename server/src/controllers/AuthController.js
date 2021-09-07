@@ -67,10 +67,13 @@ module.exports = {
             })
           } else {
             const userJson = user.toJSON()
-            res.send({
-              user: userJson,
-              token: jwtSignUser(userJson),
-              message: `The login information isPasswordValid : ${isPasswordValid}`
+            const userData = {
+              id: userJson.id,
+              role: userJson.role,
+              token: jwtSignUser(userJson)
+            }
+            res.status(200).send({
+              user: userData
             })
           }
         } else {
@@ -83,6 +86,7 @@ module.exports = {
       res.status(500).send({ error: `An error occured trying to login ${err}` })
     }
   },
+
   async loginMobile (req, res) {
     try {
       const email = req.body.email

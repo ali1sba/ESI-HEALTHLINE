@@ -4,7 +4,7 @@ const smtpTransport = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
     user: 'healthline.auth.services@gmail.com',
-    pass: 'HealthLine-Project2021%*'
+    pass: '#Health#Line Project#2021 %*#'
   },
   tls: {
     rejectUnauthorized: false

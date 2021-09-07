@@ -36,9 +36,9 @@
             </a>
           </li>
           <li>
-            <a @click="content = '5'"
-              ><span class="fa fa-cogs"></span>
-              <p class="nom">Contacts</p></a
+            <a @click="logout"
+              ><span class="fa fa-sign-out"></span>
+              <p class="nom">Logout</p></a
             >
           </li>
         </ul>
@@ -5988,6 +5988,12 @@ export default {
     });
   },
   methods: {
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.$store.dispatch('setRole', null)
+      this.$router.push('/')
+    },
     async addViews() {
   localStorage.setItem('bannerViews', ++this.RDVCount);
 },

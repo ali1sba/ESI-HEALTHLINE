@@ -12,6 +12,7 @@
   active-text-color="#ffd04b">
   <el-menu-item index="1" @click="section = 1">HealtheLine</el-menu-item>
   <el-menu-item index="4" @click="section = 2">Profile</el-menu-item>
+  <el-menu-item index="4" @click="logout">Logout</el-menu-item>
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAdmin">
@@ -527,6 +528,12 @@ export default {
       });
   },
   methods: {
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.$store.dispatch('setRole', null)
+      this.$router.push('/')
+    },
     
     convertVTVC(V , VC){
       
