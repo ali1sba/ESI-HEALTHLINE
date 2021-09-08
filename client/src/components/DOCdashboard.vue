@@ -123,7 +123,7 @@
               <article
                 class="leaderboard__profile"
                 v-for="patient in patients"
-                :key="patient.id"
+                :key="patient.id" v-bind:class="{selectedeffect : patient.id == (userselected.id)}"
                 @click="showPatient(patient)"
               >
                 <img
@@ -5061,9 +5061,7 @@ EMAIL: contact@esi-sba.dz</p>
               </el-dialog>
             </el-scrollbar>
             <!-- ********************************************end******************************************** -->
-            <center>
-              © Designed and Developed by linara it solutions 2021
-            </center>
+            
           </div>
 
           <!-- ********************** 3 ***************************** -->
@@ -5211,6 +5209,9 @@ EMAIL: contact@esi-sba.dz</p>
             </center>
           </div>
         </div>
+        <center>
+              © Designed and Developed by linara it solutions 2021
+            </center>
       </div>
     </div>
   </div>
@@ -6050,7 +6051,6 @@ export default {
           }
           x = x + 1;
         });
-        this.userselected = this.patients[0];
         console.log(response.data);
         this.count = x -1;
         this.NumRDV();
@@ -9081,6 +9081,10 @@ async annulerModificationOrd(ord) {
 .hovereffect:hover {
   transform: scale(1.1);
   box-shadow: 0 9px 7px 11px rgba(4, 255, 221, 0.18);
+}
+.selectedeffect {
+  transform: scale(1.1);
+box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
 /* css orientation */
 .evacu {

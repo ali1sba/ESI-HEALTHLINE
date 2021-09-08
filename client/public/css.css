@@ -221,6 +221,7 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
+  height: fit-content;
 }
 
 /* header */
@@ -489,6 +490,7 @@ td {
 }
 
 html {
+  overflow-x: hidden;
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
@@ -1905,7 +1907,6 @@ img {
 }
 
 .list-unstyled {
-  height: 100%;
   margin-top: -10px;
 }
 
@@ -2104,6 +2105,7 @@ margin-right: 10px;
   min-width: 210px;
   width: 210px;
   padding: 20px;
+  padding-bottom: 50px;
   margin-left: 0px;
   float: left;
   max-height: 100vh;
