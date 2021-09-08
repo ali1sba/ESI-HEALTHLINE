@@ -302,13 +302,13 @@
             </div>
             <center>
               <div>
-                <el-radio-group v-model="radio0">
+                <el-radio-group v-model="radio0" fill="#24b4ab">
                   <el-radio-button label="Dossier Médical"></el-radio-button>
                   <el-radio-button @click="radio1='Examen Médical'" label="Examen Médical"></el-radio-button>
                   <el-radio-button label="Statistique"></el-radio-button>
                   <el-radio-button label="RDV" @click="showRDVSelectedPatient"></el-radio-button>
-                </el-radio-group>
-                <el-radio-group v-model="radio1">
+                </el-radio-group >
+                <el-radio-group v-model="radio1" fill="#24b4ab">
                   <el-radio-button
                     v-show="hidden"
                     label="examen clinique"
@@ -1738,7 +1738,7 @@
                 <br />
                 <center>
                   <div>
-                    <el-radio-group v-model="radio3">
+                    <el-radio-group v-model="radio3" fill="#24b4ab">
                      <el-radio-button
                         label="Historique"
                         @click="
@@ -2952,7 +2952,7 @@
                 <h6>Bilans Biologiques</h6>
                 <center>
                   <div>
-                    <el-radio-group v-model="radio2">
+                    <el-radio-group v-model="radio2" fill="#24b4ab">
                       <el-radio-button label="Historique"></el-radio-button>
                       <el-radio-button
                         v-show="hidden"
@@ -3710,7 +3710,7 @@
                 <h6>Bilans Radiologiques</h6>
                 <center>
                   <div>
-                    <el-radio-group v-model="radio2">
+                    <el-radio-group v-model="radio2" fill="#24b4ab">
                       <el-radio-button label="Historique"></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
@@ -3764,7 +3764,7 @@
                 <h6>Bilans Electriques</h6>
                 <center>
                   <div>
-                    <el-radio-group v-model="radio2">
+                    <el-radio-group v-model="radio2" fill="#24b4ab">
                       <el-radio-button label="Historique"></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
@@ -3978,7 +3978,7 @@
               <el-card class="box-card">
                 <center>
                   <div>
-                    <el-radio-group v-model="radioRM">
+                    <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button
                         label="Historique"
                         @click="getOrientations()"
@@ -4186,7 +4186,7 @@
               <el-card class="box-card">
                 <center>
                   <div>
-                    <el-radio-group v-model="radioRM">
+                    <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
@@ -4277,7 +4277,7 @@
               <el-card class="box-card">
                 <center>
                   <div>
-                    <el-radio-group v-model="radioRM">
+                    <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getCertificats();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
@@ -4395,7 +4395,7 @@
                 -->
 <center>
                   <div>
-                    <el-radio-group v-model="radioRM" >
+                    <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
                     </el-radio-group>
@@ -4540,14 +4540,15 @@ EMAIL: contact@esi-sba.dz</p>
               
                <center>
                   <div>
-                    <el-radio-group v-model="radio1O">
-                     <el-radio-button
+                    <el-radio-group v-model="radio1O"  fill="#24b4ab" 
+>
+                     <el-radio-button 
                         label="ordhistory"
-                        @click="
+                      @click="
                       recoverOrdonnances(userselected);
                                          "
-                      >Historique</el-radio-button>
-                      <el-radio-button
+                      > Historique</el-radio-button>
+                      <el-radio-button 
                         label="nouvOrd"
                         @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'"
                       >Créer</el-radio-button>
@@ -5070,7 +5071,7 @@ EMAIL: contact@esi-sba.dz</p>
            <div v-show="content === 'RDVSection'" class="dossier">
             <br><br>
             <center>
-              <el-radio-group v-model="radioRDVsection">
+              <el-radio-group v-model="radioRDVsection" fill="#24b4ab">
                 <el-radio-button label="Valider" @click="recoverDemandesRDV()">
                   <el-badge :value="countrdv" class="itemNotifs" type="danger">
                     
@@ -9090,7 +9091,10 @@ async annulerModificationOrd(ord) {
   background-color: #24b4ab;
   width: 75%;
 }
-
+.green:hover {
+    color: rgb(36, 180, 171);
+ 
+}
 
 
 </style>
