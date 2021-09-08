@@ -1710,43 +1710,12 @@
                 </center>
                 <el-scrollbar v-show="radio3 === 'Historique'">
                   <el-card class="box-card" v-show="radio4 === 'table'">
-                    <!-- <tr style="display:flex">
-                      <th style="flex:30%">
-                        DATE
-                      </th>
-                      <th style="flex:45%">
-                        INFOS
-                      </th>
-                      <th style="flex:25%">
-                        CONSULTER
-                      </th>
-                    </tr> -->
-                    <!-- <tr
-                      v-for="ec in ExamenCliniques"
-                      :key="ec.id"
-                      style="display:flex;padding:4px; border-radius:10px"
-                    >
-                      <td style="flex:30%">{{ ec.date }}</td>
-                      <td style="flex:45%"></td>
-
-                      <td style="flex:25%">
-                        <el-button
-                          type="primary"
-                          style="background-color: #24b4ab; "
-                          @click="
-                            showExamenClinique(ec);
-                            radio4 = 'consulter'; isECdisable=true
-                          "
-                          class="hovereffect"
-                          >consulter</el-button
-                        >
-                      </td>
-                    </tr> -->
+                    
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
                       <el-card   class="cardGris">               
-                                      <h6> Date de: </h6>
+                                      <h6> Date de création: </h6>
                                       <p>{{ ec.date }} </p>
                                       <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" >consulter</el-button >     
                       </el-card>
@@ -8722,17 +8691,10 @@ async annulerModificationOrd(ord) {
   border-radius:30px;
 }
 .cancelbtn{
-  color:white;
-  background-color:#8a0707;
   display:flex;
-  border:none;
   border-radius:30px;
 }
-.cancelbtn:hover{
-  color:#8a0707;
-  border: 1px solid #8a0707;
-  background-color:white;
-}
+
 .creatbt:hover {
   color: #24b4ab;
   background-color: white;
