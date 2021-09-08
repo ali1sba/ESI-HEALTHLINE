@@ -221,6 +221,7 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
+  app.post('/showRDVDemandeSelectedPatientapp', RDVController.showRDVDemandeSelectedPatientapp)
 
   // ***************************** Assistant ****************************
   // ********** RDV GROUP **********
