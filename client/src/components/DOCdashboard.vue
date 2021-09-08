@@ -884,6 +884,7 @@
                             >
                               Enregister </el-button
                             ><el-button
+                              type="danger"
                               class="cancelbtn"
                               icon="el-icon-delete"
                               
@@ -1630,7 +1631,7 @@
                       <el-card
                         @click="radio1 = 'examen clinique'
                         recoverExamenClinique(userselected);"
-                        class="examcard examcli"
+                        class="examcard examcli hovereffect"
                       >
                         <i class="fa fa-stethoscope"> </i>
                         <h3>Examen clinique</h3>
@@ -1640,7 +1641,7 @@
                     <el-col :span="12">
                       <el-card
                         @click="radio1 = 'bilan paraclinique'"
-                        class="examcard bilanpara"
+                        class="examcard bilanpara hovereffect"
                       >
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Bilan paraclinique</h3>
@@ -1654,7 +1655,7 @@
                           radio1 = 'rapport medical';
                           getRepports();
                         "
-                        class="examcard rapmed"
+                        class="examcard rapmed hovereffect"
                       >
                         <i class="fa fa-folder-open"> </i>
                         <h3>Rapport medical</h3>
@@ -1664,7 +1665,7 @@
                     <el-col :span="12">
                       <el-card
                         @click="radio1 = 'ordonnances'"
-                        class="examcard ord"
+                        class="examcard ord hovereffect" 
                       >
                         <i class="fa fa-medkit"> </i>
                         <h3>Ordonnances</h3>
@@ -1675,7 +1676,7 @@
                     <el-col :span="24">
                       <el-card
                         @click="radio1 = 'orientations'"
-                        class="examcard orient"
+                        class="examcard orient hovereffect"
                       >
                         <i class="fa fa-user-md"> </i>
                         <h3>Orientations/ evaluations</h3>
@@ -1714,7 +1715,8 @@
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
-                      <el-card   class="cardGris">               
+                      <el-card   class="cardGris">    
+                                               
                                       <h6> Date de création: </h6>
                                       <p>{{ ec.date }} </p>
                                       <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" >consulter</el-button >     
@@ -2294,7 +2296,7 @@
                       >Enregistrer</el-button
                     >
                     <el-button
-                      type="success"  
+                      type="danger"  
                       v-show="!isECdisable"
                       icon="el-icon-close"
                       class="cancelbtn"
@@ -7419,6 +7421,13 @@ async modifierAntecedents() {
 
     async saveAntecedents() {
       try {
+         this.champvides = false
+         for (let i = 0; i < this.userAntInfo.length; i++) {
+          if (this.userAntInfo.alcool == "" || this.userAntInfo.medicat == ""){
+            this.champsvides=true
+          }
+        }
+        if (!this.champsvides ){
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true;
         console.log("saveAntcedents button was clicked !");
@@ -7428,11 +7437,25 @@ async modifierAntecedents() {
           antecedentsInfo: this.userAntInfo,
         });
         console.log(response.data);
-        alert("Informations sauvgarder!")
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Antecedents modifiée avec succeès ',
+
+        });
+        }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+        }
+         
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
     },
+  
+
     async getRepports() {
       try {
         console.log(this.userselected.id);
@@ -8478,13 +8501,31 @@ async annulerModificationOrd(ord) {
     // examen clinique functions*****************************************************
     async saveExamenClinique(user) {
       try {
+        this.champvides = false
+         for (let i = 0; i < this.examenClinique.length; i++) {
+          if (this.examenClinique[i].temp == "" ){
+            this.champsvides=true
+          }
+         }
+        if (!this.champsvides){
         this.examenClinique.userId = user.id;
         const response = await DocServices.saveExamenClinique({
           ExamenClinique: this.examenClinique,
         });
         console.log(this.examenClinique);
         console.log(response.data);
-        alert("Informations sauvgarder!")
+       this.$notify.success({
+          title: 'Succeès',
+          message: 'Examen clinique modifiée avec succeès ',
+
+        });
+        }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+        }
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -8588,6 +8629,12 @@ async annulerModificationOrd(ord) {
           ExamenClinique: this.examenClinique,
         });
         console.log(response.data);
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Examen clinique modifiée avec succeès ',
+
+        });
+
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
