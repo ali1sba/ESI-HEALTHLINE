@@ -4545,7 +4545,7 @@ EMAIL: contact@esi-sba.dz</p>
                      <el-radio-button 
                         label="ordhistory"
                       @click="
-                      recoverOrdonnances(userselected);
+                      recoverOrdonnances(userselected); radio2O='history'
                                          "
                       > Historique</el-radio-button>
                       <el-radio-button 
@@ -4578,7 +4578,7 @@ EMAIL: contact@esi-sba.dz</p>
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                   <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                  <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                  <p style="font-size:17px;">Date de Naissance : &nbsp; {{ ddn}}</p>
                 
                 </div>
                 <div style="flex:50%">
@@ -4762,7 +4762,7 @@ EMAIL: contact@esi-sba.dz</p>
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                   <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                  <p style="font-size:17px;">Date de : &nbsp; {{ userselected.age}}</p>
+                  <p style="font-size:17px;">Date de naissance : &nbsp; {{ddn}}</p>
                  
                 </div>
                 <div style="flex:50%">
@@ -5968,6 +5968,7 @@ export default {
       marqueoptions:[],
       dosageoptions:[],
       orddate:'',
+      ddn:"",
       currentord: "",
 
       currentprescs: [],
@@ -6085,7 +6086,6 @@ export default {
      
       return  x[1].substr(0,5);
     },
-
 
 
     async addViews() {
@@ -6867,14 +6867,11 @@ async minceViews() {
                         },
                         {
                         columns: [{
-                        		    text: 'age :',
+                        		    text: 'Date de naissance :',
                         		    style: 'personalInfo',
                         		    margin: [60, 0, 0, 0],
-                        		},
-                        		{
-                        		    margin: [10, 0, 0, 0],
-                        			text: '22',
-                        		}]
+                        		}
+                        		]
                         },
             	    ]
                             	    
@@ -6888,10 +6885,13 @@ async minceViews() {
                     		    margin: [50, 0, 0, 0],
                     		},
                     		{
-                    			text: '12/8/2012',
+                    			text:this.orddate,
                     			margin: [-30, 0, 0, 0],
                     		}
                     		]},
+
+
+                      
                     		
                     		{
                     	columns: [
@@ -6904,7 +6904,15 @@ async minceViews() {
                 			text: 'Sidi Bel Abbes',
                 			margin: [-30, 0, 0, 0],
                 		}
-                		]}
+                		]},{
+                    
+                    	columns: [
+                    	
+                    		{
+                    			text:this.ddn,
+                    			margin: [-60, 0, 0, 0],
+                    		},  
+                    		]},
                 		]}
 		]},
 	{
@@ -6973,7 +6981,8 @@ async minceViews() {
         this.userPersInfo = response.data.medFile.personalInfo;
         this.userDepiInfo = response.data.medFile.depistagelInfo;
         this.userBiomInfo = response.data.medFile.biometricInfo;
-        this.responseimc=response.data.medFile.biometricInfo.imc.toFixed(2);
+        this.bmiCalculation();
+        this.ddn=this.getDateFromString(this.userPersInfo.dateOfBirth);
         this.userAntInfo = response.data.medFile.antecedentsInfo;
         // partie de depistage
         this.userDepiInfo.checkedDouleurs = this.stringToBoolean(
@@ -7176,11 +7185,24 @@ this.bmiCalculation();
         this.cachedUser = Object.assign({}, this.userBiomInfo);
         console.log("save biominfo button was clicked !");
         console.log(this.userBiomInfo);
-        const response = await DocServices.saveBiometricInfo({
+        if ((this.userBiomInfo.poids!="")&&(this.userBiomInfo.taille!="")){
+           const response = await DocServices.saveBiometricInfo({
           biometricInfo: this.userBiomInfo,
         });
         console.log(response.data);
         console.log("biom info done");
+         this.$notify.success({
+          title: 'Succeès',
+          message: 'Modifié avec succes ',
+          offset: 100
+        });}else{
+          this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        });
+        }
+       
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -7428,6 +7450,8 @@ this.bmiCalculation();
    },
     async Viewpdf(ordonnance){
 try {
+        this.orddate=this.getDateFromString(ordonnance.date);
+
 const response = await DocServices.showOrdonnance({
         id: ordonnance.id
       })
@@ -7501,6 +7525,8 @@ const response = await DocServices.showOrdonnance({
 const response1 = await DocServices.createOrdonnance({
           id: user.id,
         });
+              this.orddate=this.currentDate();
+
         this.ordselected=response1.data.ord.id
          console.log(response1.data);
         const response2 = await DocServices.addpresc({
@@ -8649,7 +8675,7 @@ async annulerModificationOrd(ord) {
 
     async showOrdonnance(ordonnance) {
     try {
-      this.orddate=ordonnance.date;
+      this.orddate=this.getDateFromString(ordonnance.date);
       this.isOrdDisabled=true;
       this.ordselected=ordonnance.id
       const response = await DocServices.showOrdonnance({
@@ -8902,7 +8928,6 @@ async annulerModificationOrd(ord) {
   margin-right: 20px;
   float: left;
   margin-top: 5px;
-  width:200px;
 }
 #biom {
   width: 350px;
@@ -8911,7 +8936,6 @@ async annulerModificationOrd(ord) {
 #imcValue {
   padding: 7px;
   margin-left: 10px;
-  width: 150px;
 }
 .savebtnant:hover {
   color: #24b4ab;
