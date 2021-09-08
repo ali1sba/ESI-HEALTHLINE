@@ -4648,31 +4648,55 @@ EMAIL: contact@esi-sba.dz</p>
                 <br>
                 <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
-                <div style="display:flex; ">
-                  <el-button 
-                    @click=" addpresc(userselected); "
-                    type="primary"
-                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                    v-show="ordcreated === 'not created'">Créer </el-button >
-                    <el-button @click="isOrdDisabled=false ;ordcreated='modify' "
-                    v-show="ordcreated ==='created'" style="flex:50%;">
-                    Modifier</el-button> 
-                    <el-button
-                    type="primary"
-                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                    v-show="ordcreated ==='modify'" @click="saveOrdonnance(ordselected); " 
-                    >Enregistrer  </el-button >
-                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
-                    v-show="ordcreated ==='modify'">
-                    Annuler</el-button> 
-                       
-                       <el-button
+
+              <div v-if="ordcreated === 'created'" style="display:flex;align-items: center;justify-content: center">
+
+                <div style="display:flex;margin-right:30px">
+                        <el-button type="primary" @click="isOrdDisabled=false ;ordcreated='modify' "
+                     icon="el-icon-edit" style="background-color: #24b4ab; display:flex; margin:0 auto" round>Modifier</el-button>
+                        <el-button
                    
-                    type="primary"    
-                     v-show="ordcreated ==='created'"               
-                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
+                    type="primary"
+                     style="background-color: #24b4ab; display:flex; margin-left:30px" round @click="viewpdf(); printPresc(prescs);"
                     >Voir en format Pdf </el-button > 
+                      </div>
+                      
                 </div>
+                <div v-else-if="ordcreated === 'not created'" style="display:flex;align-items: center;justify-content: center"  >
+                    <el-button @click=" addpresc(userselected); "
+                    type="success"
+                     icon="el-icon-edit"
+                     style="background-color: #24b4ab;display:flex;"
+                    v-show="ordcreated === 'not created'" round>Créer </el-button >
+
+                </div>
+                <div v-else-if="ordcreated === 'modify'" style="display:flex;align-items: center;justify-content: center" >
+                          
+                        <el-button type="success" icon="el-icon-check" @click="saveOrdonnance(ordselected);"   style="background-color: #24b4ab;display:flex;" round>Enregister</el-button>
+                        
+
+                        <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir Annuler les modifications ?"
+                          @confirm="ordcreated='created'; annulerModificationOrd(ordselected)"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" round icon="el-icon-delete">Annuler</el-button>
+                          </template>
+                        </el-popconfirm>
+
+                      </div>
+
+                  
+                       
+
+
+                 
+                    
 
                 </div>
               </el-card>
@@ -4713,14 +4737,7 @@ EMAIL: contact@esi-sba.dz</p>
             <el-scrollbar v-show="radio2O === 'consulterord' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
                 <el-button icon="el-icon-arrow-left"  @click="radio2O='history'"  round></el-button>
-                
-                <div  style="float:right; width:100px ">
-                  <el-button  @click=" recoverMedicaments(); isOrdDisabled=false "
-                                icon="el-icon-edit"
-                                style="background:none;font-size:25px;margin-top:-5px; float:left; border:none;"
-                             />
-               
-                 </div>
+             
                 
                 <div ref="contentord" style="padding: 0px 80px">
                   <p>N°: {{ ordselected }}</p>
@@ -4815,21 +4832,36 @@ EMAIL: contact@esi-sba.dz</p>
                 <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
                 </div>   
-                
-                <div style="display:flex">
-                  <el-button
-                    type="primary"
-                     style="background-color: #24b4ab;flex:50%; margin:0 30px"
-                    v-show="isOrdDisabled==false" @click="saveOrdonnance(ordselected); " 
-                    >Enregistrer  </el-button >
-                    <el-button @click="ordcreated='created'; annulerModificationOrd(ordselected)" style="flex:50%;"
-                    v-show="isOrdDisabled==false">
-                    Annuler</el-button> 
-                       <el-button
+                <div style="display:flex;align-items: center;justify-content: center">
+
+                <div v-if="isOrdDisabled" style="display:flex;margin-right:30px">
+                        <el-button type="primary" @click="recoverMedicaments(); isOrdDisabled=false" icon="el-icon-edit" style="background-color: #24b4ab; display:flex; margin:0 auto" round>Modifier</el-button>
+                        <el-button
                    
                     type="primary"
-                     style="background-color: #24b4ab;flex:50%; margin:0 30px" @click="viewpdf(); printPresc(prescs);"
+                     style="background-color: #24b4ab; display:flex; margin-left:30px" round @click="viewpdf(); printPresc(prescs);"
                     >Voir en format Pdf </el-button > 
+                      </div>
+                      <div v-else style="display:flex;align-items: center;justify-content: center" >
+                          
+                        <el-button type="success" icon="el-icon-check" @click="saveOrdonnance(ordselected);"   style="background-color: #24b4ab;display:flex;" round>Enregister</el-button>
+                        <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir Annuler les modifications ?"
+                          @confirm="ordcreated='created'; annulerModificationOrd(ordselected)"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" round icon="el-icon-delete">Annuler</el-button>
+                          </template>
+                        </el-popconfirm>
+
+                      </div>
+                  
+                       
                 </div>
                
                 
@@ -8506,8 +8538,20 @@ async modifierAntecedents() {
           if (this.prescs[i].nom == ""||this.prescs[i].marque == ""|| this.prescs[i].forme == "" || this.prescs[i].dosage == ""||this.prescs[i].duree == ""){
             this.champsvides=true
           }
+          
         }
-        if(!this.champsvides){  
+        let duplicated=false;
+        let j,i=0;
+        while (! duplicated && i<(this.prescs.length-1) ){
+          j=i+1;
+          while(j< this.prescs.length && !duplicated){
+            if (this.prescs[i].nom==this.prescs[j].nom) duplicated=true;
+            j++;
+
+          } 
+          i++;       
+        }
+        if(!this.champsvides && !duplicated){  
           this.ordcreated="created" 
           this.isOrdDisabled=true
           
@@ -8524,14 +8568,24 @@ async modifierAntecedents() {
       console.log(response.data);
 
          
-        } else {
+        } else if (this.champsvides){
+         this.ordcreated="not created"; 
+
           this.$notify.error({
-            title: "ERREUR",
-            dangerouslyUseHTMLString: true,
-            message: "<strong>Champ(s) Vide(s)</strong>",
-          });
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        });
+        }else{
+          this.ordcreated="not created"; 
+
+          this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Médicament(s) dupliqué(s)</strong>'
+        });
         }
-    
+      
     } catch (error) {
       console.log(`something went wrong ${error}`);
     
