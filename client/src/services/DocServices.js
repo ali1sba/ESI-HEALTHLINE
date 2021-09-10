@@ -17,6 +17,9 @@ export default {
     saveBiometricInfo (credantials){
         return Api().post('/DOCdashboard/saveBioInfo',credantials)
     },
+    annulerBiometricInfo (credantials){
+        return Api().post('/DOCdashboard/annulerBioInfo',credantials)
+    },
     saveAntecedents (credantials){
         return Api().post('/DOCdashboard/saveAntecedents',credantials)
     },

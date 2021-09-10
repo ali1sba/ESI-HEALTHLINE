@@ -167,6 +167,7 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showPatient', DocDashboardController.showPatient)
   app.post('/DOCdashboard/savePersInfo', DocDashboardController.savePersInfo)
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
+  app.post('/DOCdashboard/annulerBioInfo', DocDashboardController.annulerBiometricInfo)
   app.post('/DOCdashboard/saveAntecedents', DocDashboardController.saveAntecedents)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
   app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
@@ -229,6 +230,7 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
+  app.post('/showRDVDemandeSelectedPatientapp', RDVController.showRDVDemandeSelectedPatientapp)
 
   // ***************************** Assistant ****************************
   // ********** RDV GROUP **********
