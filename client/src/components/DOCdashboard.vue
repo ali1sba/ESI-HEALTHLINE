@@ -3758,11 +3758,11 @@
     <el-tab-pane label="Autres"><el-card class="box-card">
                       <h5>Autres</h5>
                     <center>
-                      <el-space orientation="vertical">
-                        <el-space wrap :size="10">
-                          <el-input v-model="BBCr.autre"></el-input>
-                        </el-space>
-                      </el-space>
+                       <el-input type="textarea"
+                          placeholder="Entrer quelque chose"
+                          :autosize="{ minRows: 10, maxRows: 20}" 
+                          v-model="BBCr.autre">
+                        </el-input>
                       </center>
 </el-card></el-tab-pane>
 
@@ -3770,10 +3770,11 @@
 
 
                   <br />
-                  <el-button class="creatbt" icon="el-icon-edit-outline"
+                  <center><el-button class="creatbt" icon="el-icon-edit-outline" style="display:flex;"
                       round @click="createBilanBiologique(BBCr)"
                     >Enregistrer</el-button
-                  >
+                  ></center>
+                  
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -3993,7 +3994,7 @@
                     
                     <br>
                     <center>
-                      <el-button @click="createBilanElectrique" class="creatbt" icon="el-icon-edit-outline"
+                      <el-button @click="createBilanElectrique" class="creatbt" icon="el-icon-edit-outline" style="display:flex;"
                       round>Créer</el-button>
                     </center>
                   </el-form>
@@ -6354,10 +6355,24 @@ async minceViews() {
       try {
         console.log("createBilanBiologique clicked");
         console.log(bbcr);
+        if (bbcr.Motif === null) {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Le champ Motif est Vide</strong>",
+          });
+        } else {
         const response = await DocServices.createBilanBiologique({
           bb: bbcr,
         });
         console.log(response.data);
+          this.$notify.success({
+          title: 'Succeès',
+          message: 'Bilan Biologique créer avec succes ',
+          offset: 100
+        });
+        }
+        
       } catch (error) {
         console.log(`something went wrong in createBilanBiologique ${error}`);
       }
