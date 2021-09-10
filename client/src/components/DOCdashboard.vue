@@ -20,10 +20,10 @@
             >
           </li>
           <li>
-            <a @click="RDVSection()">
+            <a @click="RDVSection2()">
                
               <span class="fa fa-sticky-note">
-               <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
+               <el-badge :value="countrdv + countrdv2" class="itemNotifs" id="countrdv3" type="danger">
                   </el-badge>
                   
               </span>               
@@ -3891,7 +3891,6 @@
                       >
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Orientation Medical</h3>
-                        <p>Nombre d'orientation :</p>
                       </el-card>
                     </el-col>
                     <el-col :span="8">
@@ -3901,7 +3900,6 @@
                       >
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Evacuation Medical</h3>
-                        <p>Nombre d'Evacuation :</p>
                       </el-card>
                     </el-col>
                     <el-col :span="8">
@@ -3911,7 +3909,6 @@
                       >
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Certificat Médical</h3>
-                        <p>Nombre de Certificats :</p>
                       </el-card>
                     </el-col>
                   </el-row>
@@ -3920,10 +3917,8 @@
             </el-scrollbar>
             <!--********Orientation Medicall***********-->
             <el-scrollbar v-show="radio1 === 'Orientation Medical'">
-              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()"
-                >Orientation / Evacuation / Certificat Medical</el-button
-              >
               <el-card class="box-card">
+              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <center>
                   <div>
                     <el-radio-group v-model="radioRM">
@@ -3935,7 +3930,6 @@
                     </el-radio-group>
                   </div>
                   <br />
-                  <h4>Orientation Medical</h4>
                 </center>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Orientation Medical</p>
@@ -3995,7 +3989,7 @@
                     </el-row>         
                   <center>
                     <el-button
-                      @click="creepdf2()"
+                      @click="orientationCheck()"
                       class="creatbt"
                       icon="el-icon-edit-outline"
                       round
@@ -4127,10 +4121,9 @@
 
             <!-- ********Evacuation Médical***********--> 
             <el-scrollbar v-show="radio1 === 'Evacuation Medical'">
-              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()"
-                >Orientation / Evacuation / Certificat Medical</el-button
-              >
+             
               <el-card class="box-card">
+                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <center>
                   <div>
                     <el-radio-group v-model="radioRM">
@@ -4139,7 +4132,6 @@
                     </el-radio-group>
                   </div>
                   <br />
-                  <h4>Evacuation Medical</h4>
                 </center>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
@@ -4209,7 +4201,7 @@
                     </el-row>         
                   <center>
                     <el-button
-                      @click="creepdf3()"
+                      @click="evacationCheck()"
                       class="creatbt"
                       icon="el-icon-edit-outline"
                       round
@@ -4220,8 +4212,10 @@
               </el-card>
             </el-scrollbar>
             <el-scrollbar  v-show="radio1==='Certificat Médical'">
-              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()">Orientation / Evacuation / Certificat Medical</el-button>
+
               <el-card class="box-card">
+                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
+
                 <center>
                   <div>
                     <el-radio-group v-model="radioRM">
@@ -4230,7 +4224,6 @@
                     </el-radio-group>
                   </div>
                   <br />
-                  <h4>Certificat Médical</h4>
                 </center>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
@@ -4315,7 +4308,7 @@
                   ></el-row>
                   <center>
                     <el-button
-                      @click="creepdf4()"
+                      @click="CertificatCheck()"
                       class="creatbt"
                       icon="el-icon-edit-outline"
                       round
@@ -4461,7 +4454,7 @@
                   ></el-row>
                   <center>
                     <el-button
-                      @click="creepdf()"
+                      @click="ReportCheck()"
                       class="creatbt"
                       icon="el-icon-edit-outline"
                       round
@@ -5009,14 +5002,13 @@ EMAIL: contact@esi-sba.dz</p>
             <center>
               <el-radio-group v-model="radioRDVsection">
                 <el-radio-button label="Valider" @click="recoverDemandesRDV()">
-                  <el-badge :value="countrdv" class="itemNotifs" type="danger">
+                  <el-badge :value="countrdv" id="valideNum" type="danger">
                     
                   </el-badge>
                    Valider
                 </el-radio-button>
                 <el-radio-button label="Reporter" @click="recoverDemandesRDVReport()">
-                  <el-badge :value="countrdv2" class="itemNotifs" type="danger">
-                    
+                  <el-badge :value="countrdv2" id="ReportNum" type="danger"> 
                   </el-badge>
                    Reporter
                 </el-radio-button>
@@ -5131,6 +5123,164 @@ EMAIL: contact@esi-sba.dz</p>
 
           <div v-show="content === '4'" class="dossier">
             <div class="doctor">4</div>
+            <!--<div class="row">
+              <div class="col-md-3">
+                <div class="stati turquoise ">
+                  <i class="icon-exclamation icons"></i>
+                  <div>
+                    <b>0</b>
+                    <span>.turquoise</span>
+                  </div> 
+                </div>
+              </div> 
+              <div class="col-md-3">
+                <div class="stati turquoise left">
+                  <i class="icon-organization icons"></i>
+                  <div>
+                    <b>1</b>
+                    <span>.turquoise left</span>
+                  </div> 
+                </div>
+              </div> 
+              <div class="col-md-3">
+                <div class="stati bg-turquoise ">
+                  <i class="icon-trophy icons"></i>
+                  <div>
+                    <b>2</b>
+                    <span>bg-turquoise</span>
+                  </div> 
+                </div>
+              </div> 
+              <div class="col-md-3">
+                <div class="stati bg-turquoise left">
+                  <i class="icon-screen-smartphone icons"></i>
+                  <div>
+                    <b>3</b>
+                    <span>bg-turquoise left</span>
+                  </div> 
+                </div>
+              </div> 
+        </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="stati emerald ">
+                  <i class="icon-screen-desktop icons"></i>
+                  <div>
+                    <b>4</b>
+                    <span>.emerald</span>
+                  </div> 
+                </div>
+              </div> 
+              <div class="col-md-3">
+                <div class="stati emerald left">
+                  <i class="icon-plane icons"></i>
+                  <div>
+                    <b>5</b>
+                    <span>.emerald left</span>
+                  </div> 
+                </div>
+              </div> 
+              <div class="col-md-3">
+                <div class="stati bg-emerald ">
+                  <i class="icon-notebook icons"></i>
+                  <div>
+                    <b>6</b>
+                    <span>bg-emerald</span>
+                  </div> 
+                </div>
+              </div> 
+              <div class="col-md-3">
+                <div class="stati bg-emerald left">
+                  <i class="icon-mustache icons"></i>
+                  <div>
+                    <b>7</b>
+                    <span>bg-emerald left</span>
+                  </div> 
+                </div>
+              </div> 
+        </div>
+                    <div class="charts-container cf">
+              <div class="chart" id="graph-1-container">
+                <h2 class="title">Hours worked</h2>
+                <div class="chart-svg">
+                  <svg class="chart-line" id="chart-1" viewBox="0 0 80 40">
+                    <defs>
+                      <clipPath id="clip" x="0" y="0" width="80" height="40" >
+                        <rect id="clip-rect" x="-80" y="0" width="77" height="38.7"/>
+                      </clipPath>
+
+                    <linearGradient id="gradient-1">
+                        <stop offset="0" stop-color="#00d5bd" />
+                        <stop offset="100" stop-color="#24c1ed" />
+                    </linearGradient>
+
+                    <linearGradient id="gradient-2">
+                        <stop offset="0" stop-color="#954ce9" />
+                        <stop offset="0.3" stop-color="#954ce9" />
+                        <stop offset="0.6" stop-color="#24c1ed" />
+                        <stop offset="1" stop-color="#24c1ed" />
+                    </linearGradient>
+
+
+                      <linearGradient id="gradient-3" x1="0%" y1="0%" x2="0%" y2="100%">>
+                        <stop offset="0" stop-color="rgba(0, 213, 189, 1)" stop-opacity="0.07"/>
+                        <stop offset="0.5" stop-color="rgba(0, 213, 189, 1)" stop-opacity="0.13"/>
+                        <stop offset="1" stop-color="rgba(0, 213, 189, 1)" stop-opacity="0"/>
+                    </linearGradient>
+
+
+                      <linearGradient id="gradient-4" x1="0%" y1="0%" x2="0%" y2="100%">>
+                        <stop offset="0" stop-color="rgba(149, 76, 233, 1)" stop-opacity="0.07"/>
+                        <stop offset="0.5" stop-color="rgba(149, 76, 233, 1)" stop-opacity="0.13"/>
+                        <stop offset="1" stop-color="rgba(149, 76, 233, 1)" stop-opacity="0"/>
+                    </linearGradient>
+                      
+                </defs>
+                  </svg>
+                  <h3 class="valueX">time</h3>
+                </div>
+                <div class="chart-values">
+                  <p class="h-value">1689h</p>
+                  <p class="percentage-value"></p>
+                  <p class="total-gain"></p>
+                </div>
+                <div class="triangle green"></div>
+              </div>
+              <div class="chart" id="graph-2-container">
+                <h2 class="title">Hours worked</h2>
+                <div class="chart-svg">
+                  <svg class="chart-line" id="chart-2" viewBox="0 0 80 40">
+                  </svg>
+                  <h3 class="valueX">time</h3>
+                </div>
+                <div class="chart-values">
+                  <p class="h-value">322h</p>
+                  <p class="percentage-value"></p>
+                  <p class="total-gain"></p>
+                </div>
+                <div class="triangle red"></div>
+              </div>
+              <div class="chart circle" id="circle-1">
+                <h2 class="title">IBApps Website</h2>
+                <div class="chart-svg align-center">
+                  <h2 class="circle-percentage"></h2>
+                  <svg class="chart-circle" id="chart-3" width="50%" viewBox="0 0 100 100">
+                    <path class="underlay" d="M5,50 A45,45,0 1 1 95,50 A45,45,0 1 1 5,50"/>
+                  </svg>
+                </div>
+                <div class="triangle green"></div>
+              </div>
+              <div class="chart circle" id="circle-2">
+                <h2 class="title">IBApps Website</h2>
+                <div class="chart-svg align-center">
+                  <h2 class="circle-percentage"></h2>
+                  <svg class="chart-circle" id="chart-4" width="50%" viewBox="0 0 100 100">
+                    <path class="underlay" d="M5,50 A45,45,0 1 1 95,50 A45,45,0 1 1 5,50"/>
+                  </svg>
+                </div>
+                <div class="triangle red"></div>
+              </div>
+            </div> -->
             <center>
               © Designed and Developed by linara it solutions 2021
             </center>
@@ -5890,7 +6040,10 @@ export default {
       ordselected: "none",
       ords: [],
       champsvides: false,
-
+      champsvidesOrr: false,
+      champsvidesCert: false,
+      champsvidesEvac: false,
+      champsvidesRep: false,
       prescs: [],
 
       Medoptions: [],
@@ -5959,6 +6112,8 @@ export default {
         dateAndTime: "",
         note: "",
       },
+      countrdv2:0,
+      countrdv:0,
       RDVList:[],
       RDVListDash:[],
       Evac:[""],
@@ -5971,7 +6126,7 @@ export default {
   mounted: function() {
     axios
       .get("http://localhost:8083/doc/patients")
-      .then((response) => {
+      .then((response) => {     
         let x = 0;
         response.data.forEach((element) => {
           if (!(x === 0)) {
@@ -5984,6 +6139,7 @@ export default {
         this.count = x -1;
         this.NumRDV();
         this.NumRDV2();
+          
       })
       .catch((error) => {
         console.log(error);
@@ -5991,6 +6147,7 @@ export default {
     this.wilayaList = this.wilaya.map((item) => {
       return { value: `${item}`, label: `${item}` };
     });
+    
   },
   methods: {
     async addViews() {
@@ -6365,6 +6522,14 @@ async minceViews() {
       console.log(this.ValiderRDVList)
       this.NumRDV()
       this.NumRDV2()
+      var valideNum = document.getElementById('valideNum');
+      var countrdv3 = document.getElementById('countrdv3');
+          if (this.countrdv == '0') {
+            valideNum .style.display = 'none';            
+          }
+      if (this.countrdv  == '0' && this.countrdv2  == '0') {
+          countrdv3 .style.display = 'none';            
+      }     
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6379,7 +6544,13 @@ async minceViews() {
       console.log(response.data)
       this.NumRDV()
       this.NumRDV2()
+      this.addViews()
       this.recoverDemandesRDV()
+      this.$notify.success({
+          title: 'Succeès',
+          message: 'Validation avec succees ',
+          offset: 100
+        });
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6395,6 +6566,13 @@ async minceViews() {
       this.NumRDV()
       this.NumRDV2()
       this.recoverDemandesRDV()
+      this.$notify.success({
+          title: 'Succeès',
+          message: 'Refus avec succees ',
+          offset: 100
+        });
+      this.NumRDV();
+      this.NumRDV2(); 
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6407,6 +6585,14 @@ async minceViews() {
       console.log(this.ReporterRDVList)
       this.NumRDV()
       this.NumRDV2()
+      var ReportNum = document.getElementById('ReportNum');
+      var countrdv3 = document.getElementById('countrdv3');
+      if (this.countrdv2 == '0') {
+            ReportNum.style.display = 'none';            
+          }
+      if (this.countrdv  == '0' && this.countrdv2  == '0') {
+          countrdv3 .style.display = 'none';            
+      }
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6434,6 +6620,11 @@ async minceViews() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+      this.$notify.success({
+          title: 'Succeès',
+          message: 'Enregeitrement avec succees ',
+          offset: 100
+        });
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6448,6 +6639,11 @@ async minceViews() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+      this.$notify.success({
+          title: 'Succeès',
+          message: 'Refus avec succees ',
+          offset: 100
+        });
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6474,9 +6670,16 @@ async minceViews() {
   RDVSection () {
     try {
       this.recoverDemandesRDV()
+      this.recoverDemandesRDVReport()
       console.log("RDVSection clicked")
       this.content = 'RDVSection'
       this.radioRDVsection = 'Valider'
+      this.NumRDV()
+      this.NumRDV2()
+      var countrdv3 = document.getElementById('countrdv3');
+      if (this.countrdv  == '0' && this.countrdv2  == '0') {
+          countrdv3 .style.display = 'none';            
+      }
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -6505,7 +6708,30 @@ async minceViews() {
           console.log(error);
         });
     },
+    RDVSection2() {
+      this.content = "RDVSection";
+      axios
+        .get("http://localhost:8083/doc/patients")
+        .then((response) => {
+          let x = 0;
+          this.patients = [];
+          response.data.forEach((element) => {
+            if (!(x === 0)) {
+              this.patients.push(element);
+            }
+            x = x + 1;
+          });
+          this.NumRDV();
+          this.NumRDV2();
+          this.recoverDemandesRDVReport();  
+          this.recoverDemandesRDV();
 
+  
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     stringToBoolean(string) {
       switch (string.toLowerCase().trim()) {
         case "true":
@@ -7472,6 +7698,101 @@ async modifierAntecedents() {
          console.log(`something went wrong ${error}`);
        }
      },
+  async orientationCheck() {
+    try {
+      this.champsvidesOrr=false
+          if (this.OrientationMedical.Moitf == "" ||this.OrientationMedical.OrientVers == ""){
+            console.log("yoo")
+            this.champsvidesOrr=true
+          }
+        
+        if(!this.champsvidesOrr){ 
+          console.log(this.champsvidesOrr) 
+          this.creepdf2()
+        } else {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }
+    
+    } catch (error) {
+      console.log(`something went wrong zqsdftgyhuj ${error}`);
+    
+    }},
+     async evacationCheck() {
+    try {
+      this.champsvidesEvac=false
+          //  this.prescs[i].nom == "" || 
+          if (this.EvacuationMedical.Moitf == ""||this.EvacuationMedical.EvacVers == ""){
+            console.log("yoo")
+            this.champsvidesEvac=true
+          }
+        
+        if(!this.champsvidesEvac){ 
+          console.log(this.champsvidesEvac) 
+          this.creepdf3()
+        } else {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }
+    
+    } catch (error) {
+      console.log(`something went wrong zqsdftgyhuj ${error}`);
+    
+    }},
+async CertificatCheck() {
+    try {
+      this.champsvidesCert=false 
+          //  this.prescs[i].nom == "" || 
+          if (this.CertificatMedical.Moitf == ""||this.CertificatMedical.HistoireDeLaMaladie == ""||this.CertificatMedical.EtatGeneral == ""){
+            console.log("yoo")
+            this.champsvidesCert=true
+          }
+        
+        if(!this.champsvidesCert){ 
+          console.log(this.champsvidesCert) 
+          this.creepdf4()
+        } else {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }
+    
+    } catch (error) {
+      console.log(`something went wrong zqsdftgyhuj ${error}`);
+    
+    }},
+ async ReportCheck() {
+    try {
+      this.champsvidesRep=false 
+          //  this.prescs[i].nom == "" || 
+          if (this.RapportMedical.Moitf == ""||this.RapportMedical.HistoireDeLaMaladie == ""||this.RapportMedical.Conclusion == ""||this.RapportMedical.EtatGeneral == ""){
+            console.log("yoo")
+            this.champsvidesRep=true
+          }
+        
+        if(!this.champsvidesRep){ 
+          console.log(this.champsvidesRep) 
+          this.creepdf()
+        } else {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }
+    
+    } catch (error) {
+      console.log(`something went wrong zqsdftgyhuj ${error}`);
+    
+    }},           
      async getCertificats() {
        try {
          console.log(this.userselected.id);
@@ -8896,7 +9217,6 @@ async annulerModificationOrd(ord) {
   font-size: 5rem;
   color: white;
 }
-
 
 
 </style>

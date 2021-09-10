@@ -1,12 +1,12 @@
 <template>
   <div class="Resetpw">
   
-      <div class="d-flex align-items-center light-blue-gradient" style="height: 100vh;">
-        <div class="container" >
-            <div class="d-flex justify-content-center">
+      <div class="d-flex align-items-center light-blue-gradient" id="lahcenz" style="height: 100vh;">
+        <div class="container" id="lahcen" >
+            <div class="d-flex justify-content-center" id="lahcen">
                 <div class="col-md-7">
-                    <div class="card rounded-0 shadow">
-                        <div class="card-body">
+                    <div class="card rounded-10 shadow" id="lahcen">
+                        <div class="card-body" id="lahcen">
                             <h3>Forget Password</h3>
                             <form>
                                 <div class="form-group">
@@ -14,7 +14,7 @@
                                     <input type="email" class="form-control" id="exampleInputEmail1"  aria-describedby="emailHelp" v-model="email" placeholder="Enter email">
                                     <small id="emailHelp" class="form-text text-muted">we'll send forget password link on your email.</small>
                                 </div>
-                                <button type="submit"  class="btn btn-primary"  @click="forgotpw">Forget password</button>
+                                <button type="submit"  class="creatbt"  @click="forgotpw">Forget password</button>
                             </form>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
           email : this.email 
         })
           console.log(response.data)
-          alert(JSON.stringify(response.data, null, 4));      
+          alert(JSON.stringify(response.data, null, 4));     
         }
     }
   }
@@ -61,5 +61,17 @@ body {
 
 .btn btn-primary{
   color: #24b4ab;
+}
+#lahcen{
+  border-radius: 10px;
+}
+.creatbt:hover {
+  color: #24b4ab;
+  background-color: white;
+}
+.creatbt {
+  color: white;
+  background-color: #24b4ab;
+  border-radius: 7px;
 }
 </style>
