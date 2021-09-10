@@ -1490,6 +1490,10 @@ module.exports = {
           id: id
         }
       })
+      var ECG = null
+      var EEG = null
+      var EMG = null
+
       const ecg = await BilansECG.findOne({
         where: {
           id: be.idECG
@@ -1505,21 +1509,34 @@ module.exports = {
           id: be.idEMG
         }
       })
-      const becr = {
-        Motif: be.motif,
-        Date: be.createdAt,
-        ECG: {
+
+      if (ecg != null) {
+        ECG = {
           inter: ecg.inter,
           ECGfile: path.basename(ecg.path).substr(37)
-        },
-        EEG: {
+        }
+      }
+
+      if (eeg != null) {
+        EEG = {
           inter: eeg.inter,
           EEGfile: path.basename(eeg.path).substr(37)
-        },
-        EMG: {
+        }
+      }
+
+      if (emg != null) {
+        EMG = {
           inter: emg.inter,
           EMGfile: path.basename(emg.path).substr(37)
         }
+      }
+
+      const becr = {
+        Motif: be.motif,
+        Date: be.createdAt,
+        ECG: ECG,
+        EEG: EEG,
+        EMG: EMG
       }
       res.send({
         message: `response from the server for showBilanElectrique with id showBilanElectrique : ${id}`,
@@ -1587,13 +1604,13 @@ module.exports = {
           }
         })
       } else {
-        res.send({
-          error: 'error'
-        })
+        console.log('error')
       }
+      /*
       res.send({
         message: `response from the server for downloadBeFile with id BE: ${id} and fileCateg : ${fileCateg}`
       })
+      */
     } catch (err) {
       res.send({
         error: `an error has occured trying to downloadBeFile: ${err}`

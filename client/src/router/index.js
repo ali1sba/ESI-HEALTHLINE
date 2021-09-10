@@ -14,7 +14,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: { hideForAuth: true }
   },
   {
     path: '/register',
@@ -34,7 +35,8 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: Admin
+    component: Admin,
+    meta: { requiresAuth: true, adminAuth: true, docAuth: false, assisAuth: false }
   },
   {
     path: '/patientinterface',
@@ -44,7 +46,8 @@ const routes = [
   {
     path: '/DOCdashboard',
     name: 'DOCdashboard',
-    component: DOCdashboard
+    component: DOCdashboard,
+    meta: { requiresAuth: true, adminAuth: false, docAuth: true, assisAuth: false }
   },
   {
     path: '/test',
@@ -55,7 +58,8 @@ const routes = [
   {
     path: '/Assistant',
     name: 'Assistant',
-    component: Assistant
+    component: Assistant,
+    meta: { requiresAuth: true, adminAuth: false, docAuth: false, assisAuth: true }
   },
   {
     path: '/about',
@@ -71,6 +75,56 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    const isUserLoggedIn = JSON.parse(window.localStorage.getItem('isUserLoggedIn'))
+    const token = JSON.parse(window.localStorage.getItem('token'))
+    const role = JSON.parse(window.localStorage.getItem('role'))
+    if (!isUserLoggedIn || !token) {
+      next('/')
+    } else if (to.meta.adminAuth) {
+      if (role === 'ADMIN') {
+        next()
+      } else {
+        next('/')
+      }
+    } else if (to.meta.docAuth) {
+      if (role === 'MED') {
+        next()
+      } else {
+        next('/')
+      }
+    } else if (to.meta.assisAuth) {
+      if (role === 'ASSIS') {
+        next()
+      } else {
+        next('/')
+      }
+    } else {
+      next('/')
+    }
+  } else if (to.meta.hideForAuth) {
+      const isUserLoggedIn = JSON.parse(window.localStorage.getItem('isUserLoggedIn'))
+      const token = JSON.parse(window.localStorage.getItem('token'))
+      const role = JSON.parse(window.localStorage.getItem('role'))
+      if (!isUserLoggedIn || !token) {
+        next()
+      } else {
+        if (role === 'ADMIN') {
+          next('/admin')
+        } else if (role === 'MED') {
+          next('/DOCdashboard')
+        } else if (role === 'ASSIS') {
+          next('/Assistant')
+        } else {
+          next()
+        }
+      }
+    } else {
+      next()
+    }
 })
 
 export default router

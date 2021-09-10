@@ -1,6 +1,7 @@
 const { UserNonValide } = require('../models')
 const { Compte } = require('../models')
 const { User } = require('../models')
+const SendEmail = require('./SendEmail')
 
 const Promise = require('bluebird')
 const bcrypt = Promise.promisifyAll(require('bcrypt-nodejs'))
@@ -40,8 +41,8 @@ module.exports = {
       const userJson = userUser.toJSON()
       res.send({
         user: userJson
-        // message: `user : ${userJson} hello`
       })
+      SendEmail.sendValidateUserEmail(email, res)
     } catch (err) {
       res.status(400).send({ error: `This email account have problem. ${err}` })
     }
@@ -49,9 +50,17 @@ module.exports = {
 
   async deleteUser (req, res) {
     try {
+      const email = req.body.email
+      const user = await UserNonValide.findOne({
+        where: {
+          email: email
+        }
+      })
+      await user.destroy()
       res.send({
         message: `user : ${req.body.email} \n check your email`
       })
+      SendEmail.sendDeleteUserEmail(email, res)
     } catch (err) {
       res.status(400).send({ error: `This email account have problem. ${err}` })
     }
@@ -73,6 +82,7 @@ module.exports = {
       res.send({
         message: `user : ${req.body.email} \n check your email`
       })
+      SendEmail.sendDesactivateUserEmail(user.email, res)
     } catch (err) {
       res.status(400).send({ error: `This email account have problem. ${err}` })
     }
@@ -94,6 +104,7 @@ module.exports = {
       res.send({
         message: `user : ${req.body.email} \n check your email`
       })
+      SendEmail.sendActivateUserEmail(user.email, res)
     } catch (err) {
       res.status(400).send({ error: `This email account have problem. ${err}` })
     }
@@ -152,6 +163,7 @@ module.exports = {
           user: userJson
           // message: `user : ${userJson} hello`
         })
+        SendEmail.sendActivateUserEmail(email, res)
       } else {
         res.status(400).send({ error: 'This email is already in use.' })
       }
