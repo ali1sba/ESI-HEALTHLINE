@@ -233,8 +233,9 @@ nav[role="navigationAdmin"] {
   color: #ddd;
   width: 200px;
   top: 60px;
-  bottom: -200px;
+  bottom: -800px;
   left: 0px;
+  height: 100vh
 }
 
 nav[role="navigationAdmin"] li {
@@ -2212,7 +2213,7 @@ span {
   box-shadow: 0px 0px 3px #888888;
   margin:7px ;
   margin-left: 0px;
-
+  min-height: 100vh;
 
 }
 

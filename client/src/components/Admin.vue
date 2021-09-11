@@ -368,7 +368,7 @@
   </el-row>
  <!-- sign up button  -->
   <el-row>
-    <el-col :span="24"><el-button @click="register" type="primary" plain>s'inscrire</el-button></el-col>
+    <el-col :span="24"><el-button @click="register" type="primary" plain>inscrire</el-button></el-col>
     
   </el-row>
    </div>

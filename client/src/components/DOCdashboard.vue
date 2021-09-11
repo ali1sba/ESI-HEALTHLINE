@@ -3932,9 +3932,13 @@
             <el-scrollbar v-show="radio1 === 'Bilans électriques' && radio0 === 'Examen Médical'">
               <center>
                 <div>
-                  <el-radio-group v-model="radioBE">
-                    <el-radio-button label="Historique" @click="showBE(userselected)"></el-radio-button>
-                    <el-radio-button label="Créer" @click="clearBECr()"></el-radio-button>
+                  <el-radio-group fill="#24b4ab" v-model="radioBE">
+                    <el-radio-button label="Historique" 
+                    
+                    @click="showBE(userselected)"></el-radio-button>
+                    <el-radio-button label="Créer" 
+                    
+                    @click="clearBECr()"></el-radio-button>
                   </el-radio-group>
                 </div>
               </center>
@@ -5653,9 +5657,9 @@ EMAIL: contact@esi-sba.dz</p>
                   </el-dialog>
 
             </el-card>
-            <center>
+            <!-- <center>
               © Designed and Developed by linara it solutions 2021
-            </center>
+            </center> -->
           </div>
           <!-- ********************** 4 ***************************** -->
 
