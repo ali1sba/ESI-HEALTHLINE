@@ -3,7 +3,7 @@
     <div class="wrapper d-flex align-items-stretch">
       <nav id="sidebar" :class="{ active: isactive }">
         <div class="logoProject">
-          <img src="assets/dashboard/logo.png" class="logo" />
+          <img src="assets/dashboard/newlogo.png" class="logo" />
         </div>
 
         <ul class="list-unstyled components mb-5 menulist">
@@ -16,36 +16,36 @@
           <li>
             <a @click="content = 'dossier'">
               <span class="fa fa-user"></span>
-              <p class="nom">About</p></a
+              <p class="nom">Patients</p></a
             >
           </li>
           <li>
             <a @click="RDVSection()">
                
-              <span class="fa fa-sticky-note">
+              <span class="fa fa-list-alt">
                <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
                   </el-badge>
                   
               </span>               
-              <p class="nom">RDV Section</p></a
+              <p class="nom">Rendez-vous</p></a
             >          </li>
           <li>
             <a @click="content = '4'"
-              ><span class="fa fa-cogs"></span>
-              <p class="nom">Services</p>
+              ><span class="fa fa-chart-bar"></span>
+              <p class="nom">Statistiques</p>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a @click="content = '5'"
               ><span class="fa fa-cogs"></span>
               <p class="nom">Contacts</p></a
             >
-          </li>
+          </li> -->
         </ul>
 
-        <div class="footer">
+        <!-- <div class="footer">
           <p>by LINARA IT Solutions</p>
-        </div>
+        </div> -->
       </nav>
 
       <!-- Page Content  -->
@@ -62,7 +62,7 @@
               <span class="sr-only">Toggle Menu</span>
             </button>
             <h3 class="dashboard" id="titledash">Dashboard</h3>
-
+            <el-autocomplete v-model="state" style="width:50%; margin:0 5% ;" :fetch-suggestions="querySearchAsync" placeholder="Recherchez un patient" @select="handleSelect" prefix-icon="el-icon-search"></el-autocomplete>
             <div id="icons">
               <el-dropdown
                 split-button
@@ -93,32 +93,70 @@
               </el-dropdown>
             </div>
 
-            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#" id="notifs"
-                    ><i class="fas fa-exclamation" />
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#" id="messages"
-                    ><i class="fas fa-envelope"></i
-                  ></a>
-                </li>
-
-                <li class="nav-item" id="button">
-                  <a class="nav-link" id="profile">
-                    <i class="fas fa-user-circle"></i>
-                    Profile
-                  </a>
-                </li>
-              </ul>
-            </div> -->
+           
           </div>
         </nav>
         <div id="rest">
-          <article class="leaderboard">
+         
+
+          <!-- ********************** home ***************************** -->
+
+          <div v-show="content === 'dashboard'" class="dossier">
+            <el-row>
+           <el-col :span="18">
+           <el-card class="welcomecard">
+             <el-col :span="8">
+              <img src="assets/dashboard/doctor.png"/>
+             </el-col>
+             <el-col :span="16">
+            <h3 class="WelcomeDoc"> Bienvenue sur Healthline,</h3>
+            <h3 style="color:#ff7f4f;">Dr MERABET</h3>
+            <p class="WelcomeDesc">Passez une belle journnee!</p>
+           </el-col>
+           
+           </el-card>
+
+          <el-card style="background-color:#f3f2f2; box-shadow:none; border-radius:30px; margin:0 20px; ">
+            <div class="cardDash-body color1">
+              <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">{{count}}</span>
+                </h3>
+                <p>Patients</p>
+              </div>
+              <div class="floatDash-right">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+            <div class="cardDash-body color2">
+              <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">{{RDVCount}}</span>
+                </h3>
+                <p>Rendez-vous</p>
+              </div>
+              <div class="floatDash-right">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+            </div>
+            <div class="cardDash-body color3">
+              <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">41</span>
+                </h3>
+                <p>Covid-19</p>
+              </div>
+              <div class="floatDash-right">
+                <i class="fas fa-biohazard"></i>
+              </div>
+            </div></el-card>
+            </el-col>
+            <el-col :span="6">
+              <el-card class="patientscard">
+             <article class="leaderboard">
             <h5 id="patients">Patients</h5>
+            
+         
             <main class="leaderboard__profiles" id="patientlist">
               <article
                 class="leaderboard__profile"
@@ -138,112 +176,36 @@
                 >
               </article>
             </main>
-          </article>
-
-          <!-- ********************** home ***************************** -->
-
-          <div v-show="content === 'dashboard'" class="dossier">
-           <div class="WelcomingSection">
-            <h3 class="WelcomeDoc"> Welcome to healthline! </h3>
-            <p class="WelcomeDesc">Have a great day Docteur Merabet</p>
-          </div>
-        <div class="containerDASH">
-          <div id="card" class="dark-bg">
-            <img id="profile-photo" src="https://randomuser.me/api/portraits/men/37.jpg">
-            <div class="text-wrapper">
-              <p id="name">MERABET Mohammed </p>
-              <p id="role">Docteur Genral</p>
-              <div class="contact-wrapper">
-                <a id="phone" href="#">
-                  tel: 07 99 99 99 99
-                </a>
-                <!--<a id="website" href="#">
-                  www.example.com
-                </a>-->
-              </div>
-            </div>
-          </div>
-        </div>
- 
-          <!--<h4 style="font-size:17px;" class="Datedashboard">Aujourd'hui est:&nbsp; {{currentDate()}}</h4>
-          <div class="wrapsearch">
-            <div class="search">
-                <input type="text" class="searchTerm" placeholder="Yadra ?">
-                <button type="submit" class="searchButton">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-         </div> -->
-            <div class="cardDash-body color1">
-              <div class="floatDash-left">
-                <h3>
-                  <span class="countDash">{{count}}</span>
-                </h3>
-                <p>Patients</p>
-              </div>
-              <div class="floatDash-right">
-                <i class="el-icon-message-solid"></i>
-              </div>
-            </div>
-            <div class="cardDash-body color2">
-              <div class="floatDash-left">
-                <h3>
-                  <span class="countDash">{{RDVCount}}</span>
-                </h3>
-                <p>Today's RDV</p>
-              </div>
-              <div class="floatDash-right">
-                <i class="el-icon-rank"></i>
-              </div>
-            </div>
-            <div class="cardDash-body color3">
-              <div class="floatDash-left">
-                <h3>
-                  <span class="countDash">999</span>
-                </h3>
-                <p>Information 3</p>
-              </div>
-              <div class="floatDash-right">
-                <i class="el-icon-setting"></i>
-              </div>
-            </div>
+          </article></el-card></el-col>
+          </el-row>
+          <el-row>
             <el-card class="boxRDV">
               <h4>Les rendez-vous d'aujourd'hui :</h4>
-              <!--<table class="dashboardTable">
-                <thead class="dashboardTablethead">
-                  <tr>
-                    <th class="dashboardTableth">Name</th>
-                    <th class="dashboardTableth">Date</th>
-                    <th class="dashboardTableth">Time</th>
-                    <th class="dashboardTableth">Statue</th>
-                  </tr>
-                </thead>
-
-                <tr class="dashboardTabletr" > v-for="Rdv in RDVList" :key="Rdv.id"
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA"></a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-unpaid">Annuler</p>
-                  </td>
-                  id:'',
-        idUser:'',
-        typeDeRDV:'',
-        dateAndTime:'',
-        note:'',
-                </tr> -->
+                <!-- <el-card class="cardGris">
+                        <el-row :data="RDVListDash"> 
+                          <el-col :span="7"><template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    </template></el-col>
+                          <el-col :span="7"><template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                    </template></el-col>
+                          <el-col :span="10"> <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    </template></el-col>
+                          <el-col :span="7"> <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </template></el-col>
+                        </el-row></el-card> -->
+                        
                   <el-table
                   :data="RDVListDash"
-                  height="250"
+                  height="500"
                   style="width: 96%"
                   class="dashboardTable">
                   <el-table-column
                     prop="date"
                     label="Date"
-                    width="180"
+                    width="200"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
@@ -251,8 +213,8 @@
                   </el-table-column>
                   <el-table-column
                     prop="name"
-                    label="Name"
-                    width="180"
+                    label="Nom"
+                    width="200"
                     >
                       <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
@@ -261,7 +223,7 @@
                    <el-table-column
                     prop="Type"
                     label="Type"
-                    width="180"
+                    width="200"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Type}}</span>
@@ -270,17 +232,18 @@
                    <el-table-column
                     prop="Note"
                     label="Note"
-                    width="180"
+                    width="200"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Note}}</span>
                     </template>
                   </el-table-column>
                 </el-table> 
-
+               </el-card>         
                 
-             <!-- </table> -->
-            </el-card> 
+             
+            
+            </el-row>
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -288,7 +251,7 @@
           <div v-show="content === 'dossier'" class="dossier">
             <div class="currentpatient">
               <img
-                src="https://randomuser.me/api/portraits/men/37.jpg"
+                src="https://randomuser.me/api/portraits/men/11.jpg"
                 alt="Evan Spiegel"
               />
               <div>
@@ -8690,14 +8653,16 @@ async annulerModificationOrd(ord) {
   margin: 20px;
   border-radius: 15px;
 }
+
 .cardGris{
   border-radius: 10px;
 }
 .boxRDV {
   width: 97%;
-  margin: 20px;
+  margin:0 20px;
   padding-right: 50px;
   border-radius: 15px;
+  height:200%;
 }
 .el-row {
   margin-bottom: 20px;
@@ -8753,11 +8718,11 @@ async annulerModificationOrd(ord) {
 
 .dashboardTable {
   border-collapse: collapse;
-  box-shadow: 0 5px 10px #e1e5ee;
   background-color: white;
   text-align: left;
   overflow: hidden;
   width: 100%;
+  height:100%
 }
 .dashboardTablethead {
   box-shadow: 0 5px 10px #e1e5ee;
@@ -8913,6 +8878,17 @@ async annulerModificationOrd(ord) {
   color: white;
 }
 
-
+.patientscard {
+  width: 87%;
+  margin: 20px;
+  border-radius: 15px;
+  height: 90%;
+}
+.welcomecard {
+  width: 97%;
+  margin: 20px;
+  border-radius: 15px;
+  padding: 0 2% 2%;
+}
 
 </style>
