@@ -3,7 +3,7 @@
     <div class="wrapper d-flex align-items-stretch">
       <nav id="sidebar" :class="{ active: isactive }">
         <div class="logoProject">
-          <img src="assets/dashboard/logo.png" class="logo" />
+          <img src="assets/dashboard/newlogo.png" class="logo" />
         </div>
 
         <ul class="list-unstyled components mb-5 menulist">
@@ -16,36 +16,36 @@
           <li>
             <a @click="content = 'dossier'">
               <span class="fa fa-user"></span>
-              <p class="nom">About</p></a
+              <p class="nom">Patients</p></a
             >
           </li>
           <li>
             <a @click="RDVSection()">
                
-              <span class="fa fa-sticky-note">
+              <span class="fa fa-list-alt">
                <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
                   </el-badge>
                   
               </span>               
-              <p class="nom">RDV Section</p></a
+              <p class="nom">Rendez-vous</p></a
             >          </li>
           <li>
             <a @click="content = '4'"
-              ><span class="fa fa-cogs"></span>
-              <p class="nom">Services</p>
+              ><span class="fa fa-chart-bar"></span>
+              <p class="nom">Statistiques</p>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a @click="content = '5'"
               ><span class="fa fa-cogs"></span>
               <p class="nom">Contacts</p></a
             >
-          </li>
+          </li> -->
         </ul>
 
-        <div class="footer">
+        <!-- <div class="footer">
           <p>by LINARA IT Solutions</p>
-        </div>
+        </div> -->
       </nav>
 
       <!-- Page Content  -->
@@ -62,7 +62,7 @@
               <span class="sr-only">Toggle Menu</span>
             </button>
             <h3 class="dashboard" id="titledash">Dashboard</h3>
-
+            <el-autocomplete v-model="state" style="width:50%; margin:0 5% ;" :fetch-suggestions="querySearchAsync" placeholder="Recherchez un patient" @select="handleSelect" prefix-icon="el-icon-search"></el-autocomplete>
             <div id="icons">
               <el-dropdown
                 split-button
@@ -93,32 +93,70 @@
               </el-dropdown>
             </div>
 
-            <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#" id="notifs"
-                    ><i class="fas fa-exclamation" />
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#" id="messages"
-                    ><i class="fas fa-envelope"></i
-                  ></a>
-                </li>
-
-                <li class="nav-item" id="button">
-                  <a class="nav-link" id="profile">
-                    <i class="fas fa-user-circle"></i>
-                    Profile
-                  </a>
-                </li>
-              </ul>
-            </div> -->
+           
           </div>
         </nav>
         <div id="rest">
-          <article class="leaderboard">
+         
+
+          <!-- ********************** home ***************************** -->
+
+          <div v-show="content === 'dashboard'" class="dossier">
+            <el-row>
+           <el-col :span="18">
+           <el-card class="welcomecard">
+             <el-col :span="8">
+              <img src="assets/dashboard/doctor.png"/>
+             </el-col>
+             <el-col :span="16">
+            <h3 class="WelcomeDoc"> Bienvenue sur Healthline,</h3>
+            <h3 style="color:#ff7f4f;">Dr MERABET</h3>
+            <p class="WelcomeDesc">Passez une belle journnee!</p>
+           </el-col>
+           
+           </el-card>
+
+          <el-card style="background-color:#f3f2f2; box-shadow:none; border-radius:30px; margin:0 20px; ">
+            <div class="cardDash-body color1">
+              <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">{{count}}</span>
+                </h3>
+                <p>Patients</p>
+              </div>
+              <div class="floatDash-right">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+            <div class="cardDash-body color2">
+              <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">{{RDVCount}}</span>
+                </h3>
+                <p>Rendez-vous</p>
+              </div>
+              <div class="floatDash-right">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+            </div>
+            <div class="cardDash-body color3">
+              <div class="floatDash-left">
+                <h3>
+                  <span class="countDash">41</span>
+                </h3>
+                <p>Covid-19</p>
+              </div>
+              <div class="floatDash-right">
+                <i class="fas fa-biohazard"></i>
+              </div>
+            </div></el-card>
+            </el-col>
+            <el-col :span="6">
+              <el-card class="patientscard">
+             <article class="leaderboard">
             <h5 id="patients">Patients</h5>
+            
+         
             <main class="leaderboard__profiles" id="patientlist">
               <article
                 class="leaderboard__profile"
@@ -138,112 +176,36 @@
                 >
               </article>
             </main>
-          </article>
-
-          <!-- ********************** home ***************************** -->
-
-          <div v-show="content === 'dashboard'" class="dossier">
-           <div class="WelcomingSection">
-            <h3 class="WelcomeDoc"> Welcome to healthline! </h3>
-            <p class="WelcomeDesc">Have a great day Docteur Merabet</p>
-          </div>
-        <div class="containerDASH">
-          <div id="card" class="dark-bg">
-            <img id="profile-photo" src="https://randomuser.me/api/portraits/men/37.jpg">
-            <div class="text-wrapper">
-              <p id="name">MERABET Mohammed </p>
-              <p id="role">Docteur Genral</p>
-              <div class="contact-wrapper">
-                <a id="phone" href="#">
-                  tel: 07 99 99 99 99
-                </a>
-                <!--<a id="website" href="#">
-                  www.example.com
-                </a>-->
-              </div>
-            </div>
-          </div>
-        </div>
- 
-          <!--<h4 style="font-size:17px;" class="Datedashboard">Aujourd'hui est:&nbsp; {{currentDate()}}</h4>
-          <div class="wrapsearch">
-            <div class="search">
-                <input type="text" class="searchTerm" placeholder="Yadra ?">
-                <button type="submit" class="searchButton">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-         </div> -->
-            <div class="cardDash-body color1">
-              <div class="floatDash-left">
-                <h3>
-                  <span class="countDash">{{count}}</span>
-                </h3>
-                <p>Patients</p>
-              </div>
-              <div class="floatDash-right">
-                <i class="el-icon-message-solid"></i>
-              </div>
-            </div>
-            <div class="cardDash-body color2">
-              <div class="floatDash-left">
-                <h3>
-                  <span class="countDash">{{RDVCount}}</span>
-                </h3>
-                <p>Today's RDV</p>
-              </div>
-              <div class="floatDash-right">
-                <i class="el-icon-rank"></i>
-              </div>
-            </div>
-            <div class="cardDash-body color3">
-              <div class="floatDash-left">
-                <h3>
-                  <span class="countDash">999</span>
-                </h3>
-                <p>Information 3</p>
-              </div>
-              <div class="floatDash-right">
-                <i class="el-icon-setting"></i>
-              </div>
-            </div>
+          </article></el-card></el-col>
+          </el-row>
+          <el-row>
             <el-card class="boxRDV">
               <h4>Les rendez-vous d'aujourd'hui :</h4>
-              <!--<table class="dashboardTable">
-                <thead class="dashboardTablethead">
-                  <tr>
-                    <th class="dashboardTableth">Name</th>
-                    <th class="dashboardTableth">Date</th>
-                    <th class="dashboardTableth">Time</th>
-                    <th class="dashboardTableth">Statue</th>
-                  </tr>
-                </thead>
-
-                <tr class="dashboardTabletr" > v-for="Rdv in RDVList" :key="Rdv.id"
-                  <td class="dashboardTabletd">
-                    <a href="#" class="dashboardTableA"></a>
-                  </td>
-                  <td class="dashboardTabletd">1/5/2021</td>
-                  <td class="dashboardTabletd">11am</td>
-                  <td class="dashboardTabletd">
-                    <p class="status status-unpaid">Annuler</p>
-                  </td>
-                  id:'',
-        idUser:'',
-        typeDeRDV:'',
-        dateAndTime:'',
-        note:'',
-                </tr> -->
+                <!-- <el-card class="cardGris">
+                        <el-row :data="RDVListDash"> 
+                          <el-col :span="7"><template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    </template></el-col>
+                          <el-col :span="7"><template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                    </template></el-col>
+                          <el-col :span="10"> <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    </template></el-col>
+                          <el-col :span="7"> <template #default="scope">
+                  <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </template></el-col>
+                        </el-row></el-card> -->
+                        
                   <el-table
                   :data="RDVListDash"
-                  height="250"
+                  height="500"
                   style="width: 96%"
                   class="dashboardTable">
                   <el-table-column
                     prop="date"
                     label="Date"
-                    width="180"
+                    width="200"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
@@ -251,8 +213,8 @@
                   </el-table-column>
                   <el-table-column
                     prop="name"
-                    label="Name"
-                    width="180"
+                    label="Nom"
+                    width="200"
                     >
                       <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
@@ -261,7 +223,7 @@
                    <el-table-column
                     prop="Type"
                     label="Type"
-                    width="180"
+                    width="200"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Type}}</span>
@@ -270,17 +232,18 @@
                    <el-table-column
                     prop="Note"
                     label="Note"
-                    width="180"
+                    width="200"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Note}}</span>
                     </template>
                   </el-table-column>
                 </el-table> 
-
+               </el-card>         
                 
-             <!-- </table> -->
-            </el-card> 
+             
+            
+            </el-row>
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -288,7 +251,7 @@
           <div v-show="content === 'dossier'" class="dossier">
             <div class="currentpatient">
               <img
-                src="https://randomuser.me/api/portraits/men/37.jpg"
+                src="https://randomuser.me/api/portraits/men/11.jpg"
                 alt="Evan Spiegel"
               />
               <div>
@@ -884,6 +847,7 @@
                             >
                               Enregister </el-button
                             ><el-button
+                              type="danger"
                               class="cancelbtn"
                               icon="el-icon-delete"
                               
@@ -1630,7 +1594,7 @@
                       <el-card
                         @click="radio1 = 'examen clinique'
                         recoverExamenClinique(userselected);"
-                        class="examcard examcli"
+                        class="examcard examcli hovereffect"
                       >
                         <i class="fa fa-stethoscope"> </i>
                         <h3>Examen clinique</h3>
@@ -1640,7 +1604,7 @@
                     <el-col :span="12">
                       <el-card
                         @click="radio1 = 'bilan paraclinique'"
-                        class="examcard bilanpara"
+                        class="examcard bilanpara hovereffect"
                       >
                         <i class="fa fa-heartbeat"> </i>
                         <h3>Bilan paraclinique</h3>
@@ -1654,7 +1618,7 @@
                           radio1 = 'rapport medical';
                           getRepports();
                         "
-                        class="examcard rapmed"
+                        class="examcard rapmed hovereffect"
                       >
                         <i class="fa fa-folder-open"> </i>
                         <h3>Rapport medical</h3>
@@ -1664,7 +1628,7 @@
                     <el-col :span="12">
                       <el-card
                         @click="radio1 = 'ordonnances'"
-                        class="examcard ord"
+                        class="examcard ord hovereffect" 
                       >
                         <i class="fa fa-medkit"> </i>
                         <h3>Ordonnances</h3>
@@ -1675,7 +1639,7 @@
                     <el-col :span="24">
                       <el-card
                         @click="radio1 = 'orientations'"
-                        class="examcard orient"
+                        class="examcard orient hovereffect"
                       >
                         <i class="fa fa-user-md"> </i>
                         <h3>Orientations/ evaluations</h3>
@@ -1710,43 +1674,13 @@
                 </center>
                 <el-scrollbar v-show="radio3 === 'Historique'">
                   <el-card class="box-card" v-show="radio4 === 'table'">
-                    <!-- <tr style="display:flex">
-                      <th style="flex:30%">
-                        DATE
-                      </th>
-                      <th style="flex:45%">
-                        INFOS
-                      </th>
-                      <th style="flex:25%">
-                        CONSULTER
-                      </th>
-                    </tr> -->
-                    <!-- <tr
-                      v-for="ec in ExamenCliniques"
-                      :key="ec.id"
-                      style="display:flex;padding:4px; border-radius:10px"
-                    >
-                      <td style="flex:30%">{{ ec.date }}</td>
-                      <td style="flex:45%"></td>
-
-                      <td style="flex:25%">
-                        <el-button
-                          type="primary"
-                          style="background-color: #24b4ab; "
-                          @click="
-                            showExamenClinique(ec);
-                            radio4 = 'consulter'; isECdisable=true
-                          "
-                          class="hovereffect"
-                          >consulter</el-button
-                        >
-                      </td>
-                    </tr> -->
+                    
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
-                      <el-card   class="cardGris">               
-                                      <h6> Date de: </h6>
+                      <el-card   class="cardGris">    
+                                               
+                                      <h6> Date de création: </h6>
                                       <p>{{ ec.date }} </p>
                                       <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" >consulter</el-button >     
                       </el-card>
@@ -2325,7 +2259,7 @@
                       >Enregistrer</el-button
                     >
                     <el-button
-                      type="success"  
+                      type="danger"  
                       v-show="!isECdisable"
                       icon="el-icon-close"
                       class="cancelbtn"
@@ -7450,6 +7384,13 @@ async modifierAntecedents() {
 
     async saveAntecedents() {
       try {
+         this.champvides = false
+         for (let i = 0; i < this.userAntInfo.length; i++) {
+          if (this.userAntInfo.alcool == "" || this.userAntInfo.medicat == ""){
+            this.champsvides=true
+          }
+        }
+        if (!this.champsvides ){
         this.cachedUser = Object.assign({}, this.userAntInfo);
         this.isDisabledAnts = true;
         console.log("saveAntcedents button was clicked !");
@@ -7459,11 +7400,25 @@ async modifierAntecedents() {
           antecedentsInfo: this.userAntInfo,
         });
         console.log(response.data);
-        alert("Informations sauvgarder!")
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Antecedents modifiée avec succeès ',
+
+        });
+        }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+        }
+         
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
     },
+  
+
     async getRepports() {
       try {
         console.log(this.userselected.id);
@@ -8509,13 +8464,31 @@ async annulerModificationOrd(ord) {
     // examen clinique functions*****************************************************
     async saveExamenClinique(user) {
       try {
+        this.champvides = false
+         for (let i = 0; i < this.examenClinique.length; i++) {
+          if (this.examenClinique[i].temp == "" ){
+            this.champsvides=true
+          }
+         }
+        if (!this.champsvides){
         this.examenClinique.userId = user.id;
         const response = await DocServices.saveExamenClinique({
           ExamenClinique: this.examenClinique,
         });
         console.log(this.examenClinique);
         console.log(response.data);
-        alert("Informations sauvgarder!")
+       this.$notify.success({
+          title: 'Succeès',
+          message: 'Examen clinique modifiée avec succeès ',
+
+        });
+        }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+        }
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -8619,6 +8592,12 @@ async annulerModificationOrd(ord) {
           ExamenClinique: this.examenClinique,
         });
         console.log(response.data);
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Examen clinique modifiée avec succeès ',
+
+        });
+
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -8674,14 +8653,16 @@ async annulerModificationOrd(ord) {
   margin: 20px;
   border-radius: 15px;
 }
+
 .cardGris{
   border-radius: 10px;
 }
 .boxRDV {
   width: 97%;
-  margin: 20px;
+  margin:0 20px;
   padding-right: 50px;
   border-radius: 15px;
+  height:200%;
 }
 .el-row {
   margin-bottom: 20px;
@@ -8722,17 +8703,10 @@ async annulerModificationOrd(ord) {
   border-radius:30px;
 }
 .cancelbtn{
-  color:white;
-  background-color:#8a0707;
   display:flex;
-  border:none;
   border-radius:30px;
 }
-.cancelbtn:hover{
-  color:#8a0707;
-  border: 1px solid #8a0707;
-  background-color:white;
-}
+
 .creatbt:hover {
   color: #24b4ab;
   background-color: white;
@@ -8744,11 +8718,11 @@ async annulerModificationOrd(ord) {
 
 .dashboardTable {
   border-collapse: collapse;
-  box-shadow: 0 5px 10px #e1e5ee;
   background-color: white;
   text-align: left;
   overflow: hidden;
   width: 100%;
+  height:100%
 }
 .dashboardTablethead {
   box-shadow: 0 5px 10px #e1e5ee;
@@ -8904,6 +8878,17 @@ async annulerModificationOrd(ord) {
   color: white;
 }
 
-
+.patientscard {
+  width: 87%;
+  margin: 20px;
+  border-radius: 15px;
+  height: 90%;
+}
+.welcomecard {
+  width: 97%;
+  margin: 20px;
+  border-radius: 15px;
+  padding: 0 2% 2%;
+}
 
 </style>

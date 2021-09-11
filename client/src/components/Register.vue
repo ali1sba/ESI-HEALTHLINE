@@ -174,7 +174,7 @@ export default {
           group: this.group
           
         })
-        alert("regiter successfull")
+        alert("register successfull")
         console.log(response.data)
         } else {
           this.error = 'problem in confirmation of the password'
@@ -253,7 +253,7 @@ body{
   height: 100vh;
 }
 .m1{
-margin-right: 0.3%;
+margin-right: 1%;
 padding: 0;
 width: fit-content;
 }
