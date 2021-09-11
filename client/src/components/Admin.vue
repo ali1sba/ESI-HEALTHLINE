@@ -10,20 +10,21 @@
   background-color="#545c64"
   text-color="#fff"
   active-text-color="#ffd04b">
-  <el-menu-item index="1" @click="section = 1">HealtheLine</el-menu-item>
-  <el-menu-item index="4" @click="section = 2">Profile</el-menu-item>
+<el-menu-item index="1" @click="section = 1">HEALTHLINE Admin Panel     
+       </el-menu-item>
   <el-menu-item index="4" @click="logout">Logout</el-menu-item>
+  
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAdmin">
-        <div id="dashboard_btn" @click="section = 1">
-          <li class="dashboardAdmin"><a href="#/admin">Validée</a></li>
+        <div id="dashboard_btn" index="2" @click="section = 1">
+            <li class="dashboardAdmin"><a href="#/admin" class="target">Non-Validée</a></li>
         </div>
-        <div id="edit_btn" @click="section = 2">
-          <li class="editAdmin"><a href="#/admin">Non-Validée</a></li>
+        <div id="edit_btn" index="3" @click="section = 2">
+          <li class="editAdmin"><a href="#/admin"  class="target">Validée</a></li>
         </div>
-        <div id="message_btn" @click="section = 3">
-          <li class="AddNewAdmin"><a href="#/admin">Register</a></li>
+        <div id="message_btn" index="5" @click="section = 3">
+          <li class="AddNewAdmin"><a href="#/admin"  class="target">Register</a></li>
         </div>
       </ul>
     </nav>
@@ -37,8 +38,8 @@
               <li>Ici se retrouve tout les comptes qui attend toujours la validation de l'admin</li>
             </ul>
           </section>
-    <el-button @click="clearFilter">reset all filters</el-button>
-        <el-table
+          <el-button @click="clearFilter">reset all filters</el-button>
+            <el-table
               row-key="date"
               ref="filterTable"
               :data="users"
@@ -535,8 +536,7 @@ export default {
       this.$router.push('/')
     },
     
-    convertVTVC(V , VC){
-      
+    convertVTVC(V , VC){ 
       V.forEach(user => {
         VC.push({
         firstName: user.firstName,       
@@ -569,7 +569,12 @@ export default {
         email: user.email
       });
       // alert("activation sussecfull");
-      console.log(response.data);   
+      console.log(response.data);  
+      this.$notify.success({
+          title: 'Succeès',
+          message: 'Validation avec succes ',
+          offset: 100
+        });    
       this.users.splice(index, 1);
     },
 
@@ -579,7 +584,11 @@ export default {
         const response = await adminservice.deleteUser({
           email: user.email
         });
-        alert("delete sussecfull");
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Supprimer avec succes ',
+          offset: 100
+        });    
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -587,15 +596,18 @@ export default {
       }
       this.users.splice(index, 1);
     },
-
     async desactivateUser(user) {
       console.log(user.email);
-
       try {
         const response = await adminservice.desactivateUser({
            idcmpt: user.idCompte,
         });
-        alert("desactivation sussecfull");
+          this.$notify.success({
+          title: 'Succeès',
+          message: 'Deactivation avec succes ',
+          offset: 100
+        });  
+        window.location.reload();      
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -610,7 +622,12 @@ export default {
         const response = await adminservice.activateUser({
           idcmpt: user.idCompte,
         });
-        alert("desactivation sussecfull");
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Activation avec succes ',
+          offset: 100
+        });
+        window.location.reload();      
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
