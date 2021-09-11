@@ -12,7 +12,6 @@
   active-text-color="#ffd04b">
   <el-menu-item index="1">HealtheLine</el-menu-item>
   <el-menu-item index="4">Profile</el-menu-item>
-  <el-menu-item index="4" @click="logout">Logout</el-menu-item>
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAssistant">
@@ -410,12 +409,6 @@ export default {
   mounted: function () {
   },
   methods: {
-    logout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
-      this.$store.dispatch('setRole', null)
-      this.$router.push('/')
-    },
     // ************************************************ RDV groupés ********************************************
     async recoverRDVG () {
       try {

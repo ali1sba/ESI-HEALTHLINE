@@ -221,7 +221,6 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
-  height: fit-content;
 }
 
 /* header */
@@ -249,16 +248,14 @@ nav[role="navigationAdmin"] li a {
 nav[role="navigationAdmin"] li a:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
-nav[role="navigationAdmin"] li a:active {
-  background-color: rgba(255, 255, 255, 0.103);
-}
-
 nav[role="navigationAdmin"] li a:before {
   content: "\f248";
   font-family: FontAwesome;
   padding-right: 0.6em;
 }
-
+nav[role="navigationAdmin"] .dashboardAdmin a:before {
+  content: "";
+}
 #section1 {
   margin-left: 40px;
 }
@@ -492,7 +489,6 @@ td {
 }
 
 html {
-  overflow-x: hidden;
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
@@ -1892,11 +1888,6 @@ h5,
   margin-top: 1em;
 }
 
-.logoProjectDash {
-  padding: -200px;
-
-}
-
 img {
   width: 65%;
   height: 65%;
@@ -1914,6 +1905,7 @@ img {
 }
 
 .list-unstyled {
+  height: 100%;
   margin-top: -10px;
 }
 
@@ -1963,9 +1955,6 @@ img {
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
   transition: 0.3s;
-}
-.logoAdmin{
-  display: block;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2115,7 +2104,6 @@ margin-right: 10px;
   min-width: 210px;
   width: 210px;
   padding: 20px;
-  padding-bottom: 50px;
   margin-left: 0px;
   float: left;
   max-height: 100vh;
@@ -2461,16 +2449,6 @@ background-color: rgba(36, 180, 171, 0.7);}
 }
 /*Home*/
 .itemNotifs {
-  margin-top: -30px;
-  margin-right: -10px;
-}
-#valideNum
-{
-  margin-top: -30px;
-  margin-right: -10px;
-}
-#ReportNum
-{
   margin-top: -30px;
   margin-right: -10px;
 }

@@ -17,9 +17,6 @@ export default {
     saveBiometricInfo (credantials){
         return Api().post('/DOCdashboard/saveBioInfo',credantials)
     },
-    annulerBiometricInfo (credantials){
-        return Api().post('/DOCdashboard/annulerBioInfo',credantials)
-    },
     saveAntecedents (credantials){
         return Api().post('/DOCdashboard/saveAntecedents',credantials)
     },
@@ -95,31 +92,4 @@ export default {
     createBilanElectrique (credantials){
         return Api().post('/DOCdashboard/createBilanElectrique',credantials)
     },
-    // ***************************** RDV Section *******************************************
-    recoverDemandesRDV (credantials){
-        return Api().get('/DOCdashboard/recoverDemandesRDV',credantials)
-    },
-    validerRDVdemande (credantials){
-        return Api().post('/DOCdashboard/validerRDVdemande',credantials)
-    },
-    refuserRDVdemande (credantials){
-        return Api().post('/DOCdashboard/refuserRDVdemande',credantials)
-    },
-    recoverDemandesRDVReport (credantials){
-        return Api().get('/DOCdashboard/recoverDemandesRDVReport',credantials)
-    },
-    refuserDemandeReportRDV (credantials){
-        return Api().post('/DOCdashboard/refuserDemandeReportRDV',credantials)
-    },
-    enregistrerDemandeReportRDV (credantials){
-        return Api().post('/DOCdashboard/enregistrerDemandeReportRDV',credantials)
-    },
-    
-    NumValider (credantials){
-        return Api().post('/DOCdashboard/NumValider',credantials)
-    },
-    Numreporter (credantials){
-        return Api().post('/DOCdashboard/Numreporter',credantials)
-    }
-    // ***********************************************************************************
 }

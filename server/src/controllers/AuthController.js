@@ -38,7 +38,6 @@ module.exports = {
           user: userJson,
           token: jwtSignUser(userJson)
         })
-        SendEmail.sendRegistrationEmail(email, res)
       } else {
         res.status(400).send({ error: 'This email account is already in use.' })
       }
@@ -57,29 +56,26 @@ module.exports = {
       })
       if (!user) {
         res.status(400).send({
-          error: "L'email est incorrect!"
+          error: 'The login information was incorrect {email} !'
         })
       } else {
         if (user.state === 'ACTIVATED') {
           const isPasswordValid = await user.comparePassword(password)
           if (!isPasswordValid) {
             res.status(400).send({
-              error: 'Le mot de passe est incorrect !'
+              error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
             })
           } else {
             const userJson = user.toJSON()
-            const userData = {
-              id: userJson.id,
-              role: userJson.role,
-              token: jwtSignUser(userJson)
-            }
-            res.status(200).send({
-              user: userData
+            res.send({
+              user: userJson,
+              token: jwtSignUser(userJson),
+              message: `The login information isPasswordValid : ${isPasswordValid}`
             })
           }
         } else {
           res.status(400).send({
-            error: 'Ce compte est désactivé !'
+            error: 'This account is desactivated !'
           })
         }
       }
@@ -87,7 +83,6 @@ module.exports = {
       res.status(500).send({ error: `An error occured trying to login ${err}` })
     }
   },
-
   async loginMobile (req, res) {
     try {
       const email = req.body.email
@@ -98,14 +93,14 @@ module.exports = {
         }
       })
       if (!user) {
-        res.status(402).send({
+        res.status(400).send({
           error: 'The login information was incorrect {email} !'
         })
       } else {
         if (user.state === 'ACTIVATED') {
           const isPasswordValid = await user.comparePassword(password)
           if (!isPasswordValid) {
-            res.status(403).send({
+            res.status(400).send({
               error: `The login information was incorrect ${isPasswordValid} ${password} and ${user.password} !`
             })
           } else {
@@ -120,13 +115,13 @@ module.exports = {
               email: email,
               nom: userAccount.firstName,
               prenom: userAccount.lastName,
-              phone: userAccount.phoneNum
+              number: userAccount.phoneNum
             }
             const objecttosend = JSON.stringify(object)
             res.status(200).send(objecttosend)
           }
         } else {
-          res.status(401).send({
+          res.status(400).send({
             error: 'This account is desactivated !'
           })
         }

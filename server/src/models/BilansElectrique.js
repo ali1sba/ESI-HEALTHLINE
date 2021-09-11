@@ -9,14 +9,17 @@ module.exports = (sequelize, DataTypes) =>
     },
     // ECG
     idECG: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      unique: true
     },
     // EEG
     idEEG: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      unique: true
     },
     // EMG
     idEMG: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      unique: true
     }
   })

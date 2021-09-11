@@ -1,8 +1,6 @@
 /* eslint-disable no-var */
 const { Op } = require('sequelize')
 const { User } = require('../models')
-const { RDVNonValide } = require('../models')
-const { RDVaReporter } = require('../models')
 const { Compte } = require('../models')
 
 const { MedicalFile } = require('../models')
@@ -598,25 +596,6 @@ module.exports = {
       })
     }
   },
-  async annulerBiometricInfo (req, res) {
-    try {
-      const userBI = req.body.biometricInfo
-
-      // update the tables with save function of sequelize
-      const userBiometricInfo = await BiometricInfo.findOne({
-        where: {
-          id: userBI.id
-        }
-      })
-      const BI = userBiometricInfo.toJSON()
-      console.log(BI)
-      res.send({ BI: BI })
-    } catch (err) {
-      res.status(500).send({
-        error: `an error has occured trying to fetch the users ${err}`
-      })
-    }
-  },
 
   async saveBiometricInfo (req, res) {
     try {
@@ -1142,7 +1121,7 @@ module.exports = {
     try {
       const userId = req.body.id
       const ords = await Ordonnance.findAll({
-        attributes: ['id', 'nombreMed', 'updatedAt', 'createdAt'],
+        attributes: ['id', 'nombreMed', 'updatedAt'],
         where: {
           patientId: userId
         },
@@ -1509,10 +1488,6 @@ module.exports = {
           id: id
         }
       })
-      var ECG = null
-      var EEG = null
-      var EMG = null
-
       const ecg = await BilansECG.findOne({
         where: {
           id: be.idECG
@@ -1528,34 +1503,21 @@ module.exports = {
           id: be.idEMG
         }
       })
-
-      if (ecg != null) {
-        ECG = {
-          inter: ecg.inter,
-          ECGfile: path.basename(ecg.path).substr(37)
-        }
-      }
-
-      if (eeg != null) {
-        EEG = {
-          inter: eeg.inter,
-          EEGfile: path.basename(eeg.path).substr(37)
-        }
-      }
-
-      if (emg != null) {
-        EMG = {
-          inter: emg.inter,
-          EMGfile: path.basename(emg.path).substr(37)
-        }
-      }
-
       const becr = {
         Motif: be.motif,
         Date: be.createdAt,
-        ECG: ECG,
-        EEG: EEG,
-        EMG: EMG
+        ECG: {
+          inter: ecg.inter,
+          ECGfile: path.basename(ecg.path).substr(37)
+        },
+        EEG: {
+          inter: eeg.inter,
+          EEGfile: path.basename(eeg.path).substr(37)
+        },
+        EMG: {
+          inter: emg.inter,
+          EMGfile: path.basename(emg.path).substr(37)
+        }
       }
       res.send({
         message: `response from the server for showBilanElectrique with id showBilanElectrique : ${id}`,
@@ -1623,33 +1585,17 @@ module.exports = {
           }
         })
       } else {
-        console.log('error')
+        res.send({
+          error: 'error'
+        })
       }
-      /*
       res.send({
         message: `response from the server for downloadBeFile with id BE: ${id} and fileCateg : ${fileCateg}`
       })
-      */
     } catch (err) {
       res.send({
         error: `an error has occured trying to downloadBeFile: ${err}`
       })
-    }
-  },
-  async NumValider (req, res) {
-    try {
-      const tst = await RDVNonValide.findAll()
-      res.send(tst)
-    } catch {
-      console.log('probleme in docdashoardController / numrdv')
-    }
-  },
-  async Numreporter (req, res) {
-    try {
-      const tst = await RDVaReporter.findAll()
-      res.send(tst)
-    } catch {
-      console.log('probleme in docdashoardController / numrdv')
     }
   }
 }

@@ -17,7 +17,7 @@
                                 </div>
                                 <div class="error" v-html="error" ></div>
                                 <br/>
-                                <button type="submit"  class="savebtnant"  @click="creatbt">Submit new password</button>
+                                <button type="submit"  class="btn btn-primary"  @click="resetpw">Submit new password</button>
                             </form>
                         </div>
                     </div>
@@ -74,13 +74,5 @@ body {
 
 .btn btn-primary{
   color: #24b4ab;
-}
-.creatbt:hover {
-  color: #24b4ab;
-  background-color: white;
-}
-.creatbt {
-  color: white;
-  background-color: #24b4ab;
 }
 </style>

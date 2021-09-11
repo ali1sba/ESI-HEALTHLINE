@@ -6,7 +6,7 @@ const AuthController = require('./controllers/AuthController')
 const AuthControllerPolicy = require('./policies/AuthControllerPolicy')
 const DocDashboardController = require('./controllers/DocDashboardController')
 const AssistantController = require('./controllers/AssistantController')
-
+const demanderBilanController = require('./controllers/demanderBilanController')
 const RapportMedicalController = require('./controllers/RapportMedicalController')
 const OrientationMedicalController = require('./controllers/OrientationMedicalController')
 const EvacuationMedicalController = require('./controllers/EvacuationMedicalController')
@@ -18,9 +18,9 @@ const { BilansECG } = require('./models')
 const { BilansEEG } = require('./models')
 const { BilansEMG } = require('./models')
 const { BilansElectrique } = require('./models')
-let idECG = null
-let idEEG = null
-let idEMG = null
+let idECG = ''
+let idEEG = ''
+let idEMG = ''
 
 // Upload files
 const multer = require('multer')
@@ -167,8 +167,7 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showPatient', DocDashboardController.showPatient)
   app.post('/DOCdashboard/savePersInfo', DocDashboardController.savePersInfo)
   app.post('/DOCdashboard/saveBioInfo', DocDashboardController.saveBiometricInfo)
-  app.post('/DOCdashboard/annulerBioInfo', DocDashboardController.annulerBiometricInfo)
-  app.post('/DOCdashboard/saveAntecedents', DocDashboardController.saveAntecedents)
+  // app.post('/DOCdashboard/saveAntInfo', DocDashboardController.saveAntInfo)
   app.post('/DOCdashboard/saveDepiInfo', DocDashboardController.saveScreeningInfo)
   app.post('/DOCdashboard/recoverMedicaments', DocDashboardController.recoverMedicaments)
   app.post('/DOCdashboard/recoverFormes', DocDashboardController.recoverFormes)
@@ -179,6 +178,10 @@ module.exports = (app) => {
   app.post('/DOCdashboard/recoverOrdonnances', DocDashboardController.recoverOrdonnances)
   app.post('/DOCdashboard/saveOrdonnance', DocDashboardController.saveOrdonnance)
   app.post('/DOCdashboard/showOrdonnance', DocDashboardController.showOrdonnance)
+  app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
+  app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
+  app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
+  app.post('/DOCdashboard/modifierExamenClinique', DocDashboardController.modifierExamenClinique)
   // ************************ rapport medical ***************************
   app.post('/RapportMedical', RapportMedicalController.createRM)
   app.post('/getRapportMedical', RapportMedicalController.getRepports)
@@ -201,28 +204,19 @@ module.exports = (app) => {
   app.post('/DOCdashboard/showBilanElectrique', DocDashboardController.showBilanElectrique)
   app.post('/DOCdashboard/downloadBeFile', DocDashboardController.downloadBeFile)
   app.post('/DOCdashboard/createBilanElectrique', uploadBE.any(), async (req, res) => {
-    try {
-      const BE = {
-        motif: req.body.BEMotif,
-        idPatient: req.body.idPatient
-      }
-      const BECr = await BilansElectrique.create(BE)
-      BECr.idECG = idECG
-      BECr.idEEG = idEEG
-      BECr.idEMG = idEMG
-      await BECr.save()
-      idECG = null
-      idEEG = null
-      idEMG = null
-      res.send({
-        file: req.files,
-        body: req.body
-      })
-    } catch (err) {
-      res.send({
-        error: `an error has occured trying to createBilanElectrique: ${err}`
-      })
+    const BE = {
+      motif: req.body.BEMotif,
+      idPatient: req.body.idPatient
     }
+    const BECr = await BilansElectrique.create(BE)
+    BECr.idECG = idECG
+    BECr.idEEG = idEEG
+    BECr.idEMG = idEMG
+    await BECr.save()
+    res.send({
+      file: req.files,
+      body: req.body
+    })
   })
   // ************************ RDV medical ***************************
   app.post('/progRDVPatient', RDVController.progRDVPatient)
@@ -230,8 +224,8 @@ module.exports = (app) => {
   app.post('/annulerRDV', RDVController.annulerRDV)
   app.post('/saveChangRDVPatient', RDVController.saveChangRDVPatient)
   app.post('/showRDVSelectedPatientapp', RDVController.showRDVSelectedPatientapp)
-  app.post('/showRDVDemandeSelectedPatientapp', RDVController.showRDVDemandeSelectedPatientapp)
-
+  app.post('/loginMobile', AuthController.loginMobile)
+  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   // ***************************** Assistant ****************************
   // ********** RDV GROUP **********
   app.post('/Assistant/recoverRDVG', AssistantController.recoverRDVG)
@@ -246,20 +240,6 @@ module.exports = (app) => {
   app.post('/Assistant/annulerRDVIndiv', AssistantController.annulerRDVIndiv)
   // ******show rdv in dashboard*****
   app.post('/showRDVDashboard', RDVController.showRDVDashboard)
-  // ******************************** RDV Section ****************************************
-  app.post('/DOCdashboard/NumValider', DocDashboardController.NumValider)
-  app.post('/DOCdashboard/Numreporter', DocDashboardController.Numreporter)
-  app.get('/DOCdashboard/recoverDemandesRDV', RDVController.recoverDemandesRDV)
-  app.post('/DOCdashboard/validerRDVdemande', RDVController.validerRDVdemande)
-  app.post('/DOCdashboard/refuserRDVdemande', RDVController.refuserRDVdemande)
-  app.get('/DOCdashboard/recoverDemandesRDVReport', RDVController.recoverDemandesRDVReport)
-  app.post('/DOCdashboard/enregistrerDemandeReportRDV', RDVController.enregistrerDemandeReportRDV)
-  app.post('/DOCdashboard/refuserDemandeReportRDV', RDVController.refuserDemandeReportRDV)
-  // **************************************************************************************
-  app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
-  app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)
-  app.post('/DOCdashboard/showExamenClinique', DocDashboardController.showExamenClinique)
-  app.post('/DOCdashboard/modifierExamenClinique', DocDashboardController.modifierExamenClinique)
-  app.post('/loginMobile', AuthController.loginMobile)
-  app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
+  app.post('/DemandeBilanl', demanderBilanController.createDB)
+  app.post('/getDemanderBilan', demanderBilanController.getDemandes)
 }
