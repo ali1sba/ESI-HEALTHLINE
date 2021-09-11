@@ -4175,14 +4175,22 @@
                    <el-row>
                   <el-col :span="3"> Orienté vers: </el-col>
                         <el-select v-model="OrientationMedical.OrientVers" placeholder="Orientation vers">
-                          <el-option label="Orientation 1" value="Orientation 1"></el-option>
-                          <el-option label="Orientation 2" value="Orientation 2"></el-option>
-                          <el-option label="Orientation 3" value="Orientation 3"></el-option>
-                          <el-option label="Orientation 4" value="Orientation 4"></el-option>
-                          <el-option label="Orientation 5" value="Orientation 5"></el-option>
-                          <el-option label="Orientation 7" value="Orientation 7"></el-option>
-                          <el-option label="Orientation 6" value="Orientation 6"></el-option>
-                          <el-option label="Orientation 8" value="Orientation 8"></el-option>
+                          <el-option label="O.R.L." value="O.R.L."></el-option>
+                          <el-option label="Ophtalmologie" value="Ophtalmologie"></el-option>
+                          <el-option label="Cardiologie" value="Cardiologie"></el-option>
+                          <el-option label="Dermatologie" value="Dermatologie"></el-option>
+                          <el-option label="Endocrinologie " value="Endocrinologie "></el-option>
+                          <el-option label="Gastro-entérologie" value="Gastro-entérologie"></el-option>
+                          <el-option label="Gynéco" value="Gynéco"></el-option>
+                          <el-option label="Hématologie" value="Hématologie"></el-option>
+                          <el-option label="Immunologie" value="Immunologie"></el-option>
+                          <el-option label="Maladies infectieuses" value="Maladies infectieuses"></el-option>
+                          <el-option label="Médecine interne" value="Médecine interne"></el-option>
+                          <el-option label="Néphrologie" value="Néphrologie"></el-option>
+                          <el-option label="Neurologie " value="Neurologie "></el-option>
+                          <el-option label="Physiologie" value="Physiologie"></el-option>
+                          <el-option label="Psychiatrie" value="Psychiatrie"></el-option>
+                          <el-option label="Radiologie  - imagerie" value="Radiologie  - imagerie"></el-option>
                         </el-select>
                     </el-row>         
                   <center>
@@ -4388,14 +4396,10 @@
                    <el-row>
                   <el-col :span="3"> Evacuation vers: </el-col>
                         <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
-                          <el-option label="Evacuation 1" value="Evacuation 1"></el-option>
-                          <el-option label="Evacuation 2" value="Evacuation 2"></el-option>
-                          <el-option label="Evacuation 3" value="Evacuation 3"></el-option>
-                          <el-option label="Evacuation 4" value="Evacuation 4"></el-option>
-                          <el-option label="Evacuation 5" value="Evacuation 5"></el-option>
-                          <el-option label="Evacuation 7" value="Evacuation 7"></el-option>
-                          <el-option label="Evacuation 6" value="Evacuation 6"></el-option>
-                          <el-option label="Evacuation 8" value="Evacuation 8"></el-option>
+                          <el-option label="CHU" value="CHU"></el-option>
+                          <el-option label="EPH" value="EPH"></el-option>
+                          <el-option label="urgence " value="urgence "></el-option>
+                          
                         </el-select>
                     </el-row>         
                   <center>
