@@ -45,13 +45,14 @@ module.exports = {
           [Op.and]: [{ role: 'PATIENT' }, { state: 'ACTIVATED' }]
         }
       })
+      console.log(cPatients)
       const x = await User.findAll({
       })
-
-      const patients = [{}]
+      console.log(x)
+      const patients = []
       cPatients.forEach(async element => {
         let v = element.id
-        v = v - 1
+        v = v - 3
         patients.push(x[(v)].dataValues)
       })
       // const patients = await User.findAll({
@@ -60,6 +61,7 @@ module.exports = {
       //     [Op.or]: [{ state: 'Etudiant' }]
       //   }
       // })
+      console.log(patients)
       res.send(patients)
     } catch (err) {
       res.status(500).send({

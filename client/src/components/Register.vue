@@ -231,6 +231,7 @@ body{
   margin:0;
   background-color: white;
   bottom: 0;
+  height: 100%;
 }
 .formlogo{
  margin-left: 35%;
