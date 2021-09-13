@@ -22,57 +22,52 @@ module.exports = {
       switch (error.details[0].context.key) {
         case 'firstName':
           res.status(400).send({
-            error: 'You must provide a valid firstName'
+            error: 'Vous devez fournir un prénom valide'
           })
           break
         case 'lastName':
           res.status(400).send({
-            error: 'You must provide a valid lastName'
-          })
-          break
-        case 'birthday':
-          res.status(400).send({
-            error: 'You must provide a valid birthday'
-          })
-          break
-        case 'sexe':
-          res.status(400).send({
-            error: 'You must provide a valid sexe'
+            error: 'Vous devez fournir un nom valide'
           })
           break
         case 'email':
           res.status(400).send({
-            error: 'You must provide a valid email address'
+            error: 'Vous devez fournir une adresse e-mail valide'
           })
           break
         case 'password':
           res.status(400).send({
-            error: `The password provided failed to match the following rules:
-            <br>
-            1. It must contain ONLY the following characters: lower case, upper case, numerics.
-            <br>
-            2. It must be at least 8 characters in length and not greater than 32 characters in length.
-            `
+            error: 'Le mot de passe fourni ne correspondait pas'
+          })
+          break
+        case 'birthday':
+          res.status(400).send({
+            error: 'Vous devez fournir un anniversaire valide'
+          })
+          break
+        case 'sexe':
+          res.status(400).send({
+            error: 'Vous devez fournir un sexe valide'
           })
           break
         case 'phoneNum':
           res.status(400).send({
-            error: 'You must provide a valid phoneNumber'
+            error: 'Vous devez fournir un numéro de téléphone valide'
           })
           break
         case 'state':
           res.status(400).send({
-            error: 'You must provide a valid state'
+            error: 'Vous devez fournir un état valide'
           })
           break
         case 'scolarYear':
           res.status(400).send({
-            error: 'You must provide a valid scolarYear'
+            error: 'Vous devez fournir une année scolaire valide'
           })
           break
         default:
           res.status(400).send({
-            error: `Invalid registration information ${error}`
+            error: `Informations d'inscription invalides ${error}`
           })
       }
     } else {

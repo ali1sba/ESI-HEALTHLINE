@@ -184,6 +184,10 @@ export default {
         
        } catch (error) {
          this.error = error.response.data.error
+         this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: `<strong>${this.error}</strong>`}),
          console.log(this.error)
        }
 
@@ -208,9 +212,7 @@ export default {
 .imageform{
   opacity: 0;
 }
-.error {
-  color: red;
-}
+
 body{
   margin: 0;
   padding: 0;
@@ -269,6 +271,9 @@ width: fit-content;
   float: left;
   display:flex;
   border:5px #24b4ab;
+  border-radius: 20px;
+  font-size: 20px;
+  margin:0 auto;
   font-size: 20px;
   
 }

@@ -12,7 +12,7 @@
 --DROP TABLE 'ResetPasswordRequests';
 --DROP TABLE 'BilansBiologiques';
 --DROP TABLE 'BilansECGs';
---DROP TABLE 'OrientationMedicalBDDs';
+--DROP TABLE 'CertificatMedicalBDDs';
 --DROP TABLE 'BilansEEGs';
 --DROP TABLE 'BilansElectriques';
 ---DELETE FROM 'BilansBiologiques' WHERE id='1';

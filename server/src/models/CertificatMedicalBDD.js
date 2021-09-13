@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING
     },
     HistoireDeLaMaladie: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     EtatGeneral: {
-      type: DataTypes.INTEGER
+      type: DataTypes.STRING
     },
     Autre: {
       type: DataTypes.STRING

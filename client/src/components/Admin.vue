@@ -17,10 +17,10 @@
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAdmin">
-        <div id="dashboard_btn" index="2" @click="section = 1">
+        <div id="dashboard_btn" index="2" @click="section = 1;nonValid();">
             <li class="dashboardAdmin"><a href="#/admin" class="target">Non-Validée</a></li>
         </div>
-        <div id="edit_btn" index="3" @click="section = 2">
+        <div id="edit_btn" index="3" @click="section = 2;Valid();">
           <li class="editAdmin"><a href="#/admin"  class="target">Validée</a></li>
         </div>
         <div id="message_btn" index="5" @click="section = 3">
@@ -391,6 +391,7 @@ import adminservice from "../services/adminservice";
 export default {
   data() {
         return {
+      section:1,
       users: [],
       usersvalid: [],
       comptes: [],
@@ -529,6 +530,41 @@ export default {
       });
   },
   methods: {
+    nonValid(){
+       axios
+      .get("http://localhost:8083/admin/novalid/")
+      .then((response) => {
+        this.users = response.data;
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+     Valid(){
+       this.usersvalidcomplet=[],
+       axios
+      .get("http://localhost:8083/admin/valid/")
+      .then((response) => {
+        this.usersvalid = response.data;
+        this.convertVTVC(this.usersvalid,this.usersvalidcomplet);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  
+  axios
+      .get("http://localhost:8083/admin/compte/")
+      .then((response) => {
+        this.comptes = response.data;
+        this.convertCTVC(this.comptes,this.usersvalidcomplet);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    },
     logout () {
       this.$store.dispatch('setToken', null)
       this.$store.dispatch('setUser', null)
@@ -553,7 +589,7 @@ export default {
       });
     },
     convertCTVC(C , VC){
-      let i = 1;
+      let i = 0;
       
       C.forEach(cmpte => {
         VC[i].email = cmpte.email;
@@ -602,12 +638,12 @@ export default {
         const response = await adminservice.desactivateUser({
            idcmpt: user.idCompte,
         });
+        this.Valid();
           this.$notify.success({
           title: 'Succeès',
           message: 'Deactivation avec succes ',
           offset: 100
         });  
-        window.location.reload();      
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;
@@ -622,12 +658,12 @@ export default {
         const response = await adminservice.activateUser({
           idcmpt: user.idCompte,
         });
+        this.Valid();
         this.$notify.success({
           title: 'Succeès',
           message: 'Activation avec succes ',
           offset: 100
         });
-        window.location.reload();      
         console.log(response.data);
       } catch (error) {
         this.error = error.response.data.error;

@@ -296,8 +296,8 @@
                 <el-radio-group v-model="radio0" fill="#24b4ab">
                   <el-radio-button label="Dossier Médical"></el-radio-button>
                   <el-radio-button @click="radio1='Examen Médical'" label="Examen Médical"></el-radio-button>
-                  <el-radio-button label="Statistique"></el-radio-button>
-                  <el-radio-button label="RDV" @click="showRDVSelectedPatient"></el-radio-button>
+                  <!-- <el-radio-button label="Statistique"></el-radio-button> -->
+                  <el-radio-button label="RDV" @click="showRDVSelectedPatient">Rendez-vous</el-radio-button>
                 </el-radio-group >
                 <el-radio-group v-model="radio1" fill="#24b4ab">
                   <el-radio-button
@@ -343,7 +343,7 @@
               <el-card
                 v-if="!haveMF"
                 class="box-card"
-                @click="messageIfNoData()"
+               
               >
                 <center>
                   <h3>
@@ -391,7 +391,12 @@
 
               <!-- **********************mehdi********************** -->
               <div v-else>
-                <el-card class="box-card" id="information-personnelles">
+                <el-card class="box-card">
+                  <center><h4>Dossier Médical</h4></center>
+                  
+                  <br/>
+                  <el-tabs :tab-position="tabPosition" >
+                    <el-tab-pane label="I.personnelles"><el-card class="box-card" id="information-personnelles">
                   <h6>Informations personnelles</h6>
                   <div class="text item">
                     <center>
@@ -492,6 +497,7 @@
                           <el-space wrap :size="10">
                             Adresse
                             <el-input
+                              placeholder="cité 100 logement"
                               v-model="userPersInfo.addresse"
                               :disabled="isDisabledPersInfo"
                             ></el-input></el-space
@@ -505,19 +511,20 @@
                             ></el-input></el-space
                         ></el-col>
                         <el-col :span="8"
-                          ><el-space wrap :size="10">
-                            Email
-                            <el-input
-                              v-model="userPersInfo.email"
-                              :disabled="true"
-                            ></el-input></el-space
-                        ></el-col>
+                          > <el-space wrap :size="10">
+                          Catégorie
+                          <el-input
+                            v-model="userPersInfo.category"
+                            :disabled="isDisabledPersInfo"
+                          ></el-input
+                        ></el-space></el-col>
                       </el-row>
                       <el-row :gutter="20">
                         <el-col :span="8">
                           <el-space wrap :size="10">
                             NSS
                             <el-input
+                              placeholder="0123456789"
                               v-model="userPersInfo.numSS"
                               :disabled="isDisabledPersInfo"
                             >
@@ -561,13 +568,7 @@
                         </el-col>
                       </el-row>
                       <el-space direction="vertical">
-                        <el-space wrap :size="10">
-                          Catégorie
-                          <el-input
-                            v-model="userPersInfo.category"
-                            :disabled="isDisabledPersInfo"
-                          ></el-input
-                        ></el-space>
+                       
                         <br />
                         <el-space wrap :size="10">
                           <div v-if="isDisabledPersInfo">
@@ -602,8 +603,8 @@
                     </center>
                   </div>
                 </el-card>
-                <!-- **********************nour********************** -->
-                <el-card class="box-card" id="Informations-Biométriques">
+                </el-tab-pane>
+                    <el-tab-pane label="I.Biométriques"><el-card class="box-card" id="Informations-Biométriques">
                   <h6>Informations Biométriques</h6>
                 
                     <div class="text item">
@@ -665,9 +666,8 @@
                         </el-popconfirm>
                       </div>
                 
-                </el-card>
-               <!-- **********************ilhem********************** -->
-                <el-card class="box-card" id="Antécédents">
+                </el-card></el-tab-pane>
+                    <el-tab-pane label="Antécédents"><el-card class="box-card" id="Antécédents">
                   <h6>Antécédents</h6>
                   <div class="text item">
                     <el-row>
@@ -877,11 +877,37 @@
                         ></el-input>
                       </el-col>
                     </el-row>
+
+                     <center>
+
+                      <div v-if="isDisabledAnts" >
+                        <el-button type="primary" @click="modifierAntecedents()" icon="el-icon-edit" style="background-color: #24b4ab; display:flex;" round>Modifier</el-button>
+                      </div>
+                      <div v-else style="display:flex;align-items: center;justify-content: center" >
+                          
+                        <el-button type="success" icon="el-icon-check" @click="saveAntecedents()"  style="background-color: #24b4ab;display:flex;" round>Enregister</el-button>
+
+                        <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir Annuler les modifications ?"
+                          @confirm="annulerAntecedents()"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" icon="el-icon-delete" round>Annuler</el-button>
+                          </template>
+                        </el-popconfirm>
+                      </div>
+                    </center>
                  
-                    <el-row>
-                      
-                      <el-space wrap :size="10">
-                        <div style="display:flex; align-items:center; justify-content:center;" v-if="isDisabledAnts">
+                    <!-- <el-row>
+                      <el-row>
+                          <el-col :span="8"></el-col>
+                          <el-col :span="8">
+                        <div  v-if="isDisabledAnts">
                           <el-space
                             ><el-button
                               icon="el-icon-edit"
@@ -892,7 +918,8 @@
                             </el-button></el-space
                           >
                         </div>
-                        <div style="display:flex; align-items:center; justify-content:center;" v-else>
+                        
+                        <div style="display:flex; align-items:center; justify-content:center; margin:0 auto;" v-else>
                           <el-space
                             ><el-button
                               class="savebtn"
@@ -911,14 +938,16 @@
                             </el-button></el-space
                           >
                         </div>
-                      </el-space>
+                      </el-col>
+                          <el-col :span="8"></el-col>
+                        </el-row>
                       
-                    </el-row>
+                      
+                    </el-row> -->
                    
                   </div>
-                </el-card>
-                <!-- **********************ali********************** -->
-                <el-card class="box-card" id="Dépistage">
+                </el-card></el-tab-pane>
+                    <el-tab-pane label="Dépistage"> <el-card class="box-card" id="Dépistage">
                   <h6>Dépistage</h6>
                   <div class="text ">
                    
@@ -951,8 +980,8 @@
                               </el-date-picker>
                               Docteur
                               <el-input
-                                :disabled="isDisabledDepiInfo"
-                                placeholder="Entrez quelque chose"
+                                :disabled= true
+                                placeholder="m.Merabet"
                                 v-model="userDepiInfo.docteurName"
                               ></el-input>
                             </el-space>
@@ -990,7 +1019,7 @@
                     <h5>Audition</h5>
                       <br />
                       <el-row>
-                        <el-col :span="6"> OD </el-col>
+                        <el-col :span="6"> Oreille Droite  </el-col>
                         <el-col :span="4">
                           <el-select
                               v-model="userDepiInfo.auditionOD"
@@ -1008,7 +1037,7 @@
                         </el-col>
                       </el-row>
                       <el-row>
-                        <el-col :span="6">OG</el-col>
+                        <el-col :span="6">Oreille Gauche</el-col>
                         <el-col :span="4">
                           <el-select
                               v-model="userDepiInfo.auditionOG"
@@ -1033,9 +1062,9 @@
                     <el-card class="box-card">
                       <h5>Acuite Visuelle</h5>
                       <br />
-                      <h6>SANS CORRECTIONS</h6>
+                      <h6>SANS CORRECTIONS:</h6>
                       <el-row>
-                        <el-col :span="6"> OD </el-col>
+                        <el-col :span="6"> Oeil Droit </el-col>
                         <el-col :span="4">
                             <el-select
                                 v-model="userDepiInfo.AcuiteVisuelleSansCOD"
@@ -1051,7 +1080,7 @@
                                 </el-option>
                             </el-select>
                         </el-col>
-                        <el-col :span="6"> OG </el-col>
+                        <el-col :span="6"> Oeil Gauche </el-col>
                         <el-col :span="4">
                           <el-select
                               v-model="userDepiInfo.AcuiteVisuelleSansCOG"
@@ -1068,9 +1097,9 @@
                           </el-select>
                         </el-col>
                       </el-row>
-                      <h6>AVEC CORRECTIONS</h6>
+                      <h6>AVEC CORRECTIONS:</h6>
                       <el-row>
-                        <el-col :span="6">OD</el-col>
+                        <el-col :span="6">Oeil Droit</el-col>
                         <el-col :span="4">
                           <el-select
                                 v-model="userDepiInfo.AcuiteVisuelleAvecCOD"
@@ -1086,7 +1115,7 @@
                                 </el-option>
                           </el-select>
                         </el-col>
-                        <el-col :span="6">OG</el-col>
+                        <el-col :span="6">Oeil Gauche</el-col>
                         <el-col :span="4">
                           <el-select
                                 v-model="userDepiInfo.AcuiteVisuelleAvecCOG"
@@ -1656,6 +1685,11 @@
                 
                 
                 </el-card>
+                </el-tab-pane>
+                  </el-tabs>
+                </el-card>
+                
+               
               </div>
               
             </el-scrollbar>
@@ -1756,16 +1790,26 @@
                 
                 
                 <el-scrollbar v-show="radio3 === 'Historique'">
-                  <el-card class="box-card" v-show="radio4 === 'table'">
+                  <el-card  v-show="radio4 === 'table'">
                     
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
                       <el-card   class="cardGris">    
-                                               
-                                      <h6> Date de création: </h6>
-                                      <p>{{ ec.date }} </p>
-                                      <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" >consulter</el-button >     
+                                          <el-row>
+                                            <el-col :span="8"><h6> Date de création: </h6>
+                                      <p>{{ ec.date.substring(0, 10) }} </p></el-col>
+                                            <el-col :span="8"><h6> Temperature: </h6>
+                                      <p>{{ec.temp}} </p></el-col>
+                                            <el-col :span="8"><h6> Peau et teguments: </h6>
+                                      <p>{{ec.peau }} {{ec.anomaliePeau}} </p></el-col>
+                                      
+
+                                          </el-row>     
+                                      
+                                      
+                                      
+                                      <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" round >consulter</el-button >     
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -2973,7 +3017,16 @@
                
 
                 <el-scrollbar v-show="radio2 === 'Historique'">
-                 
+
+                  <div v-if="tableDataBB.length === 0">
+                    <el-empty description="Aucun Bilan a été créer pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radio2 ='Créer' " round>Crées Bilan</el-button>
+                    </el-empty>
+                  </div >
+                  
+                  <div v-else>
+                    
+                                   
                    <el-timeline style="margin:1% 0% 0% 0%;">
                       <el-timeline-item  placement="top" v-for="bb in tableDataBB" :key="bb.id" >
                         <el-card   class="cardGris">
@@ -2997,11 +3050,16 @@
                         </el-card>
                       </el-timeline-item>
                     </el-timeline>
-                 
-                </el-scrollbar>
-
-                <el-scrollbar v-show="radio2 === 'Historique2'">
-                  <el-space>
+                 </div>
+                </el-scrollbar> 
+                 <el-dialog
+                    title="Bilans Biologiques"
+                    v-model="dialogBB"
+                    width="80%"
+                    style=" position: absolute;left: auto;"
+                  >
+                  <el-card class="box-card"> 
+                    <el-space>
                     Motif
                     <el-tag>{{ BBHis.Motif }}</el-tag>
                   </el-space>
@@ -3009,8 +3067,14 @@
                     Date de création
                     <el-tag>{{ BBHis.Date }}</el-tag>
                   </el-space>
-                  
-                    <el-card class="box-card">
+                  </el-card>
+                 
+
+                 
+                    
+                  <el-tabs :tab-position="tabPosition" >
+                    <el-tab-pane label="NFS">
+                      <el-card class="box-card">
                       <h5>NFS</h5> 
                         <div>
                           Globules rouges
@@ -3053,8 +3117,10 @@
                           0.15 - 0.4 millions/mm3
                         </el-space>
                       </el-space>
-                    </el-card>
-                    <el-card class="box-card">
+                      </el-card>
+                    </el-tab-pane>
+                    <el-tab-pane label="B.inflammatoire">
+                      <el-card class="box-card">
                     <h5>Bilan inflammatoire</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3069,7 +3135,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-                    <el-card class="box-card">
+                    </el-tab-pane>
+                    <el-tab-pane label="B.rénale">
+                      <el-card class="box-card">
                     <h5>Bilan rénale</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3088,7 +3156,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-                    <el-card class="box-card">
+                    </el-tab-pane>
+                    <el-tab-pane label="B.hépathique">
+                      <el-card class="box-card">
                       <h5>Bilan hépathique</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3140,7 +3210,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-                    <el-card class="box-card">
+                    </el-tab-pane>
+                     <el-tab-pane label="B.cardiaque">
+                       <el-card class="box-card">
                     <h5>Bilan cardiaque</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3165,8 +3237,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-
-                    <el-card class="box-card">
+                     </el-tab-pane>
+                    <el-tab-pane label="I.S et U">
+                      <el-card class="box-card">
                       <h5>Ionogramme sanguin et urinaire</h5>
                       <el-space orientation="vertical">
                         <el-space>
@@ -3202,8 +3275,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-
-                    <el-card class="box-card">
+                    </el-tab-pane>
+                    <el-tab-pane label="B.glycémique">
+                      <el-card class="box-card">
                       <h5>Bilan glycémique</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3222,8 +3296,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-
-                    <el-card class="box-card"> 
+                    </el-tab-pane>
+                    <el-tab-pane label="B.lipidique">
+                      <el-card class="box-card"> 
                       <h5>Bilan lipidique</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3248,8 +3323,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-
-                    <el-card class="box-card">
+                    </el-tab-pane>
+                     <el-tab-pane label="B.urinaire">
+                       <el-card class="box-card">
                       <h5>Bilan urinaire</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3262,8 +3338,9 @@
                         </el-space>
                       </el-space>
                     </el-card>
-
-                    <el-card class="box-card"><h5>Bilan hormonal</h5>
+                     </el-tab-pane>
+                    <el-tab-pane label="B.hormonal">
+                      <el-card class="box-card"><h5>Bilan hormonal</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
                           TSH
@@ -3286,8 +3363,8 @@
                         </el-space>
                       </el-space>
                     </el-card>
-
-                    <el-card class="box-card">
+                    </el-tab-pane>
+                    <el-tab-pane label="Sérologie"><el-card class="box-card">
                       <h5>Sérologie</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="7">
@@ -3311,28 +3388,40 @@
                           <el-tag>{{ BBHis.BS.autre }}</el-tag>
                         </el-space>
                       </el-space>
-                    </el-card>
-
-                    <el-card class="box-card"><h5>Autres</h5>
+                    </el-card></el-tab-pane>
+                    <el-tab-pane label="Autres">
+                      <el-card class="box-card"><h5>Autres</h5>
                       <el-space orientation="vertical">
                         <el-space wrap :size="10">
                           <el-tag>{{ BBHis.autre }}</el-tag>
                         </el-space>
                       </el-space>
                     </el-card>
+                    </el-tab-pane>
+                  </el-tabs>
+
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="dialogBB = false">Retour</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
+
                   
-                </el-scrollbar>
+               
 
                 <el-scrollbar v-show="radio2 === 'Créer'">
-                  <el-space>
-                    Motif
+                  <el-card class="box-card" >
+                    <h6>Motif</h6>
+                    <br/>
                     <el-input
                       v-model="BBCr.Motif"
                       placeholder="Entrez le motif de la demande"
                     ></el-input>
-                  </el-space>
+                  </el-card>
+                  <br/>
                   <el-tabs :tab-position="tabPosition" style="height: 100%;">
-    <el-tab-pane label="FNS"> <el-card class="box-card">
+    <el-tab-pane label="NFS"> <el-card class="box-card">
                       <h5>NFS</h5> 
                       <el-row>
                         <el-col :span="6">Globules rouges</el-col>
@@ -3827,10 +3916,10 @@
 
 
                   <br />
-                  <center><el-button class="creatbt" icon="el-icon-edit-outline" style="display:flex;"
+                  <el-button class="creatbt" icon="el-icon-edit-outline" style="display:flex;float: right;"
                       round @click="createBilanBiologique(BBCr)"
-                    >Enregistrer</el-button
-                  ></center>
+                    >créer bilan</el-button
+                  >
                   
                 </el-scrollbar>
               </el-card>
@@ -3911,6 +4000,15 @@
                 <el-button icon="el-icon-arrow-left" @click="goBack()" round></el-button>
                 <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Electriques</p>              
                 <el-scrollbar  v-show="radioBE==='Historique'">
+
+                  <div v-if="tableDataBE.length === 0">
+                    <el-empty description="Aucun Bilan a été créer pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radioBE ='Créer' " round>Crées Bilan</el-button>
+                    </el-empty>
+                  </div >
+
+                  <div v-else>
+
                     <el-timeline style="margin:1% 0% 0% 0%;">
                       <el-timeline-item  placement="top" v-for="BE in tableDataBE" :key="BE.id" >
                         <el-card   class="cardGris">
@@ -3945,7 +4043,7 @@
                         </el-card>
                       </el-timeline-item>
                     </el-timeline>
-
+                  </div>
                     <el-dialog title="Bilan Electrique" v-model="dialogConsulterBE" style=" position: absolute;left: auto;">
                       <b>Motif :</b>
                       <p>{{BEHis.Motif}}</p>
@@ -4084,6 +4182,14 @@
               <el-card class="box-card"> 
                 <el-button icon="el-icon-arrow-left" @click="goBack()" round></el-button>
                 <div v-if="radiorania === 'Historique'">
+                  
+                  
+                  <div v-if="demandes.length === 0">
+                    <el-empty description="Aucun Bilan a été demander pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radiorania ='Créer' " round>Crées Bilan</el-button>
+                    </el-empty>
+                  </div >
+                  <div v-else>
                   <p
                     style="
                       font-size: 29px;
@@ -4121,7 +4227,7 @@
                     </el-card>
                      </el-timeline-item>
                   </el-timeline>
-
+                  </div>
                   <el-dialog
                     title="Demande Bilan"
                     v-model="dialogConsulterDemandeBilan"
@@ -4432,7 +4538,12 @@
                 </center>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Orientation Medical</p>
-                  <el-timeline style="margin:1% 0% 0% 0%;">
+                  <div v-if="orientations.length === 0">
+                    <el-empty description="Aucun Orientation a été créer pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radioRM ='Créer' " round>Crées</el-button>
+                    </el-empty>
+                  </div >
+                  <div v-else><el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Orr in orientations.slice().reverse()" :key="Orr.id" >
                       <el-card   class="cardGris">
                                     
@@ -4443,7 +4554,8 @@
                                   
                                   </el-card>
                     </el-timeline-item>
-                  </el-timeline>
+                  </el-timeline></div>
+                  
                   <el-dialog
                     title="Evacuation Medical"
                     v-model="dialogConsulterOrientationMedical"
@@ -4643,7 +4755,12 @@
                 </center>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
-                  <el-timeline style="margin:1% 0% 0% 0%;">
+                  <div v-if="evacuations.length === 0">
+                    <el-empty description="Aucun Evacuation a été créer pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radioRM ='Créer' " round>Crées</el-button>
+                    </el-empty>
+                  </div >
+                  <div v-else><el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Evac in evacuations.slice().reverse()" :key="Evac.id" >
                       <el-card   class="cardGris">
                                     
@@ -4654,7 +4771,8 @@
                                   
                                   </el-card>
                     </el-timeline-item>
-                  </el-timeline>
+                  </el-timeline></div>
+                  
                   <el-dialog
                     title="Evacuation Medical"
                     v-model="dialogConsulterEvacuationMedical"
@@ -4731,6 +4849,12 @@
                 </center>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
+                  <div v-if="certificats.length === 0">
+                    <el-empty description="Aucun Certificat a été créer pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radioRM ='Créer' " round>Crées Bilan</el-button>
+                    </el-empty>
+                  </div >
+                  <div v-else>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Cert in certificats.slice().reverse()" :key="Cert.id" >
                       <el-card   class="cardGris">
@@ -4743,6 +4867,7 @@
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline>
+                  </div>
                   <el-dialog
                     title="Certificat Medical"
                     v-model="dialogConsulterCertificatMedical"
@@ -4851,7 +4976,17 @@
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 
                 <div v-if="radioRM === 'Historique'">
-                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+
+<p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
+                  <div v-if="tableDataBB.length === 0">
+                    <el-empty description="Aucun Rapport Médical a été créer pour ce patient">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radioRM ='Créer' " round>Crées Rapport Medical</el-button>
+                    </el-empty>
+                  </div >
+                  <div v-else>
+
+
+                  
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Rapp in reporrts.slice().reverse()" :key="Rapp.id" >
                       <p style="font-size: 15px;font-weight: bold;">&nbsp;{{Rapp.createdAt}} </p>
@@ -4869,7 +5004,7 @@
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline>
-
+                  </div>
                   <el-dialog title="Rapport Medical" v-model="dialogConsulterRapportMedical" style=" position: absolute;left: auto;" >
                     <b>Motif:</b>
                     <p>{{rapp.Motif}}</p>
@@ -4906,7 +5041,7 @@
                     <div style="flex:50%">
                       <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                       <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                      <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{userselected.lastName}}</p>
                 
                     </div>
                     <div style="flex:50%">
@@ -5326,8 +5461,8 @@ EMAIL: contact@esi-sba.dz</p>
                 </el-empty>
               </el-card>
             </el-scrollbar> -->
-            <!-- ********************************************Statistique******************************************** -->
-            <el-scrollbar v-show="radio0 === 'Statistique'">
+            <!-- ********************************************Statistique pour chaque patient******************************************** -->
+            <!-- <el-scrollbar v-show="radio0 === 'Statistique'">
               <el-card class="box-card">
                 <el-empty :image-size="300">
                   <el-button
@@ -5338,7 +5473,7 @@ EMAIL: contact@esi-sba.dz</p>
                   >
                 </el-empty>
               </el-card>
-            </el-scrollbar>
+            </el-scrollbar> -->
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio0 === 'RDV'">
               <div v-if="haveRDV">
@@ -5351,7 +5486,11 @@ EMAIL: contact@esi-sba.dz</p>
                   round>
                     Programmer un Rendez-vous
                   </el-button></center>
-                  <el-timeline style="margin:1% 0% 0% 0%;">
+                  <div v-if="RDVList.length === 0">
+                    <el-empty description="Aucun Rendez-vous a été Programmer pour ce patient">
+                    </el-empty>
+                  </div >
+                  <div v-else><el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item
                       placement="top"
                       v-for="Rdv in RDVList"
@@ -5379,7 +5518,8 @@ EMAIL: contact@esi-sba.dz</p>
                         >
                       </el-card>
                     </el-timeline-item>
-                  </el-timeline>
+                  </el-timeline></div>
+                  
                   
                 </el-card>
                 <!--form-->
@@ -5404,6 +5544,10 @@ EMAIL: contact@esi-sba.dz</p>
                           label="suivi médical"
                           value="suivi médical"
                         ></el-option>
+                        <el-option
+                        label="Covid-19"
+                        value="Covid-19"
+                      ></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="Date" :label-width="formLabelWidth">
@@ -5442,7 +5586,7 @@ EMAIL: contact@esi-sba.dz</p>
                     v-loading.fullscreen.lock="fullscreenLoading"
                     style="background-color: #24b4ab; width: 100%"
                     @click="dialogRDVFormVisible = true"
-                    >Programmer un Rendez-vous</el-button
+                    round>Programmer un Rendez-vous</el-button
                   >
                 </el-empty>
               </el-card>
@@ -5467,6 +5611,10 @@ EMAIL: contact@esi-sba.dz</p>
                       <el-option
                         label="suivi médical"
                         value="suivi médical"
+                      ></el-option>
+                      <el-option
+                        label="Covid-19"
+                        value="Covid-19"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -6251,6 +6399,7 @@ export default {
       radioRMyesy: "Historique",
       radioRM:"Historique",
       radioBE: "Historique",
+      dialogBB:false,
       // this will represent every single info of the patient (DM,EX,RDV,STATISTICS)
       patientDM: "",
 
@@ -6287,7 +6436,7 @@ export default {
       userDepiInfo: {
         idDI: "",
         typeDeVisite: "",
-        docteurName: "Merabet ",
+        docteurName: "Merabet",
         poids: "",
         taille: "",
         DépistageDate1: "",
@@ -6563,6 +6712,7 @@ export default {
       champsvidesCert: false,
       champsvidesEvac: false,
       champsvidesRep: false,
+      champsvidesexamen: false,
       prescs: [],
 
       Medoptions: [],
@@ -6637,7 +6787,7 @@ export default {
       RDVList:[],
       RDVListDash:[],
       Evac:[""],
-
+      count:0,
       //Notifs********
       totalNotifs: [],
 
@@ -6671,7 +6821,7 @@ export default {
           x = x + 1;
         });
         console.log(response.data);
-        this.count = x -1;
+        this.count = this.patients.length;
         this.NumRDV();
         this.NumRDV2();
           
@@ -6685,6 +6835,18 @@ export default {
     
   },
   methods: {
+    getAge(dateString) 
+  {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age--;
+    }
+    return age;
+  },  
     tabToString(tab){
       var str = "";
       
@@ -6982,7 +7144,7 @@ async minceViews() {
     // Bilans paracliniques -> showBB from ALL Bilans Biologiques tables
     async showBilanBiologique(id) {
       try {
-        this.radio2 = "Historique2";
+        this.dialogBB = true;
         console.log("showBilanBiologique clicked");
         const response = await DocServices.showBilanBiologique({
           id: id,
@@ -7116,7 +7278,16 @@ async minceViews() {
 
     async createBilanElectrique () {
       try {
-        const formData = new FormData()
+        if (this.BECr.BEtext.Motif === null|| this.BECr.BEtext.Motif === '' || ((this.BECr.BEfile.ECGfile === null || this.BECr.BEtext.inter.ECGinter === null || this.BECr.BEtext.inter.ECGinter === '') &&(this.BECr.BEfile.EEGinter === null ||this.BECr.BEtext.inter.EEGinter === null ||this.BECr.BEtext.inter.EEGinter === '') && (this.BECr.BEfile.EMGinter === null || this.BECr.BEtext.inter.EMGinter === null || this.BECr.BEtext.inter.EMGinter === '' ))) 
+        {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }else{
+
+          const formData = new FormData()
         formData.append('BEMotif', this.BECr.BEtext.Motif)
         formData.append('idPatient', this.BECr.BEtext.idP)
         formData.append('BEinterECG', this.BECr.BEtext.inter.ECGinter)
@@ -7137,6 +7308,14 @@ async minceViews() {
         // clearEMGFile()
         console.log(response.data)
         this.clearBECr()
+
+          this.$notify.success({
+          title: 'Succeès',
+          message: ' Bilans créer avec succes ',
+          offset: 100
+        });
+        }
+        
       } catch (error) {
         console.log(`something went wrong in createBilanElectrique ${error}`);
       }
@@ -7183,7 +7362,7 @@ async minceViews() {
             valideNum .style.display = 'none';            
           }
       if (this.countrdv  == '0' && this.countrdv2  == '0') {
-          countrdv3 .style.display = 'none';            
+          countrdv3.style.display = 'none';            
       }     
     } catch (error) {
       console.log(`something went wrong ${error}`)
@@ -7246,7 +7425,7 @@ async minceViews() {
             ReportNum.style.display = 'none';            
           }
       if (this.countrdv  == '0' && this.countrdv2  == '0') {
-          countrdv3 .style.display = 'none';            
+          countrdv3.style.display = 'none';            
       }
     } catch (error) {
       console.log(`something went wrong ${error}`)
@@ -7333,7 +7512,7 @@ async minceViews() {
       this.NumRDV2()
       var countrdv3 = document.getElementById('countrdv3');
       if (this.countrdv  == '0' && this.countrdv2  == '0') {
-          countrdv3 .style.display = 'none';            
+          countrdv3.style.display = 'none';            
       }
     } catch (error) {
       console.log(`something went wrong ${error}`)
@@ -7411,36 +7590,36 @@ async minceViews() {
       }
     },
     // loading page 1s
-    openFullScreen1() {
-      this.fullscreenLoading = true;
-      setTimeout(() => {
-        this.fullscreenLoading = false;
-      }, 1000);
-    },
-    // loading page 3s
-    openFullScreen3() {
-      this.fullscreenLoading = true;
-      setTimeout(() => {
-        this.fullscreenLoading = false;
-      }, 3000);
-    },
-
-    messageIfNoData() {
-      this.$message({
-        showClose: true,
-        message: "Attention, ceci est un avertissement.",
-        type: "warning",
-        duration: 5000,
-      });
-    },
-    messageSaveDone() {
-      this.$message({
-        showClose: true,
-        message: "All modification have been saved",
-        type: "success",
-        duration: 4000,
-      });
-    },
+    // openFullScreen1() {
+    //   this.fullscreenLoading = true;
+    //   setTimeout(() => {
+    //     this.fullscreenLoading = false;
+    //   }, 1000);
+    // },
+    // // loading page 3s
+    // openFullScreen3() {
+    //   this.fullscreenLoading = true;
+    //   setTimeout(() => {
+    //     this.fullscreenLoading = false;
+    //   }, 3000);
+    // },
+     
+    // messageIfNoData() {
+    //   this.$message({
+    //     showClose: true,
+    //     message: "Attention, ceci est un avertissement.",
+    //     type: "warning",
+    //     duration: 5000,
+    //   });
+    // },
+    // messageSaveDone() {
+    //   this.$message({
+    //     showClose: true,
+    //     message: "All modification have been saved",
+    //     type: "success",
+    //     duration: 4000,
+    //   });
+    // },
 
     bmiCalculation() {
       var bmi =
@@ -7752,7 +7931,7 @@ async minceViews() {
       this.radio2 = "Historique",
       this.radioRMyesy = "Historique",
       this.radioRM ="Historique",
-      this.openFullScreen1();
+      //this.openFullScreen1();
       this.content = "dossier";
       this.userselected = user;
       try {
@@ -7885,7 +8064,7 @@ async minceViews() {
         const response = await DocServices.createMF({
           id: user.id,
         });
-        this.openFullScreen3();
+        //this.openFullScreen3();
         this.haveMF = true;
         // this.userDepiInfo.idDI = response.data.mf.screeningInfoId;
         console.log(response.data);
@@ -8687,11 +8866,11 @@ async CertificatCheck() {
                     {
                       columns: [
                         {
-                          text: "Date de naissance:",
+                          text: "Age:",
                           style: "personalInfo",
                         },
                         {
-                          text: this.userPersInfo.dateOfBirth,
+                          text:  this.getAge(this.userPersInfo.dateOfBirth.substring(0,10)),
                           fontSize: 10,
                         },
                       ],
@@ -8908,11 +9087,11 @@ async CertificatCheck() {
                     {
                       columns: [
                         {
-                          text: "Date de naissance:",
+                          text: "Age:",
                           style: "personalInfo",
                         },
                         {
-                          text: this.userPersInfo.dateOfBirth,
+                          text: this.getAge(this.userPersInfo.dateOfBirth.substring(0,10)),
                           fontSize: 10,
                         },
                       ],
@@ -9032,6 +9211,8 @@ async CertificatCheck() {
 
     async creepdf4() {
       try {
+        const x = this.CertificatMedical.HistoireDeLaMaladie.toString().substring(0,10);
+        const y = this.CertificatMedical.EtatGeneral.toString().substring(0,10);
         console.log("creepdf4 button was clicked !");
         console.log(this.userAntInfo);
         this.CertificatMedical.idUser = this.userselected.id;
@@ -9117,11 +9298,11 @@ async CertificatCheck() {
                     {
                       columns: [
                         {
-                          text: "Date de naissance:",
+                          text: "Age:",
                           style: "personalInfo",
                         },
                         {
-                          text: this.userPersInfo.dateOfBirth,
+                          text: this.getAge(this.userPersInfo.dateOfBirth.substring(0,10)),
                           fontSize: 10,
                         },
                       ],
@@ -9188,13 +9369,13 @@ async CertificatCheck() {
                 "\n\n",
                 " JUSTIFIE D'UNE ABSENCE SCOLAIRE DU ",
                 {
-                  text: this.CertificatMedical.HistoireDeLaMaladie,
+                  text: x,
                   fontSize: 12,
                   bold: true,
                 },
                 " AU ",
                 {
-                  text: this.CertificatMedical.EtatGeneral,
+                  text: y,
                   fontSize: 12,
                   bold: true,
                 },
@@ -9336,11 +9517,11 @@ async CertificatCheck() {
                     {
                       columns: [
                         {
-                          text: "Date de naissance:",
+                          text: "Age",
                           style: "personalInfo",
                         },
                         {
-                          text: this.userPersInfo.dateOfBirth,
+                          text: this.getAge(this.userPersInfo.dateOfBirth.substring(0,10)),
                           fontSize: 10,
                         },
                       ],
@@ -9739,11 +9920,11 @@ async creerania() {
                     {
                       columns: [
                         {
-                          text: "Date de naissance:",
+                          text: "Age:",
                           style: "personalInfo",
                         },
                         {
-                          text: this.userPersInfo.dateOfBirth,
+                          text: this.getAge(this.userPersInfo.dateOfBirth.substring(0,10)),
                           fontSize: 10,
                         },
                       ],
@@ -9878,19 +10059,23 @@ async creerania() {
     // examen clinique functions*****************************************************
     async saveExamenClinique(user) {
       try {
-        this.champvides = false
-         for (let i = 0; i < this.examenClinique.length; i++) {
-          if (this.examenClinique[i].temp == "" ){
-            this.champsvides=true
-          }
+        this.champsvidesexamen = false
+          
+          if (this.examenClinique.temp == "" || (this.examenClinique.anomaliePeau== "" && this.examenClinique.peau== "" )){
+            this.champsvidesexamen=true
+          
          }
-        if (!this.champsvides){
+        if (!this.champsvidesexamen){
         this.examenClinique.userId = user.id;
         const response = await DocServices.saveExamenClinique({
           ExamenClinique: this.examenClinique,
         });
         console.log(this.examenClinique);
         console.log(response.data);
+        console.log("lahcen");
+        console.log(this.champsvidesexamen);
+        console.log(this.examenClinique.temp);
+        console.log(this.examenClinique.anomaliePeau);
        this.$notify.success({
           title: 'Succeès',
           message: 'Examen clinique modifiée avec succeès ',
@@ -9914,7 +10099,7 @@ async creerania() {
         });
         let list = [];
         response.data.Ec.map(function(value) {
-          list.push({ id: value.id, date: value.updatedAt.toString() });
+          list.push({ id: value.id, date: value.updatedAt.toString(),temp: value.temp,peau:value.peau,peau2:value.anomaliePeau });
         });
 
         this.ExamenCliniques = list;
@@ -10349,3 +10534,4 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
 
 </style>
+
