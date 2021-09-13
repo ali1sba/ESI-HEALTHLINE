@@ -130,7 +130,7 @@
 
           <div v-show="content === 'dashboard'" class="dossier">
             <el-row>
-           <el-col :span="18">
+           <el-col :span="18" style="margin-top:0px">
            <el-card class="welcomecard">
              <el-col :span="8">
               <img src="assets/dashboard/doctor.png"/>
@@ -177,36 +177,7 @@
                 <i class="fas fa-biohazard"></i>
               </div>
             </div></el-card>
-            </el-col>
-            <el-col :span="6">
-              <el-card class="patientscard">
-             <article class="leaderboard">
-            <h5 id="patients">Patients</h5>
-            
-         
-            <main class="leaderboard__profiles" id="patientlist">
-              <article
-                class="leaderboard__profile"
-                v-for="patient in patients"
-                :key="patient.id"
-                @click="showPatient(patient)
-                content = 'dossier';"
-              >
-                <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
-                  class="leaderboard__picture"
-                />
-                <span
-                  class="leaderboard__name"
-                  v-loading.fullscreen.lock="fullscreenLoading"
-                >
-                  {{ patient.lastName }}</span
-                >
-              </article>
-            </main>
-          </article></el-card></el-col>
-          </el-row>
-          <el-row>
+             <el-row>
             <el-card class="boxRDV">
               <h4>Les rendez-vous d'aujourd'hui :</h4>
                 <!-- <el-card class="cardGris">
@@ -272,6 +243,36 @@
              
             
             </el-row>
+            </el-col>
+            <el-col :span="6" style="margin-top:0; height:auto">
+              <el-card class="patientscard" :body-style="{ padding: '0px' }" style="padding-top:20px;padding-bottom:20px;">
+             <article style="height:auto; width: 100%;  padding:0 20px 20px;  margin: 0;  float: left;    overflow-y: auto;">
+            <h5 id="patients">Patients</h5>
+            
+         
+            <main class="leaderboard__profiles" id="patientlist">
+              <article
+                class="leaderboard__profile"
+                v-for="patient in patients"
+                :key="patient.id"
+                @click="showPatient(patient)
+                content = 'dossier';"
+              >
+                <img
+                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  class="leaderboard__picture"
+                />
+                <span
+                  class="leaderboard__name"
+                  v-loading.fullscreen.lock="fullscreenLoading"
+                >
+                  {{ patient.lastName }}</span
+                >
+              </article>
+            </main>
+          </article></el-card></el-col>
+          </el-row>
+         
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -637,8 +638,15 @@
                           class="droite"
                         >
                           IMC
-                        </el-button>
-                        <p class="droite2" id="imcValue">{{ responseimc }}</p>
+                        </el-button><div class="droite2" id="imcValue" style="display: flex" >
+
+                        <el-space style="display: -webkit-inline-box;" >
+                        {{ responseimc }}
+                           <el-tag>&nbsp;{{ bmi }}&nbsp; kg/m2</el-tag>
+
+                  </el-space>
+                  </div>
+                        
                       </div>
                     </div>
                     <br>
@@ -4222,7 +4230,7 @@
                         Nom : &nbsp; {{ userselected.firstName }}
                       </p>
                       <p style="font-size: 17px">
-                        prenom : &nbsp; {{ userselected.lastName }}
+                        Prenom : &nbsp; {{ userselected.lastName }}
                       </p>
                       <p style="font-size: 17px">
                         Age : &nbsp; {{ userselected.age }}
@@ -4905,7 +4913,7 @@
                   <div style="display:flex">
                     <div style="flex:50%">
                       <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                      <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                      <p style="font-size:17px;">Prenom : &nbsp; {{ userselected.lastName }}</p>
                       <p style="font-size:17px;">Age : &nbsp; {{ userselected.age}}</p>
                 
                     </div>
@@ -4972,7 +4980,7 @@
                     >
                     
                     <hr>
-                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbécrés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
                   </center>
                 </div>
@@ -4994,7 +5002,7 @@ EMAIL: contact@esi-sba.dz</p>
                       > Historique</el-radio-button>
                       <el-radio-button 
                         label="nouvOrd"
-                        @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'"
+                        @click=" radio1O='nouvOrd';recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created';"
                       >Créer</el-radio-button>
                     </el-radio-group>
                   </div>
@@ -5021,7 +5029,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <div style="display:flex">
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Prenom : &nbsp; {{ userselected.lastName }}</p>
                   <p style="font-size:17px;">Date de Naissance : &nbsp; {{ ddn}}</p>
                 
                 </div>
@@ -5036,9 +5044,9 @@ EMAIL: contact@esi-sba.dz</p>
                 <hr>
                 <ol id="prescs">
 
-                <li  style="margin-left:-90px;margin-right:-130px;margin-bottom:10px" v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index == (prescs.length-1)&& isOrdDisabled==false}" >
+                <li  style="margin-left:-50px;margin-right:-135px;margin-bottom:10px; width:100%" v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index == (prescs.length-1)&& isOrdDisabled==false}" >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament" @change="pr.forme='';pr.marque='';pr.dosage=''" style="width:170px;">
+                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament" @change="pr.forme='';pr.marque='';pr.dosage=''" style="width:20%;">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
@@ -5047,7 +5055,7 @@ EMAIL: contact@esi-sba.dz</p>
                      style="margin-right:7px">
                 </el-option>
                 </el-select>
-                <el-select v-model="pr.marque" filterable :disabled="isOrdDisabled" placeholder="marque " @click=" recoverMarques(pr.nom)" @change="pr.forme='';pr.dosage=''" style="width:170px;">
+                <el-select v-model="pr.marque" filterable :disabled="isOrdDisabled" placeholder="marque " @click=" recoverMarques(pr.nom)" @change="pr.forme='';pr.dosage=''" style="width:20%;">
                 <el-option
                  v-for="item in marqueoptions"
                  :key="item.value"
@@ -5058,7 +5066,7 @@ EMAIL: contact@esi-sba.dz</p>
                  </el-option>
                 </el-select>
 
-                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique  " @click=" recoverFormes(pr.nom,pr.marque)" @change="pr.dosage=''" style="width:170px;">
+                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique  " @click=" recoverFormes(pr.nom,pr.marque)" @change="pr.dosage=''" style="width:20%;">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
@@ -5068,7 +5076,7 @@ EMAIL: contact@esi-sba.dz</p>
                 >
                  </el-option>
                 </el-select>
-                <el-select v-model="pr.dosage" filterable :disabled="isOrdDisabled" placeholder="dosage " @click=" recoverDosages(pr.nom,pr.marque,pr.forme)" style="width:170px;">
+                <el-select v-model="pr.dosage" filterable :disabled="isOrdDisabled" placeholder="dosage " @click=" recoverDosages(pr.nom,pr.marque,pr.forme)" style="width:20%;">
                 <el-option
                  v-for="item in dosageoptions"
                  :key="item.value"
@@ -5079,7 +5087,7 @@ EMAIL: contact@esi-sba.dz</p>
                  </el-option>
                 </el-select>
                 <el-input v-model="pr.duree" placeholder="durée"  :disabled="isOrdDisabled"
-                style="width : 75px; margin-right:7px">
+                style="width :11%; margin-right:7px">
 
                 </el-input>
                 </li>
@@ -5150,11 +5158,14 @@ EMAIL: contact@esi-sba.dz</p>
             <el-scrollbar v-show="radio1O === 'ordhistory' && radio2O === 'history' && radio0 === 'Examen Médical'">
               <el-card class="box-card"  >
               <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
-                
+                           
 
 
 
                 <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnances</p>
+                <el-empty v-show="noOrd" :image-size="300" description="aucune ordonnance a été créée pour ce patient">
+                  <el-button type="primary" style="background-color: #24b4ab"  @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'" round>Ajouter une ordonnance</el-button>
+                </el-empty> 
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ord in ords.slice().reverse()" :key="ord.id"  >
                       <p style="font-size: 15px;font-weight: bold;margin-top:-15px">&nbsp;{{ord.date}} </p>
@@ -5205,7 +5216,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <div style="display:flex">
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Prenom : &nbsp; {{ userselected.lastName }}</p>
                   <p style="font-size:17px;">Date de naissance : &nbsp; {{ddn}}</p>
                  
                 </div>
@@ -6256,6 +6267,7 @@ export default {
 
       //the data for personalInfo section****************************************************************************
       //BIOMETRIC
+      bmi:0,
       responseimc: "0",
       userBiomInfo: {
         poids: 0,
@@ -6557,6 +6569,7 @@ export default {
 
       //Ordonnance
       ordselected: "none",
+      noOrd: false,
       ords: [],
       champsvides: false,
       champsvidesOrr: false,
@@ -7447,14 +7460,15 @@ async minceViews() {
         this.userBiomInfo.poids /
         ((this.userBiomInfo.taille / 100) * (this.userBiomInfo.taille / 100));
       this.userBiomInfo.imc = bmi;
+      this.bmi=bmi.toFixed(2)
       if (bmi < 18.5 ) {
-        this.responseimc = " Insuffisance pondérale: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = " Insuffisance pondérale: " ;
       } else if (bmi >= 18.5 && bmi < 25) {
-        this.responseimc = "Poids normal: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = "Poids normal: " ;
       } else if (bmi >= 25 && bmi<30) {
-        this.responseimc = "Surpoids: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = "Surpoids: " ;
       }else{
-        this.responseimc = "obésité: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = "obésité: ";
       }
     },
     //     createpdf() {
@@ -9552,6 +9566,7 @@ async annulerModificationOrd(ord) {
       })
       let list=[];
        this.ordons = response.data.ords;
+       this.noOrd=this.ordons.length==0
         for (let index = 0; index < this.ordons.length; index++) {
           var element = this.ordons[index];
           var x = this.getHourFromStringS( element.updatedAt);
@@ -10097,7 +10112,6 @@ async creerania() {
 }
 .droite2 {
   margin-right: 20px;
-  float: left;
   margin-top: 5px;
 }
 #biom {
@@ -10195,6 +10209,9 @@ async creerania() {
   align-items: center;
   text-align: center;
   margin: 1%;
+  margin-left:2%;
+  margin-right:2%;
+  height:200px;
   background-size: cover;
   border: none;
 }
@@ -10336,10 +10353,11 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
   color: white;
 }
 .patientscard {
+
   width: 87%;
   margin: 20px;
   border-radius: 15px;
-  height: 90%;
+  height: 96%;
 }
 .welcomecard {
   width: 97%;
