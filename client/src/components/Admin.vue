@@ -17,14 +17,14 @@
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAdmin">
-        <div id="dashboard_btn" index="2" @click="section = 1">
-            <li class="dashboardAdmin"><a href="#/admin" class="target">Non-Validée</a></li>
+        <div id="dashboard_btn" @click="section = 1">
+            <li class="dashboardAdmin"><a href="#/admin">Non-Validée</a></li>
         </div>
-        <div id="edit_btn" index="3" @click="section = 2">
-          <li class="editAdmin"><a href="#/admin"  class="target">Validée</a></li>
+        <div id="edit_btn" @click="section = 2">
+          <li class="editAdmin"><a href="#/admin">Validée</a></li>
         </div>
-        <div id="message_btn" index="5" @click="section = 3">
-          <li class="AddNewAdmin"><a href="#/admin"  class="target">Register</a></li>
+        <div id="message_btn" @click="section = 3">
+          <li class="AddNewAdmin"><a href="#/admin" >Register</a></li>
         </div>
       </ul>
     </nav>
@@ -502,6 +502,7 @@ export default {
       .then((response) => {
         this.users = response.data;
         console.log(response);
+        this.section = "1";
       })
       .catch((error) => {
         console.log(error);

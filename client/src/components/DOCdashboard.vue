@@ -5,7 +5,6 @@
         <div class="logoProject">
           <img src="assets/dashboard/newlogo.png" class="logo" />
         </div>
-
         <ul class="list-unstyled components mb-5 menulist">
           <li>
             <a @click="home()">
@@ -4439,7 +4438,7 @@
                                       <h6> Evacué vers: </h6><p> {{Orr.OrientVers}} </p>
                                       <p>{{Orr.createdAt}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterOrientationMedical(Orr)">consulter</el-button>
-                                  
+                                      <el-button type="" style="align-items: right;" @click="pdfGenerator2(Orr)">Voir PDF</el-button>
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -4650,7 +4649,7 @@
                                       <h6> Evacué vers: </h6><p> {{Evac.EvacVers}} </p>
                                       <p>{{Evac.createdAt}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterEvacuationMedical(Evac)">consulter</el-button>
-                                  
+                                      <el-button type="" style="align-items: right;" @click="creepdf3(Evac)">Voir PDF</el-button>                                  
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -4736,7 +4735,7 @@
                                       <h6> Date debut: </h6><p> {{Cert.EtatGeneral}} </p>
                                       <h6> Date end: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterCertificatMedical(Cert)">consulter</el-button>
-                                  
+                                       <el-button type="" style="align-items: right;" @click="pdfGenerator4(Cert)">Voir PDF</el-button>                                 
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -6612,7 +6611,6 @@ export default {
       haveorientation: false,
       havecertification: false,
       haveevacuation: false,
-
       haveRDVDash: false,
       RDVform: {
         id: "",
@@ -6665,9 +6663,12 @@ export default {
         console.log(this.countrdv);
         console.log(this.countrdv2);
         this.badgeDisplay();
+        this.INbadgeDisplay();
+        this.INbadgeDisplay2();
         console.log("totale");
         this.recoverDemandesRDV();
         this.recoverDemandesRDVReport();
+        this.showRDVDashboard();
           
       })
       .catch((error) => {
@@ -6732,14 +6733,16 @@ async badgeDisplay() {
           }
 },
 async INbadgeDisplay() {
+  const response = await DocServices.NumValider()
    var countrdv = document.getElementById('countrdv');
-          if (this.countrdv  == '0') {
+          if (Object.keys(response.data).length  == '0') {
             countrdv.style.display = 'none';            
           }
 },
 async INbadgeDisplay2() {
+   const response = await DocServices.Numreporter()
    var countrdv2 = document.getElementById('countrdv2');
-          if (this.countrdv2  == '0') {
+          if (Object.keys(response.data).length  == '0') {
             countrdv2.style.display = 'none';            
           }
 },
@@ -7206,6 +7209,9 @@ async INbadgeDisplay2() {
       this.NumRDV()
       this.NumRDV2()
       this.addViews()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
       this.recoverDemandesRDV()
 
       this.$notify.success({
@@ -7228,6 +7234,9 @@ async INbadgeDisplay2() {
       this.NumRDV()
       this.NumRDV2()
       this.recoverDemandesRDV()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
 
       this.$notify.success({
           title: 'Succeès',
@@ -7277,7 +7286,9 @@ async INbadgeDisplay2() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
-
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
       this.$notify.success({
           title: 'Succeès',
           message: 'Enregeitrement avec succees ',
@@ -7297,6 +7308,9 @@ async INbadgeDisplay2() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
 
       this.$notify.success({
           title: 'Succeès',
@@ -7358,10 +7372,8 @@ async INbadgeDisplay2() {
             x = x + 1;
           });
           console.log(response.data);
-          this.showRDVDashboard();
-          this.NumRDV();
-          this.NumRDV2();
-          console.log("lahcene") 
+          this.badgeDisplay();
+           
         })
         .catch((error) => {
           console.log(error);
@@ -7380,15 +7392,12 @@ async INbadgeDisplay2() {
             }
             x = x + 1;
           });
-          this.NumRDV();
-          this.NumRDV2();
           this.recoverDemandesRDVReport();  
           this.recoverDemandesRDV();
           this.recoverDemandesRDV();
           this.badgeDisplay();
           this.INbadgeDisplay2();
           this.INbadgeDisplay();
-        this.recoverDemandesRDVReport();
   
         })
         .catch((error) => {
@@ -7436,9 +7445,9 @@ async INbadgeDisplay2() {
     messageIfNoData() {
       this.$message({
         showClose: true,
-        message: "Attention, ceci est un avertissement.",
+        message: "Ce patient n'a pas un dossier medical.",
         type: "warning",
-        duration: 5000,
+        duration: 2000,
       });
     },
     messageSaveDone() {
@@ -9037,8 +9046,23 @@ async CertificatCheck() {
         console.log(`something went wrong ${error}`);
       }
     },
-
     async creepdf4() {
+      try {
+        console.log("creepdf button was clicked !");
+        //console.log(this.userAntInfo);
+       this.CertificatMedical.idUser = this.userselected.id;
+        const response = await CertificatMedicalService.creeCM({
+        CertificatMedical: this.CertificatMedical,
+        });
+
+        this.pdfGenerator4(this.CertificatMedical);
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+    async pdfGenerator4(C) {
       try {
         console.log("creepdf4 button was clicked !");
         console.log(this.userAntInfo);
@@ -9196,26 +9220,26 @@ async CertificatCheck() {
                 "\n\n",
                 " JUSTIFIE D'UNE ABSENCE SCOLAIRE DU ",
                 {
-                  text: this.CertificatMedical.HistoireDeLaMaladie,
+                  text: C.HistoireDeLaMaladie,
                   fontSize: 12,
                   bold: true,
                 },
                 " AU ",
                 {
-                  text: this.CertificatMedical.EtatGeneral,
+                  text: C.EtatGeneral,
                   fontSize: 12,
                   bold: true,
                 },
                 ",\n\n",
                 " COMME IL A ÉTÉ CONSTATÉ APRES L'EXAMEN QUE LE PATIENT PRÉSENTAI DES SYMPTOME DE ",
                 {
-                  text: this.CertificatMedical.Motif,
+                  text: C.Motif,
                   fontSize: 12,
                   bold: true,
                 },
                 "\n\n",
                 " LE PATIENT NECESSITE D'UN REPOS POUR UNE MEILLEURE PRISE EN CHARGE \n\n",
-                { text: this.CertificatMedical.Autre },
+                { text: C.Autre },
                 //'then.\n\n'
               ],
             },
@@ -9258,6 +9282,22 @@ async CertificatCheck() {
       }
     },
     async creepdf2() {
+      try {
+        console.log("creepdf button was clicked !");
+        //console.log(this.userAntInfo);
+        this.EvacuationMedical.idUser = this.userselected.id;
+        const response = await EvacuationMedicalService.creeEvM({
+          EvacuationMedical: this.EvacuationMedical,
+        });
+
+        this.pdfGenerator2(this.OrientationMedical);
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+    async pdfGenerator2(O) {
       try {
         console.log("creepdf2 button was clicked !");
         console.log(this.userAntInfo);
@@ -9409,13 +9449,13 @@ async CertificatCheck() {
                 { text: this.userselected.lastName, fontSize: 12, bold: true },
                 " qui sest présenté ce jour pour ",
                 {
-                  text: this.OrientationMedical.Motif,
+                  text: O.Motif,
                   fontSize: 12,
                   bold: true,
                 },
                 " et tant que ",
                 {
-                  text: this.OrientationMedical.OrientVers,
+                  text: O.OrientVers,
                   fontSize: 12,
                   bold: true,
                 },
@@ -10280,10 +10320,10 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
 /* css orientation */
 .evacu {
-  background-image: url("https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=753&q=80");
+  background-image: url("https://images.unsplash.com/photo-1518015272815-38d797b67619?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=800");
 }
 .certif {
-  background-image: url("https://images.unsplash.com/photo-1586001549061-24156ffd6742?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80");
+  background-image: url("https://images.unsplash.com/photo-1627514580923-0d6bc1632925?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
 }
 /* .orient {
   image-resolution: 20;
