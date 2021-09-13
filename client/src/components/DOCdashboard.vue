@@ -67,9 +67,9 @@
               <span class="sr-only">Toggle Menu</span>
             </button>
             <h3 class="dashboard" id="titledash">Dashboard</h3>
-            <!--
-            <el-autocomplete v-model="state" style="width:50%; margin:0 5% ;" :fetch-suggestions="Search" placeholder="Recherchez un patient" @select="showPatient" prefix-icon="el-icon-search"></el-autocomplete>
-            -->
+
+            <el-autocomplete v-model="patientSearch" style="width:50%; margin:0 5% ;" :fetch-suggestions="patients" placeholder="Recherchez un patient" @select="showPatient" prefix-icon="el-icon-search"></el-autocomplete>
+            <!-- 
             <el-select
               v-model="patientSearch"
               filterable
@@ -77,16 +77,16 @@
               reserve-keyword
               placeholder="Rechercher un patient"
               :remote-method="remoteMethod"
-              @change="showPatient"
               style="width:50%; margin:0 5% ;" 
               prefix-icon="el-icon-search">
                 <el-option
                   v-for="item in patients"
                   :key="item.value"
-                  :label="item.value"
+                  :label="item.label"
                   :value="item.value">
                 </el-option>
             </el-select>
+            -->
             <div id="icons">
               <el-button type="primary" @click="showRDVdialog()" icon="el-icon-plus" style="background-color: #24b4ab; display:flex; ">
                 Ajouter un Rendez-vous
@@ -1794,10 +1794,9 @@
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
-                      <el-card   class="cardGris">    
-                                               
-                                      <h6> Date de création: </h6>
-                                      <p>{{ ec.date }} </p>
+                      <el-card   class="cardGris">            
+                                      <h6> Créé le : </h6>
+                                      <p>{{ ec.date.substring(0, 10) }} </p>
                                       <el-button  type="primary" style="background-color: #24b4ab; "  @click="showExamenClinique(ec);  radio4 = 'consulter'; isECdisable=true "   class="hovereffect" >consulter</el-button >     
                       </el-card>
                     </el-timeline-item>
@@ -2928,13 +2927,13 @@
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 <center><h4>Bilans para-cliniques</h4></center>
                 <el-space>
+                  <center>
                   <el-row>
                     <el-col :span="8">
                       <el-card
                         @click="showBB(userselected)"
-                        class="bilancard bio"
+                        class="bilancard bio hovereffect"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans Biologiques</h3>
                        
                       
@@ -2943,21 +2942,20 @@
                     <el-col :span="8">
                       <el-card
                         @click="radio1 = 'Bilans Radiologiques'"
-                        class="bilancard radio"
+                        class="bilancard radio hovereffect"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans Radiologiques</h3>
                       
                       </el-card>
                     </el-col>
                     <el-col :span="8">
-                      <el-card @click="showBE(userselected)" class="bilancard électri">
-                        <i class="fa fa-heartbeat"> </i>
+                      <el-card @click="showBE(userselected)" class="bilancard électri hovereffect">
                         <h3>Bilans électriques</h3>
                        
                       </el-card>
                     </el-col>
                   </el-row>
+                  </center>
                 </el-space>
                  <div class="demender-b">
                    
@@ -2983,7 +2981,6 @@
             <!-- *********************************** Bilans biologiques***************************** -->
             <el-scrollbar v-show="radio1 === 'Bilans Biologiques' && radio0 === 'Examen Médical'">
               
-              
                 <center>
                   <div>
                     <el-radio-group v-model="radio2" fill="#24b4ab">
@@ -3002,11 +2999,14 @@
               <el-card class="box-card">
                 <el-button icon="el-icon-arrow-left" @click="goBack()" round></el-button>
                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Biologiques</p>
-                
-               
 
                 <el-scrollbar v-show="radio2 === 'Historique'">
-                 
+                  <div v-if="tableDataBB.length === 0">
+                    <el-empty description="Aucun bilan biologique trouvé">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radio2 = 'Créer'" round>Créer un bilan biologique</el-button>
+                    </el-empty>
+                  </div>
+                  <div v-else>
                    <el-timeline style="margin:1% 0% 0% 0%;">
                       <el-timeline-item  placement="top" v-for="bb in tableDataBB" :key="bb.id" >
                         <el-card   class="cardGris">
@@ -3015,7 +3015,7 @@
                           </el-row>
                           <el-row>
                             <el-col :span="6"> ID: {{bb.id}}</el-col>
-                            <el-col :span="10"> Créé le : {{bb.createdAt}}</el-col>
+                            <el-col :span="10"> Créé le : {{bb.createdAt.substring(0, 10)}}</el-col>
                           </el-row>
                       
                           <br/>
@@ -3030,17 +3030,17 @@
                         </el-card>
                       </el-timeline-item>
                     </el-timeline>
-                 
+                  </div>
                 </el-scrollbar>
 
                 <el-scrollbar v-show="radio2 === 'Historique2'">
                   <el-space>
-                    Motif
+                    Motif :
                     <el-tag>{{ BBHis.Motif }}</el-tag>
                   </el-space>
                   <el-space>
-                    Date de création
-                    <el-tag>{{ BBHis.Date }}</el-tag>
+                    Créé le :
+                    <el-tag>{{ BBHis.Date.substring(0, 10) }}</el-tag>
                   </el-space>
                   
                     <el-card class="box-card">
@@ -3885,43 +3885,48 @@
                 ></el-button
               >
               <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Radiologiques</p>
-                
-                
 
                 <el-scrollbar v-show="radio2 === 'Historique'">
-                  <el-table
-                    :data="tableDataBR"
-                    style="width: 100%"
-                    height="250"
-                  >
-                    <el-table-column fixed prop="numero" label="N" width="50">
-                    </el-table-column>
-                    <el-table-column prop="motif" label="Motif" width="200">
-                    </el-table-column>
-                    <el-table-column prop="date" label="Date" width="150">
-                    </el-table-column>
-                    <el-table-column
-                      prop="bilans"
-                      label="Bilans présents"
-                      width="400"
+                  <div v-if="0 === 0">
+                    <el-empty description="Aucun bilan radiologique trouvé">
+                    <el-button type="primary" style="background-color: #24b4ab" @click="radio2 = 'Créer'" round>Créer un bilan radiologique</el-button>
+                    </el-empty>
+                  </div>
+                  <div v-else>
+                    <el-table
+                      :data="tableDataBR"
+                      style="width: 100%"
+                      height="250"
                     >
-                    </el-table-column>
-                    <el-table-column
-                      fixed="right"
-                      label="Opérations"
-                      width="120"
-                    >
-                      <template #default="">
-                        <el-button
-                          @click="showBilanBiologique()"
-                          type="text"
-                          size="small"
-                        >
-                          Consulter
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                      <el-table-column fixed prop="numero" label="N" width="50">
+                      </el-table-column>
+                      <el-table-column prop="motif" label="Motif" width="200">
+                      </el-table-column>
+                      <el-table-column prop="date" label="Date" width="150">
+                      </el-table-column>
+                      <el-table-column
+                        prop="bilans"
+                        label="Bilans présents"
+                        width="400"
+                      >
+                      </el-table-column>
+                      <el-table-column
+                        fixed="right"
+                        label="Opérations"
+                        width="120"
+                      >
+                        <template #default="">
+                          <el-button
+                            @click="showBilanBiologique()"
+                            type="text"
+                            size="small"
+                          >
+                            Consulter
+                          </el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -3942,8 +3947,16 @@
               </center>
               <el-card class="box-card">
                 <el-button icon="el-icon-arrow-left" @click="goBack()" round></el-button>
-                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Electriques</p>              
+                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Electriques</p>   
+
+
                 <el-scrollbar  v-show="radioBE==='Historique'">
+                  <div v-if="tableDataBE.length === 0">
+                    <el-empty description="Aucun bilan électrique trouvé">
+                    <el-button type="primary" style="background-color: #24b4ab" @click="radioBE = 'Créer'" round>Créer un bilan électrique</el-button>
+                    </el-empty>
+                  </div>
+                  <div v-else>
                     <el-timeline style="margin:1% 0% 0% 0%;">
                       <el-timeline-item  placement="top" v-for="BE in tableDataBE" :key="BE.id" >
                         <el-card   class="cardGris">
@@ -3983,7 +3996,7 @@
                       <b>Motif :</b>
                       <p>{{BEHis.Motif}}</p>
                       <b>Créé le :</b>
-                      <p>{{BEHis.Date}}</p>
+                      <p>{{BEHis.Date.substring(0, 10)}}</p>
                       <div v-if="BEHis.ECG != null">
                         <br>
                         <b>ECG :</b>
@@ -4008,6 +4021,7 @@
                         </span>
                       </template>
                     </el-dialog>
+                  </div>
                 </el-scrollbar>
 
                 <el-scrollbar  v-show="radioBE==='Créer'">
@@ -4893,7 +4907,7 @@
                                       <h4> {{Rapp.Motif}} </h4>
                                       
                                       <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
-                                      <div style="display:flex;"><h6>Le:&nbsp; </h6>
+                                      <div style="display:flex;"><h6>Créé le:&nbsp; </h6>
                                       <p>{{Rapp.createdAt}} </p></div>
                                       
                                       <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
