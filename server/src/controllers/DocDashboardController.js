@@ -14,6 +14,7 @@ const { ExamenClinique } = require('../models')
 const { Medicament } = require('../models')
 const { Ordonnance } = require('../models')
 const { Prescription } = require('../models')
+const { MedicamentNouv } = require('../models')
 
 // *************** Bilans paracliniques ***************
 // Bilans Biologiques
@@ -1015,7 +1016,11 @@ module.exports = {
         attributes: ['nom'],
         raw: true
       })
-      res.send({ medicaments: medicaments })
+      const medicamentsNew = await MedicamentNouv.findAll({
+        attributes: ['nom'],
+        raw: true
+      })
+      res.send({ medicaments: medicaments, medicamentsNouv: medicamentsNew })
       res.send('hello')
     } catch (err) {
       res.status(500).send({
@@ -1032,7 +1037,14 @@ module.exports = {
         },
         raw: true
       })
-      res.send({ marques: marques })
+      const marquesNew = await MedicamentNouv.findAll({
+        attributes: ['marque'],
+        where: {
+          nom: req.body.nom
+        },
+        raw: true
+      })
+      res.send({ marques: marques, marquesNouv: marquesNew })
       res.send('hello')
     } catch (err) {
       res.status(500).send({
@@ -1050,7 +1062,15 @@ module.exports = {
         },
         raw: true
       })
-      res.send({ formes: formes })
+      const formesNouv = await MedicamentNouv.findAll({
+        attributes: ['forme'],
+        where: {
+          nom: req.body.nom,
+          marque: req.body.marque
+        },
+        raw: true
+      })
+      res.send({ formes: formes, formesNouv: formesNouv })
       res.send('hello')
     } catch (err) {
       res.status(500).send({
@@ -1070,7 +1090,17 @@ module.exports = {
         },
         raw: true
       })
-      res.send({ dosages: dosages })
+      const dosagesNouve = await MedicamentNouv.findAll({
+        attributes: ['dosage'],
+        where: {
+          nom: req.body.nom,
+          marque: req.body.marque,
+          forme: req.body.forme
+
+        },
+        raw: true
+      })
+      res.send({ dosages: dosages, dosagesNouv: dosagesNouve })
       res.send('hello')
     } catch (err) {
       res.status(500).send({
@@ -1653,5 +1683,40 @@ module.exports = {
     } catch {
       console.log('probleme in docdashoardController / numrdv')
     }
+  },
+  async createMedic (req, res) {
+    try {
+      const medic = req.body.medic
+      const created = await MedicamentNouv.create(medic)
+      res.send({ created: created.toJSON })
+    } catch {
+      console.log('probleme in docdashoardController / numrdv')
+    }
+  },
+  async recoverMedicamentsAjoutés (req, res) {
+    try {
+      const created = await MedicamentNouv.findAll({
+        raw: true
+      })
+      res.send({ created: created })
+      console.log(created)
+    } catch (err) {
+      res.send({ error: `an error has occured trying to create the users MF ${err}` })
+    }
+  },
+  async SupprimerMedic (req, res) {
+    try {
+      const medic = await MedicamentNouv.destroy({
+        where: {
+          id: req.body.id
+        },
+        raw: true
+      })
+      res.send({ medic: medic })
+      console.log(medic)
+    } catch (err) {
+      res.send({ error: `an error has occured trying to create the users MF ${err}` })
+    }
   }
+
 }

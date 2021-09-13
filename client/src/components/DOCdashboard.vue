@@ -3923,7 +3923,7 @@
                       <el-timeline-item  placement="top" v-for="BE in tableDataBE" :key="BE.id" >
                         <el-card   class="cardGris">
                           <h4> {{BE.motif}} </h4>
-                          <h6> Créé le : </h6><p>{{ BE.createdAt.substring(0, 10) }}</p>
+                          <h6> Créé le : </h6><p>{{ BE.createdAt }}</p>
                           <h6> Bilans présents : </h6>
                           <div v-if="BE.idECG === null && BE.idEEG === null && BE.idEMG === null">
                             <p>Aucun</p>
@@ -5004,6 +5004,10 @@ EMAIL: contact@esi-sba.dz</p>
                         label="nouvOrd"
                         @click=" radio1O='nouvOrd';recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created';"
                       >Créer</el-radio-button>
+                      <el-radio-button 
+                        label="newMedic"
+                        @click=" radio1O='newMedic'; recoverMedicamentsAjoutés()"
+                      >Médicament ajoutés </el-radio-button>
                     </el-radio-group>
                   </div>
                 </center>
@@ -5323,6 +5327,65 @@ EMAIL: contact@esi-sba.dz</p>
                 
               </el-card>
             </el-scrollbar>
+             <el-scrollbar v-show="radio1O === 'newMedic' && radio0 === 'Examen Médical'">
+              <el-card class="box-card">
+                <el-button icon="el-icon-arrow-left" style="float:left" @click="radio2O='history'"  round></el-button>
+                <h4 style="text-align:center">Ajouter un médicament </h4><br><br>
+                <center>
+                  <li>
+                    <el-input v-model="medic.nom" placeholder="nom du médicament"  :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                  <el-input v-model="medic.marque" placeholder="Marque"  :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                <el-input v-model="medic.forme" placeholder="forme pharmaceutique"  :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                <el-input v-model="medic.dosage" placeholder="dosage" :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                  </li>
+                  </center>
+                  <br>
+                  <center><el-button
+                    type="primary" 
+                    @click="createMedic()"
+                    style="background-color: #24b4ab; "
+                  round>
+                  sauvegarder
+                  </el-button>
+                  
+                  </center>
+              </el-card>
+              <el-card class="box-card">
+               <h4 style="text-align:center">HISTORIQUE </h4><br><br>
+                 <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="med in MedicamentAjouté"
+                      :key="med.id" >
+                       <p style="font-size: 15px;font-weight: bold;margin-top:-15px">&nbsp;{{med.createdAt}} </p>
+                      <el-card   class="cardGris">    
+                                            
+                                    <p style="float:left; margin:10px">{{ med.nom }} </p>
+                                    <p style="float:left; margin:10px">{{ med.marque }} </p>
+                                    <p style="float:left; margin:10px">{{ med.forme }} </p>
+                                    <p style="margin:10px">{{ med.dosage }} </p>
+                                    <br>
+                                      <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir supprimer ce médicament ?"
+                          @confirm="SupprimerMedic(med)"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" icon="el-icon-delete" round>Supprimer</el-button>
+                          </template>
+                        </el-popconfirm>     
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+              </el-card>
+             </el-scrollbar>           
+            
              </el-scrollbar>
             <!-- ****************************orientations: lahcen ******************************* -->
             <!-- <el-scrollbar v-show="radio1 === 'orientations'">
@@ -6571,6 +6634,13 @@ export default {
       ordselected: "none",
       noOrd: false,
       ords: [],
+      medic: {
+        nom: "",
+        marque:"",
+        forme:"",
+        dosage:""
+      },
+      MedicamentAjouté:[],
       champsvides: false,
       champsvidesOrr: false,
       champsvidesCert: false,
@@ -6589,6 +6659,8 @@ export default {
       currentprescs: [],
 
       isOrdDisabled: false,
+      isMedicDisabled: false,
+
 
       // Rapport Medical data****************************************************************************
       RapportMedical: {
@@ -8140,6 +8212,9 @@ this.bmiCalculation();
         response.data.medicaments.map(function(value) {
           list.push({ value: value.nom, label: value.nom });
         });
+        response.data.medicamentsNouv.map(function(value) {
+          list.push({ value: value.nom, label: value.nom });
+        });
 
         //   supprimer les doublons
 
@@ -8168,6 +8243,10 @@ this.bmiCalculation();
      list.push({value: value.marque, label : value.marque });
      
      });
+     response.data.marquesNouv.map(function(value) {
+     list.push({value: value.marque, label : value.marque });
+     
+     });
         
       //   supprimer les doublons 
 
@@ -8193,8 +8272,13 @@ this.bmiCalculation();
         nom: Medicament,
         marque:marque
       })
+      
       let list=[];
     response.data.formes.map(function(value) {
+     list.push({value: value.forme, label : value.forme });
+     
+     });
+     response.data.formesNouv.map(function(value) {
      list.push({value: value.forme, label : value.forme });
      
      });
@@ -8229,6 +8313,10 @@ this.bmiCalculation();
      list.push({value: value.dosage, label : value.dosage });
      
      });
+     response.data.dosagesNouv.map(function(value) {
+     list.push({value: value.dosage, label : value.dosage });
+     
+     });
         
       //   supprimer les doublons 
 
@@ -8247,6 +8335,42 @@ this.bmiCalculation();
     } catch (error) {
       console.log(`something went wrong ${error}`);
     }
+   },   
+    async SupprimerMedic(medi) {
+      try {
+        const response = await DocServices.SupprimerMedic({
+          id: medi.id
+        });
+        this.$notify.success({
+          title: 'Succeès',
+          message: ' Médicament avec succes ',
+          offset: 100
+        });
+        this.recoverMedicamentsAjoutés()
+        console.log(response.data.medic)
+     
+        
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+   },
+     async recoverMedicamentsAjoutés() {
+      try {
+        const response = await DocServices.recoverMedicamentsAjoutés();
+        console.log(response.data.created)
+       
+       for (let index = 0; index < response.data.created.length; index++) {
+          var element =response.data.created[index];
+          var x = this.getDateFromStringS( element.createdAt);
+          response.data.created[index].createdAt = x ;
+ 
+      }
+          
+    this.MedicamentAjouté=response.data.created
+                  
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
    },
     async Viewpdf(ordonnance){
 try {
@@ -9587,6 +9711,38 @@ async annulerModificationOrd(ord) {
        
     } catch (error) {
       console.log(`something went wrong ${error}`);
+    }
+   },
+   async createMedic() {
+    try {
+     if(!( this.medic.nom==""|| this.medic.forme==""||this.medic.marque==""||this.medic.dosage=="")){
+     
+        
+      const response = await DocServices.createMedic({
+        medic:this.medic
+      })
+       this.$notify.success({
+          title: 'Succeès',
+          message: 'médicaments ajouté avec succeès ',
+        });
+      this.medic.nom="";
+      this.medic.forme="";
+      this.medic.marque="";
+      this.medic.dosage="";
+      this.recoverMedicamentsAjoutés()
+      console.log(response.data)
+     }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+      
+    }
+           
+
+    } catch (error) {
+      console.log(`something wenttt wrong ${error}`);
     }
    },
   

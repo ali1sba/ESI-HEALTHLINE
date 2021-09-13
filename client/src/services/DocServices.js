@@ -120,6 +120,15 @@ export default {
     },
     Numreporter (credantials){
         return Api().post('/DOCdashboard/Numreporter',credantials)
-    }
+    },
     // ***********************************************************************************
+    createMedic (credantials){
+        return Api().post('/DOCdashboard/createMedic',credantials)
+    },
+    recoverMedicamentsAjoutés (credantials){
+        return Api().post('/DOCdashboard/recoverMedicamentsAjoutes',credantials)
+    },
+    SupprimerMedic (credantials){
+        return Api().post('/DOCdashboard/supprimerMedic',credantials)
+    }
 }
