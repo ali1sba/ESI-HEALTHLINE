@@ -10,17 +10,16 @@
   background-color="#545c64"
   text-color="#fff"
   active-text-color="#ffd04b">
-  <el-menu-item index="1">HealtheLine</el-menu-item>
-  <el-menu-item index="4">Profile</el-menu-item>
+  <el-menu-item index="1">Assistant Panel</el-menu-item>
   <el-menu-item index="4" @click="logout">Logout</el-menu-item>
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAssistant">
         <div id="dashboard_btn" @click="recoverRDVG()">
-          <li class="dashboardAdmin"><a href="#/Assistant">RDV groupés</a></li>
+          <li class="dashboardAdmin"><a href="#/Assistant">Rendez-vous groupés</a></li>
         </div>
         <div id="dashboard_btn" @click="recoverRDVI()">
-          <li class="dashboardAdmin"><a href="#/Assistant">RDV individuels</a></li>
+          <li class="dashboardAdmin"><a href="#/Assistant">Rendez-vous individuels</a></li>
         </div>
       </ul>
     </nav>
@@ -30,7 +29,7 @@
         <section v-if="section === 1" id="section1">
           <section class="panel important">
               <el-card class="box-card">
-                  <h2>RDV groupés</h2>
+                  <h2>Rendez-vous groupés</h2>
                    <el-card   class="cardGris">
                       <el-row>
                         <el-col :span="6">Année/Groupe</el-col>
@@ -70,7 +69,7 @@
                   type="primary"
                     @click="recoverGroups()"
                     style="background-color: #24b4ab; width: 50%">
-                    programmer un RDV
+                    Programmer un Rendez-vous
                     </el-button>
                   </el-card>
 
@@ -121,7 +120,7 @@
                     <template #footer>
                       <span class="dialog-footer">
                         <el-button @click="annulerProgRDVGroup()">Annuler</el-button>
-                        <el-button type="primary" @click="progRDVGroup()">Confirmer</el-button>
+                        <el-button type="primary" @click="checkprogrdvgroup()">Confirmer</el-button>
                       </span>
                     </template>
                   </el-dialog>
@@ -184,7 +183,7 @@
         <section v-if="section === 2" id="section2">
           <section class="panel important">
               <el-card class="box-card">
-                  <h2>RDV individuels</h2>
+                  <h2>Rendez-vous individuels</h2>
                    <el-card   class="cardGris">
                       <el-row>
                         <el-col :span="6">Patient</el-col>
@@ -224,7 +223,7 @@
                   type="primary"
                     @click="recoverPatients()"
                     style="background-color: #24b4ab; width: 50%">
-                    programmer un RDV
+                    Programmer un Rendez-vous
                     </el-button>
                   </el-card>
 
@@ -264,7 +263,7 @@
                     <template #footer>
                       <span class="dialog-footer">
                         <el-button @click="annulerProgRDVIndividuel()">Annuler</el-button>
-                        <el-button type="primary" @click="progRDVIndividuel()">Confirmer</el-button>
+                        <el-button type="primary" @click="checkprogrdvindv()">Confirmer</el-button>
                       </span>
                     </template>
                   </el-dialog>
@@ -333,6 +332,9 @@ export default {
           // ************ RDV GROUP **********************
           dialogRDVGroupFormVisible: false,
           dialogRDVGroupFormVisible2: false,
+          champsvidesRDVGROUPE:false,
+          champsvidesRDVINDV:false,
+
           optionyear: [{
             value: '1CPI',
             label: '1CPI'
@@ -435,7 +437,54 @@ export default {
         console.log(`something went wrong ${error}`);
       }
     },
-
+async checkprogrdvgroup(){
+  try {
+      this.champsvidesRDVGROUPE=false 
+          //  this.prescs[i].nom == "" || 
+        if (this.rdvGroup.annee == ""||this.rdvGroup.group == ""||this.rdvGroup.typeRDV == ""||this.rdvGroup.date == ""){
+            console.log("yoo")
+            this.champsvidesRDVGROUPE=true
+          }
+        
+        if(!this.champsvidesRDVGROUPE){ 
+          console.log(this.champsvidesRDVGROUPE) 
+          this.progRDVGroup()
+        } else {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }
+    
+    }catch (error) {
+      console.log(`something went wrong zqsdftgyhuj ${error}`);
+    
+    }},
+async checkprogrdvindv(){
+  try {
+      this.champsvidesRDVINDV=false 
+          //  this.prescs[i].nom == "" || 
+        if (this.rdvIndiv.idPatient == ""||this.rdvIndiv.typeRDV == ""||this.rdvIndiv.date == ""){
+            console.log("yoo")
+            this.champsvidesRDVINDV=true
+          }
+        
+        if(!this.champsvidesRDVINDV){ 
+          console.log(this.champsvidesRDVINDV) 
+          this.progRDVIndividuel()
+        } else {
+          this.$notify.error({
+            title: "ERREUR",
+            dangerouslyUseHTMLString: true,
+            message: "<strong>Champ(s) Vide(s)</strong>",
+          });
+        }
+    
+    }catch (error) {
+      console.log(`something went wrong zqsdftgyhuj ${error}`);
+    
+    }},    
     async progRDVGroup () {
       try {
         console.log(this.rdvGroup)
@@ -491,6 +540,11 @@ export default {
         console.log(response.data)
         this.recoverRDVG()
         this.dialogRDVGroupFormVisible2 = false
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Modification avec succes ',
+          offset: 100
+        });   
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -570,6 +624,7 @@ export default {
           date: '',
           note: ''
         }
+        
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -607,6 +662,11 @@ export default {
         console.log(response.data)
         this.recoverRDVI()
         this.dialogRDVIndivFormVisible2 = false
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Modification avec succes ',
+          offset: 100
+        });
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }

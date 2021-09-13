@@ -23,7 +23,7 @@
             <a @click="RDVSection2()">
                
               <span class="fa fa-list-alt">
-               <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
+               <el-badge :value="countrdv2 + countrdv" class="itemNotifs" type="danger" id="countrdv3">
                   </el-badge>
                   
               </span>               
@@ -4382,13 +4382,21 @@
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 <center><h4>Orientation / Evacuation / Certificat Medical</h4></center>
                 <el-space>
+                <center>
                   <el-row>
+                    <el-col :span="8">
+                      <el-card
+                        @click="radio1 = 'Certificat Médical'"
+                        class="orientcard certif"
+                      >
+                        <h3>Certificat Médical</h3>
+                      </el-card>
+                    </el-col>
                     <el-col :span="8">
                       <el-card
                         @click="radio1 = 'Orientation Medical'"
                         class="orientcard orient"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Orientation Medical</h3>
                       </el-card>
                     </el-col>
@@ -4397,27 +4405,16 @@
                         @click="radio1 = 'Evacuation Medical'"
                         class="orientcard evacu"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Evacuation Medical</h3>
                       </el-card>
                     </el-col>
-                    <el-col :span="8">
-                      <el-card
-                        @click="radio1 = 'Certificat Médical'"
-                        class="orientcard certif"
-                      >
-                        <i class="fa fa-heartbeat"> </i>
-                        <h3>Certificat Médical</h3>
-                      </el-card>
-                    </el-col>
                   </el-row>
+                </center>
                 </el-space>
               </el-card>
             </el-scrollbar>
             <!--********Orientation Medicall***********-->
             <el-scrollbar v-show="radio1 === 'Orientation Medical' && radio0 === 'Examen Médical'">
-              <el-card class="box-card">
-              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <center>
                   <div>
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
@@ -4430,9 +4427,11 @@
                   </div>
                   <br />
                 </center>
+              <el-card class="box-card">
+              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <div v-if="radioRM === 'Historique'">
-                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Orientation Medical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
+             <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Orientation Medical</p>
                     <el-timeline-item  placement="top" v-for="Orr in orientations.slice().reverse()" :key="Orr.id" >
                       <el-card   class="cardGris">
                                     
@@ -4465,6 +4464,7 @@
                   </el-dialog>
                 </div>
                 <div v-else>
+               <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Orientation Medical</p>               
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -4629,10 +4629,7 @@
 
             <!-- ********Evacuation Médical***********--> 
             <el-scrollbar v-show="radio1 === 'Evacuation Medical' && radio0 === 'Examen Médical'">
-              
-              <el-card class="box-card">
-                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
-                <center>
+                 <center>
                   <div>
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
@@ -4641,8 +4638,10 @@
                   </div>
                   <br />
                 </center>
+              <el-card class="box-card">
+                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <div v-if="radioRM === 'Historique'">
-                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
+        <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Evacuation Medical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Evac in evacuations.slice().reverse()" :key="Evac.id" >
                       <el-card   class="cardGris">
@@ -4686,7 +4685,8 @@
                   </el-card>
                 </div> -->
                 <div v-else>
-                  <el-row>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Evacuation Medical</p>
+                  <el-row>   
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
                       <el-input
@@ -4699,8 +4699,7 @@
                         <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
                           <el-option label="CHU" value="CHU"></el-option>
                           <el-option label="EPH" value="EPH"></el-option>
-                          <el-option label="urgence " value="urgence "></el-option>
-                          
+                          <el-option label="urgence " value="urgence "></el-option>    
                         </el-select>
                     </el-row>         
                   <center>
@@ -4716,11 +4715,7 @@
               </el-card>
             </el-scrollbar>
             <el-scrollbar  v-show="radio1==='Certificat Médical' && radio0 === 'Examen Médical'">
-             
-              <el-card class="box-card">
-                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
-
-                <center>
+                             <center>
                   <div>
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getCertificats();" ></el-radio-button>
@@ -4729,8 +4724,10 @@
                   </div>
                   <br />
                 </center>
+              <el-card class="box-card">
+                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <div v-if="radioRM === 'Historique'">
-                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
+   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Certificat Medical</p>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Cert in certificats.slice().reverse()" :key="Cert.id" >
                       <el-card   class="cardGris">
@@ -4766,6 +4763,7 @@
                   </el-dialog>
                 </div>
                 <div v-else>
+    <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Certificat Medical</p>
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -5341,7 +5339,7 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar>
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio0 === 'RDV'">
-              <div v-if="haveRDV">
+              
                 <el-card>
                   <h4>Rendez-vous</h4><br/><br/>
                   <center>                <el-button
@@ -5433,19 +5431,6 @@ EMAIL: contact@esi-sba.dz</p>
                     </span>
                   </template>
                 </el-dialog>
-              </div>
-
-              <el-card class="box-card" v-else>
-                <el-empty :image-size="300">
-                  <el-button
-                    type="primary"
-                    v-loading.fullscreen.lock="fullscreenLoading"
-                    style="background-color: #24b4ab; width: 100%"
-                    @click="dialogRDVFormVisible = true"
-                    >Programmer un Rendez-vous</el-button
-                  >
-                </el-empty>
-              </el-card>
               <!-- Form -->
               <el-dialog
                 title=" Programmer un RDV "
@@ -6624,6 +6609,10 @@ export default {
       dialogRDVFormVisible2: false,
       formLabelWidth: "120px",
       haveRDV: false,
+      haveorientation: false,
+      havecertification: false,
+      haveevacuation: false,
+
       haveRDVDash: false,
       RDVform: {
         id: "",
@@ -6632,8 +6621,6 @@ export default {
         dateAndTime: "",
         note: "",
       },
-      countrdv2:0,
-      countrdv:0,
       RDVList:[],
       RDVListDash:[],
       Evac:[""],
@@ -6674,6 +6661,13 @@ export default {
         this.count = x -1;
         this.NumRDV();
         this.NumRDV2();
+        console.log("lahcen99");
+        console.log(this.countrdv);
+        console.log(this.countrdv2);
+        this.badgeDisplay();
+        console.log("totale");
+        this.recoverDemandesRDV();
+        this.recoverDemandesRDVReport();
           
       })
       .catch((error) => {
@@ -6731,6 +6725,24 @@ export default {
 async minceViews() {
   localStorage.setItem('bannerViews', --this.RDVCount);
 },
+async badgeDisplay() {
+   var countrdv3 = document.getElementById('countrdv3');
+          if (this.countrdv2  == '0' && this.countrdv  == '0') {
+            countrdv3.style.display = 'none';            
+          }
+},
+async INbadgeDisplay() {
+   var countrdv = document.getElementById('countrdv');
+          if (this.countrdv  == '0') {
+            countrdv.style.display = 'none';            
+          }
+},
+async INbadgeDisplay2() {
+   var countrdv2 = document.getElementById('countrdv2');
+          if (this.countrdv2  == '0') {
+            countrdv2.style.display = 'none';            
+          }
+},
     //RDV**********************************************************************************************
     async progRDVPatient() {
       try {
@@ -6779,7 +6791,6 @@ async minceViews() {
       const response = await DocServices.Numreporter()
       this.countrdv2=Object.keys(response.data).length;
       console.log(this.countrdv2)
-      
     } catch {
       console.log('probleme in docdashoardController / numrdv')
 
@@ -7177,18 +7188,13 @@ async minceViews() {
       console.log(this.ValiderRDVList)
       this.NumRDV()
       this.NumRDV2()
-      var valideNum = document.getElementById('valideNum');
-      var countrdv3 = document.getElementById('countrdv3');
-          if (this.countrdv == '0') {
-            valideNum .style.display = 'none';            
-          }
-      if (this.countrdv  == '0' && this.countrdv2  == '0') {
-          countrdv3 .style.display = 'none';            
-      }     
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
+         
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
-  },
+  }, 
 
   async validerRDVdemande (rdv) {
     try {
@@ -7201,6 +7207,7 @@ async minceViews() {
       this.NumRDV2()
       this.addViews()
       this.recoverDemandesRDV()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Validation avec succees ',
@@ -7221,6 +7228,7 @@ async minceViews() {
       this.NumRDV()
       this.NumRDV2()
       this.recoverDemandesRDV()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Refus avec succees ',
@@ -7240,14 +7248,8 @@ async minceViews() {
       console.log(this.ReporterRDVList)
       this.NumRDV()
       this.NumRDV2()
-      var ReportNum = document.getElementById('ReportNum');
-      var countrdv3 = document.getElementById('countrdv3');
-      if (this.countrdv2 == '0') {
-            ReportNum.style.display = 'none';            
-          }
-      if (this.countrdv  == '0' && this.countrdv2  == '0') {
-          countrdv3 .style.display = 'none';            
-      }
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -7275,6 +7277,7 @@ async minceViews() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Enregeitrement avec succees ',
@@ -7294,6 +7297,7 @@ async minceViews() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Refus avec succees ',
@@ -7331,10 +7335,9 @@ async minceViews() {
       this.radioRDVsection = 'Valider'
       this.NumRDV()
       this.NumRDV2()
-      var countrdv3 = document.getElementById('countrdv3');
-      if (this.countrdv  == '0' && this.countrdv2  == '0') {
-          countrdv3 .style.display = 'none';            
-      }
+
+       this.recoverDemandesRDV();
+        this.recoverDemandesRDVReport();
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -7357,7 +7360,8 @@ async minceViews() {
           console.log(response.data);
           this.showRDVDashboard();
           this.NumRDV();
-          this.NumRDV2();    
+          this.NumRDV2();
+          console.log("lahcene") 
         })
         .catch((error) => {
           console.log(error);
@@ -7380,7 +7384,11 @@ async minceViews() {
           this.NumRDV2();
           this.recoverDemandesRDVReport();  
           this.recoverDemandesRDV();
-
+          this.recoverDemandesRDV();
+          this.badgeDisplay();
+          this.INbadgeDisplay2();
+          this.INbadgeDisplay();
+        this.recoverDemandesRDVReport();
   
         })
         .catch((error) => {
@@ -9257,7 +9265,6 @@ async CertificatCheck() {
         const response = await OrientationMedicalService.creeOM({
         OrientationMedical: this.OrientationMedical,
         });
-
         var docDefinition = {
           footer: [
             {
