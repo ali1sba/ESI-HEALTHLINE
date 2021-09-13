@@ -8,36 +8,36 @@
 
         <ul class="list-unstyled components mb-5 menulist">
           <li>
-            <a @click="home()">
-              <span class="fa fa-home"></span>
-              <p class="nom">Home</p></a
+            <a @click="home()"   >
+              <span class="fa fa-home" v-bind:class="{coloreffect : content == 'dashboard'}"></span>
+              <p class="nom" v-bind:class="{coloreffect : content == 'dashboard'}">Home</p></a
             >
           </li>
           <li>
-            <a @click="content = 'dossier'">
-              <span class="fa fa-user"></span>
-              <p class="nom">Patients</p></a
+            <a @click="content = 'dossier'" >
+              <span class="fa fa-user" v-bind:class="{coloreffect : content == 'dossier'}"></span>
+              <p class="nom" v-bind:class="{coloreffect : content == 'dossier'}">Patients</p></a
             >
           </li>
           <li>
-            <a @click="RDVSection2()">
+            <a @click="RDVSection2()"  >
                
-              <span class="fa fa-list-alt">
+              <span class="fa fa-list-alt" v-bind:class="{coloreffect : content == 'RDVSection'}">
                <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
                   </el-badge>
                   
               </span>               
-              <p class="nom">Rendez-vous</p></a
+              <p class="nom" v-bind:class="{coloreffect : content == 'RDVSection'}">Rendez-vous</p></a
             >          </li>
           <li>
-            <a @click="content = '4'"
-              ><span class="fa fa-chart-bar"></span>
-              <p class="nom">Statistiques</p>
+            <a @click="content = '4'" 
+              ><span class="fa fa-chart-bar" v-bind:class="{coloreffect : content == '4'}"></span>
+              <p class="nom" v-bind:class="{coloreffect : content == '4'}"> Statistiques</p>
             </a>
           </li>
           <li>
             <a @click="logout"
-              ><span class="fa fa-sign-out"></span>
+              ><span class="fa fa-sign-out" ></span>
               <p class="nom">Logout</p></a>
             </li>
             <!-- <li>
@@ -5356,10 +5356,15 @@ EMAIL: contact@esi-sba.dz</p>
               </el-card>
               <el-card class="box-card">
                <h4 style="text-align:center">HISTORIQUE </h4><br><br>
+                <el-empty v-show="MedicamentAjouté.length==0" :image-size="300" description="aucune médicament a été ajouté manuellement ">
+                        
+                 </el-empty> 
                  <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="med in MedicamentAjouté"
                       :key="med.id" >
                        <p style="font-size: 15px;font-weight: bold;margin-top:-15px">&nbsp;{{med.createdAt}} </p>
+                      
+
                       <el-card   class="cardGris">    
                                             
                                     <p style="float:left; margin:10px">{{ med.nom }} </p>
@@ -6633,6 +6638,7 @@ export default {
       //Ordonnance
       ordselected: "none",
       noOrd: false,
+
       ords: [],
       medic: {
         nom: "",
@@ -6755,6 +6761,7 @@ export default {
           }
           x = x + 1;
         });
+        this.userselected=this.patients[0]
         console.log(response.data);
         this.count = x -1;
         this.NumRDV();
@@ -7566,12 +7573,13 @@ async minceViews() {
     },
 
     table(data, columns) {
-      return {
+      let prescstitle={nom: "- Nom -",marque: "- Marque -",forme: "- Forme -",dosage:"- Dosage -", duree: "- Durée -"}
+          data.unshift(prescstitle); 
+            return {
         margin: [25, 18, 25, 30],
         table: {
           widths: [100, 100, 100,100,70],
           // widths: ['*', '*', '*'],
-
           body: this.buildTableBody(data, columns),
         },
          /* eslint-disable no-mixed-spaces-and-tabs */
@@ -8343,7 +8351,7 @@ this.bmiCalculation();
         });
         this.$notify.success({
           title: 'Succeès',
-          message: ' Médicament avec succes ',
+          message: ' Médicament supprimé avec succes ',
           offset: 100
         });
         this.recoverMedicamentsAjoutés()
@@ -8367,7 +8375,7 @@ this.bmiCalculation();
       }
           
     this.MedicamentAjouté=response.data.created
-                  
+        
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }
@@ -10443,6 +10451,9 @@ async creerania() {
 .selectedeffect {
   transform: scale(1.1);
 box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
+}
+.coloreffect{
+  color: #ffb563;
 }
 /* css orientation */
 .evacu {
