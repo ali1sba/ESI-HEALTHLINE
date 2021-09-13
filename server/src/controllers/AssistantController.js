@@ -134,26 +134,24 @@ module.exports = {
   // ***************************** RDV INDIV **********************************
   async recoverPatients (req, res) {
     try {
+      const patients = []
       const cPatients = await Compte.findAll({
         where: {
           [Op.and]: [{ role: 'PATIENT' }, { state: 'ACTIVATED' }]
         }
       })
-      const x = await User.findAll({
-        attributes: ['id', 'lastName', 'firstName']
-      })
-      const patients = []
-      cPatients.forEach(async element => {
-        let v = element.id
-        v = v - 1
-        patients.push(x[(v)].dataValues)
-      })
-
-      console.log(patients)
-      res.send({ patients: patients })
+      for (let i = 0; i < cPatients.length; i++) {
+        const x = await User.findOne({
+          where: {
+            idCompte: cPatients[i].dataValues.id
+          }
+        })
+        patients.push(x.dataValues)
+      }
+      res.send(patients)
     } catch (err) {
       res.status(500).send({
-        error: `an error has occured trying to recoverPatients for Assistant ${err}`
+        error: 'an error has occured trying to fetch the users'
       })
     }
   },

@@ -67,43 +67,79 @@
               <span class="sr-only">Toggle Menu</span>
             </button>
             <h3 class="dashboard" id="titledash">Dashboard</h3>
-            <el-autocomplete v-model="state" style="width:50%; margin:0 5% ;" :fetch-suggestions="querySearchAsync" placeholder="Recherchez un patient" @select="handleSelect" prefix-icon="el-icon-search"></el-autocomplete>
+            <!--
+            <el-autocomplete v-model="state" style="width:50%; margin:0 5% ;" :fetch-suggestions="Search" placeholder="Recherchez un patient" @select="showPatient" prefix-icon="el-icon-search"></el-autocomplete>
+            -->
+            <el-select
+              v-model="patientSearch"
+              filterable
+              remote
+              reserve-keyword
+              placeholder="Rechercher un patient"
+              :remote-method="remoteMethod"
+              @change="showPatient"
+              style="width:50%; margin:0 5% ;" 
+              prefix-icon="el-icon-search">
+                <el-option
+                  v-for="item in patients"
+                  :key="item.value"
+                  :label="item.value"
+                  :value="item.value">
+                </el-option>
+            </el-select>
             <div id="icons">
-              <el-dropdown
-                split-button
-                type="info"
-                class="messageNotfis"
-                id="btn-notifs"
-              >
-                <i class="el-icon-message-solid"></i>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>Alert 1</el-dropdown-item>
-                    <el-dropdown-item>Alert 2</el-dropdown-item>
-                    <el-dropdown-item>Alert 3</el-dropdown-item>
-                    <el-dropdown-item>Alert 4</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-              <el-dropdown split-button type="info" id="btn-decisions">
-                <i class="el-icon-s-promotion"></i>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>Action 1</el-dropdown-item>
-                    <el-dropdown-item>Action 2</el-dropdown-item>
-                    <el-dropdown-item>Action 3</el-dropdown-item>
-                    <el-dropdown-item>Action 4</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+              <el-button type="primary" @click="showRDVdialog()" icon="el-icon-plus" style="background-color: #24b4ab; display:flex; ">
+                Ajouter un Rendez-vous
+              </el-button>
             </div>
+
+            <el-dialog title=" Programmer un RDV " v-model="dialogAjouterRDVFormVisible" :before-close="annulerAjouterRDV">
+                    <el-form :model="form">
+                      <el-form-item label="Patient" :label-width="formLabelWidth">
+                        <el-select v-model="ajouterRDV.idPatient" filterable remote placeholder="Sélectionnez le patient">
+                          <el-option
+                            v-for="item in patientsRDV"
+                            :key="item.value"
+                            :label="item.label"
+                            :value ="item.value"
+                            style="margin-right:20px">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="ajouterRDV.typeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="ajouterRDV.date"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts"
+                          :default-time="defaultTime1"
+                          :disabled-date="disabledDate">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="ajouterRDV.note" placeholder="Note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="annulerAjouterRDV()">Annuler</el-button>
+                        <el-button type="primary" @click="progAjouterRDV()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
 
            
           </div>
         </nav>
         <div id="rest">
            <article class="leaderboard" v-show="content === 'dossier'">
-            <h5 id="patients">Patients</h5>
+            <h5 id="p">Patients</h5>
             <main class="leaderboard__profiles" id="patientlist">
               <article
                 class="leaderboard__profile"
@@ -118,7 +154,6 @@
                 />
                 <span
                   class="leaderboard__name"
-                  v-loading.fullscreen.lock="fullscreenLoading"
                 >
                   {{ patient.lastName }}</span
                 >
@@ -198,7 +233,6 @@
                 />
                 <span
                   class="leaderboard__name"
-                  v-loading.fullscreen.lock="fullscreenLoading"
                 >
                   {{ patient.lastName }}</span
                 >
@@ -431,7 +465,6 @@
                             Lieu de naissance
                             <el-select
                               v-model="userPersInfo.placeOfBirth"
-                              multiple
                               filterable
                               remote
                               reserve-keyword
@@ -5824,10 +5857,20 @@ import EvacuationMedicalService from "@/services/EvacuationMedicalService.js";
 import OrientationMedicalService from "@/services/OrientationMedicalService.js";
 import CertificatMedicalService from "@/services/CertificatMedicalService.js";
 import demanderBilanlServices from "@/services/demanderBilanServices.js";
+import AssisServices from "@/services/AssisServices.js"
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
+      dialogAjouterRDVFormVisible: false,
+      ajouterRDV: {
+        idPatient: '',
+        typeRDV: '',
+        date: '',
+        note: ''
+      },
+      patientsRDV: [],
+      patientSearch: '',
       tabPosition: 'right',
       // ************** RDVSection déclaration ***************
       radioRDVsection: "Valider",
@@ -6434,7 +6477,7 @@ export default {
 
       // date function
       disabledDate(time) {
-        return time.getTime() > Date.now();
+        return time.getTime() < Date.now();
       },
       shortcuts: [
         {
@@ -6662,16 +6705,12 @@ export default {
   mounted: function() {
     axios
       .get("http://localhost:8083/doc/patients")
-      .then((response) => {     
-        let x = 0;
-        response.data.forEach((element) => {
-          if (!(x === 0)) {
-            this.patients.push(element);
-          }
-          x = x + 1;
-        });
-        console.log(response.data);
-        this.count = x -1;
+      .then((response) => {
+        const cPatients = response.data
+        for (let i = 0; i < cPatients.length; i++) {
+          this.patients.push(cPatients[i])
+        }
+        console.log(this.patients)
         this.NumRDV();
         this.NumRDV2();
           
@@ -6685,6 +6724,37 @@ export default {
     
   },
   methods: {
+    showRDVdialog () {
+      this.patientsRDV = []
+      this.patients.forEach(element => {
+        console.log(element)
+        this.patientsRDV.push({value: element.id, label : element.lastName+" "+element.firstName})
+      });
+      this.dialogAjouterRDVFormVisible = true
+    },
+    annulerAjouterRDV () {
+      this.dialogAjouterRDVFormVisible = false
+      this.ajouterRDV = {
+        idPatient: '',
+        typeRDV: '',
+        date: '',
+        note: ''
+      }
+    },
+    async progAjouterRDV () {
+      try {
+        const response = await AssisServices.progRDVIndividuel({
+          rdv: this.ajouterRDV
+        })
+        console.log(response.data)
+        this.annulerAjouterRDV()
+      } catch (error) {
+        console.log(
+          `something went wrong in Ajouter un RDV ${error}`
+        )
+      }
+    },
+
     tabToString(tab){
       var str = "";
       
@@ -7346,15 +7416,12 @@ async minceViews() {
       axios
         .get("http://localhost:8083/doc/patients")
         .then((response) => {
-          let x = 0;
           this.patients = [];
-          response.data.forEach((element) => {
-            if (!(x === 0)) {
-              this.patients.push(element);
-            }
-            x = x + 1;
-          });
-          console.log(response.data);
+          const cPatients = response.data
+          for (let i = 0; i < cPatients.length; i++) {
+            this.patients.push(cPatients[i])
+          }
+          console.log(this.patients)
           this.showRDVDashboard();
           this.NumRDV();
           this.NumRDV2();    
@@ -10347,5 +10414,4 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
   border-radius: 15px;
   padding: 0 2% 2%;
 }
-
 </style>
