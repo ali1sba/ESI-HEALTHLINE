@@ -1,5 +1,5 @@
 <template>
-  <div class="DOCdashboard">
+  <div class="DOCdashboard" >
     <div class="wrapper d-flex align-items-stretch">
       <nav id="sidebar" :class="{ active: isactive }">
         <div class="logoProject">
@@ -101,7 +101,7 @@
           </div>
         </nav>
         <div id="rest">
-           <article class="leaderboard" v-show="content === 'dossier'">
+           <article  class="leaderboard1" v-show="content === 'dossier'">
             <h5 id="patients">Patients</h5>
             <main class="leaderboard__profiles" id="patientlist">
               <article
@@ -112,15 +112,16 @@
                 content = 'dossier';"
               >
                 <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  src="assets/dashboard/avatar.jpg"
                   class="leaderboard__picture"
                 />
                 <span
                   class="leaderboard__name"
                   v-loading.fullscreen.lock="fullscreenLoading"
                 >
-                  {{ patient.lastName }}</span
+                  {{ patient.lastName }} <br> {{ patient.firstName.substring(0, 14) }}</span
                 >
+                
               </article>
             </main>
           </article> 
@@ -129,7 +130,7 @@
 
           <div v-show="content === 'dashboard'" class="dossier">
             <el-row>
-           <el-col :span="18">
+           <el-col :span="17">
            <el-card class="welcomecard">
              <el-col :span="8">
               <img src="assets/dashboard/doctor.png"/>
@@ -151,7 +152,7 @@
                 <p>Patients</p>
               </div>
               <div class="floatDash-right">
-                <i class="fas fa-users"></i>
+                <i class="fas fa-users" style="font-size:4rem;"></i>
               </div>
             </div>
             <div class="cardDash-body color2">
@@ -162,7 +163,7 @@
                 <p>Rendez-vous</p>
               </div>
               <div class="floatDash-right">
-                <i class="fas fa-clipboard-list"></i>
+                <i class="fas fa-clipboard-list" style="font-size:4rem;"></i>
               </div>
             </div>
             <div class="cardDash-body color3">
@@ -173,39 +174,9 @@
                 <p>Covid-19</p>
               </div>
               <div class="floatDash-right">
-                <i class="fas fa-biohazard"></i>
+                <i class="fas fa-viruses" style="font-size:4rem;"></i>
               </div>
             </div></el-card>
-            </el-col>
-            <el-col :span="6">
-              <el-card class="patientscard">
-             <article class="leaderboard">
-            <h5 id="patients">Patients</h5>
-            
-         
-            <main class="leaderboard__profiles" id="patientlist">
-              <article
-                class="leaderboard__profile"
-                v-for="patient in patients"
-                :key="patient.id"
-                @click="showPatient(patient)
-                content = 'dossier';"
-              >
-                <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
-                  class="leaderboard__picture"
-                />
-                <span
-                  class="leaderboard__name"
-                  v-loading.fullscreen.lock="fullscreenLoading"
-                >
-                  {{ patient.lastName }}</span
-                >
-              </article>
-            </main>
-          </article></el-card></el-col>
-          </el-row>
-          <el-row>
             <el-card class="boxRDV">
               <h4>Les rendez-vous d'aujourd'hui :</h4>
                 <!-- <el-card class="cardGris">
@@ -223,25 +194,32 @@
                   <span style="margin-left: 10px">{{ scope.row.Note}}</span>
                     </template></el-col>
                         </el-row></el-card> -->
-                        
+
+                  <!-- <el-card :data="RDVListDash">
+                    <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                     <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </el-card>  -->
+
                   <el-table
                   :data="RDVListDash"
                   height="500"
-                  style="width: 96%"
+                  style="width: 100%"
                   class="dashboardTable">
                   <el-table-column
                     prop="date"
                     label="Date"
-                    width="200"
+                    width="180"
                     >
                     <template #default="scope">
-                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime.substring(0, 10)}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
                     prop="name"
                     label="Nom"
-                    width="200"
+                    width="180"
                     >
                       <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
@@ -250,7 +228,7 @@
                    <el-table-column
                     prop="Type"
                     label="Type"
-                    width="200"
+                    width="180"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Type}}</span>
@@ -259,18 +237,44 @@
                    <el-table-column
                     prop="Note"
                     label="Note"
-                    width="200"
+                    width="180"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Note}}</span>
                     </template>
                   </el-table-column>
                 </el-table> 
-               </el-card>         
-                
-             
+               </el-card>
+            </el-col>
+            <el-col :span="7">
+              <el-card class="patientscard">
+             <article class="leaderboard">
+            <h5 id="patients">Patients</h5>
             
-            </el-row>
+         
+            <main class="leaderboard__profiles" id="patientlist">
+              <article
+                class="leaderboard__profile"
+                v-for="patient in patients"
+                :key="patient.id"
+                @click="showPatient(patient)
+                content = 'dossier';"
+              >
+                <img
+                  src="assets/dashboard/avatar.jpg"
+                  class="leaderboard__picture"
+                />
+                <span
+                  class="leaderboard__name"
+                  v-loading.fullscreen.lock="fullscreenLoading"
+                >
+                  {{ patient.lastName }}  <br> {{ patient.firstName.substring(0, 14) }} </span
+                >
+              </article>
+            </main>
+          </article></el-card></el-col>
+          </el-row>
+         
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -278,7 +282,7 @@
           <div v-show="content === 'dossier'" class="dossier">
             <div class="currentpatient">
               <img
-                src="https://randomuser.me/api/portraits/men/11.jpg"
+                src="assets/dashboard/avatar.jpg"
                 alt="Evan Spiegel"
               />
               <div>
@@ -1755,8 +1759,13 @@
                 
                 
                 <el-scrollbar v-show="radio3 === 'Historique'">
-                  <el-card class="box-card" v-show="radio4 === 'table'">
-                    
+                  
+                    <div v-if="examenClinique.length ===0">
+                      <el-empty>
+                      <el-button type="primary" style="background-color:#24b4bab;" @click="radio3=Créer" round>Créer examen clinique</el-button>
+                      </el-empty></div>
+                    <div v-else>
+                     <el-card class="box-card" v-show="radio4 === 'table'" style="box-shadow:none; border:none;">
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
@@ -1768,7 +1777,7 @@
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  </el-card>
+                  </el-card></div>
 
                 
                     
@@ -10121,7 +10130,7 @@ async creerania() {
 .boxRDV {
   width: 97%;
   margin:0 20px;
-  padding-right: 50px;
+ 
   border-radius: 15px;
   height:200%;
 }
@@ -10390,7 +10399,7 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
 .welcomecard {
   width: 97%;
-  margin: 20px;
+  margin:20px 20px 0;
   border-radius: 15px;
   padding: 0 2% 2%;
 }

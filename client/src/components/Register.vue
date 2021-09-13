@@ -11,7 +11,7 @@
       <!-- first row logo part -->
       <br/>
    <el-row>
-     <el-col class="formlogo" :span="6"><img src="logo_version3.png" ></el-col>
+     <el-col class="formlogo" :span="6"><img src="assets/dashboard/newlogo.png" ></el-col>
    </el-row> 
    <br>
    <div class="formelems">

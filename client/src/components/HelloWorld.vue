@@ -14,7 +14,7 @@
           <el-card class="box-card" >
            <br/><br/><br/>
           <center>
-          <img src="logo.png" class="projectLOGO" /><br />
+          <img src="assets/dashboard/newlogo.png" style="size:20%; margin-top:0" class="projectLOGO" /><br/><br>
           <h4 >
             keeping you well
           </h4>
@@ -25,7 +25,7 @@
             <el-input type="email" round placeholder="Adresse e-mail" v-model="form.email" required style="border-radius: 15px; border: 1px solid #DCDFE6;"></el-input>
             <br /><br /><el-input type="password" show-password=true round v-model="form.password" placeholder="Mot de passe" required style="border-radius: 15px; border: 1px solid #DCDFE6 ;"></el-input>
             <!-- <div class="error" v-html="error" /> -->
-            <br /><br /><el-checkbox v-model="form.checked" label="Se souvenir du mot de passe" ></el-checkbox>
+            
             <br /><br /><el-button type="primary" @click="login" style="background-color: #24b4ab;width:100%;" round>S'identifier</el-button>
             <br /><br /><br /><router-link to="forgotpw" class="small">Mot de passe oublié?</router-link>
             <br />

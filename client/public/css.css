@@ -1907,11 +1907,13 @@ img {
   min-width: 230px;
   max-width: 230px;
   float: left;
+  height: fit-content;
   background: rgb(255, 255, 255);
   color: rgba(36, 180, 171, 0.62);
   -webkit-transition: all 0.3s;
   -o-transition: all 0.3s;
   transition: all 0.3s;
+  
 }
 
 .list-unstyled {
@@ -2031,7 +2033,7 @@ img {
 }
 
 #sidebar ul li a:hover {
-  color: #ffb563;
+  color: #ff7f4f;
 }
 
 #sidebar ul li.active > a {
@@ -2109,17 +2111,20 @@ margin-right: 10px;
 }
 /*liste des patients*/
 
-.leaderboard {
+.leaderboard, .leaderboard1 {
   min-width: 210px;
-  width: 210px;
+  width: 250px;
   padding:0 20px 20px;
   margin: 0;
   float: left;
-  min-height: 100vh;
+  min-height: 153vh;
   max-height: 100vh;
   overflow-y: auto;
+  
 }
-
+.leaderboard1{
+  border-left: 1px solid #24b4ab ;
+}
 span {
   display: block;
 }
@@ -2201,15 +2206,17 @@ span {
   height: 100%;
   display: flex;
   width: 100%;
+  
 }
 
 .dossier {
   background-color: #f3f2f2;
   flex: 1;
   margin:7px 0 0 ;
-  padding: 2%;
+  padding:0 2%;
   min-height: 100vh;
-
+ 
+  
 }
 
 #profile {
@@ -2240,7 +2247,7 @@ span {
 
 .currentpatient {
   width: fit-content;
-  margin-left: 5px;
+  margin-left: 2%;
   text-align: left;
   margin-left: 7%;
   height: 80px;
@@ -2252,8 +2259,8 @@ span {
     box-shadow 0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98);
 }
 .currentpatient img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   box-shadow: 0 0 0 2px rgba(36, 180, 171, 0.62);
   margin-left: 10px;
@@ -2662,7 +2669,7 @@ background-color: rgba(36, 180, 171, 0.7);}
 display: inline-block;
 font-family: "Roboto", sans-serif;
 background:#00C292;
-margin: 1.5%;
+margin: 1.5% 1.6%;
 padding: 20px;
 width: 30%;
 height: 90%;
@@ -2703,6 +2710,7 @@ float: left;
 .floatDash-right{
 float: right;
 }
+
 .cardDash-body h3{
 margin-top: 15px;
 margin-bottom: 5px;
