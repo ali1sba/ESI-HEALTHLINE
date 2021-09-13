@@ -4049,7 +4049,7 @@
                             <div class="file-upload">
                               <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
                               <div v-if="BECr.BEfile.ECGfile != null">
-                                <el-button @click="clearECGFile">Supprimer le fichier</el-button>
+                                <el-button @click="clearECGFile" type="danger">Supprimer le fichier</el-button>
                               </div>
                             </div>
                           </el-col>
@@ -4072,7 +4072,7 @@
                             <div class="file-upload">
                               <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
                               <div v-if="BECr.BEfile.EEGfile != null">
-                                <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
+                                <el-button @click="clearEEGFile" type="danger">Supprimer le fichier</el-button>
                               </div>
                             </div>
                           </el-col>
@@ -4094,7 +4094,9 @@
                           <el-col>
                             <div class="file-upload">
                               <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
+                              <div v-if="BECr.BEfile.EMGfile != null">
                                 <el-button @click="clearEMGFile" type="danger">Supprimer le fichier</el-button>
+                              </div>
                             </div>
                           </el-col>
                         </el-row>
