@@ -130,5 +130,11 @@ export default {
     },
     SupprimerMedic (credantials){
         return Api().post('/DOCdashboard/supprimerMedic',credantials)
+    },
+    recoverStats (credantials){
+        return Api().post('/DOCdashboard/recoverStats',credantials)
+    },
+    recoverStatsof (credantials){
+        return Api().post('/DOCdashboard/recoverStatsof',credantials)
     }
 }
