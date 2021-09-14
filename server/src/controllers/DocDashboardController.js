@@ -1767,7 +1767,9 @@ module.exports = {
       const BILANS = BILANbio + BILANelec + BILANradio
       const RDVs = await RDV.count()
       // maladies chroniques
-      let chron = 0
+      let diab = 0
+      let pr = 0
+      let cardio = 0
       const users = await User.findAll()
       for (let i = 0; i < users.length; i++) {
         const medfile = await MedicalFile.findOne({
@@ -1787,11 +1789,15 @@ module.exports = {
           console.log(antcd.malaGene)
 
           if (antcd !== null) {
-            if (antcd.malaGene !== null) { if (antcd.malaGene.includes('Diabète') || antcd.malaGene.includes('Pression Arterielle') || antcd.malaGene.includes('Respiratoire') || antcd.malaGene.includes('SIDA') || antcd.malaGene.includes('Cancer')) { chron++ } }
+            if (antcd.malaGene !== null) {
+               if (antcd.malaGene.includes('Diabète')) { diab++ }
+              else if (antcd.malaGene.includes('Pression Arterielle')) { pr++ } 
+              else if (antcd.malaGene.includes('Cardiovasculaire')) { cardio++ } 
+              }
           }
         }
       }
-
+      const chron= { diab: diab, pr: pr, cardio: cardio } 
       const object = { UF: usersF, UH: usersH, NF: newF, NH: newH, chrone: chron }
       res.send({ object: object, PATIENTS: PATIENTS, ORDS: ORDS, ORIS: ORIS, RAPPS: RAPPS, EVACS: EVACS, EXAMS: EXAMS, BILANS: BILANS, RDVs: RDVs })
     } catch (err) {

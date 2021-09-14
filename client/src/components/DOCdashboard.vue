@@ -5727,11 +5727,12 @@ EMAIL: contact@esi-sba.dz</p>
                     </el-radio-group>
                   </div>
                 </center>
-              <el-card class="box-card" body-style="padding:2px; margin:2px">
+              <el-card class="box-card" body-style="padding:20px; margin:2px">
                     
 
                 <el-scrollbar v-show="radioS === 'Tableaux'">
                   <center>
+                    <h4 style="padding:8px">Bilan des maladies chroniques pour les étudiants de l'année académique 2020-2021</h4>
                   <table>
                     <tr>
                       <th rowspan="2">Ecole</th>
@@ -5928,37 +5929,33 @@ EMAIL: contact@esi-sba.dz</p>
                <i class="el-icon-phone"></i><br/>
               </div>
             </div>
-              <div class="row">
-                <div class="chart-wrap">
-                  <div class="col-sm-6 text-center">
-                    <div class="donut-chart chart1">
-                      <div class="slice one"></div>
-                      <div class="slice two"></div>
-                      <div class="chart-center">
-                        <span>55%</span>
-                      </div>
-                    </div>
-                    Patient vacciné (Covid-19)
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="chart-wrap2">
-                  <div class="col-sm-6 text-center">
-                    <div class="donut-chart chart2">
-                      <div class="slice one"></div>
-                      <div class="slice two"></div>
-                      <div class="chart-center">
-                        <span>30%</span>
-                      </div>
-                    </div>
-                    Patients qui ont eu la Covid-19
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <el-progress type="circle" :percentage="50"></el-progress>
-              </div>
+            <div style="display:flex">
+               <template style="display:flex; flex:30">
+                <el-progress  stroke-width="9"  color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg1"  >
+                  <template #default="{ percentage }">
+      <span class="percentage-value">{{ percentage }}%</span>
+      <span class="percentage-label">Diabétiques</span>
+    </template>
+                </el-progress >
+              </template>
+               <template style="display:flex; flex:30">
+                <el-progress stroke-width="9" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg2" >
+                  <template #default="{ percentage }">
+      <span class="percentage-value">{{ percentage }}%</span>
+      <span class="percentage-label">Cardiovasculaire</span>
+    </template>
+                </el-progress>
+              </template>
+               <template style="display:flex; flex:30">
+                <el-progress stroke-width="9" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg3" >
+                  <template #default="{ percentage }">
+      <span class="percentage-value">{{ percentage }}%</span>
+      <span class="percentage-label">Pression Artérille</span>
+    </template>
+                </el-progress>
+              </template>
+             
+            </div>
                 </el-card>
 
                 </el-scrollbar>
@@ -6648,6 +6645,7 @@ export default {
         },
       ],
       stats: {object:""},
+      prcntg:0,
 cancer:{
   NH:"",
   NF:"",
@@ -7622,7 +7620,12 @@ async minceViews() {
       this.recoverStatsof ('Diabète')
       this.recoverStatsof ('Cardiovasculaire')
       this.recoverStatsof ('SIDA')
-    
+     
+    this.prcntg1= Math.trunc(this.stats.object.chrone.diab *100 / this.stats.PATIENTS)
+        this.prcntg2= Math.trunc(this.stats.object.chrone.cardio *100 / this.stats.PATIENTS)
+    this.prcntg1= Math.trunc(this.stats.object.chrone.pr *100 / this.stats.PATIENTS)
+
+
       console.log(this.stats)
       
     } catch (error) {
