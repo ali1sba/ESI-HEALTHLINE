@@ -54,7 +54,7 @@
        <el-option v-for="item in optiongroup" :key="item.value" :label="item.label" :value="item.value" ></el-option>
       </el-select>
     </el-col>
-    <div class="error" v-html="error" ></div>
+    <!-- <div class="error" v-html="error" ></div> -->
   </el-row>
  <!-- sign up button  -->
 
@@ -174,7 +174,11 @@ export default {
           group: this.group
           
         })
-        alert("register successfull")
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Compte créer avec succes ',
+          offset: 100
+        });    
         console.log(response.data)
         } else {
           this.error = 'problem in confirmation of the password'

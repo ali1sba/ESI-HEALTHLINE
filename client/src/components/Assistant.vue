@@ -396,7 +396,8 @@ export default {
             DateAndTime: '',
             Note: ''
           },
-          RDVIndivList: []
+          RDVIndivList: [],
+          section:1,
       }
   },
   mounted: function () {
