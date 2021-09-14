@@ -14,7 +14,7 @@
           <el-card class="box-card" >
            <br/><br/><br/>
           <center>
-          <img src="logo.png" class="projectLOGO" /><br />
+          <img src="assets/dashboard/newlogo.png" style="size:20%; margin-top:0" class="projectLOGO" /><br/><br>
           <h4 >
             keeping you well
           </h4>

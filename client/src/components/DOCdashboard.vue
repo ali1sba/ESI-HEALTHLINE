@@ -1,11 +1,10 @@
 <template>
-  <div class="DOCdashboard">
+  <div class="DOCdashboard" >
     <div class="wrapper d-flex align-items-stretch">
       <nav id="sidebar" :class="{ active: isactive }">
         <div class="logoProject">
           <img src="assets/dashboard/newlogo.png" class="logo" />
         </div>
-
         <ul class="list-unstyled components mb-5 menulist">
           <li>
             <a @click="home()">
@@ -23,7 +22,7 @@
             <a @click="RDVSection2()">
                
               <span class="fa fa-list-alt">
-               <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger">
+               <el-badge :value="countrdv2 + countrdv" class="itemNotifs" type="danger" id="countrdv3">
                   </el-badge>
                   
               </span>               
@@ -102,7 +101,7 @@
           </div>
         </nav>
         <div id="rest">
-           <article class="leaderboard" v-show="content === 'dossier'">
+           <article  class="leaderboard1" v-show="content === 'dossier'">
             <h5 id="patients">Patients</h5>
             <main class="leaderboard__profiles" id="patientlist">
               <article
@@ -113,15 +112,16 @@
                 content = 'dossier';"
               >
                 <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  src="assets/dashboard/avatar.jpg"
                   class="leaderboard__picture"
                 />
                 <span
                   class="leaderboard__name"
                   v-loading.fullscreen.lock="fullscreenLoading"
                 >
-                  {{ patient.lastName }}</span
+                  {{ patient.lastName }} <br> {{ patient.firstName.substring(0, 14) }}</span
                 >
+                
               </article>
             </main>
           </article> 
@@ -130,7 +130,7 @@
 
           <div v-show="content === 'dashboard'" class="dossier">
             <el-row>
-           <el-col :span="18">
+           <el-col :span="17">
            <el-card class="welcomecard">
              <el-col :span="8">
               <img src="assets/dashboard/doctor.png"/>
@@ -152,7 +152,7 @@
                 <p>Patients</p>
               </div>
               <div class="floatDash-right">
-                <i class="fas fa-users"></i>
+                <i class="fas fa-users" style="font-size:4rem;"></i>
               </div>
             </div>
             <div class="cardDash-body color2">
@@ -163,7 +163,7 @@
                 <p>Rendez-vous</p>
               </div>
               <div class="floatDash-right">
-                <i class="fas fa-clipboard-list"></i>
+                <i class="fas fa-clipboard-list" style="font-size:4rem;"></i>
               </div>
             </div>
             <div class="cardDash-body color3">
@@ -174,39 +174,9 @@
                 <p>Covid-19</p>
               </div>
               <div class="floatDash-right">
-                <i class="fas fa-biohazard"></i>
+                <i class="fas fa-viruses" style="font-size:4rem;"></i>
               </div>
             </div></el-card>
-            </el-col>
-            <el-col :span="6">
-              <el-card class="patientscard">
-             <article class="leaderboard">
-            <h5 id="patients">Patients</h5>
-            
-         
-            <main class="leaderboard__profiles" id="patientlist">
-              <article
-                class="leaderboard__profile"
-                v-for="patient in patients"
-                :key="patient.id"
-                @click="showPatient(patient)
-                content = 'dossier';"
-              >
-                <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
-                  class="leaderboard__picture"
-                />
-                <span
-                  class="leaderboard__name"
-                  v-loading.fullscreen.lock="fullscreenLoading"
-                >
-                  {{ patient.lastName }}</span
-                >
-              </article>
-            </main>
-          </article></el-card></el-col>
-          </el-row>
-          <el-row>
             <el-card class="boxRDV">
               <h4>Les rendez-vous d'aujourd'hui :</h4>
                 <!-- <el-card class="cardGris">
@@ -224,25 +194,32 @@
                   <span style="margin-left: 10px">{{ scope.row.Note}}</span>
                     </template></el-col>
                         </el-row></el-card> -->
-                        
+
+                  <!-- <el-card :data="RDVListDash">
+                    <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
+                    <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                    <span style="margin-left: 10px">{{ scope.row.Type}}</span>
+                     <span style="margin-left: 10px">{{ scope.row.Note}}</span>
+                    </el-card>  -->
+
                   <el-table
                   :data="RDVListDash"
                   height="500"
-                  style="width: 96%"
+                  style="width: 100%"
                   class="dashboardTable">
                   <el-table-column
                     prop="date"
                     label="Date"
-                    width="200"
+                    width="180"
                     >
                     <template #default="scope">
-                  <span style="margin-left: 10px">{{ scope.row.DateAndTime}}</span>
+                  <span style="margin-left: 10px">{{ scope.row.DateAndTime.substring(0, 10)}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
                     prop="name"
                     label="Nom"
-                    width="200"
+                    width="180"
                     >
                       <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.idUser }}</span>
@@ -251,7 +228,7 @@
                    <el-table-column
                     prop="Type"
                     label="Type"
-                    width="200"
+                    width="180"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Type}}</span>
@@ -260,18 +237,44 @@
                    <el-table-column
                     prop="Note"
                     label="Note"
-                    width="200"
+                    width="180"
                     >
                     <template #default="scope">
                   <span style="margin-left: 10px">{{ scope.row.Note}}</span>
                     </template>
                   </el-table-column>
                 </el-table> 
-               </el-card>         
-                
-             
+               </el-card>
+            </el-col>
+            <el-col :span="7">
+              <el-card class="patientscard">
+             <article class="leaderboard">
+            <h5 id="patients">Patients</h5>
             
-            </el-row>
+         
+            <main class="leaderboard__profiles" id="patientlist">
+              <article
+                class="leaderboard__profile"
+                v-for="patient in patients"
+                :key="patient.id"
+                @click="showPatient(patient)
+                content = 'dossier';"
+              >
+                <img
+                  src="assets/dashboard/avatar.jpg"
+                  class="leaderboard__picture"
+                />
+                <span
+                  class="leaderboard__name"
+                  v-loading.fullscreen.lock="fullscreenLoading"
+                >
+                  {{ patient.lastName }}  <br> {{ patient.firstName.substring(0, 14) }} </span
+                >
+              </article>
+            </main>
+          </article></el-card></el-col>
+          </el-row>
+         
           </div>
 
           <!-- ********************** 2 ***************************** -->
@@ -279,7 +282,7 @@
           <div v-show="content === 'dossier'" class="dossier">
             <div class="currentpatient">
               <img
-                src="https://randomuser.me/api/portraits/men/11.jpg"
+                src="assets/dashboard/avatar.jpg"
                 alt="Evan Spiegel"
               />
               <div>
@@ -1790,8 +1793,15 @@
                 
                 
                 <el-scrollbar v-show="radio3 === 'Historique'">
-                  <el-card  v-show="radio4 === 'table'">
+                  <!-- <el-card  v-show="radio4 === 'table'"> -->
                     
+                  
+                    <div v-if="examenClinique.length ===0">
+                      <el-empty>
+                      <el-button type="primary" style="background-color:#24b4bab;" @click="radio3='Créer'" round>Créer examen clinique</el-button>
+                      </el-empty></div>
+                    <div v-else>
+                     <el-card class="box-card" v-show="radio4 === 'table'" style="box-shadow:none; border:none;">
                     <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ec in ExamenCliniques"
                       :key="ec.id" >
@@ -1813,7 +1823,7 @@
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  </el-card>
+                  </el-card></div>
 
                 
                     
@@ -4488,13 +4498,21 @@
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 <center><h4>Orientation / Evacuation / Certificat Medical</h4></center>
                 <el-space>
+                <center>
                   <el-row>
+                    <el-col :span="8">
+                      <el-card
+                        @click="radio1 = 'Certificat Médical'"
+                        class="orientcard certif"
+                      >
+                        <h3>Certificat Médical</h3>
+                      </el-card>
+                    </el-col>
                     <el-col :span="8">
                       <el-card
                         @click="radio1 = 'Orientation Medical'"
                         class="orientcard orient"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Orientation Medical</h3>
                       </el-card>
                     </el-col>
@@ -4503,27 +4521,16 @@
                         @click="radio1 = 'Evacuation Medical'"
                         class="orientcard evacu"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Evacuation Medical</h3>
                       </el-card>
                     </el-col>
-                    <el-col :span="8">
-                      <el-card
-                        @click="radio1 = 'Certificat Médical'"
-                        class="orientcard certif"
-                      >
-                        <i class="fa fa-heartbeat"> </i>
-                        <h3>Certificat Médical</h3>
-                      </el-card>
-                    </el-col>
                   </el-row>
+                </center>
                 </el-space>
               </el-card>
             </el-scrollbar>
             <!--********Orientation Medicall***********-->
             <el-scrollbar v-show="radio1 === 'Orientation Medical' && radio0 === 'Examen Médical'">
-              <el-card class="box-card">
-              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <center>
                   <div>
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
@@ -4536,6 +4543,8 @@
                   </div>
                   <br />
                 </center>
+              <el-card class="box-card">
+              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Orientation Medical</p>
                   <div v-if="orientations.length === 0">
@@ -4551,7 +4560,7 @@
                                       <h6> Evacué vers: </h6><p> {{Orr.OrientVers}} </p>
                                       <p>{{Orr.createdAt}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterOrientationMedical(Orr)">consulter</el-button>
-                                  
+                                      <el-button type="" style="align-items: right;" @click="pdfGenerator2(Orr)">Voir PDF</el-button>
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline></div>
@@ -4577,6 +4586,7 @@
                   </el-dialog>
                 </div>
                 <div v-else>
+               <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Orientation Medical</p>               
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -4741,10 +4751,7 @@
 
             <!-- ********Evacuation Médical***********--> 
             <el-scrollbar v-show="radio1 === 'Evacuation Medical' && radio0 === 'Examen Médical'">
-              
-              <el-card class="box-card">
-                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
-                <center>
+                 <center>
                   <div>
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getEvacuations();" ></el-radio-button>
@@ -4753,6 +4760,8 @@
                   </div>
                   <br />
                 </center>
+              <el-card class="box-card">
+                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Evacuation Medical</p>
                   <div v-if="evacuations.length === 0">
@@ -4768,7 +4777,7 @@
                                       <h6> Evacué vers: </h6><p> {{Evac.EvacVers}} </p>
                                       <p>{{Evac.createdAt}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterEvacuationMedical(Evac)">consulter</el-button>
-                                  
+                                      <el-button type="" style="align-items: right;" @click="creepdf3(Evac)">Voir PDF</el-button>                                  
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline></div>
@@ -4804,7 +4813,8 @@
                   </el-card>
                 </div> -->
                 <div v-else>
-                  <el-row>
+                  <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Evacuation Medical</p>
+                  <el-row>   
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
                       <el-input
@@ -4817,8 +4827,7 @@
                         <el-select v-model="EvacuationMedical.EvacVers" placeholder="Evacuation vers">
                           <el-option label="CHU" value="CHU"></el-option>
                           <el-option label="EPH" value="EPH"></el-option>
-                          <el-option label="urgence " value="urgence "></el-option>
-                          
+                          <el-option label="urgence " value="urgence "></el-option>    
                         </el-select>
                     </el-row>         
                   <center>
@@ -4834,11 +4843,7 @@
               </el-card>
             </el-scrollbar>
             <el-scrollbar  v-show="radio1==='Certificat Médical' && radio0 === 'Examen Médical'">
-             
-              <el-card class="box-card">
-                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
-
-                <center>
+                             <center>
                   <div>
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getCertificats();" ></el-radio-button>
@@ -4847,6 +4852,8 @@
                   </div>
                   <br />
                 </center>
+              <el-card class="box-card">
+                              <el-button icon="el-icon-arrow-left" @click="goBackOrientations()" round></el-button>
                 <div v-if="radioRM === 'Historique'">
                   <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Certificat Medical</p>
                   <div v-if="certificats.length === 0">
@@ -4863,7 +4870,7 @@
                                       <h6> Date debut: </h6><p> {{Cert.EtatGeneral}} </p>
                                       <h6> Date end: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterCertificatMedical(Cert)">consulter</el-button>
-                                  
+                                       <el-button type="" style="align-items: right;" @click="pdfGenerator4(Cert)">Voir PDF</el-button>                                 
                                   </el-card>
                     </el-timeline-item>
                   </el-timeline>
@@ -4891,6 +4898,7 @@
                   </el-dialog>
                 </div>
                 <div v-else>
+    <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Certificat Medical</p>
                   <el-row>
                     <el-col :span="3"> Motif : </el-col
                     ><el-col :span="21">
@@ -5476,21 +5484,24 @@ EMAIL: contact@esi-sba.dz</p>
             </el-scrollbar> -->
             <!-- ********************************************RDV******************************************** -->
             <el-scrollbar v-show="radio0 === 'RDV'">
-              <div v-if="haveRDV">
+              
                 <el-card>
                   <h4>Rendez-vous</h4><br/><br/>
-                  <center>                <el-button
+                  <center>                
+                    <el-button
                     type="primary"
                     @click="dialogRDVFormVisible = true"
                     style="background-color: #24b4ab; "
                   round>
                     Programmer un Rendez-vous
-                  </el-button></center>
+                  </el-button>
+                  </center>
                   <div v-if="RDVList.length === 0">
                     <el-empty description="Aucun Rendez-vous a été Programmer pour ce patient">
                     </el-empty>
                   </div >
-                  <div v-else><el-timeline style="margin:1% 0% 0% 0%;">
+                  <div v-else>
+                    <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item
                       placement="top"
                       v-for="Rdv in RDVList"
@@ -5518,7 +5529,8 @@ EMAIL: contact@esi-sba.dz</p>
                         >
                       </el-card>
                     </el-timeline-item>
-                  </el-timeline></div>
+                  </el-timeline>
+                  </div>
                   
                   
                 </el-card>
@@ -5577,9 +5589,9 @@ EMAIL: contact@esi-sba.dz</p>
                     </span>
                   </template>
                 </el-dialog>
-              </div>
+              
 
-              <el-card class="box-card" v-else>
+              <!-- <el-card class="box-card" >
                 <el-empty :image-size="300">
                   <el-button
                     type="primary"
@@ -5589,7 +5601,7 @@ EMAIL: contact@esi-sba.dz</p>
                     round>Programmer un Rendez-vous</el-button
                   >
                 </el-empty>
-              </el-card>
+              </el-card> -->
               <!-- Form -->
               <el-dialog
                 title=" Programmer un RDV "
@@ -5644,6 +5656,7 @@ EMAIL: contact@esi-sba.dz</p>
                     >
                   </span>
                 </template>
+                
               </el-dialog>
             </el-scrollbar>
             <!-- ********************************************end******************************************** -->
@@ -6774,6 +6787,9 @@ export default {
       dialogRDVFormVisible2: false,
       formLabelWidth: "120px",
       haveRDV: false,
+      haveorientation: false,
+      havecertification: false,
+      haveevacuation: false,
       haveRDVDash: false,
       RDVform: {
         id: "",
@@ -6782,8 +6798,6 @@ export default {
         dateAndTime: "",
         note: "",
       },
-      countrdv2:0,
-      countrdv:0,
       RDVList:[],
       RDVListDash:[],
       Evac:[""],
@@ -6824,6 +6838,16 @@ export default {
         this.count = this.patients.length;
         this.NumRDV();
         this.NumRDV2();
+        console.log("lahcen99");
+        console.log(this.countrdv);
+        console.log(this.countrdv2);
+        this.badgeDisplay();
+        this.INbadgeDisplay();
+        this.INbadgeDisplay2();
+        console.log("totale");
+        this.recoverDemandesRDV();
+        this.recoverDemandesRDVReport();
+        this.showRDVDashboard();
           
       })
       .catch((error) => {
@@ -6893,6 +6917,26 @@ export default {
 async minceViews() {
   localStorage.setItem('bannerViews', --this.RDVCount);
 },
+async badgeDisplay() {
+   var countrdv3 = document.getElementById('countrdv3');
+          if (this.countrdv2  == '0' && this.countrdv  == '0') {
+            countrdv3.style.display = 'none';            
+          }
+},
+async INbadgeDisplay() {
+  const response = await DocServices.NumValider()
+   var countrdv = document.getElementById('countrdv');
+          if (Object.keys(response.data).length  == '0') {
+            countrdv.style.display = 'none';            
+          }
+},
+async INbadgeDisplay2() {
+   const response = await DocServices.Numreporter()
+   var countrdv2 = document.getElementById('countrdv2');
+          if (Object.keys(response.data).length  == '0') {
+            countrdv2.style.display = 'none';            
+          }
+},
     //RDV**********************************************************************************************
     async progRDVPatient() {
       try {
@@ -6941,7 +6985,6 @@ async minceViews() {
       const response = await DocServices.Numreporter()
       this.countrdv2=Object.keys(response.data).length;
       console.log(this.countrdv2)
-      
     } catch {
       console.log('probleme in docdashoardController / numrdv')
 
@@ -7356,6 +7399,7 @@ async minceViews() {
       console.log(this.ValiderRDVList)
       this.NumRDV()
       this.NumRDV2()
+////////////////////////////////////////////////////////////////////////////////////////////////////      
       var valideNum = document.getElementById('valideNum');
       var countrdv3 = document.getElementById('countrdv3');
           if (this.countrdv == '0') {
@@ -7364,10 +7408,14 @@ async minceViews() {
       if (this.countrdv  == '0' && this.countrdv2  == '0') {
           countrdv3.style.display = 'none';            
       }     
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
+////////////////////////////////////////////////////////////////////////////////////////////////////      
+
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
-  },
+  }, 
 
   async validerRDVdemande (rdv) {
     try {
@@ -7379,7 +7427,11 @@ async minceViews() {
       this.NumRDV()
       this.NumRDV2()
       this.addViews()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
       this.recoverDemandesRDV()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Validation avec succees ',
@@ -7400,6 +7452,10 @@ async minceViews() {
       this.NumRDV()
       this.NumRDV2()
       this.recoverDemandesRDV()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Refus avec succees ',
@@ -7419,6 +7475,8 @@ async minceViews() {
       console.log(this.ReporterRDVList)
       this.NumRDV()
       this.NumRDV2()
+      ////////////////////////////////////////////////////////////////////////////////////////////////////      
+
       var ReportNum = document.getElementById('ReportNum');
       var countrdv3 = document.getElementById('countrdv3');
       if (this.countrdv2 == '0') {
@@ -7427,6 +7485,10 @@ async minceViews() {
       if (this.countrdv  == '0' && this.countrdv2  == '0') {
           countrdv3.style.display = 'none';            
       }
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
+      ////////////////////////////////////////////////////////////////////////////////////////////////////      
+
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -7454,6 +7516,9 @@ async minceViews() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
       this.$notify.success({
           title: 'Succeès',
           message: 'Enregeitrement avec succees ',
@@ -7473,6 +7538,10 @@ async minceViews() {
       this.annulerRDVReportForm()
       this.NumRDV()
       this.NumRDV2()
+      this.badgeDisplay()
+      this.INbadgeDisplay()
+      this.INbadgeDisplay2()
+
       this.$notify.success({
           title: 'Succeès',
           message: 'Refus avec succees ',
@@ -7510,10 +7579,17 @@ async minceViews() {
       this.radioRDVsection = 'Valider'
       this.NumRDV()
       this.NumRDV2()
+      ////////////////////////////////////////////////////////////////////////////////////////////////////      
+
       var countrdv3 = document.getElementById('countrdv3');
       if (this.countrdv  == '0' && this.countrdv2  == '0') {
           countrdv3.style.display = 'none';            
       }
+
+       this.recoverDemandesRDV();
+        this.recoverDemandesRDVReport();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////      
+
     } catch (error) {
       console.log(`something went wrong ${error}`)
     }
@@ -7534,9 +7610,8 @@ async minceViews() {
             x = x + 1;
           });
           console.log(response.data);
-          this.showRDVDashboard();
-          this.NumRDV();
-          this.NumRDV2();    
+          this.badgeDisplay();
+           
         })
         .catch((error) => {
           console.log(error);
@@ -7555,11 +7630,12 @@ async minceViews() {
             }
             x = x + 1;
           });
-          this.NumRDV();
-          this.NumRDV2();
           this.recoverDemandesRDVReport();  
           this.recoverDemandesRDV();
-
+          this.recoverDemandesRDV();
+          this.badgeDisplay();
+          this.INbadgeDisplay2();
+          this.INbadgeDisplay();
   
         })
         .catch((error) => {
@@ -9208,11 +9284,33 @@ async CertificatCheck() {
         console.log(`something went wrong ${error}`);
       }
     },
-
     async creepdf4() {
       try {
-        const x = this.CertificatMedical.HistoireDeLaMaladie.toString().substring(0,10);
-        const y = this.CertificatMedical.EtatGeneral.toString().substring(0,10);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////      
+
+        
+        // console.log(x);
+        // console.log(y);
+        console.log("creepdf button was clicked !");
+        //console.log(this.userAntInfo);
+       this.CertificatMedical.idUser = this.userselected.id;
+        const response = await CertificatMedicalService.creeCM({
+        CertificatMedical: this.CertificatMedical,
+        });
+
+        this.pdfGenerator4(this.CertificatMedical);
+        console.log(response.data);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////      
+
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+    async pdfGenerator4(C) {
+      try {
+        const x = C.HistoireDeLaMaladie.toString().substring(0,10);
+        const y = C.EtatGeneral.toString().substring(0,10);
         console.log("creepdf4 button was clicked !");
         console.log(this.userAntInfo);
         this.CertificatMedical.idUser = this.userselected.id;
@@ -9382,13 +9480,13 @@ async CertificatCheck() {
                 ",\n\n",
                 " COMME IL A ÉTÉ CONSTATÉ APRES L'EXAMEN QUE LE PATIENT PRÉSENTAI DES SYMPTOME DE ",
                 {
-                  text: this.CertificatMedical.Motif,
+                  text: C.Motif,
                   fontSize: 12,
                   bold: true,
                 },
                 "\n\n",
                 " LE PATIENT NECESSITE D'UN REPOS POUR UNE MEILLEURE PRISE EN CHARGE \n\n",
-                { text: this.CertificatMedical.Autre },
+                { text: C.Autre },
                 //'then.\n\n'
               ],
             },
@@ -9432,13 +9530,28 @@ async CertificatCheck() {
     },
     async creepdf2() {
       try {
+        console.log("creepdf button was clicked !");
+        //console.log(this.userAntInfo);
+        this.EvacuationMedical.idUser = this.userselected.id;
+        const response = await EvacuationMedicalService.creeEvM({
+          EvacuationMedical: this.EvacuationMedical,
+        });
+
+        this.pdfGenerator2(this.OrientationMedical);
+        console.log(response.data);
+      } catch (error) {
+        this.error = error.response.data.error;
+        console.log(this.error);
+      }
+    },
+    async pdfGenerator2(O) {
+      try {
         console.log("creepdf2 button was clicked !");
         console.log(this.userAntInfo);
         this.OrientationMedical.idUser = this.userselected.id;
         const response = await OrientationMedicalService.creeOM({
         OrientationMedical: this.OrientationMedical,
         });
-
         var docDefinition = {
           footer: [
             {
@@ -9583,13 +9696,13 @@ async CertificatCheck() {
                 { text: this.userselected.lastName, fontSize: 12, bold: true },
                 " qui sest présenté ce jour pour ",
                 {
-                  text: this.OrientationMedical.Motif,
+                  text: O.Motif,
                   fontSize: 12,
                   bold: true,
                 },
                 " et tant que ",
                 {
-                  text: this.OrientationMedical.OrientVers,
+                  text: O.OrientVers,
                   fontSize: 12,
                   bold: true,
                 },
@@ -10259,7 +10372,7 @@ async creerania() {
 .boxRDV {
   width: 97%;
   margin:0 20px;
-  padding-right: 50px;
+ 
   border-radius: 15px;
   height:200%;
 }
@@ -10458,10 +10571,10 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
 /* css orientation */
 .evacu {
-  background-image: url("https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=753&q=80");
+  background-image: url("https://images.unsplash.com/photo-1518015272815-38d797b67619?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=800");
 }
 .certif {
-  background-image: url("https://images.unsplash.com/photo-1586001549061-24156ffd6742?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80");
+  background-image: url("https://images.unsplash.com/photo-1627514580923-0d6bc1632925?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80");
 }
 /* .orient {
   image-resolution: 20;
@@ -10528,7 +10641,7 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
 .welcomecard {
   width: 97%;
-  margin: 20px;
+  margin:20px 20px 0;
   border-radius: 15px;
   padding: 0 2% 2%;
 }

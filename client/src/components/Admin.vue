@@ -23,8 +23,8 @@
         <div id="edit_btn" index="3" @click="section = 2;Valid();">
           <li class="editAdmin"><a href="#/admin"  class="target">Validée</a></li>
         </div>
-        <div id="message_btn" index="5" @click="section = 3">
-          <li class="AddNewAdmin"><a href="#/admin"  class="target">Register</a></li>
+        <div id="message_btn" @click="section = 3">
+          <li class="AddNewAdmin"><a href="#/admin" >Register</a></li>
         </div>
       </ul>
     </nav>
@@ -503,6 +503,7 @@ export default {
       .then((response) => {
         this.users = response.data;
         console.log(response);
+        this.section = "1";
       })
       .catch((error) => {
         console.log(error);
