@@ -264,4 +264,7 @@ module.exports = (app) => {
   app.post('/progRDVPatientMobile', RDVController.progRDVPatientMobile)
   app.post('/DemandeBilanl', demanderBilanController.createDB)
   app.post('/getDemanderBilan', demanderBilanController.getDemandes)
+  app.post('/DOCdashboard/createMedic', DocDashboardController.createMedic)
+  app.post('/DOCdashboard/recoverMedicamentsAjoutes', DocDashboardController.recoverMedicamentsAjoutés)
+  app.post('/DOCdashboard/supprimerMedic', DocDashboardController.SupprimerMedic)
 }

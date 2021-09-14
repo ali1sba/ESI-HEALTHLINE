@@ -2210,10 +2210,11 @@ span {
 }
 
 .dossier {
-  background-color: #f3f2f2;
-  flex: 1;
-  margin:7px 0 0 ;
-  padding:0 2%;
+  border-radius: 15px;
+  background-color: rgb(243, 242, 242);
+  flex: 1 1 0%;
+  margin: 7px 0px 0px;
+  padding: 2%;
   min-height: 100vh;
  
   

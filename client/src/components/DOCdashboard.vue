@@ -7,36 +7,36 @@
         </div>
         <ul class="list-unstyled components mb-5 menulist">
           <li>
-            <a @click="home()">
-              <span class="fa fa-home"></span>
-              <p class="nom">Home</p></a
+            <a @click="home()"   >
+              <span class="fa fa-home" v-bind:class="{coloreffect : content == 'dashboard'}"></span>
+              <p class="nom" v-bind:class="{coloreffect : content == 'dashboard'}">Home</p></a
             >
           </li>
           <li>
-            <a @click="content = 'dossier'">
-              <span class="fa fa-user"></span>
-              <p class="nom">Patients</p></a
+            <a @click="content = 'dossier'" >
+              <span class="fa fa-user" v-bind:class="{coloreffect : content == 'dossier'}"></span>
+              <p class="nom" v-bind:class="{coloreffect : content == 'dossier'}">Patients</p></a
             >
           </li>
           <li>
-            <a @click="RDVSection2()">
+            <a @click="RDVSection2()"  >
                
-              <span class="fa fa-list-alt">
-               <el-badge :value="countrdv2 + countrdv" class="itemNotifs" type="danger" id="countrdv3">
+              <span class="fa fa-list-alt" v-bind:class="{coloreffect : content == 'RDVSection'}">
+               <el-badge :value="countrdv + countrdv2" class="itemNotifs" type="danger" id="countrdv3">
                   </el-badge>
                   
               </span>               
-              <p class="nom">Rendez-vous</p></a
+              <p class="nom" v-bind:class="{coloreffect : content == 'RDVSection'}">Rendez-vous</p></a
             >          </li>
           <li>
-            <a @click="content = '4'"
-              ><span class="fa fa-chart-bar"></span>
-              <p class="nom">Statistiques</p>
+            <a @click="content = '4'" 
+              ><span class="fa fa-chart-bar" v-bind:class="{coloreffect : content == '4'}"></span>
+              <p class="nom" v-bind:class="{coloreffect : content == '4'}"> Statistiques</p>
             </a>
           </li>
           <li>
             <a @click="logout"
-              ><span class="fa fa-sign-out"></span>
+              ><span class="fa fa-sign-out" ></span>
               <p class="nom">Logout</p></a>
             </li>
             <!-- <li>
@@ -165,7 +165,7 @@
 
           <div v-show="content === 'dashboard'" class="dossier">
             <el-row>
-           <el-col :span="17">
+           <el-col :span="18" style="margin-top:0px">
            <el-card class="welcomecard">
              <el-col :span="8">
               <img src="assets/dashboard/doctor.png"/>
@@ -212,6 +212,7 @@
                 <i class="fas fa-viruses" style="font-size:4rem;"></i>
               </div>
             </div></el-card>
+             <el-row>
             <el-card class="boxRDV">
               <h4>Les rendez-vous d'aujourd'hui :</h4>
                 <!-- <el-card class="cardGris">
@@ -280,10 +281,17 @@
                   </el-table-column>
                 </el-table> 
                </el-card>
-            </el-col>
+            <!-- </el-col>
             <el-col :span="7">
               <el-card class="patientscard">
              <article class="leaderboard">
+            <h5 id="patients">Patients</h5> -->
+            
+            </el-row>
+            </el-col>
+            <el-col :span="6" style="margin-top:0; height:auto">
+              <el-card class="patientscard" :body-style="{ padding: '0px' }" style="padding-top:20px;padding-bottom:20px;">
+             <article style="height:auto; width: 100%;  padding:0 20px 20px;  margin: 0;  float: left;    overflow-y: auto;">
             <h5 id="patients">Patients</h5>
             
          
@@ -675,8 +683,15 @@
                           class="droite"
                         >
                           IMC
-                        </el-button>
-                        <p class="droite2" id="imcValue">{{ responseimc }}</p>
+                        </el-button><div class="droite2" id="imcValue" style="display: flex" >
+
+                        <el-space style="display: -webkit-inline-box;" >
+                        {{ responseimc }}
+                           <el-tag>&nbsp;{{ bmi }}&nbsp; kg/m2</el-tag>
+
+                  </el-space>
+                  </div>
+                        
                       </div>
                     </div>
                     <br>
@@ -4053,7 +4068,7 @@
                       <el-timeline-item  placement="top" v-for="BE in tableDataBE" :key="BE.id" >
                         <el-card   class="cardGris">
                           <h4> {{BE.motif}} </h4>
-                          <h6> Créé le : </h6><p>{{ BE.createdAt.substring(0, 10) }}</p>
+                          <h6> Créé le : </h6><p>{{ BE.createdAt }}</p>
                           <h6> Bilans présents : </h6>
                           <div v-if="BE.idECG === null && BE.idEEG === null && BE.idEMG === null">
                             <p>Aucun</p>
@@ -4371,7 +4386,7 @@
                         Nom : &nbsp; {{ userselected.firstName }}
                       </p>
                       <p style="font-size: 17px">
-                        prenom : &nbsp; {{ userselected.lastName }}
+                        Prenom : &nbsp; {{ userselected.lastName }}
                       </p>
                       <p style="font-size: 17px">
                         Age : &nbsp; {{ userselected.age }}
@@ -5148,7 +5163,7 @@
                     >
                     
                     <hr>
-                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbés 22016, Algérie TEL: +213-48-74-94-52<br>
+                    <p style="font-size:12px; font-weight:500; text-align:center">BP 73, Bureau de poste EL WIAM Sidi Bel Abbécrés 22016, Algérie TEL: +213-48-74-94-52<br>
 EMAIL: contact@esi-sba.dz</p>
                   </center>
                 </div>
@@ -5170,8 +5185,12 @@ EMAIL: contact@esi-sba.dz</p>
                       > Historique</el-radio-button>
                       <el-radio-button 
                         label="nouvOrd"
-                        @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'"
+                        @click=" radio1O='nouvOrd';recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created';"
                       >Créer</el-radio-button>
+                      <el-radio-button 
+                        label="newMedic"
+                        @click=" radio1O='newMedic'; recoverMedicamentsAjoutés()"
+                      >Médicament ajoutés </el-radio-button>
                     </el-radio-group>
                   </div>
                 </center>
@@ -5197,7 +5216,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <div style="display:flex">
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Prenom : &nbsp; {{ userselected.lastName }}</p>
                   <p style="font-size:17px;">Date de Naissance : &nbsp; {{ ddn}}</p>
                 
                 </div>
@@ -5212,9 +5231,9 @@ EMAIL: contact@esi-sba.dz</p>
                 <hr>
                 <ol id="prescs">
 
-                <li  style="margin-left:-90px;margin-right:-130px;margin-bottom:10px" v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index == (prescs.length-1)&& isOrdDisabled==false}" >
+                <li  style="margin-left:-50px;margin-right:-135px;margin-bottom:10px; width:100%" v-for="(pr,index) in prescs" :key= index v-bind:class="{floating : index == (prescs.length-1)&& isOrdDisabled==false}" >
                   <!-- <p style="float:left">{{index}} &nbsp; &nbsp;/</p> -->
-                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament" @change="pr.forme='';pr.marque='';pr.dosage=''" style="width:170px;">
+                   <el-select v-model="pr.nom" filterable :disabled="isOrdDisabled" placeholder="nom de médicament" @change="pr.forme='';pr.marque='';pr.dosage=''" style="width:20%;">
                    <el-option
                       v-for="item in Medoptions"
                       :key="item.value"
@@ -5223,7 +5242,7 @@ EMAIL: contact@esi-sba.dz</p>
                      style="margin-right:7px">
                 </el-option>
                 </el-select>
-                <el-select v-model="pr.marque" filterable :disabled="isOrdDisabled" placeholder="marque " @click=" recoverMarques(pr.nom)" @change="pr.forme='';pr.dosage=''" style="width:170px;">
+                <el-select v-model="pr.marque" filterable :disabled="isOrdDisabled" placeholder="marque " @click=" recoverMarques(pr.nom)" @change="pr.forme='';pr.dosage=''" style="width:20%;">
                 <el-option
                  v-for="item in marqueoptions"
                  :key="item.value"
@@ -5234,7 +5253,7 @@ EMAIL: contact@esi-sba.dz</p>
                  </el-option>
                 </el-select>
 
-                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique  " @click=" recoverFormes(pr.nom,pr.marque)" @change="pr.dosage=''" style="width:170px;">
+                <el-select v-model="pr.forme" filterable :disabled="isOrdDisabled" placeholder="forme pharmaceutique  " @click=" recoverFormes(pr.nom,pr.marque)" @change="pr.dosage=''" style="width:20%;">
                 <el-option
                  v-for="item in fpoptions"
                  :key="item.value"
@@ -5244,7 +5263,7 @@ EMAIL: contact@esi-sba.dz</p>
                 >
                  </el-option>
                 </el-select>
-                <el-select v-model="pr.dosage" filterable :disabled="isOrdDisabled" placeholder="dosage " @click=" recoverDosages(pr.nom,pr.marque,pr.forme)" style="width:170px;">
+                <el-select v-model="pr.dosage" filterable :disabled="isOrdDisabled" placeholder="dosage " @click=" recoverDosages(pr.nom,pr.marque,pr.forme)" style="width:20%;">
                 <el-option
                  v-for="item in dosageoptions"
                  :key="item.value"
@@ -5255,7 +5274,7 @@ EMAIL: contact@esi-sba.dz</p>
                  </el-option>
                 </el-select>
                 <el-input v-model="pr.duree" placeholder="durée"  :disabled="isOrdDisabled"
-                style="width : 75px; margin-right:7px">
+                style="width :11%; margin-right:7px">
 
                 </el-input>
                 </li>
@@ -5326,11 +5345,14 @@ EMAIL: contact@esi-sba.dz</p>
             <el-scrollbar v-show="radio1O === 'ordhistory' && radio2O === 'history' && radio0 === 'Examen Médical'">
               <el-card class="box-card"  >
               <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
-                
+                           
 
 
 
                 <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnances</p>
+                <el-empty v-show="noOrd" :image-size="300" description="aucune ordonnance a été créée pour ce patient">
+                  <el-button type="primary" style="background-color: #24b4ab"  @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'" round>Ajouter une ordonnance</el-button>
+                </el-empty> 
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ord in ords.slice().reverse()" :key="ord.id"  >
                       <p style="font-size: 15px;font-weight: bold;margin-top:-15px">&nbsp;{{ord.date}} </p>
@@ -5381,7 +5403,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <div style="display:flex">
                   <div style="flex:50%">
                   <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
-                  <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
+                  <p style="font-size:17px;">Prenom : &nbsp; {{ userselected.lastName }}</p>
                   <p style="font-size:17px;">Date de naissance : &nbsp; {{ddn}}</p>
                  
                 </div>
@@ -5488,6 +5510,70 @@ EMAIL: contact@esi-sba.dz</p>
                 
               </el-card>
             </el-scrollbar>
+             <el-scrollbar v-show="radio1O === 'newMedic' && radio0 === 'Examen Médical'">
+              <el-card class="box-card">
+                <el-button icon="el-icon-arrow-left" style="float:left" @click="radio2O='history'"  round></el-button>
+                <h4 style="text-align:center">Ajouter un médicament </h4><br><br>
+                <center>
+                  <li>
+                    <el-input v-model="medic.nom" placeholder="nom du médicament"  :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                  <el-input v-model="medic.marque" placeholder="Marque"  :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                <el-input v-model="medic.forme" placeholder="forme pharmaceutique"  :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                <el-input v-model="medic.dosage" placeholder="dosage" :disabled="isMedicDisabled"
+                style="width : 20%; margin-right:7px"></el-input>
+                  </li>
+                  </center>
+                  <br>
+                  <center><el-button
+                    type="primary" 
+                    @click="createMedic()"
+                    style="background-color: #24b4ab; "
+                  round>
+                  sauvegarder
+                  </el-button>
+                  
+                  </center>
+              </el-card>
+              <el-card class="box-card">
+               <h4 style="text-align:center">HISTORIQUE </h4><br><br>
+                <el-empty v-show="MedicamentAjouté.length==0" :image-size="300" description="aucune médicament a été ajouté manuellement ">
+                        
+                 </el-empty> 
+                 <el-timeline style="margin:1% 0% 0% 0%;">
+                    <el-timeline-item  placement="top" v-for="med in MedicamentAjouté"
+                      :key="med.id" >
+                       <p style="font-size: 15px;font-weight: bold;margin-top:-15px">&nbsp;{{med.createdAt}} </p>
+                      
+
+                      <el-card   class="cardGris">    
+                                            
+                                    <p style="float:left; margin:10px">{{ med.nom }} </p>
+                                    <p style="float:left; margin:10px">{{ med.marque }} </p>
+                                    <p style="float:left; margin:10px">{{ med.forme }} </p>
+                                    <p style="margin:10px">{{ med.dosage }} </p>
+                                    <br>
+                                      <el-popconfirm
+                          confirmButtonText="Oui"
+                          cancelButtonText="Non"
+                          icon="el-icon-info"
+                          iconColor="red"
+                          title="Etes-vous sur de vouloir supprimer ce médicament ?"
+                          @confirm="SupprimerMedic(med)"
+                          @cancel="cancelEvent"
+                        >
+                          <template #reference>
+                              <el-button  type="danger" style="display:flex;" icon="el-icon-delete" round>Supprimer</el-button>
+                          </template>
+                        </el-popconfirm>     
+                      </el-card>
+                    </el-timeline-item>
+                  </el-timeline>
+              </el-card>
+             </el-scrollbar>           
+            
              </el-scrollbar>
             <!-- ****************************orientations: lahcen ******************************* -->
             <!-- <el-scrollbar v-show="radio1 === 'orientations'">
@@ -6461,6 +6547,7 @@ export default {
 
       //the data for personalInfo section****************************************************************************
       //BIOMETRIC
+      bmi:0,
       responseimc: "0",
       userBiomInfo: {
         poids: 0,
@@ -6762,7 +6849,16 @@ export default {
 
       //Ordonnance
       ordselected: "none",
+      noOrd: false,
+
       ords: [],
+      medic: {
+        nom: "",
+        marque:"",
+        forme:"",
+        dosage:""
+      },
+      MedicamentAjouté:[],
       champsvides: false,
       champsvidesOrr: false,
       champsvidesCert: false,
@@ -6782,6 +6878,8 @@ export default {
       currentprescs: [],
 
       isOrdDisabled: false,
+      isMedicDisabled: false,
+
 
       // Rapport Medical data****************************************************************************
       RapportMedical: {
@@ -6874,6 +6972,7 @@ export default {
         for (let i = 0; i < cPatients.length; i++) {
           this.patients.push(cPatients[i])
         }
+        this.userselected=this.patients[0]
         console.log(this.patients)
         this.count = this.patients.length;
         this.NumRDV();
@@ -7678,6 +7777,7 @@ async INbadgeDisplay2() {
             this.patients.push(cPatients[i])
           }
           this.badgeDisplay();
+          this.userselected=this.patients[0]
           this.count = this.patients.length;
           console.log(this.patients)
           this.showRDVDashboard();
@@ -7773,14 +7873,15 @@ async INbadgeDisplay2() {
         this.userBiomInfo.poids /
         ((this.userBiomInfo.taille / 100) * (this.userBiomInfo.taille / 100));
       this.userBiomInfo.imc = bmi;
+      this.bmi=bmi.toFixed(2)
       if (bmi < 18.5 ) {
-        this.responseimc = " Insuffisance pondérale: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = " Insuffisance pondérale: " ;
       } else if (bmi >= 18.5 && bmi < 25) {
-        this.responseimc = "Poids normal: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = "Poids normal: " ;
       } else if (bmi >= 25 && bmi<30) {
-        this.responseimc = "Surpoids: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = "Surpoids: " ;
       }else{
-        this.responseimc = "obésité: " + bmi.toFixed(2) + " kg/m2";
+        this.responseimc = "obésité: ";
       }
     },
     //     createpdf() {
@@ -7806,12 +7907,13 @@ async INbadgeDisplay2() {
     },
 
     table(data, columns) {
-      return {
+      let prescstitle={nom: "- Nom -",marque: "- Marque -",forme: "- Forme -",dosage:"- Dosage -", duree: "- Durée -"}
+          data.unshift(prescstitle); 
+            return {
         margin: [25, 18, 25, 30],
         table: {
           widths: [100, 100, 100,100,70],
           // widths: ['*', '*', '*'],
-
           body: this.buildTableBody(data, columns),
         },
          /* eslint-disable no-mixed-spaces-and-tabs */
@@ -8452,6 +8554,9 @@ this.bmiCalculation();
         response.data.medicaments.map(function(value) {
           list.push({ value: value.nom, label: value.nom });
         });
+        response.data.medicamentsNouv.map(function(value) {
+          list.push({ value: value.nom, label: value.nom });
+        });
 
         //   supprimer les doublons
 
@@ -8480,6 +8585,10 @@ this.bmiCalculation();
      list.push({value: value.marque, label : value.marque });
      
      });
+     response.data.marquesNouv.map(function(value) {
+     list.push({value: value.marque, label : value.marque });
+     
+     });
         
       //   supprimer les doublons 
 
@@ -8505,8 +8614,13 @@ this.bmiCalculation();
         nom: Medicament,
         marque:marque
       })
+      
       let list=[];
     response.data.formes.map(function(value) {
+     list.push({value: value.forme, label : value.forme });
+     
+     });
+     response.data.formesNouv.map(function(value) {
      list.push({value: value.forme, label : value.forme });
      
      });
@@ -8541,6 +8655,10 @@ this.bmiCalculation();
      list.push({value: value.dosage, label : value.dosage });
      
      });
+     response.data.dosagesNouv.map(function(value) {
+     list.push({value: value.dosage, label : value.dosage });
+     
+     });
         
       //   supprimer les doublons 
 
@@ -8559,6 +8677,42 @@ this.bmiCalculation();
     } catch (error) {
       console.log(`something went wrong ${error}`);
     }
+   },   
+    async SupprimerMedic(medi) {
+      try {
+        const response = await DocServices.SupprimerMedic({
+          id: medi.id
+        });
+        this.$notify.success({
+          title: 'Succeès',
+          message: ' Médicament supprimé avec succes ',
+          offset: 100
+        });
+        this.recoverMedicamentsAjoutés()
+        console.log(response.data.medic)
+     
+        
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+   },
+     async recoverMedicamentsAjoutés() {
+      try {
+        const response = await DocServices.recoverMedicamentsAjoutés();
+        console.log(response.data.created)
+       
+       for (let index = 0; index < response.data.created.length; index++) {
+          var element =response.data.created[index];
+          var x = this.getDateFromStringS( element.createdAt);
+          response.data.created[index].createdAt = x ;
+ 
+      }
+          
+    this.MedicamentAjouté=response.data.created
+        
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
    },
     async Viewpdf(ordonnance){
 try {
@@ -9917,6 +10071,7 @@ async annulerModificationOrd(ord) {
       })
       let list=[];
        this.ordons = response.data.ords;
+       this.noOrd=this.ordons.length==0
         for (let index = 0; index < this.ordons.length; index++) {
           var element = this.ordons[index];
           var x = this.getHourFromStringS( element.updatedAt);
@@ -9937,6 +10092,38 @@ async annulerModificationOrd(ord) {
        
     } catch (error) {
       console.log(`something went wrong ${error}`);
+    }
+   },
+   async createMedic() {
+    try {
+     if(!( this.medic.nom==""|| this.medic.forme==""||this.medic.marque==""||this.medic.dosage=="")){
+     
+        
+      const response = await DocServices.createMedic({
+        medic:this.medic
+      })
+       this.$notify.success({
+          title: 'Succeès',
+          message: 'médicaments ajouté avec succeès ',
+        });
+      this.medic.nom="";
+      this.medic.forme="";
+      this.medic.marque="";
+      this.medic.dosage="";
+      this.recoverMedicamentsAjoutés()
+      console.log(response.data)
+     }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+      
+    }
+           
+
+    } catch (error) {
+      console.log(`something wenttt wrong ${error}`);
     }
    },
   
@@ -10466,7 +10653,6 @@ async creerania() {
 }
 .droite2 {
   margin-right: 20px;
-  float: left;
   margin-top: 5px;
 }
 #biom {
@@ -10564,6 +10750,9 @@ async creerania() {
   align-items: center;
   text-align: center;
   margin: 1%;
+  margin-left:2%;
+  margin-right:2%;
+  height:200px;
   background-size: cover;
   border: none;
 }
@@ -10640,6 +10829,9 @@ async creerania() {
   transform: scale(1.1);
 box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
 }
+.coloreffect{
+  color: #ffb563;
+}
 /* css orientation */
 .evacu {
   background-image: url("https://images.unsplash.com/photo-1518015272815-38d797b67619?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=800");
@@ -10705,10 +10897,11 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
   color: white;
 }
 .patientscard {
+
   width: 87%;
   margin: 20px;
   border-radius: 15px;
-  height: 90%;
+  height: 96%;
 }
 .welcomecard {
   width: 97%;
