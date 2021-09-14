@@ -503,7 +503,7 @@ export default {
       .then((response) => {
         this.users = response.data;
         console.log(response);
-        this.section = "1";
+        this.section = 1;
       })
       .catch((error) => {
         console.log(error);
