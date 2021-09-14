@@ -66,36 +66,72 @@
               <span class="sr-only">Toggle Menu</span>
             </button>
             <h3 class="dashboard" id="titledash">Dashboard</h3>
-            <el-autocomplete v-model="state" style="width:50%; margin:0 5% ;" :fetch-suggestions="querySearchAsync" placeholder="Recherchez un patient" @select="handleSelect" prefix-icon="el-icon-search"></el-autocomplete>
+
+            <el-autocomplete v-model="patientSearch" style="width:50%; margin:0 5% ;" :fetch-suggestions="patients" placeholder="Recherchez un patient" @select="showPatient" prefix-icon="el-icon-search"></el-autocomplete>
+            <!-- 
+            <el-select
+              v-model="patientSearch"
+              filterable
+              remote
+              reserve-keyword
+              placeholder="Rechercher un patient"
+              :remote-method="remoteMethod"
+              style="width:50%; margin:0 5% ;" 
+              prefix-icon="el-icon-search">
+                <el-option
+                  v-for="item in patients"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+            </el-select>
+            -->
             <div id="icons">
-              <el-dropdown
-                split-button
-                type="info"
-                class="messageNotfis"
-                id="btn-notifs"
-              >
-                <i class="el-icon-message-solid"></i>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>Alert 1</el-dropdown-item>
-                    <el-dropdown-item>Alert 2</el-dropdown-item>
-                    <el-dropdown-item>Alert 3</el-dropdown-item>
-                    <el-dropdown-item>Alert 4</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-              <el-dropdown split-button type="info" id="btn-decisions">
-                <i class="el-icon-s-promotion"></i>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item>Action 1</el-dropdown-item>
-                    <el-dropdown-item>Action 2</el-dropdown-item>
-                    <el-dropdown-item>Action 3</el-dropdown-item>
-                    <el-dropdown-item>Action 4</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
+              <el-button type="primary" @click="showRDVdialog()" icon="el-icon-plus" style="background-color: #24b4ab; display:flex; ">
+                Ajouter un Rendez-vous
+              </el-button>
             </div>
+
+            <el-dialog title=" Programmer un RDV " v-model="dialogAjouterRDVFormVisible" :before-close="annulerAjouterRDV">
+                    <el-form :model="form">
+                      <el-form-item label="Patient" :label-width="formLabelWidth">
+                        <el-select v-model="ajouterRDV.idPatient" filterable remote placeholder="Sélectionnez le patient">
+                          <el-option
+                            v-for="item in patientsRDV"
+                            :key="item.value"
+                            :label="item.label"
+                            :value ="item.value"
+                            style="margin-right:20px">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="type de RDV" :label-width="formLabelWidth">
+                        <el-select v-model="ajouterRDV.typeRDV" placeholder="Sélectionnez un type">
+                          <el-option label="consultation médical" value="consultation médical"></el-option>
+                          <el-option label="suivi médical" value="suivi médical"></el-option>
+                        </el-select>
+                      </el-form-item>
+                      <el-form-item label="Date" :label-width="formLabelWidth">
+                        <el-date-picker
+                          v-model="ajouterRDV.date"
+                          type="datetime"
+                          placeholder="Selectionnez date et horaire"
+                          :shortcuts="shortcuts"
+                          :default-time="defaultTime1"
+                          :disabled-date="disabledDate">
+                        </el-date-picker>
+                      </el-form-item>
+                      <el-form-item label="Note" :label-width="formLabelWidth">
+                        <el-input v-model="ajouterRDV.note" placeholder="Note"></el-input>
+                      </el-form-item>
+                    </el-form>
+                    <template #footer>
+                      <span class="dialog-footer">
+                        <el-button @click="annulerAjouterRDV()">Annuler</el-button>
+                        <el-button type="primary" @click="progAjouterRDV()">Confirmer</el-button>
+                      </span>
+                    </template>
+                  </el-dialog>
 
            
           </div>
@@ -117,7 +153,6 @@
                 />
                 <span
                   class="leaderboard__name"
-                  v-loading.fullscreen.lock="fullscreenLoading"
                 >
                   {{ patient.lastName }} <br> {{ patient.firstName.substring(0, 14) }}</span
                 >
@@ -439,7 +474,6 @@
                             Lieu de naissance
                             <el-select
                               v-model="userPersInfo.placeOfBirth"
-                              multiple
                               filterable
                               remote
                               reserve-keyword
@@ -2949,13 +2983,13 @@
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
                 <center><h4>Bilans para-cliniques</h4></center>
                 <el-space>
+                  <center>
                   <el-row>
                     <el-col :span="8">
                       <el-card
                         @click="showBB(userselected)"
-                        class="bilancard bio"
+                        class="bilancard bio hovereffect"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans Biologiques</h3>
                        
                       
@@ -2964,21 +2998,20 @@
                     <el-col :span="8">
                       <el-card
                         @click="radio1 = 'Bilans Radiologiques'"
-                        class="bilancard radio"
+                        class="bilancard radio hovereffect"
                       >
-                        <i class="fa fa-heartbeat"> </i>
                         <h3>Bilans Radiologiques</h3>
                       
                       </el-card>
                     </el-col>
                     <el-col :span="8">
-                      <el-card @click="showBE(userselected)" class="bilancard électri">
-                        <i class="fa fa-heartbeat"> </i>
+                      <el-card @click="showBE(userselected)" class="bilancard électri hovereffect">
                         <h3>Bilans électriques</h3>
                        
                       </el-card>
                     </el-col>
                   </el-row>
+                  </center>
                 </el-space>
                  <div class="demender-b">
                    
@@ -3004,7 +3037,6 @@
             <!-- *********************************** Bilans biologiques***************************** -->
             <el-scrollbar v-show="radio1 === 'Bilans Biologiques' && radio0 === 'Examen Médical'">
               
-              
                 <center>
                   <div>
                     <el-radio-group v-model="radio2" fill="#24b4ab">
@@ -3023,20 +3055,14 @@
               <el-card class="box-card">
                 <el-button icon="el-icon-arrow-left" @click="goBack()" round></el-button>
                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Biologiques</p>
-                
-               
 
                 <el-scrollbar v-show="radio2 === 'Historique'">
-
                   <div v-if="tableDataBB.length === 0">
-                    <el-empty description="Aucun Bilan a été créer pour ce patient">
-                      <el-button type="primary" style="background-color: #24b4ab" @click="radio2 ='Créer' " round>Crées Bilan</el-button>
+                    <el-empty description="Aucun bilan biologique trouvé">
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radio2 = 'Créer'" round>Créer un bilan biologique</el-button>
                     </el-empty>
-                  </div >
-                  
+                  </div>
                   <div v-else>
-                    
-                                   
                    <el-timeline style="margin:1% 0% 0% 0%;">
                       <el-timeline-item  placement="top" v-for="bb in tableDataBB" :key="bb.id" >
                         <el-card   class="cardGris">
@@ -3045,7 +3071,7 @@
                           </el-row>
                           <el-row>
                             <el-col :span="6"> ID: {{bb.id}}</el-col>
-                            <el-col :span="10"> Créé le : {{bb.createdAt}}</el-col>
+                            <el-col :span="10"> Créé le : {{bb.createdAt.substring(0, 10)}}</el-col>
                           </el-row>
                       
                           <br/>
@@ -3074,8 +3100,8 @@
                     <el-tag>{{ BBHis.Motif }}</el-tag>
                   </el-space>
                   <el-space>
-                    Date de création
-                    <el-tag>{{ BBHis.Date }}</el-tag>
+                    Créé le :
+                    <el-tag>{{ BBHis.Date.substring(0, 10) }}</el-tag>
                   </el-space>
                   </el-card>
                  
@@ -3951,43 +3977,48 @@
                 ></el-button
               >
               <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Radiologiques</p>
-                
-                
 
                 <el-scrollbar v-show="radio2 === 'Historique'">
-                  <el-table
-                    :data="tableDataBR"
-                    style="width: 100%"
-                    height="250"
-                  >
-                    <el-table-column fixed prop="numero" label="N" width="50">
-                    </el-table-column>
-                    <el-table-column prop="motif" label="Motif" width="200">
-                    </el-table-column>
-                    <el-table-column prop="date" label="Date" width="150">
-                    </el-table-column>
-                    <el-table-column
-                      prop="bilans"
-                      label="Bilans présents"
-                      width="400"
+                  <div v-if="0 === 0">
+                    <el-empty description="Aucun bilan radiologique trouvé">
+                    <el-button type="primary" style="background-color: #24b4ab" @click="radio2 = 'Créer'" round>Créer un bilan radiologique</el-button>
+                    </el-empty>
+                  </div>
+                  <div v-else>
+                    <el-table
+                      :data="tableDataBR"
+                      style="width: 100%"
+                      height="250"
                     >
-                    </el-table-column>
-                    <el-table-column
-                      fixed="right"
-                      label="Opérations"
-                      width="120"
-                    >
-                      <template #default="">
-                        <el-button
-                          @click="showBilanBiologique()"
-                          type="text"
-                          size="small"
-                        >
-                          Consulter
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
+                      <el-table-column fixed prop="numero" label="N" width="50">
+                      </el-table-column>
+                      <el-table-column prop="motif" label="Motif" width="200">
+                      </el-table-column>
+                      <el-table-column prop="date" label="Date" width="150">
+                      </el-table-column>
+                      <el-table-column
+                        prop="bilans"
+                        label="Bilans présents"
+                        width="400"
+                      >
+                      </el-table-column>
+                      <el-table-column
+                        fixed="right"
+                        label="Opérations"
+                        width="120"
+                      >
+                        <template #default="">
+                          <el-button
+                            @click="showBilanBiologique()"
+                            type="text"
+                            size="small"
+                          >
+                            Consulter
+                          </el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
@@ -4008,17 +4039,16 @@
               </center>
               <el-card class="box-card">
                 <el-button icon="el-icon-arrow-left" @click="goBack()" round></el-button>
-                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Electriques</p>              
+                <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;">Bilans Electriques</p>   
+
+
                 <el-scrollbar  v-show="radioBE==='Historique'">
-
                   <div v-if="tableDataBE.length === 0">
-                    <el-empty description="Aucun Bilan a été créer pour ce patient">
-                      <el-button type="primary" style="background-color: #24b4ab" @click="radioBE ='Créer' " round>Crées Bilan</el-button>
+                    <el-empty description="Aucun bilan électrique trouvé">
+                    <el-button type="primary" style="background-color: #24b4ab" @click="radioBE = 'Créer'" round>Créer un bilan électrique</el-button>
                     </el-empty>
-                  </div >
-
+                  </div>
                   <div v-else>
-
                     <el-timeline style="margin:1% 0% 0% 0%;">
                       <el-timeline-item  placement="top" v-for="BE in tableDataBE" :key="BE.id" >
                         <el-card   class="cardGris">
@@ -4058,7 +4088,7 @@
                       <b>Motif :</b>
                       <p>{{BEHis.Motif}}</p>
                       <b>Créé le :</b>
-                      <p>{{BEHis.Date}}</p>
+                      <p>{{BEHis.Date.substring(0, 10)}}</p>
                       <div v-if="BEHis.ECG != null">
                         <br>
                         <b>ECG :</b>
@@ -4083,6 +4113,7 @@
                         </span>
                       </template>
                     </el-dialog>
+                  
                 </el-scrollbar>
 
                 <el-scrollbar  v-show="radioBE==='Créer'">
@@ -4110,7 +4141,7 @@
                             <div class="file-upload">
                               <input type="file" name="ECGfile" ref="ECGfile" id="" class="form-control" @change="onFileChangeECG">
                               <div v-if="BECr.BEfile.ECGfile != null">
-                                <el-button @click="clearECGFile">Supprimer le fichier</el-button>
+                                <el-button @click="clearECGFile" type="danger">Supprimer le fichier</el-button>
                               </div>
                             </div>
                           </el-col>
@@ -4133,7 +4164,7 @@
                             <div class="file-upload">
                               <input type="file" name="EEGfile" ref="EEGfile" id="" class="form-control" @change="onFileChangeEEG">
                               <div v-if="BECr.BEfile.EEGfile != null">
-                                <el-button @click="clearEEGFile">Supprimer le fichier</el-button>
+                                <el-button @click="clearEEGFile" type="danger">Supprimer le fichier</el-button>
                               </div>
                             </div>
                           </el-col>
@@ -4155,7 +4186,9 @@
                           <el-col>
                             <div class="file-upload">
                               <input type="file" name="EMGfile" ref="EMGfile" id="" class="form-control" @change="onFileChangeEMG">
+                              <div v-if="BECr.BEfile.EMGfile != null">
                                 <el-button @click="clearEMGFile" type="danger">Supprimer le fichier</el-button>
+                              </div>
                             </div>
                           </el-col>
                         </el-row>
@@ -5003,7 +5036,7 @@
                                       <h4> {{Rapp.Motif}} </h4>
                                       
                                       <h6> Conclusion: </h6><p> {{Rapp.Conclusion}} </p>
-                                      <div style="display:flex;"><h6>Le:&nbsp; </h6>
+                                      <div style="display:flex;"><h6>Créé le:&nbsp; </h6>
                                       <p>{{Rapp.createdAt}} </p></div>
                                       
                                       <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
@@ -5985,10 +6018,20 @@ import EvacuationMedicalService from "@/services/EvacuationMedicalService.js";
 import OrientationMedicalService from "@/services/OrientationMedicalService.js";
 import CertificatMedicalService from "@/services/CertificatMedicalService.js";
 import demanderBilanlServices from "@/services/demanderBilanServices.js";
+import AssisServices from "@/services/AssisServices.js"
 window.pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
+      dialogAjouterRDVFormVisible: false,
+      ajouterRDV: {
+        idPatient: '',
+        typeRDV: '',
+        date: '',
+        note: ''
+      },
+      patientsRDV: [],
+      patientSearch: '',
       tabPosition: 'right',
       // ************** RDVSection déclaration ***************
       radioRDVsection: "Valider",
@@ -6596,7 +6639,7 @@ export default {
 
       // date function
       disabledDate(time) {
-        return time.getTime() > Date.now();
+        return time.getTime() < Date.now();
       },
       shortcuts: [
         {
@@ -6826,15 +6869,12 @@ export default {
   mounted: function() {
     axios
       .get("http://localhost:8083/doc/patients")
-      .then((response) => {     
-        let x = 0;
-        response.data.forEach((element) => {
-          if (!(x === 0)) {
-            this.patients.push(element);
-          }
-          x = x + 1;
-        });
-        console.log(response.data);
+      .then((response) => {
+        const cPatients = response.data
+        for (let i = 0; i < cPatients.length; i++) {
+          this.patients.push(cPatients[i])
+        }
+        console.log(this.patients)
         this.count = this.patients.length;
         this.NumRDV();
         this.NumRDV2();
@@ -6871,6 +6911,37 @@ export default {
     }
     return age;
   },  
+    showRDVdialog () {
+      this.patientsRDV = []
+      this.patients.forEach(element => {
+        console.log(element)
+        this.patientsRDV.push({value: element.id, label : element.lastName+" "+element.firstName})
+      });
+      this.dialogAjouterRDVFormVisible = true
+    },
+    annulerAjouterRDV () {
+      this.dialogAjouterRDVFormVisible = false
+      this.ajouterRDV = {
+        idPatient: '',
+        typeRDV: '',
+        date: '',
+        note: ''
+      }
+    },
+    async progAjouterRDV () {
+      try {
+        const response = await AssisServices.progRDVIndividuel({
+          rdv: this.ajouterRDV
+        })
+        console.log(response.data)
+        this.annulerAjouterRDV()
+      } catch (error) {
+        console.log(
+          `something went wrong in Ajouter un RDV ${error}`
+        )
+      }
+    },
+
     tabToString(tab){
       var str = "";
       
@@ -7601,17 +7672,17 @@ async INbadgeDisplay2() {
       axios
         .get("http://localhost:8083/doc/patients")
         .then((response) => {
-          let x = 0;
           this.patients = [];
-          response.data.forEach((element) => {
-            if (!(x === 0)) {
-              this.patients.push(element);
-            }
-            x = x + 1;
-          });
-          console.log(response.data);
+          const cPatients = response.data
+          for (let i = 0; i < cPatients.length; i++) {
+            this.patients.push(cPatients[i])
+          }
           this.badgeDisplay();
-           
+          this.count = this.patients.length;
+          console.log(this.patients)
+          this.showRDVDashboard();
+          this.NumRDV();
+          this.NumRDV2();    
         })
         .catch((error) => {
           console.log(error);
@@ -10645,6 +10716,5 @@ box-shadow: 0 9px 47px 11px rgb(51 51 51 / 18%);
   border-radius: 15px;
   padding: 0 2% 2%;
 }
-
 </style>
 

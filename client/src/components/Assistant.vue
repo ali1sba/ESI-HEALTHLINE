@@ -30,24 +30,25 @@
           <section class="panel important">
               <el-card class="box-card">
                   <h2>Rendez-vous groupés</h2>
-                   <el-card   class="cardGris">
-                      <el-row>
-                        <el-col :span="6">Année/Groupe</el-col>
-                        <el-col :span="6">Type de RDV</el-col>
-                        <el-col :span="6">Date And Time</el-col>
-                        <el-col :span="6">Note</el-col>
-                      </el-row>
-                  </el-card>
+                  <center>
+                    <el-button
+                    type="primary"
+                    @click="recoverGroups()"
+                    style="background-color: #24b4ab; "
+                    round>
+                    Programmer un Rendez-vous
+                    </el-button>
+                  </center>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Rdv in RDVGroupList" :key="Rdv.id" >
                       <el-card   class="cardGris">
                         <el-row>
-                          <el-col :span="6">{{Rdv.ScolarYear}}/{{Rdv.Group}}</el-col>
-                          <el-col :span="6">{{Rdv.Type}}</el-col>
-                          <el-col :span="6">{{Rdv.DateAndTime}}</el-col>
-                          <el-col :span="6">{{Rdv.Note}}</el-col>
+                          <el-col :span="6"><h6> Année/Groupe:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.ScolarYear}}/{{Rdv.Group}}</el-col>
+                          <el-col :span="6"><h6> Type de Rendez-vous:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Type}}</el-col>
+                          <el-col :span="6"><h6> Date And Time:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="6"><h6> Note:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Note}}</el-col>
                         </el-row>
-                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
+                        <br>
                         <el-button type="" style="align-items: right;" @click="modifRDVGroup(Rdv)">Modifier</el-button>
                         <el-popconfirm
                           confirmButtonText="Oui"
@@ -65,12 +66,6 @@
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  <el-button
-                  type="primary"
-                    @click="recoverGroups()"
-                    style="background-color: #24b4ab; width: 50%">
-                    Programmer un Rendez-vous
-                    </el-button>
                   </el-card>
 
                   <el-dialog title=" Programmer un RDV " v-model="dialogRDVGroupFormVisible" :before-close="annulerModifRDVGroup">
@@ -184,24 +179,25 @@
           <section class="panel important">
               <el-card class="box-card">
                   <h2>Rendez-vous individuels</h2>
-                   <el-card   class="cardGris">
-                      <el-row>
-                        <el-col :span="6">Patient</el-col>
-                        <el-col :span="6">Type de RDV</el-col>
-                        <el-col :span="6">Date And Time</el-col>
-                        <el-col :span="6">Note</el-col>
-                      </el-row>
-                  </el-card>
+                  <center>
+                    <el-button
+                    type="primary"
+                    @click="recoverPatients()"
+                    style="background-color: #24b4ab; "
+                    round>
+                    Programmer un Rendez-vous
+                    </el-button>
+                  </center>
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="Rdv in RDVIndivList" :key="Rdv.id" >
                       <el-card   class="cardGris">
                         <el-row>
-                          <el-col :span="6">{{Rdv.Patient}}</el-col>
-                          <el-col :span="6">{{Rdv.Type}}</el-col>
-                          <el-col :span="6">{{Rdv.DateAndTime}}</el-col>
-                          <el-col :span="6">{{Rdv.Note}}</el-col>
+                          <el-col :span="6"><h6> Patient:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Patient}}</el-col>
+                          <el-col :span="6"><h6> Type de Rendez-vous:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Type}}</el-col>
+                          <el-col :span="6"><h6> Date And Time:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="6"><h6> Note:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Note}}</el-col>
                         </el-row>
-                        <!-- <el-button type="" style="align-items: right;" @click="ConsulterRDV(Rdv)">Consulter</el-button> -->
+                        <br>
                         <el-button type="" style="align-items: right;" @click="modifRDVIndiv(Rdv)">Modifier</el-button>
                         <el-popconfirm
                           confirmButtonText="Oui"
@@ -219,12 +215,6 @@
                       </el-card>
                     </el-timeline-item>
                   </el-timeline>
-                  <el-button
-                  type="primary"
-                    @click="recoverPatients()"
-                    style="background-color: #24b4ab; width: 50%">
-                    Programmer un Rendez-vous
-                    </el-button>
                   </el-card>
 
                   <el-dialog title=" Programmer un RDV " v-model="dialogRDVIndivFormVisible" :before-close="annulerProgRDVIndividuel">
@@ -492,15 +482,7 @@ async checkprogrdvindv(){
           rdv: this.rdvGroup
         })
         console.log(response.data)
-        this.recoverRDVG()
-        this.dialogRDVGroupFormVisible = false
-        this.rdvGroup = {
-          annee: '',
-          group: '',
-          typeRDV: '',
-          date: '',
-          note: ''
-        }
+        this.annulerProgRDVGroup()
       } catch (error) {
         console.log(`something went wrong ${error}`);
       }

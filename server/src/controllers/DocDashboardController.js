@@ -40,28 +40,20 @@ const path = require('path')
 module.exports = {
   async recoverPatients (req, res) {
     try {
+      const patients = []
       const cPatients = await Compte.findAll({
         where: {
           [Op.and]: [{ role: 'PATIENT' }, { state: 'ACTIVATED' }]
         }
       })
-      console.log(cPatients)
-      const x = await User.findAll({
-      })
-      console.log(x)
-      const patients = []
-      cPatients.forEach(async element => {
-        let v = element.id
-        v = v - 3
-        patients.push(x[(v)].dataValues)
-      })
-      // const patients = await User.findAll({
-      //   attributes: ['id', 'firstName', 'lastName', 'state', 'scolarYear'],
-      //   where: {
-      //     [Op.or]: [{ state: 'Etudiant' }]
-      //   }
-      // })
-      console.log(patients)
+      for (let i = 0; i < cPatients.length; i++) {
+        const x = await User.findOne({
+          where: {
+            idCompte: cPatients[i].dataValues.id
+          }
+        })
+        patients.push(x.dataValues)
+      }
       res.send(patients)
     } catch (err) {
       res.status(500).send({
