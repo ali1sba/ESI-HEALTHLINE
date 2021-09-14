@@ -1790,14 +1790,14 @@ module.exports = {
 
           if (antcd !== null) {
             if (antcd.malaGene !== null) {
-               if (antcd.malaGene.includes('Diabète')) { diab++ }
-              else if (antcd.malaGene.includes('Pression Arterielle')) { pr++ } 
-              else if (antcd.malaGene.includes('Cardiovasculaire')) { cardio++ } 
-              }
+              if (antcd.malaGene.includes('Diabète')) diab++
+              if (antcd.malaGene.includes('Pression Arterielle')) pr++
+              if (antcd.malaGene.includes('Cardiovasculaire')) cardio++
+            }
           }
         }
       }
-      const chron= { diab: diab, pr: pr, cardio: cardio } 
+      const chron = { diab: diab, pr: pr, cardio: cardio }
       const object = { UF: usersF, UH: usersH, NF: newF, NH: newH, chrone: chron }
       res.send({ object: object, PATIENTS: PATIENTS, ORDS: ORDS, ORIS: ORIS, RAPPS: RAPPS, EVACS: EVACS, EXAMS: EXAMS, BILANS: BILANS, RDVs: RDVs })
     } catch (err) {

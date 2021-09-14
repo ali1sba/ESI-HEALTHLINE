@@ -5841,6 +5841,7 @@ EMAIL: contact@esi-sba.dz</p>
 
                 <el-scrollbar v-show="radioS === 'Graphiques'">
                 <el-card>
+                  <div style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;">
                   <div class="cardDash-body color3">
               <div class="floatDash-left">
                 <h3>
@@ -5929,9 +5930,10 @@ EMAIL: contact@esi-sba.dz</p>
                <i class="el-icon-phone"></i><br/>
               </div>
             </div>
+            </div>
             <div style="display:flex">
                <template style="display:flex; flex:30">
-                <el-progress  stroke-width="9"  color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg1"  >
+                <el-progress  stroke-width="9"  width="150" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg1"  >
                   <template #default="{ percentage }">
       <span class="percentage-value">{{ percentage }}%</span>
       <span class="percentage-label">Diabétiques</span>
@@ -5939,15 +5941,15 @@ EMAIL: contact@esi-sba.dz</p>
                 </el-progress >
               </template>
                <template style="display:flex; flex:30">
-                <el-progress stroke-width="9" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg2" >
+                <el-progress stroke-width="9"  width="150" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg2" >
                   <template #default="{ percentage }">
-      <span class="percentage-value">{{ percentage }}%</span>
+      <span class="percentage-value" style="font-size:17px">{{ percentage }}%</span>
       <span class="percentage-label">Cardiovasculaire</span>
     </template>
                 </el-progress>
               </template>
                <template style="display:flex; flex:30">
-                <el-progress stroke-width="9" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg3" >
+                <el-progress stroke-width="9"  width="150" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg3" >
                   <template #default="{ percentage }">
       <span class="percentage-value">{{ percentage }}%</span>
       <span class="percentage-label">Pression Artérille</span>
@@ -7623,7 +7625,7 @@ async minceViews() {
      
     this.prcntg1= Math.trunc(this.stats.object.chrone.diab *100 / this.stats.PATIENTS)
         this.prcntg2= Math.trunc(this.stats.object.chrone.cardio *100 / this.stats.PATIENTS)
-    this.prcntg1= Math.trunc(this.stats.object.chrone.pr *100 / this.stats.PATIENTS)
+    this.prcntg3= Math.trunc(this.stats.object.chrone.pr *100 / this.stats.PATIENTS)
 
 
       console.log(this.stats)
