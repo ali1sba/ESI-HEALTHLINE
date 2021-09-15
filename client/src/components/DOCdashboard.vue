@@ -187,7 +187,7 @@
            </el-card>
 
           <el-card style="background-color:#f3f2f2; box-shadow:none; border-radius:30px; margin:0 20px; ">
-            <div class="cardDash-body color1">
+            <div class="cardDash-body1 color1">
               <div class="floatDash-left">
                 <h3>
                   <span class="countDash">{{count}}</span>
@@ -198,7 +198,7 @@
                 <i class="fas fa-users" style="font-size:4rem;"></i>
               </div>
             </div>
-            <div class="cardDash-body color2">
+            <div class="cardDash-body1 color2">
               <div class="floatDash-left">
                 <h3>
                   <span class="countDash">{{RDVCount}}</span>
@@ -209,7 +209,7 @@
                 <i class="fas fa-clipboard-list" style="font-size:4rem;"></i>
               </div>
             </div>
-            <div class="cardDash-body color3">
+            <div class="cardDash-body1 color3">
               <div class="floatDash-left">
                 <h3>
                   <span class="countDash">0</span>
@@ -7421,9 +7421,13 @@ async INbadgeDisplay2() {
         //   this.RDVList.push(element);
         // });
         //this.RDVList=[''];
-        for(let i=0;i<response.data;i++){
-          if (response.data[i].DateAndTime){this.RDVListDash.push(response.data[i])}
+        let x=response.data
+        for(let i=0;i<response.data.length;i++){
+          if (x[i].DateAndTime.substr(0,10)===this.currentDate2()){this.RDVListDash.push(x[i])}
         }
+        console.log(response.data.length)
+        
+        console.log(this.currentDate2())
         //this.RDVListDash=response.data;
         console.log(Object.keys(response.data).length);
         if(!(Object.keys(response.data).length === 0) ){
@@ -7538,6 +7542,11 @@ async INbadgeDisplay2() {
       const current = new Date();
       const date = `${current.getDate()}/${current.getMonth() +
         1}/${current.getFullYear()}`;
+      return date;
+    },
+     currentDate2() {
+      const current = new Date();
+      const date =current.getFullYear()+ '-'+('0' + (current.getMonth()+1)).slice(-2) + '-'+('0' + (current.getDate()+1)).slice(-2) ;
       return date;
     },
     goBack() {

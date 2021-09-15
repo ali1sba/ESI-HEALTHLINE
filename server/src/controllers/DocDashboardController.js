@@ -1843,9 +1843,9 @@ module.exports = {
           ]
         })
         for (let i = 0; i < rapport.length; i++) {
-          if (rapport.Conclusion.includes(nom) && !foundF) {
+          if (rapport[i].Conclusion.includes(nom) && !foundF) {
             foundF = true
-            if (rapport.Conclusion.includes('orienté')) {
+            if (rapport[i].Conclusion.includes('orienté')) {
               orientedF++
             } else { diagnostiqueF++ }
           }
@@ -1893,9 +1893,9 @@ module.exports = {
           ]
         })
         for (let i = 0; i < rapport.length; i++) {
-          if (rapport.Conclusion.includes(nom) && !found) {
+          if (rapport[i].Conclusion.includes(nom) && !found) {
             found = true
-            if (rapport.Conclusion.includes('orienté')) {
+            if (rapport[i].Conclusion.includes('orienté')) {
               orientedH++
             } else { diagnostiqueH++ }
           }
