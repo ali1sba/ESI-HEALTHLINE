@@ -1,6 +1,5 @@
 const { RDV } = require('../models')
 const { User } = require('../models')
-
 const { RDVNonValide } = require('../models')
 const { RDVaReporter } = require('../models')
 const express = require('express')
