@@ -499,7 +499,7 @@ export default {
   },
   mounted: function () {
     axios
-      .get("http://localhost:8083/admin/novalid/")
+      .get("http://192.168.1.2:8083/admin/novalid/")
       .then((response) => {
         this.users = response.data;
         console.log(response);
@@ -509,7 +509,7 @@ export default {
         console.log(error);
       });
     axios
-      .get("http://localhost:8083/admin/valid/")
+      .get("http://192.168.1.2:8083/admin/valid/")
       .then((response) => {
         this.usersvalid = response.data;
         this.convertVTVC(this.usersvalid,this.usersvalidcomplet);
@@ -520,7 +520,7 @@ export default {
       });
   
   axios
-      .get("http://localhost:8083/admin/compte/")
+      .get("http://192.168.1.2:8083/admin/compte/")
       .then((response) => {
         this.comptes = response.data;
         this.convertCTVC(this.comptes,this.usersvalidcomplet);
@@ -533,7 +533,7 @@ export default {
   methods: {
     nonValid(){
        axios
-      .get("http://localhost:8083/admin/novalid/")
+      .get("http://192.168.1.2:8083/admin/novalid/")
       .then((response) => {
         this.users = response.data;
         console.log(response);
@@ -545,7 +545,7 @@ export default {
      Valid(){
        this.usersvalidcomplet=[],
        axios
-      .get("http://localhost:8083/admin/valid/")
+      .get("http://192.168.1.2:8083/admin/valid/")
       .then((response) => {
         this.usersvalid = response.data;
         this.convertVTVC(this.usersvalid,this.usersvalidcomplet);
@@ -556,7 +556,7 @@ export default {
       });
   
   axios
-      .get("http://localhost:8083/admin/compte/")
+      .get("http://192.168.1.2:8083/admin/compte/")
       .then((response) => {
         this.comptes = response.data;
         this.convertCTVC(this.comptes,this.usersvalidcomplet);

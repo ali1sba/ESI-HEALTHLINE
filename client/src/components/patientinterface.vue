@@ -159,7 +159,7 @@ export default {
   },
   mounted: function () {
     axios
-      .get("http://localhost:8083/admin/valid/")
+      .get("http://192.168.1.2:8083/admin/valid/")
       .then((response) => {
         this.patients = response.data;
         console.log(response);

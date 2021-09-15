@@ -6966,7 +6966,7 @@ export default {
   },
   mounted: function() {
     axios
-      .get("http://localhost:8083/doc/patients")
+      .get("http://192.168.1.2:8083/doc/patients")
       .then((response) => {
         const cPatients = response.data
         for (let i = 0; i < cPatients.length; i++) {
@@ -7769,7 +7769,7 @@ async INbadgeDisplay2() {
     home() {
       this.content = "dashboard";
       axios
-        .get("http://localhost:8083/doc/patients")
+        .get("http://192.168.1.2:8083/doc/patients")
         .then((response) => {
           this.patients = [];
           const cPatients = response.data
@@ -7791,7 +7791,7 @@ async INbadgeDisplay2() {
     RDVSection2() {
       this.content = "RDVSection";
       axios
-        .get("http://localhost:8083/doc/patients")
+        .get("http://192.168.1.2:8083/doc/patients")
         .then((response) => {
           let x = 0;
           this.patients = [];
@@ -8180,6 +8180,7 @@ async INbadgeDisplay2() {
       this.radio2 = "Historique",
       this.radioRMyesy = "Historique",
       this.radioRM ="Historique",
+      this.age = this.getAge(this.personalInfo);
       //this.openFullScreen1();
       this.content = "dossier";
       this.userselected = user;

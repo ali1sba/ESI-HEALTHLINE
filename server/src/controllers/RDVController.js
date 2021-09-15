@@ -374,6 +374,34 @@ module.exports = {
         error: `an error has occured trying to refuserDemandeReportRDV ${err}`
       })
     }
+  },
+  async reportRDVMobile (req, res) {
+    try {
+      console.log(req.body)
+      const id = req.body.idRDV
+      console.log(id)
+      const rdv = await RDV.findOne({
+        where: {
+          id: id
+        }
+      })
+      const rdvCr = {
+        idUser: rdv.dataValues.idUser,
+        DateAndTime: rdv.dataValues.DateAndTime,
+        Type: rdv.dataValues.Type,
+        Note: rdv.dataValues.Note,
+        GroupORIndiv: rdv.dataValues.GroupORIndiv
+      }
+      await RDVaReporter.create(rdvCr)
+      rdv.destroy()
+      res.send({
+        message: 'response from the server to refuserDemandeReportRDV'
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to refuserDemandeReportRDV ${err}`
+      })
+    }
   }
   // *********************************************************************************
 
