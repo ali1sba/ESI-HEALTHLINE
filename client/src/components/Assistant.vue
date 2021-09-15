@@ -11,7 +11,7 @@
   text-color="#fff"
   active-text-color="#ffd04b">
   <el-menu-item index="1">Assistant Panel</el-menu-item>
-  <el-menu-item index="4" @click="logout">Logout</el-menu-item>
+  <el-menu-item index="4" @click="logout">Déconnecter</el-menu-item>
 </el-menu>
     <nav role="navigationAdmin">
       <ul class="mainAssistant">
@@ -45,7 +45,7 @@
                         <el-row>
                           <el-col :span="6"><h6> Année/Groupe:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.ScolarYear}}/{{Rdv.Group}}</el-col>
                           <el-col :span="6"><h6> Type de Rendez-vous:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Type}}</el-col>
-                          <el-col :span="6"><h6> Date And Time:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="6"><h6> Date And Time:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.DateAndTime.substring(0, 10)}}</el-col>
                           <el-col :span="6"><h6> Note:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Note}}</el-col>
                         </el-row>
                         <br>
@@ -194,7 +194,7 @@
                         <el-row>
                           <el-col :span="6"><h6> Patient:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Patient}}</el-col>
                           <el-col :span="6"><h6> Type de Rendez-vous:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Type}}</el-col>
-                          <el-col :span="6"><h6> Date And Time:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.DateAndTime}}</el-col>
+                          <el-col :span="6"><h6> Date And Time:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.DateAndTime.substring(0, 10)}}</el-col>
                           <el-col :span="6"><h6> Note:</h6> &nbsp;&nbsp;&nbsp;{{Rdv.Note}}</el-col>
                         </el-row>
                         <br>

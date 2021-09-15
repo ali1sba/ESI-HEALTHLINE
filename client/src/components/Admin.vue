@@ -12,7 +12,7 @@
   active-text-color="#ffd04b">
 <el-menu-item index="1" @click="section = 1">HEALTHLINE Admin Panel     
        </el-menu-item>
-  <el-menu-item index="4" @click="logout">Logout</el-menu-item>
+  <el-menu-item index="4" @click="logout">Déconnecter</el-menu-item>
   
 </el-menu>
     <nav role="navigationAdmin">

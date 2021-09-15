@@ -35,9 +35,9 @@
             </a>
           </li>
           <li>
-            <a @click="Déconnecter"
+            <a @click="logout()"
               ><span class="fa fa-sign-out" ></span>
-              <p class="nom">Logout</p></a>
+              <p class="nom">Déconnecter</p></a>
             </li>
             <!-- <li>
             <a @click="content = '5'"
@@ -762,7 +762,7 @@
                                 v-model="userAntInfo.nbrFumer"
                                 controls-position="right"
                                 @change="handleChange"
-                                :min="1"
+                                :min="0"
                                 :max="20"
                               ></el-input-number></el-space
                           ></el-col>
@@ -794,7 +794,7 @@
                                 v-model="userAntInfo.nbrChiquer"
                                 controls-position="right"
                                 @change="handleChange"
-                                :min="1"
+                                :min="0"
                                 :max="20"
                               ></el-input-number></el-space
                           ></el-col>
@@ -826,7 +826,7 @@
                                 v-model="userAntInfo.nbrPrise"
                                 controls-position="right"
                                 @change="handleChange"
-                                :min="1"
+                                :min="0"
                                 :max="20"
                               ></el-input-number></el-space
                           ></el-col>
@@ -859,7 +859,7 @@
                                 v-model="userAntInfo.perExpo"
                                 controls-position="right"
                                 @change="handleChange"
-                                :min="1"
+                                :min="0"
                                 :max="20"
                               ></el-input-number></el-space
                             >ans</el-col
@@ -1811,7 +1811,7 @@
                         class="examcard ord hovereffect" 
                       >
                         <i class="fa fa-medkit"> </i>
-                        <h3>Ordonnances</h3>
+                        <h3>Ordonnance</h3>
                         
                       </el-card>
                     </el-col>
@@ -1822,7 +1822,7 @@
                         class="examcard orient hovereffect"
                       >
                         <i class="fa fa-user-md"> </i>
-                        <h3>Orientations/ evaluations</h3>
+                        <h3>Décision</h3>
                         
                       </el-card>
                     </el-col>
@@ -3070,7 +3070,7 @@
                 <center>
                   <div>
                     <el-radio-group v-model="radio2" fill="#24b4ab">
-                      <el-radio-button label="Historique"></el-radio-button>
+                      <el-radio-button label="Historique"  @click="showBB(userselected)"></el-radio-button>
                       <el-radio-button
                         v-show="hidden"
                         label="Historique2"
@@ -3094,7 +3094,7 @@
                   </div>
                   <div v-else>
                    <el-timeline style="margin:1% 0% 0% 0%;">
-                      <el-timeline-item  placement="top" v-for="bb in tableDataBB" :key="bb.id" >
+                      <el-timeline-item  placement="top" v-for="bb in tableDataBB.slice().reverse()" :key="bb.id" >
                         <el-card   class="cardGris">
                           <el-row>
                             <el-col :span="1"><h5>{{bb.motif}}</h5></el-col>
@@ -4016,7 +4016,7 @@
                   </div>
                   <div v-else>
                     <el-table
-                      :data="tableDataBR"
+                      :data="tableDataBR.slice().reverse()"
                       style="width: 100%"
                       height="250"
                     >
@@ -4080,10 +4080,10 @@
                   </div>
                   <div v-else>
                     <el-timeline style="margin:1% 0% 0% 0%;">
-                      <el-timeline-item  placement="top" v-for="BE in tableDataBE" :key="BE.id" >
+                      <el-timeline-item  placement="top" v-for="BE in tableDataBE.slice().reverse()" :key="BE.id" >
                         <el-card   class="cardGris">
                           <h4> {{BE.motif}} </h4>
-                          <h6> Créé le : </h6><p>{{ BE.createdAt }}</p>
+                          <h6> Créé le : </h6><p>{{ BE.createdAt.toString().substring(0, 10) }}</p>
                           <h6> Bilans présents : </h6>
                           <div v-if="BE.idECG === null && BE.idEEG === null && BE.idEMG === null">
                             <p>Aucun</p>
@@ -4404,7 +4404,7 @@
                         Prenom : &nbsp; {{ userselected.lastName }}
                       </p>
                       <p style="font-size: 17px">
-                        Age : &nbsp; {{ userselected.age }}
+                        Age : &nbsp; {{getAge(userPersInfo.dateOfBirth.substring(0,10)) }}
                       </p>
                     </div>
                     <div style="flex: 50%">
@@ -4559,13 +4559,13 @@
             <el-scrollbar v-show="radio1 === 'orientations' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
-                <center><h4>Orientation / Evacuation / Certificat Medical</h4></center>
+                <center><h4>Décision</h4></center>
                 <el-space>
                 <center>
                   <el-row>
                     <el-col :span="8">
                       <el-card
-                        @click="radio1 = 'Certificat Médical'"
+                        @click="radio1 = 'Certificat Médical';getCertificats()"
                         class="orientcard certif"
                       >
                         <h3>Certificat Médical</h3>
@@ -4931,7 +4931,7 @@
                                     
                                       <h4> {{Cert.Motif}} </h4>
                                       <h6> Date debut: </h6><p> {{Cert.EtatGeneral}} </p>
-                                      <h6> Date end: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
+                                      <h6> Date fin: </h6><p>{{Cert.HistoireDeLaMaladie}} </p>
                                       <el-button type="" style="align-items: right;" @click="ConsulterCertificatMedical(Cert)">consulter</el-button>
                                        <el-button type="" style="align-items: right;" @click="pdfGenerator4(Cert)">Voir PDF</el-button>                                 
                                   </el-card>
@@ -5038,7 +5038,7 @@
                     <el-radio-group v-model="radioRM" fill="#24b4ab">
                       <el-radio-button label="Historique" @click="getRepports();" ></el-radio-button>
                       <el-radio-button label="Créer"></el-radio-button>
-                    </el-radio-group>
+                    </el-radio-group> 
                   </div>
                   
                   
@@ -5049,9 +5049,9 @@
                 <div v-if="radioRM === 'Historique'">
 
 <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Rapport Médical</p>
-                  <div v-if="tableDataBB.length === 0">
+                  <div v-if="reporrts.length === 0">
                     <el-empty description="Aucun Rapport Médical a été créer pour ce patient">
-                      <el-button type="primary" style="background-color: #24b4ab" @click="radioRM ='Créer' " round>Crées Rapport Medical</el-button>
+                      <el-button type="primary" style="background-color: #24b4ab" @click="radioRM ='Créer' " round>Créer Rapport Medical</el-button>
                     </el-empty>
                   </div >
                   <div v-else>
@@ -5070,7 +5070,7 @@
                                       <p>{{Rapp.createdAt}} </p></div>
                                       
                                       <el-button type="" style="align-items: right;" @click="ConsulterRapportMedical(Rapp)">consulter</el-button>
-                                      <el-button type="" style="align-items: right;" @click="pdfGenerator(Rapp)">créer PDF</el-button>
+                                      <el-button type="" style="align-items: right;" @click="pdfGenerator(Rapp)">Voir PDF</el-button>
                                   
                                   </el-card>
                     </el-timeline-item>
@@ -5112,7 +5112,7 @@
                     <div style="flex:50%">
                       <p style="font-size:17px;">Nom : &nbsp; {{ userselected.firstName }}</p>
                       <p style="font-size:17px;">prenom : &nbsp; {{ userselected.lastName }}</p>
-                      <p style="font-size:17px;">Age : &nbsp; {{userselected.lastName}}</p>
+                      <p style="font-size:17px;">Age : &nbsp; {{getAge(userPersInfo.dateOfBirth.substring(0,10))}}</p>
                 
                     </div>
                     <div style="flex:50%">
@@ -5205,7 +5205,7 @@ EMAIL: contact@esi-sba.dz</p>
                       <el-radio-button 
                         label="newMedic"
                         @click=" radio1O='newMedic'; recoverMedicamentsAjoutés()"
-                      >Médicament ajoutés </el-radio-button>
+                      >Médicaments ajoutés </el-radio-button>
                     </el-radio-group>
                   </div>
                 </center>
@@ -5366,7 +5366,7 @@ EMAIL: contact@esi-sba.dz</p>
 
                 <p style="font-size:29px; text-align:center; padding-top:5px; font-weight:500;text-decoration: underline;">Ordonnances</p>
                 <el-empty v-show="noOrd" :image-size="300" description="aucune ordonnance a été créée pour ce patient">
-                  <el-button type="primary" style="background-color: #24b4ab"  @click=" recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'" round>Ajouter une ordonnance</el-button>
+                  <el-button type="primary" style="background-color: #24b4ab"  @click=" radio1O='nouvOrd';recoverMedicaments();viderOrdonnance(); addprescinput(); isOrdDisabled=false;ordcreated= 'not created'" round>Ajouter une ordonnance</el-button>
                 </el-empty> 
                   <el-timeline style="margin:1% 0% 0% 0%;">
                     <el-timeline-item  placement="top" v-for="ord in ords.slice().reverse()" :key="ord.id"  >
@@ -5565,10 +5565,19 @@ EMAIL: contact@esi-sba.dz</p>
 
                       <el-card   class="cardGris">    
                                             
-                                    <p style="float:left; margin:10px">{{ med.nom }} </p>
-                                    <p style="float:left; margin:10px">{{ med.marque }} </p>
-                                    <p style="float:left; margin:10px">{{ med.forme }} </p>
-                                    <p style="margin:10px">{{ med.dosage }} </p>
+                                   
+                                     <el-row>
+                                            <el-col :span="6"><h6> Nom: </h6>
+                                      <p>{{ med.nom  }} </p></el-col>
+                                            <el-col :span="6"><h6> Marque: </h6>
+                                      <p>{{ med.marque }} </p></el-col>
+                                            <el-col :span="6"><h6> Forme: </h6>
+                                      <p>{{med.forme }}  </p></el-col>
+                                      <el-col :span="6"><h6> Dosage: </h6>
+                                      <p>{{med.dosage }}  </p></el-col>
+
+                                          </el-row>     
+                                      
                                     <br>
                                       <el-popconfirm
                           confirmButtonText="Oui"
@@ -5942,7 +5951,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <el-scrollbar v-show="radioS === 'Tableaux'">
                   <center>
                     <h4 style="padding:8px">Bilan des maladies chroniques pour les étudiants de l'année académique 2020-2021</h4>
-                  <table>
+                  <table id="stats">
                     <tr>
                       <th rowspan="2">Ecole</th>
                       <th colspan="2">Total étudiants</th>
@@ -6152,8 +6161,8 @@ EMAIL: contact@esi-sba.dz</p>
                <template style="display:flex; flex:30">
                 <el-progress stroke-width="9"  width="150" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg2" >
                   <template #default="{ percentage }">
-      <span class="percentage-value" style="font-size:17px">{{ percentage }}%</span>
-      <span class="percentage-label">Cardiovasculaire</span>
+      <span class="percentage-value">{{ percentage }}%</span>
+      <span class="percentage-label"  style="font-size:16px">Cardiovasculaire</span>
     </template>
                 </el-progress>
               </template>
@@ -6161,7 +6170,7 @@ EMAIL: contact@esi-sba.dz</p>
                 <el-progress stroke-width="9"  width="150" color="#46e0a8" style="margin: 0 auto;" type="dashboard" :percentage="prcntg3" >
                   <template #default="{ percentage }">
       <span class="percentage-value">{{ percentage }}%</span>
-      <span class="percentage-label">Pression Artérille</span>
+      <span class="percentage-label"  style="font-size:16px">Pression Artérille</span>
     </template>
                 </el-progress>
               </template>
@@ -6220,7 +6229,7 @@ export default {
         note: ''
       },
       patientsRDV: [],
-      patientSearch: {},
+      patientSearch: "",
       tabPosition: 'right',
       // ************** RDVSection déclaration ***************
       radioRDVsection: "Valider",
@@ -7100,6 +7109,8 @@ pr:{
         Autre: "",
         Conclusion: "",
       },
+      datedeb: "",
+      datefin: "",
       orientations: [""],
       certificats: [""],
       reporrts: [""],
@@ -7161,6 +7172,7 @@ pr:{
         for (let i = 0; i < cPatients.length; i++) {
           this.patients.push(cPatients[i])
         }
+        this.patients.sort((a, b) => (a.lastName.toLowerCase() > b.lastName.toLowerCase()) ? 1 : -1)
         this.userselected=this.patients[0]
         console.log(this.patients)
         this.count = this.patients.length;
@@ -8027,6 +8039,7 @@ async INbadgeDisplay2() {
           for (let i = 0; i < cPatients.length; i++) {
             this.patients.push(cPatients[i])
           }
+          this.patients.sort((a, b) => (a.lastName.toLowerCase() > b.lastName.toLowerCase()) ? 1 : -1)
           this.badgeDisplay();
           this.userselected=this.patients[0]
           this.count = this.patients.length;
@@ -9503,6 +9516,11 @@ async CertificatCheck() {
          });
          console.log(response.data);
          this.certificats = response.data.certificats;
+         for(let i=0;i<this.certificats.length;i++){
+           this.certificats[i].EtatGeneral=this.certificats[i].EtatGeneral.substr(0,10)
+           this.certificats[i].HistoireDeLaMaladie=this.certificats[i].HistoireDeLaMaladie.substr(0,10)
+
+         }
          console.log(this.certificats);
        } catch (error) {
          console.log(`something went wrong ${error}`);
@@ -11565,6 +11583,17 @@ margin-left: 200px;
   width: 16px;
   height: 16px;
   vertical-align: middle;
+}
+#stats th{
+  font-weight: bold;
+
+}
+#stats td{
+  text-align: center;
+  
+}
+#stats{
+  margin-top:20px
 }
 
 </style>

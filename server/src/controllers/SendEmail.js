@@ -84,7 +84,6 @@ module.exports = {
       subject: 'Bienvenue sur HEALTHLINE !',
       text: 'Votre demande d`inscription a été validée.\n\n' +
             'Vous pouvez maintenant vous connecter au site.\n\n' +
-            'http://localhost:8080' + '\n\n' +
             '\n\n' +
             'Nous vous remercions d`avoir choisi HEALTHLINE.'
     }
