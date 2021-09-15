@@ -268,4 +268,6 @@ module.exports = (app) => {
   app.post('/DOCdashboard/createMedic', DocDashboardController.createMedic)
   app.post('/DOCdashboard/recoverMedicamentsAjoutes', DocDashboardController.recoverMedicamentsAjoutés)
   app.post('/DOCdashboard/supprimerMedic', DocDashboardController.SupprimerMedic)
+  app.post('/DOCdashboard/recoverStats', DocDashboardController.recoverStats)
+  app.post('/DOCdashboard/recoverStatsof', DocDashboardController.recoverStatsof)
 }

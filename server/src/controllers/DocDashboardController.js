@@ -2,6 +2,7 @@
 const { Op } = require('sequelize')
 const { User } = require('../models')
 const { RDVNonValide } = require('../models')
+const { RDV } = require('../models')
 const { RDVaReporter } = require('../models')
 const { Compte } = require('../models')
 
@@ -15,6 +16,9 @@ const { Medicament } = require('../models')
 const { Ordonnance } = require('../models')
 const { Prescription } = require('../models')
 const { MedicamentNouv } = require('../models')
+const { OrientationMedicalBDD } = require('../models')
+const { EvacuationMedicalBDD } = require('../models')
+const { RapportMedical } = require('../models')
 
 // *************** Bilans paracliniques ***************
 // Bilans Biologiques
@@ -1708,6 +1712,201 @@ module.exports = {
       console.log(medic)
     } catch (err) {
       res.send({ error: `an error has occured trying to create the users MF ${err}` })
+    }
+  },
+  async recoverStats (req, res) {
+    try {
+      const usersF = await User.count({
+        where: {
+          sexe: 'FEMME',
+          state: 'Etudiant'
+        },
+        raw: true
+      })
+      const usersH = await User.count({
+        where: {
+          sexe: 'HOMME',
+          state: 'Etudiant'
+        },
+        raw: true
+      })
+      const newF = await User.count({
+        where: {
+          sexe: 'FEMME',
+          state: 'Etudiant',
+          scolarYear: '1CPI'
+
+        },
+        raw: true
+      })
+      const newH = await User.count({
+        where: {
+          sexe: 'HOMME',
+          state: 'Etudiant',
+          scolarYear: '1CPI'
+        },
+        raw: true
+      })
+      const PATIENTS = await MedicalFile.count()
+      const ORDS = await Ordonnance.count()
+      const ORIS = await OrientationMedicalBDD.count()
+      const RAPPS = await RapportMedical.count()
+      const EVACS = await EvacuationMedicalBDD.count()
+      const EXAMS = await ExamenClinique.count()
+      const BILANbio = await BilansBiologique.count()
+      const BILANelec = await BilansElectrique.count()
+      const BILANradio = await BilansElectrique.count()
+      const BILANS = BILANbio + BILANelec + BILANradio
+      const RDVs = await RDV.count()
+      // maladies chroniques
+      let diab = 0
+      let pr = 0
+      let cardio = 0
+      const users = await User.findAll()
+      for (let i = 0; i < users.length; i++) {
+        const medfile = await MedicalFile.findOne({
+          where: {
+            idUser: users[i].id
+          }
+        })
+
+        if (medfile !== null) {
+          console.log(medfile.antecedentsInfoId)
+
+          const antcd = await AntecedentsInfo.findOne({
+            where: {
+              id: medfile.antecedentsInfoId
+            }
+          })
+          console.log(antcd.malaGene)
+
+          if (antcd !== null) {
+            if (antcd.malaGene !== null) {
+              if (antcd.malaGene.includes('Diabète')) diab++
+              if (antcd.malaGene.includes('Pression Arterielle')) pr++
+              if (antcd.malaGene.includes('Cardiovasculaire')) cardio++
+            }
+          }
+        }
+      }
+      const chron = { diab: diab, pr: pr, cardio: cardio }
+      const object = { UF: usersF, UH: usersH, NF: newF, NH: newH, chrone: chron }
+      res.send({ object: object, PATIENTS: PATIENTS, ORDS: ORDS, ORIS: ORIS, RAPPS: RAPPS, EVACS: EVACS, EXAMS: EXAMS, BILANS: BILANS, RDVs: RDVs })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to recoverExamenClinique ${err}`
+      })
+    }
+  },
+  async recoverStatsof (req, res) {
+    try {
+      let foundF = false
+      let orientedF = 0
+      let diagnostiqueF = 0
+      let nombreF = 0
+      const nom = req.body.nom
+      const usersF = await User.findAll({
+        where: {
+          state: 'Etudiant',
+          sexe: 'FEMME'
+        }
+      })
+      for (let i = 0; i < usersF.length; i++) {
+        const medfile = await MedicalFile.findOne({
+          where: {
+            idUser: usersF[i].id
+          }
+        })
+
+        if (medfile !== null) {
+          console.log(medfile.antecedentsInfoId)
+
+          const antcd = await AntecedentsInfo.findOne({
+            where: {
+              id: medfile.antecedentsInfoId
+            }
+          })
+          console.log(antcd.malaGene)
+
+          if (antcd !== null) {
+            if (antcd.malaGene !== null) { if (antcd.malaGene.includes(nom)) { nombreF++ } }
+          }
+        }
+
+        // oriented or not
+        const rapport = await RapportMedical.findAll({
+          where: {
+            idUser: usersF[i].id
+          },
+          order: [
+            ['createdAt', 'DESC']
+          ]
+        })
+        for (let i = 0; i < rapport.length; i++) {
+          if (rapport.Conclusion.includes(nom) && !foundF) {
+            foundF = true
+            if (rapport.Conclusion.includes('orienté')) {
+              orientedF++
+            } else { diagnostiqueF++ }
+          }
+        }
+      }
+      // HOMME
+      let nombreH = 0
+      let found = false
+      let orientedH = 0
+      let diagnostiqueH = 0
+      const usersH = await User.findAll({
+        where: {
+          state: 'Etudiant',
+          sexe: 'HOMME'
+        }
+      })
+      for (let i = 0; i < usersH.length; i++) {
+        const medfile = await MedicalFile.findOne({
+          where: {
+            idUser: usersH[i].id
+          }
+        })
+
+        if (medfile !== null) {
+          console.log(medfile.antecedentsInfoId)
+
+          const antcd = await AntecedentsInfo.findOne({
+            where: {
+              id: medfile.antecedentsInfoId
+            }
+          })
+          console.log(antcd.malaGene)
+
+          if (antcd !== null) {
+            if (antcd.malaGene !== null) { if (antcd.malaGene.includes(nom)) { nombreH++ } }
+          }
+        }
+        // oriented or not
+        const rapport = await RapportMedical.findAll({
+          where: {
+            idUser: usersF[i].id
+          },
+          order: [
+            ['createdAt', 'DESC']
+          ]
+        })
+        for (let i = 0; i < rapport.length; i++) {
+          if (rapport.Conclusion.includes(nom) && !found) {
+            found = true
+            if (rapport.Conclusion.includes('orienté')) {
+              orientedH++
+            } else { diagnostiqueH++ }
+          }
+        }
+      }
+
+      res.send({ NF: nombreF, NH: nombreH, OF: orientedF, OH: orientedH, DH: diagnostiqueH, DF: diagnostiqueF })
+
+      console.log(nombreF)
+    } catch (err) {
+      res.send({ error: `an error has occured trying to recover stats ${err}` })
     }
   }
 

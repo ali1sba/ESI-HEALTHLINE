@@ -318,20 +318,19 @@ table {
 }
 
 th {
-  text-align: left;
+  text-align: center;
   font-weight: 400;
   font-size: 13px;
   text-transform: uppercase;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
   padding: 0 10px;
   padding-bottom: 14px;
 }
 
-tr:not(:first-child):hover {
-  background: rgba(0, 0, 0, 0.1);
-}
 
 td {
+  border: 1px solid rgba(0, 0, 0, 0.1);
   line-height: 40px;
   font-weight: 300;
   padding: 0 10px;
@@ -2713,7 +2712,6 @@ float: right;
 }
 
 .cardDash-body h3{
-margin-top: 15px;
 margin-bottom: 5px;
 }
 .countDash{
