@@ -12,7 +12,13 @@ module.exports = (sequelize, DataTypes) =>
     BilanElec: {
       type: DataTypes.STRING
     },
-    Autre: {
+    Autre1: {
+      type: DataTypes.STRING
+    },
+    Autre2: {
+      type: DataTypes.STRING
+    },
+    Autre3: {
       type: DataTypes.STRING
     }
   })

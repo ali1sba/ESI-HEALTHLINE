@@ -11,6 +11,17 @@ const smtpTransport = nodemailer.createTransport({
   }
 })
 
+const smtpTransportH = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'healthlineproject@gmail.com',
+    pass: '#Health#Line Project#2021 %*#'
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+})
+
 module.exports = {
   async sendResetLink (email, token, res) {
     const mailOptions = {
@@ -84,6 +95,7 @@ module.exports = {
       subject: 'Bienvenue sur HEALTHLINE !',
       text: 'Votre demande d`inscription a été validée.\n\n' +
             'Vous pouvez maintenant vous connecter au site.\n\n' +
+            'http://localhost:8080' + '\n\n' +
             '\n\n' +
             'Nous vous remercions d`avoir choisi HEALTHLINE.'
     }
@@ -154,6 +166,161 @@ module.exports = {
       if (err) {
         res.send({
           error: `Error in smtpTransport.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  // ********************* RDV ***************************
+  async sendprogRDVPatientEmail (email, date, heure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Nouveau rendez-vous',
+      text: 'Vous avez un nouveau rendez-vous avec le médecin le ' + date + ' à ' + heure + '.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  async sendannulerRDVEmail (email, date, heure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Rendez-vous annulé',
+      text: 'Votre rendez-vous du ' + date + ' à ' + heure + ' a été annulé.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  async sendsaveChangRDVPatientEmail (email, date, heure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Rendez-vous modifié',
+      text: 'Votre rendez-vous du ' + date + ' à ' + heure + ' a été modifié.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  async sendvaliderRDVdemandeEmail (email, date, heure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Demande de rendez-vous acceptée',
+      text: 'Votre demande de rendez-vous pour le ' + date + ' à ' + heure + ' a été acceptée.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  async sendrefuserRDVdemandeEmail (email, date, heure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Demande de rendez-vous refusée',
+      text: 'Votre demande de rendez-vous pour le ' + date + ' à ' + heure + ' a été refusée.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  async sendenregistrerDemandeReportRDVEmail (email, date, heure, Nvdate, Nvheure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Demande de report de rendez-vous acceptée',
+      text: 'Votre demande de report de rendez-vous du ' + date + ' à ' + heure + ' a été acceptée, le rendez-vous aura lieu le ' + Nvdate + ' à ' + Nvheure + '.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
+        })
+      } else {
+        res.send({
+          message: `info, An e-mail has been sent to ${email} with further instructions.`
+        })
+      }
+    })
+  },
+
+  async sendrefuserDemandeReportRDVEmail (email, date, heure, res) {
+    const mailOptions = {
+      to: email,
+      from: 'healthlineproject@gmail.com',
+      subject: 'Demande de report de rendez-vous refusée',
+      text: 'Votre demande de report de rendez-vous du ' + date + ' à ' + heure + ' a été refusée.\n' +
+            'Pour plus d`informations consultez vos rendez-vous.\n\n' +
+            '--HEALTHLINE--'
+    }
+    smtpTransportH.sendMail(mailOptions, function (err, info) {
+      if (err) {
+        res.send({
+          error: `Error in smtpTransportH.sendMail : ${err} `
         })
       } else {
         res.send({

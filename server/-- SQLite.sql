@@ -45,3 +45,4 @@
 --DROP TABLE 'BilansEEGs';
 --DROP TABLE 'BilansEMGs';
 --DROP TABLE 'BilansElectriques';
+--DROP TABLE 'demanderBilans';

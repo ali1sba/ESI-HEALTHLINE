@@ -255,6 +255,7 @@ module.exports = (app) => {
   app.get('/DOCdashboard/recoverDemandesRDVReport', RDVController.recoverDemandesRDVReport)
   app.post('/DOCdashboard/enregistrerDemandeReportRDV', RDVController.enregistrerDemandeReportRDV)
   app.post('/DOCdashboard/refuserDemandeReportRDV', RDVController.refuserDemandeReportRDV)
+  app.post('/DOCdashboard/reportRDVMobile', RDVController.reportRDVMobile)
   // **************************************************************************************
   app.post('/DOCdashboard/saveExamenClinique', DocDashboardController.saveExamenClinique)
   app.post('/DOCdashboard/recoverExamenClinique', DocDashboardController.recoverExamenClinique)

@@ -10,7 +10,9 @@ module.exports = {
         BilanBio: DemandeBilanreceived.DemanderBilan.BilanBio,
         BilanRadio: DemandeBilanreceived.DemanderBilan.BilanRadio,
         BilanElec: DemandeBilanreceived.DemanderBilan.BilanElec,
-        Autre: DemandeBilanreceived.DemanderBilan.Autre
+        Autre1: DemandeBilanreceived.DemanderBilan.Autre1,
+        Autre2: DemandeBilanreceived.DemanderBilan.Autre2,
+        Autre3: DemandeBilanreceived.DemanderBilan.Autre3
       }
       console.log(demandeBilan)
       const demandeBilancalsaved = await demanderBilan.create(demandeBilan)

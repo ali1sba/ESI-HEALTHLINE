@@ -1,6 +1,7 @@
 const { RDV } = require('../models')
 const { User } = require('../models')
-
+const { Compte } = require('../models')
+const SendEmail = require('./SendEmail')
 const { RDVNonValide } = require('../models')
 const { RDVaReporter } = require('../models')
 const express = require('express')
@@ -24,12 +25,22 @@ module.exports = {
         Type: RDVreceived.form.typeDeRDV,
         Note: RDVreceived.form.note
       }
-      const RDVsaved = await RDV.create(RDVToSave)
-      res.send({
-        RDV: RDVsaved
+      await RDV.create(RDVToSave)
+      const user = await User.findOne({
+        where: {
+          id: RDVreceived.form.idUser
+        }
       })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = RDVToSave.DateAndTime.substring(0, 10)
+      const heure = RDVToSave.DateAndTime.substring(11, 16)
+      SendEmail.sendprogRDVPatientEmail(compte.email, date, heure, res)
     } catch (err) {
-      res.status(500).send({
+      res.send({
         error: `an error has occured trying to create RDV ${err}`
       })
     }
@@ -113,10 +124,22 @@ module.exports = {
         }
       })
       console.log(rdvtosupp)
-      rdvtosupp.destroy()
-      res.send({
-        message: 'done'
+
+      const user = await User.findOne({
+        where: {
+          id: rdvtosupp.idUser
+        }
       })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = rdvtosupp.DateAndTime.substring(0, 10)
+      const heure = rdvtosupp.DateAndTime.substring(11, 16)
+      SendEmail.sendannulerRDVEmail(compte.email, date, heure, res)
+
+      rdvtosupp.destroy()
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to create RDV ${err}`
@@ -133,13 +156,25 @@ module.exports = {
           id: RDVreceived.id
         }
       })
+
+      const user = await User.findOne({
+        where: {
+          id: RDVsaved.idUser
+        }
+      })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = RDVsaved.DateAndTime.substring(0, 10)
+      const heure = RDVsaved.DateAndTime.substring(11, 16)
+      SendEmail.sendsaveChangRDVPatientEmail(compte.email, date, heure, res)
+
       RDVsaved.Type = RDVreceived.typeDeRDV
       RDVsaved.DateAndTime = RDVreceived.dateAndTime
       RDVsaved.Note = RDVreceived.note
       await RDVsaved.save()
-      res.send({
-        message: `RDV successfully updated... dateOfBirth: ${RDVsaved.DateAndTime}`
-      })
     } catch (err) {
       res.status(500).send({
         error: `an error has occured trying to update RDV ${err}`
@@ -262,11 +297,21 @@ module.exports = {
         GroupORIndiv: 'Individuel'
       }
       await RDV.create(rdvCr)
-      rdv.destroy()
-      res.send({
-        message: 'response from the server to validerRDVdemande',
-        idRDV: id
+
+      const user = await User.findOne({
+        where: {
+          id: rdv.idUser
+        }
       })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = rdv.DateAndTime.substring(0, 10)
+      const heure = rdv.DateAndTime.substring(11, 16)
+      SendEmail.sendvaliderRDVdemandeEmail(compte.email, date, heure, res)
+      rdv.destroy()
     } catch (err) {
       res.send({
         error: `an error has occured trying to validerRDVdemande ${err}`
@@ -282,11 +327,21 @@ module.exports = {
           id: id
         }
       })
-      rdv.destroy()
-      res.send({
-        message: 'response from the server to refuserRDVdemande',
-        idRDV: id
+
+      const user = await User.findOne({
+        where: {
+          id: rdv.idUser
+        }
       })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = rdv.DateAndTime.substring(0, 10)
+      const heure = rdv.DateAndTime.substring(11, 16)
+      SendEmail.sendrefuserRDVdemandeEmail(compte.email, date, heure, res)
+      rdv.destroy()
     } catch (err) {
       res.send({
         error: `an error has occured trying to refuserRDVdemande ${err}`
@@ -338,6 +393,23 @@ module.exports = {
         GroupORIndiv: rdv.dataValues.GroupORIndiv
       }
       await RDV.create(rdvCr)
+
+      const user = await User.findOne({
+        where: {
+          id: rdv.idUser
+        }
+      })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = rdv.DateAndTime.substring(0, 10)
+      const heure = rdv.DateAndTime.substring(11, 16)
+      const Nvdate = newDate.substring(0, 10)
+      const Nvheure = newDate.substring(11, 16)
+      SendEmail.sendenregistrerDemandeReportRDVEmail(compte.email, date, heure, Nvdate, Nvheure, res)
+
       rdv.destroy()
       res.send({
         message: 'enregistrerDemandeReportRDV from server'
@@ -365,6 +437,48 @@ module.exports = {
         GroupORIndiv: rdv.dataValues.GroupORIndiv
       }
       await RDV.create(rdvCr)
+
+      const user = await User.findOne({
+        where: {
+          id: rdv.idUser
+        }
+      })
+      const compte = await Compte.findOne({
+        where: {
+          id: user.idCompte
+        }
+      })
+      const date = rdv.DateAndTime.substring(0, 10)
+      const heure = rdv.DateAndTime.substring(11, 16)
+      SendEmail.sendrefuserDemandeReportRDVEmail(compte.email, date, heure, res)
+      rdv.destroy()
+      res.send({
+        message: 'response from the server to refuserDemandeReportRDV'
+      })
+    } catch (err) {
+      res.send({
+        error: `an error has occured trying to refuserDemandeReportRDV ${err}`
+      })
+    }
+  },
+  async reportRDVMobile (req, res) {
+    try {
+      console.log(req.body)
+      const id = req.body.idRDV
+      console.log(id)
+      const rdv = await RDV.findOne({
+        where: {
+          id: id
+        }
+      })
+      const rdvCr = {
+        idUser: rdv.dataValues.idUser,
+        DateAndTime: rdv.dataValues.DateAndTime,
+        Type: rdv.dataValues.Type,
+        Note: rdv.dataValues.Note,
+        GroupORIndiv: rdv.dataValues.GroupORIndiv
+      }
+      await RDVaReporter.create(rdvCr)
       rdv.destroy()
       res.send({
         message: 'response from the server to refuserDemandeReportRDV'
