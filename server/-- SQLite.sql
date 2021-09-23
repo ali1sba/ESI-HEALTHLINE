@@ -32,15 +32,15 @@
  --INSERT INTO 'RDVaReporters' VALUES ('3','3','2021-08-05 22:31:19.066 +00:00','consultation medddddd','Test4','Individuel','2021-08-05 22:31:19.066 +00:00','2021-08-05 22:31:19.066 +00:00');
 --INSERT INTO 'Comptes' VALUES ('1', 'admin@gmail.com', '$2a$08$3mgIiNdSCgygh5qD5x1iLON41pLQppSv0H6fy7562znfZWgEyr34y', 'ADMIN', 'ACTIVATED', '2021-07-19 12:41:55.790 +00:00', '2021-07-19 12:41:55.790 +00:00');
 
--- CREATE TABLE medic (nom varchar(255) ,forme varchar(255) ,marque varchar(255) ,dosage varchar(255) );
---  .mode csv
--- .import 'C:\Users\pc\Desktop\nomenclature-au-31-Dcembre-2019999.csv' medic
--- alter TABLE medic ADD COLUMN createdAt datetime 
--- alter TABLE medic ADD COLUMN updatedAt datetime 
---  UPDATE medic
--- SET createdAt = '2021-08-15 22:31:19.066 +00:00', updatedAt = '2021-08-05 22:31:19.066 +00:00' 
--- INSERT INTO Medicaments(nom,marque,forme,dosage,createdAt,updatedAt) SELECT * FROM medic
--- DROP TABLE 'medic';
+--  CREATE TABLE medic (nom varchar(255) ,forme varchar(255) ,marque varchar(255) ,dosage varchar(255) );
+--   .mode csv
+--  .import 'C:\Users\pc\Desktop\nomenclature-au-31-Dcembre-2019999.csv' medic
+--  alter TABLE medic ADD COLUMN createdAt datetime 
+--  alter TABLE medic ADD COLUMN updatedAt datetime 
+--   UPDATE medic
+--  SET createdAt = '2021-08-15 22:31:19.066 +00:00', updatedAt = '2021-08-05 22:31:19.066 +00:00' 
+--  INSERT INTO Medicaments(nom,marque,forme,dosage,createdAt,updatedAt) SELECT * FROM medic
+--  DROP TABLE 'medic';
 --DROP TABLE 'BilansECGs';
 --DROP TABLE 'BilansEEGs';
 --DROP TABLE 'BilansEMGs';

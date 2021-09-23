@@ -1878,10 +1878,7 @@
                     <el-radio-group v-model="radio3" fill="#24b4ab">
                      <el-radio-button
                         label="Historique"
-                        @click="
-                          recoverExamenClinique(userselected);
-                          radio4 = 'table';
-                        "
+                        @click="recoverExamenClinique(userselected);radio4 = 'table';"
                       ></el-radio-button>
                       <el-radio-button
                         label="Créer"
@@ -3046,15 +3043,7 @@
                 </el-scrollbar>
               </el-card>
             </el-scrollbar>
-            <!-- ****************************bilan paraclinique: mahdi + rania******************************* 
-             <el-scrollbar v-show="radio1==='bilan paraclinique'">
-                <el-card class="box-card">
-                   <el-empty  :image-size="300">
-              <el-button type="primary" v-loading.fullscreen.lock="fullscreenLoading"  style="background-color: #24b4ab;width:100%;">Créer bilan paraclinique</el-button>
-              </el-empty>
-                </el-card>
-            </el-scrollbar>
-            ***************************cards bilan paraclinique******************************************-->
+            
             <el-scrollbar v-show="radio1 === 'bilan paraclinique' && radio0 === 'Examen Médical'">
               <el-card class="box-card">
                  <el-button icon="el-icon-arrow-left"  @click="radio1 = 'Examen Médical'" round></el-button>
@@ -7616,6 +7605,152 @@ async INbadgeDisplay2() {
         console.log(`something went wrong in showBB ${error}`);
       }
     },
+    // examen clinique functions*****************************************************
+    async saveExamenClinique(user) {
+      try {
+        this.champsvidesexamen = false
+          
+          if (this.examenClinique.temp == "" || (this.examenClinique.anomaliePeau== "" && this.examenClinique.peau== "" )){
+            this.champsvidesexamen=true
+          
+         }
+        if (!this.champsvidesexamen){
+        this.examenClinique.userId = user.id;
+        const response = await DocServices.saveExamenClinique({
+          ExamenClinique: this.examenClinique,
+        });
+        console.log(this.examenClinique);
+        console.log(response.data);
+        console.log("lahcen");
+        console.log(this.champsvidesexamen);
+        console.log(this.examenClinique.temp);
+        console.log(this.examenClinique.anomaliePeau);
+       this.$notify.success({
+          title: 'Succeès',
+          message: 'Examen clinique modifiée avec succeès ',
+
+        });
+        }else{
+         this.$notify.error({
+          title: 'ERREUR',
+          dangerouslyUseHTMLString: true,
+          message: '<strong>Champ(s) Vide(s)</strong>'
+        }); 
+        }
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+    async recoverExamenClinique(user) {
+      try {
+        const response = await DocServices.recoverExamenClinique({
+          id: user.id,
+        });
+        let list = [];
+        response.data.Ec.map(function(value) {
+          list.push({ id: value.id, date: value.updatedAt.toString(),temp: value.temp,peau:value.peau,peau2:value.anomaliePeau });
+        });
+
+        this.ExamenCliniques = list;
+        console.log(list);
+        console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+    async emptyEC() {
+     this.examenClinique.userId = -1;
+     this.examenClinique.temp = "";
+     this.examenClinique.peau = "";
+     this.examenClinique.anomaliePeau = "";
+     this.examenClinique.inspCardio = "";
+     this.examenClinique.auscuCardio = "";
+     this.examenClinique.anomalieAuscuCardio = "";
+     this.examenClinique.anomalieSouffle = "";
+     this.examenClinique.anomalieType = "";
+     this.examenClinique.anomalieBruits = "";
+     this.examenClinique.poulsPeri = "";
+     this.examenClinique.anomaliePoulsPeri = "";
+     this.examenClinique.tensionArt = "";
+     this.examenClinique.freqCard = "";
+     this.examenClinique.inspPulmo = "";
+     this.examenClinique.freqPulmo = "";
+     this.examenClinique.palpPulmo = "";
+     this.examenClinique.anomaliePalpPulmo = "";
+     this.examenClinique.percuPulmo = "";
+     this.examenClinique.anomaliPercuPulmo = "";
+     this.examenClinique.auscuPulmo = "";
+     this.examenClinique.anomalieAuscuPulmo = "";
+     this.examenClinique.murmurViscu = "";
+     this.examenClinique.checkedRales = "";
+     this.examenClinique.locaRales = "";
+     this.examenClinique.inspAbdo = "";
+     this.examenClinique.anomalieAbdo = "";
+     this.examenClinique.pulpAbdo = "";
+     this.examenClinique.pulpMasse = "";
+     this.examenClinique.localiMasse = "";
+     this.examenClinique.ralesMasse = "";
+     this.examenClinique.autreMasse = "";
+     this.examenClinique.percuAbdo = "";
+     this.examenClinique.sensiNeuro = "";
+     this.examenClinique.anomalieSensiNeuro = "";
+     this.examenClinique.matriNeuro = "";
+     this.examenClinique.anomalieMatriNeuro = "";
+     this.examenClinique.troublesNeuro = "";
+     this.examenClinique.anomalieTroublesNeuro = "";
+     this.examenClinique.orientNeuro = "";
+     this.examenClinique.anomalieOrientNeuro = "";
+     this.examenClinique.gorgeORL = "";
+     this.examenClinique.auricuORL = "";
+     this.examenClinique.examenUrogeni = "";
+     this.examenClinique.remarqueCLI = "";
+     this.isEnabledPT = false;
+     this.isEnabledACV = false;
+     this.isEnabledPCV = false;
+     this.isEnabledPAP = false;
+     this.isEnabledPEP = false;
+     this.isEnabledAP = false;
+     this.isEnabledAPR = false;
+     this.isEnabledIAB = false;
+     this.isEnabledPAB = false;
+     this.isEnabledSN = false;
+     this.isEnabledMN = false;
+     this.isEnabledTN = false;
+      this.isEnabledON = false;
+
+    },
+    async showExamenClinique(ec) {
+      try {
+        const response = await DocServices.showExamenClinique({
+          id: ec.id,
+        });
+        this.ECselected=ec
+        this.isECdisable=true
+
+        this.examenClinique = response.data.Ec;
+        console.log(response.data);
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+     async modifierExamenClinique(ec) {
+      try {
+        const response = await DocServices.modifierExamenClinique({
+          id: ec.id ,
+          ExamenClinique: this.examenClinique,
+        });
+        console.log(response.data);
+        this.$notify.success({
+          title: 'Succeès',
+          message: 'Examen clinique modifiée avec succeès ',
+
+        });
+
+      } catch (error) {
+        console.log(`something went wrong ${error}`);
+      }
+    },
+    
 
     // Bilans paracliniques -> showBB from ALL Bilans Biologiques tables
     async showBilanBiologique(id) {
@@ -7631,6 +7766,7 @@ async INbadgeDisplay2() {
         console.log(`something went wrong in showBilanBiologique ${error}`);
       }
     },
+
 
     async createBilanBiologique(bbcr) {
       try {
@@ -11224,151 +11360,6 @@ try {
     
 
      
-    // examen clinique functions*****************************************************
-    async saveExamenClinique(user) {
-      try {
-        this.champsvidesexamen = false
-          
-          if (this.examenClinique.temp == "" || (this.examenClinique.anomaliePeau== "" && this.examenClinique.peau== "" )){
-            this.champsvidesexamen=true
-          
-         }
-        if (!this.champsvidesexamen){
-        this.examenClinique.userId = user.id;
-        const response = await DocServices.saveExamenClinique({
-          ExamenClinique: this.examenClinique,
-        });
-        console.log(this.examenClinique);
-        console.log(response.data);
-        console.log("lahcen");
-        console.log(this.champsvidesexamen);
-        console.log(this.examenClinique.temp);
-        console.log(this.examenClinique.anomaliePeau);
-       this.$notify.success({
-          title: 'Succeès',
-          message: 'Examen clinique modifiée avec succeès ',
-
-        });
-        }else{
-         this.$notify.error({
-          title: 'ERREUR',
-          dangerouslyUseHTMLString: true,
-          message: '<strong>Champ(s) Vide(s)</strong>'
-        }); 
-        }
-      } catch (error) {
-        console.log(`something went wrong ${error}`);
-      }
-    },
-    async recoverExamenClinique(user) {
-      try {
-        const response = await DocServices.recoverExamenClinique({
-          id: user.id,
-        });
-        let list = [];
-        response.data.Ec.map(function(value) {
-          list.push({ id: value.id, date: value.updatedAt.toString(),temp: value.temp,peau:value.peau,peau2:value.anomaliePeau });
-        });
-
-        this.ExamenCliniques = list;
-        console.log(list);
-        console.log(response.data);
-      } catch (error) {
-        console.log(`something went wrong ${error}`);
-      }
-    },
-    async emptyEC() {
-     this.examenClinique.userId = -1;
-     this.examenClinique.temp = "";
-     this.examenClinique.peau = "";
-     this.examenClinique.anomaliePeau = "";
-     this.examenClinique.inspCardio = "";
-     this.examenClinique.auscuCardio = "";
-     this.examenClinique.anomalieAuscuCardio = "";
-     this.examenClinique.anomalieSouffle = "";
-     this.examenClinique.anomalieType = "";
-     this.examenClinique.anomalieBruits = "";
-     this.examenClinique.poulsPeri = "";
-     this.examenClinique.anomaliePoulsPeri = "";
-     this.examenClinique.tensionArt = "";
-     this.examenClinique.freqCard = "";
-     this.examenClinique.inspPulmo = "";
-     this.examenClinique.freqPulmo = "";
-     this.examenClinique.palpPulmo = "";
-     this.examenClinique.anomaliePalpPulmo = "";
-     this.examenClinique.percuPulmo = "";
-     this.examenClinique.anomaliPercuPulmo = "";
-     this.examenClinique.auscuPulmo = "";
-     this.examenClinique.anomalieAuscuPulmo = "";
-     this.examenClinique.murmurViscu = "";
-     this.examenClinique.checkedRales = "";
-     this.examenClinique.locaRales = "";
-     this.examenClinique.inspAbdo = "";
-     this.examenClinique.anomalieAbdo = "";
-     this.examenClinique.pulpAbdo = "";
-     this.examenClinique.pulpMasse = "";
-     this.examenClinique.localiMasse = "";
-     this.examenClinique.ralesMasse = "";
-     this.examenClinique.autreMasse = "";
-     this.examenClinique.percuAbdo = "";
-     this.examenClinique.sensiNeuro = "";
-     this.examenClinique.anomalieSensiNeuro = "";
-     this.examenClinique.matriNeuro = "";
-     this.examenClinique.anomalieMatriNeuro = "";
-     this.examenClinique.troublesNeuro = "";
-     this.examenClinique.anomalieTroublesNeuro = "";
-     this.examenClinique.orientNeuro = "";
-     this.examenClinique.anomalieOrientNeuro = "";
-     this.examenClinique.gorgeORL = "";
-     this.examenClinique.auricuORL = "";
-     this.examenClinique.examenUrogeni = "";
-     this.examenClinique.remarqueCLI = "";
-     this.isEnabledPT = false;
-     this.isEnabledACV = false;
-     this.isEnabledPCV = false;
-     this.isEnabledPAP = false;
-     this.isEnabledPEP = false;
-     this.isEnabledAP = false;
-     this.isEnabledAPR = false;
-     this.isEnabledIAB = false;
-     this.isEnabledPAB = false;
-     this.isEnabledSN = false;
-     this.isEnabledMN = false;
-     this.isEnabledTN = false;
-      this.isEnabledON = false;
-
-    },
-    async showExamenClinique(ec) {
-      try {
-        const response = await DocServices.showExamenClinique({
-          id: ec.id,
-        });
-        this.ECselected=ec
-        this.isECdisable=true
-
-        this.examenClinique = response.data.Ec;
-        console.log(response.data);
-      } catch (error) {
-        console.log(`something went wrong ${error}`);
-      }
-    },
-     async modifierExamenClinique(ec) {
-      try {
-        const response = await DocServices.modifierExamenClinique({
-          id: ec.id ,
-          ExamenClinique: this.examenClinique,
-        });
-        console.log(response.data);
-        this.$notify.success({
-          title: 'Succeès',
-          message: 'Examen clinique modifiée avec succeès ',
-
-        });
-
-      } catch (error) {
-        console.log(`something went wrong ${error}`);
-      }
-    },
     
     // examen clinique enabling hidden anomalie inputs ************************ ***************
     enableInputs(test) {
